@@ -290,6 +290,28 @@
       font-size: 13px; color: rgba(255,255,255,0.48);
       margin-top: 10px; font-style: italic;
     }
+    .diagram-container svg { cursor: pointer; transition: opacity 0.2s; }
+    .diagram-container svg:hover { opacity: 0.85; }
+
+    /* Lightbox overlay */
+    .lightbox {
+      display: none; position: fixed; top: 0; left: 0;
+      width: 100vw; height: 100vh; z-index: 9999;
+      background: rgba(0,0,0,0.92);
+      justify-content: center; align-items: center;
+      cursor: zoom-out;
+    }
+    .lightbox.active { display: flex; }
+    .lightbox svg {
+      width: 95vw; height: 95vh; cursor: default;
+    }
+    .lightbox-close {
+      position: absolute; top: 20px; right: 30px;
+      font-size: 36px; color: rgba(255,255,255,0.6);
+      cursor: pointer; z-index: 10000;
+      line-height: 1; user-select: none;
+    }
+    .lightbox-close:hover { color: #fff; }
 
     /* Placeholder sections */
     .placeholder-card {
@@ -823,6 +845,12 @@
   <p>© 2026 小美. All rights reserved.</p>
 </footer>
 
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <span class="lightbox-close">&times;</span>
+  <svg id="lightbox-svg" viewBox="0 0 800 440" xmlns="http://www.w3.org/2000/svg"></svg>
+</div>
+
 <script>
 function switchPanel(name) {
   document.querySelectorAll('.sub-panel').forEach(p => p.classList.remove('active'));
@@ -830,6 +858,24 @@ function switchPanel(name) {
   document.getElementById('panel-' + name).classList.add('active');
   event.target.classList.add('active');
   event.preventDefault();
+}
+
+// Lightbox: click any diagram SVG to expand
+document.querySelectorAll('.diagram-container svg').forEach(svg => {
+  svg.addEventListener('click', function(e) {
+    e.stopPropagation();
+    var lb = document.getElementById('lightbox');
+    var target = document.getElementById('lightbox-svg');
+    target.innerHTML = this.innerHTML;
+    target.setAttribute('viewBox', this.getAttribute('viewBox'));
+    lb.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  });
+});
+
+function closeLightbox() {
+  document.getElementById('lightbox').classList.remove('active');
+  document.body.style.overflow = '';
 }
 </script>
 
