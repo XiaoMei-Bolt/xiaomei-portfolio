@@ -728,41 +728,15 @@
 
         <p>NR 相对于 LTE，最大的演进在于引入了灵活的参数集（Flexible Numerology），其核心区别集中在子载波间隔和由此衍生的时域结构变化上。</p>
 
-        <table>
-          <tr>
-            <th>特性（Feature）</th><th>LTE (4G)</th><th>NR (5G)</th><th>主要区别与设计考量</th>
-          </tr>
-          <tr>
-            <td><strong>子载波间隔</strong><br>SCS</td>
-            <td>固定 15 kHz</td>
-            <td>15 / 30 / 60 / 120 / 240 kHz</td>
-            <td>NR 为适应高频（毫米波）和超低时延场景引入更大 SCS，能对抗相位噪声和多普勒频移，并缩短符号时长以降低时延。</td>
-          </tr>
-          <tr>
-            <td><strong>时隙结构</strong><br>Slot Structure</td>
-            <td>1子帧=2时隙<br>1时隙=0.5ms=7符号</td>
-            <td>子帧内时隙数=SCS/15kHz<br>1时隙=14符号（固定）</td>
-            <td>NR 将每时隙符号数固定为 14，简化设计。时隙绝对时长随 SCS 增大而变短（如 60kHz SCS 下每时隙 0.25ms）。</td>
-          </tr>
-          <tr>
-            <td><strong>资源块带宽</strong><br>RB Bandwidth</td>
-            <td>180 kHz<br>(12×15kHz)</td>
-            <td>12 × SCS</td>
-            <td>RB 始终含 12 个子载波，绝对带宽随 SCS 增大而增宽。大 SCS 下相同信道带宽内可用 RB 总数减少。</td>
-          </tr>
-          <tr>
-            <td><strong>符号时长</strong><br>Symbol Duration</td>
-            <td>约 71.4 µs<br>(66.7+4.7)</td>
-            <td>随 SCS 增大而减小</td>
-            <td>T<sub>symbol</sub> = T<sub>u</sub> + CP，其中 T<sub>u</sub> = 1/SCS。30kHz SCS 的符号时长约为 15kHz 的一半，直接降低空口时延。</td>
-          </tr>
-          <tr>
-            <td><strong>频谱效率</strong><br>Spectral Efficiency</td>
-            <td>RB 总数更多，频谱效率较高</td>
-            <td>RB 总数更少</td>
-            <td>大 SCS 虽支持更快调度，但循环前缀和保护带宽的绝对开销不变，可用总资源元素更少，有效频谱效率通常略低于小 SCS。</td>
-          </tr>
-        </table>
+        <p><strong>子载波间隔（SCS）：</strong>LTE 固定使用 15 kHz；NR 支持 15/30/60/120/240 kHz 的灵活配置，以应对高频段（毫米波）的相位噪声和多普勒频移，同时缩短符号时长以降低空口时延。</p>
+
+        <p><strong>时隙结构：</strong>LTE 中一个子帧（1ms）均分为 2 个时隙，每时隙 7 个符号。NR 则将每时隙符号数固定为 14，子帧内时隙数随 SCS 增大而增加（= SCS / 15kHz），时隙绝对时长也随之变短——60 kHz SCS 下每时隙仅 0.25 ms。</p>
+
+        <p><strong>资源块带宽：</strong>两者均以 12 个子载波为一个 RB，但 LTE 的 RB 固定 180 kHz 带宽，NR 的 RB 绝对带宽随 SCS 线性增宽（30 kHz SCS 时为 360 kHz）。在相同信道带宽内，更大 SCS 意味着可用 RB 总数减少。</p>
+
+        <p><strong>符号时长：</strong>LTE 的符号时长固定约 71.4 µs（T<sub>u</sub> = 66.7 µs + CP ≈ 4.7 µs）。NR 的符号时长 = 1/SCS + CP，随 SCS 增大而等比例缩短——30 kHz SCS 时约为 15 kHz 的一半。</p>
+
+        <p><strong>频谱效率：</strong>LTE 在相同信道带宽下 RB 总数更多，频谱效率较高。NR 在大 SCS 下虽能支持更快调度，但因循环前缀和保护带宽的绝对开销不变，有效频谱效率通常略低于小 SCS 配置。</p>
 
         <!-- 图三：LTE vs NR 对比 -->
         <div class="diagram-container">
