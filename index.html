@@ -230,6 +230,67 @@
       color: var(--accent-gold); font-size: 10px; top: 10px;
     }
 
+    /* Sub-navigation tabs */
+    .sub-nav {
+      display: flex; gap: 0; margin-bottom: 48px;
+      border-bottom: 1px solid rgba(255,255,255,0.12);
+    }
+    .sub-nav a {
+      font-size: 15px; font-weight: 500; color: rgba(255,255,255,0.48);
+      text-decoration: none; padding: 12px 24px;
+      border-bottom: 2px solid transparent;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .sub-nav a.active, .sub-nav a:hover {
+      color: var(--white);
+      border-bottom-color: var(--apple-blue);
+    }
+    .sub-panel { display: none; }
+    .sub-panel.active { display: block; }
+
+    /* Article styles */
+    .article-body {
+      font-size: 16px; line-height: 1.8; color: rgba(255,255,255,0.85);
+    }
+    .article-body h3 {
+      font-size: 24px; font-weight: 600; color: var(--white);
+      margin: 40px 0 16px; letter-spacing: -0.16px;
+    }
+    .article-body h3:first-child { margin-top: 0; }
+    .article-body h4 {
+      font-size: 18px; font-weight: 600; color: rgba(255,255,255,0.9);
+      margin: 28px 0 10px;
+    }
+    .article-body p { margin-bottom: 14px; }
+    .article-body ul, .article-body ol {
+      margin: 8px 0 16px 20px;
+    }
+    .article-body li { margin-bottom: 6px; }
+    .article-body strong { color: var(--white); }
+    .article-body table {
+      width: 100%; border-collapse: collapse; margin: 20px 0;
+      font-size: 14px;
+    }
+    .article-body th {
+      background: rgba(255,255,255,0.08); padding: 10px 14px;
+      text-align: left; font-weight: 600; color: var(--white);
+      border-bottom: 1px solid rgba(255,255,255,0.12);
+    }
+    .article-body td {
+      padding: 10px 14px; border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .diagram-container {
+      margin: 32px 0; text-align: center;
+    }
+    .diagram-container svg {
+      max-width: 100%; height: auto;
+    }
+    .diagram-caption {
+      font-size: 13px; color: rgba(255,255,255,0.48);
+      margin-top: 10px; font-style: italic;
+    }
+
     /* Placeholder sections */
     .placeholder-card {
       background: var(--card-bg); border-radius: 12px;
@@ -488,13 +549,293 @@
     <p class="section-desc">
       在射频芯片领域深耕多年，不断拓展认知边界。这里记录我的技术洞察、行业观察和跨领域探索。
     </p>
-    <div class="placeholder-card" style="background:rgba(255,255,255,0.04);">
-      <div class="placeholder-icon">📡</div>
-      <div class="placeholder-title" style="color:var(--white);">内容即将上线</div>
-      <div class="placeholder-desc" style="color:rgba(255,255,255,0.48);">
-        技术文章、行业分析、项目复盘…<br>敬请期待
+
+    <!-- Sub-navigation -->
+    <nav class="sub-nav">
+      <a href="#panel-analysis" class="active" onclick="switchPanel('analysis')">行业分析</a>
+      <a href="#panel-tech" onclick="switchPanel('tech')">技术文章</a>
+    </nav>
+
+    <!-- 行业分析 Panel -->
+    <div class="sub-panel active" id="panel-analysis">
+      <div class="placeholder-card" style="background:rgba(255,255,255,0.04);">
+        <div class="placeholder-icon">📊</div>
+        <div class="placeholder-title" style="color:var(--white);">行业分析即将上线</div>
+        <div class="placeholder-desc" style="color:rgba(255,255,255,0.48);">半导体行业趋势、市场洞察…<br>敬请期待</div>
       </div>
     </div>
+
+    <!-- 技术文章 Panel -->
+    <div class="sub-panel" id="panel-tech">
+      <div class="article-body">
+
+        <p style="font-size:14px;color:rgba(255,255,255,0.4);margin-bottom:24px;">📅 2026 年 6 月 · 通信协议</p>
+
+        <h3>LTE 与 NR 通信系统中的数据结构</h3>
+
+        <p>无线通信系统中，数据的传输依赖于精细定义的时频资源网格。理解 LTE（4G）和 NR（5G）的数据结构，是从系统级视角理解物理层工作的基石。本文从时域、频域两个维度梳理两者的资源组织方式，并对比关键差异。</p>
+
+        <h4>1. 时域资源结构</h4>
+
+        <p>LTE 和 NR 共享一个顶层时域框架：一个<strong>无线帧（Radio Frame）</strong>固定为 10 ms，包含 10 个<strong>子帧（Subframe）</strong>，每个子帧 1 ms。分化发生在子帧以下的层级。</p>
+
+        <p>在 <strong>LTE</strong> 中，每个子帧被均分为 2 个<strong>时隙（Slot）</strong>，每个时隙 0.5 ms。对于常规循环前缀（Normal CP），每个时隙包含 7 个 <strong>OFDM 符号</strong>（扩展 CP 时为 6 个）。因此，LTE 的一个子帧共 14 个符号，这是 LTE 调度的基本粒度。</p>
+
+        <p><strong>NR</strong> 引入了灵活的参数集（Numerology）概念，通过参数 μ 控制子载波间隔（SCS = 15 × 2<sup>μ</sup> kHz）。子载波间隔越大，符号长度越短，每个子帧包含的时隙数也越多：</p>
+
+        <table>
+          <tr><th>μ</th><th>SCS (kHz)</th><th>每子帧时隙数</th><th>每时隙符号数</th><th>符号长度 (μs)</th></tr>
+          <tr><td>0</td><td>15</td><td>1</td><td>14</td><td>66.7</td></tr>
+          <tr><td>1</td><td>30</td><td>2</td><td>14</td><td>33.3</td></tr>
+          <tr><td>2</td><td>60</td><td>4</td><td>14</td><td>16.7</td></tr>
+          <tr><td>3</td><td>120</td><td>8</td><td>14</td><td>8.3</td></tr>
+          <tr><td>4</td><td>240</td><td>16</td><td>14</td><td>4.2</td></tr>
+        </table>
+
+        <p>值得注意的是，NR 的每个时隙固定包含 <strong>14 个 OFDM 符号</strong>（Normal CP），不再像 LTE 那样 7 个符号为一个时隙。NR 还支持 <strong>Mini-Slot</strong>（2、4 或 7 个符号），用于超低时延场景（URLLC）和免授权接入。</p>
+
+        <!-- 图一：时域资源结构示意 -->
+        <div class="diagram-container">
+          <svg viewBox="0 0 800 420" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="gradFrame" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#1a3a5c"/><stop offset="100%" stop-color="#0d2137"/></linearGradient>
+              <linearGradient id="gradSubframe" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#2d5a8e"/><stop offset="100%" stop-color="#1a3a5c"/></linearGradient>
+              <linearGradient id="gradSlot" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#3b7ab8"/><stop offset="100%" stop-color="#2d5a8e"/></linearGradient>
+              <linearGradient id="gradSymbol" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#5a9fd4"/><stop offset="100%" stop-color="#3b7ab8"/></linearGradient>
+            </defs>
+
+            <!-- Title -->
+            <text x="400" y="24" text-anchor="middle" fill="#fff" font-size="15" font-weight="600">图一 · 时域资源结构（NR, μ=1, SCS=30kHz）</text>
+
+            <!-- Radio Frame = 10ms -->
+            <rect x="30" y="40" width="740" height="34" rx="6" fill="url(#gradFrame)" stroke="#3b7ab8" stroke-width="1"/>
+            <text x="45" y="62" fill="#fff" font-size="13" font-weight="600">Radio Frame = 10 ms</text>
+            <text x="740" y="62" fill="rgba(255,255,255,0.5)" font-size="11" text-anchor="end">10 subframes</text>
+
+            <!-- 10 Subframes (each 1ms) -->
+            <text x="30" y="100" fill="rgba(255,255,255,0.5)" font-size="11">Subframe</text>
+            <rect x="90" y="88" width="68" height="28" rx="4" fill="url(#gradSubframe)" stroke="#2d5a8e" stroke-width="0.5"/>
+            <text x="124" y="106" fill="#fff" font-size="11" text-anchor="middle">#0 1ms</text>
+            <rect x="160" y="88" width="68" height="28" rx="4" fill="url(#gradSubframe)" stroke="#2d5a8e" stroke-width="0.5"/>
+            <text x="194" y="106" fill="#fff" font-size="11" text-anchor="middle">#1</text>
+            <rect x="230" y="88" width="68" height="28" rx="4" fill="url(#gradSubframe)" stroke="#2d5a8e" stroke-width="0.5"/>
+            <text x="264" y="106" fill="#fff" font-size="11" text-anchor="middle">#2</text>
+            <rect x="300" y="88" width="68" height="28" rx="4" fill="url(#gradSubframe)" stroke="#2d5a8e" stroke-width="0.5"/>
+            <text x="334" y="106" fill="#fff" font-size="11" text-anchor="middle">…</text>
+            <rect x="370" y="88" width="68" height="28" rx="4" fill="url(#gradSubframe)" stroke="#2d5a8e" stroke-width="0.5"/>
+            <text x="404" y="106" fill="#fff" font-size="11" text-anchor="middle">#9</text>
+
+            <!-- Arrow: Subframe → Slots -->
+            <line x1="124" y1="118" x2="124" y2="140" stroke="#f0a050" stroke-width="1.5" marker-end="url(#arrowOrange)"/>
+            <line x1="124" y1="118" x2="170" y2="140" stroke="#f0a050" stroke-width="1.5" marker-end="url(#arrowOrange)"/>
+
+            <defs><marker id="arrowOrange" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#f0a050"/></marker></defs>
+
+            <!-- Zoom: Subframe #0 expanded -->
+            <text x="30" y="158" fill="rgba(255,255,255,0.5)" font-size="11">Subframe #0 (1ms)</text>
+
+            <!-- 2 Slots (NR μ=1) -->
+            <rect x="90" y="148" width="168" height="28" rx="4" fill="url(#gradSlot)" stroke="#3b7ab8" stroke-width="0.5"/>
+            <text x="174" y="166" fill="#fff" font-size="12" text-anchor="middle">Slot 0 (0.5 ms, 14 symbols)</text>
+            <rect x="260" y="148" width="168" height="28" rx="4" fill="url(#gradSlot)" stroke="#3b7ab8" stroke-width="0.5"/>
+            <text x="344" y="166" fill="#fff" font-size="12" text-anchor="middle">Slot 1 (0.5 ms, 14 symbols)</text>
+
+            <!-- Arrow: Slot → Symbols -->
+            <line x1="174" y1="178" x2="130" y2="205" stroke="#f0a050" stroke-width="1.5" marker-end="url(#arrowOrange)"/>
+
+            <!-- Zoom: Slot 0 expanded to show symbols -->
+            <text x="30" y="222" fill="rgba(255,255,255,0.5)" font-size="11">Slot 0 (14 OFDM symbols)</text>
+
+            <!-- 14 symbols + CP illustration -->
+              <rect x="90" y="212" width="34" height="28" rx="3" fill="url(#gradSymbol)" stroke="#5a9fd4" stroke-width="0.3"/>
+              <text x="107" y="230" fill="#fff" font-size="9" text-anchor="middle">0</text>
+              <rect x="126" y="212" width="34" height="28" rx="3" fill="url(#gradSymbol)" stroke="#5a9fd4" stroke-width="0.3"/>
+              <text x="143" y="230" fill="#fff" font-size="9" text-anchor="middle">1</text>
+              <rect x="162" y="212" width="34" height="28" rx="3" fill="url(#gradSymbol)" stroke="#5a9fd4" stroke-width="0.3"/>
+              <text x="179" y="230" fill="#fff" font-size="9" text-anchor="middle">2</text>
+              <text x="200" y="230" fill="rgba(255,255,255,0.4)" font-size="10">…</text>
+              <rect x="220" y="212" width="34" height="28" rx="3" fill="url(#gradSymbol)" stroke="#5a9fd4" stroke-width="0.3"/>
+              <text x="237" y="230" fill="#fff" font-size="9" text-anchor="middle">11</text>
+              <rect x="256" y="212" width="34" height="28" rx="3" fill="url(#gradSymbol)" stroke="#5a9fd4" stroke-width="0.3"/>
+              <text x="273" y="230" fill="#fff" font-size="9" text-anchor="middle">12</text>
+              <rect x="292" y="212" width="34" height="28" rx="3" fill="url(#gradSymbol)" stroke="#5a9fd4" stroke-width="0.3"/>
+              <text x="309" y="230" fill="#fff" font-size="9" text-anchor="middle">13</text>
+
+            <!-- Symbol detail callout -->
+            <text x="580" y="212" fill="rgba(255,255,255,0.4)" font-size="11">单个 Symbol 结构（Normal CP）：</text>
+            <rect x="580" y="222" width="120" height="18" rx="3" fill="#2d5a8e" stroke="#5a9fd4" stroke-width="0.5"/>
+            <text x="640" y="235" fill="#fff" font-size="10" text-anchor="middle">CP</text>
+            <rect x="702" y="222" width="80" height="18" rx="3" fill="#5a9fd4" stroke="#5a9fd4" stroke-width="0.5"/>
+            <text x="742" y="235" fill="#fff" font-size="10" text-anchor="middle">Data (FFT)</text>
+
+            <text x="580" y="260" fill="rgba(255,255,255,0.35)" font-size="10">CP: 循环前缀，消除符号间干扰</text>
+            <text x="580" y="275" fill="rgba(255,255,255,0.35)" font-size="10">Data: FFT 窗口，承载调制符号</text>
+
+            <!-- Time axis -->
+            <line x1="90" y1="310" x2="400" y2="310" stroke="rgba(255,255,255,0.3)" stroke-width="1"/>
+            <polygon points="400,310 395,306 395,314" fill="rgba(255,255,255,0.3)"/>
+            <text x="245" y="325" fill="rgba(255,255,255,0.4)" font-size="11" text-anchor="middle">时间 t →</text>
+          </svg>
+          <p class="diagram-caption">图一：从 Radio Frame → Subframe → Slot → Symbol 的时域层级解构</p>
+        </div>
+
+        <h4>2. 频域资源结构</h4>
+
+        <p>频域的基本单位是<strong>子载波（Subcarrier）</strong>。LTE 固定使用 15 kHz 子载波间隔（SCS），而 NR 支持 15/30/60/120/240 kHz 的灵活配置。12 个连续子载波组成一个<strong>资源块（Resource Block, RB）</strong>，这是频域资源分配的最小粒度。</p>
+
+        <p>在 NR 中，RB 的绝对带宽随 SCS 变化：15 kHz SCS 时一个 RB 占 180 kHz；30 kHz SCS 时占 360 kHz（宽度翻倍但子载波数不变）。时域上一个时隙（14 个符号）与频域上一个 RB（12 个子载波）的交集，构成一个<strong>资源块集（RB Set）</strong>，共 12 × 14 = 168 个<strong>资源元素（Resource Element, RE）</strong>。RE 是物理层最小的资源单位，承载一个调制符号。</p>
+
+        <p>NR 还引入了<strong>带宽部分（Bandwidth Part, BWP）</strong>的概念，允许在一个载波内定义多个频域子集，每个 BWP 可独立配置 SCS 和带宽，实现灵活的频谱利用和终端省电。</p>
+
+        <!-- 图二：频域资源结构示意 -->
+        <div class="diagram-container">
+          <svg viewBox="0 0 800 380" xmlns="http://www.w3.org/2000/svg">
+            <text x="400" y="24" text-anchor="middle" fill="#fff" font-size="15" font-weight="600">图二 · 频域资源结构（NR, μ=0, SCS=15kHz）</text>
+
+            <!-- Frequency axis -->
+            <text x="48" y="54" fill="#5a9fd4" font-size="12" font-weight="600">频域 ↑</text>
+            <line x1="80" y1="48" x2="80" y2="330" stroke="#f0a050" stroke-width="1.5" marker-end="url(#arrowFreq)"/>
+            <defs><marker id="arrowFreq" markerWidth="6" markerHeight="8" refX="3" refY="8" orient="auto"><path d="M0,0 L6,0 L3,8 Z" fill="#f0a050"/></marker></defs>
+
+            <!-- BWP -->
+            <rect x="120" y="45" width="650" height="280" rx="8" fill="none" stroke="#5a9fd4" stroke-width="1.5" stroke-dasharray="8,4"/>
+            <text x="135" y="65" fill="#5a9fd4" font-size="12" font-weight="600">BWP (Bandwidth Part): 0–100 MHz, SCS=15kHz</text>
+
+            <!-- Full bandwidth grid -->
+            <text x="135" y="95" fill="rgba(255,255,255,0.4)" font-size="11">Carrier Bandwidth = 273 RBs × 180 kHz = 49.14 MHz</text>
+
+            <!-- RB grid -->
+            <g transform="translate(140, 110)">
+              <!-- First few RBs detailed -->
+              <rect x="0" y="0" width="120" height="24" rx="3" fill="url(#gradSlot)" stroke="#3b7ab8" stroke-width="0.3"/>
+              <text x="60" y="16" fill="#fff" font-size="11" text-anchor="middle">RB #0 (180 kHz)</text>
+
+              <rect x="140" y="0" width="120" height="24" rx="3" fill="url(#gradSlot)" stroke="#3b7ab8" stroke-width="0.3"/>
+              <text x="200" y="16" fill="#fff" font-size="11" text-anchor="middle">RB #1 (180 kHz)</text>
+
+              <rect x="280" y="0" width="60" height="24" rx="3" fill="url(#gradSlot)" stroke="#3b7ab8" stroke-width="0.3" opacity="0.4"/>
+              <text x="310" y="16" fill="rgba(255,255,255,0.4)" font-size="11" text-anchor="middle">…</text>
+
+              <rect x="360" y="0" width="120" height="24" rx="3" fill="url(#gradSlot)" stroke="#3b7ab8" stroke-width="0.3"/>
+              <text x="420" y="16" fill="#fff" font-size="11" text-anchor="middle">RB #272 (180 kHz)</text>
+
+              <!-- RB detail zoom -->
+              <text x="0" y="52" fill="rgba(255,255,255,0.5)" font-size="11">RB #0 内部结构：</text>
+
+              <!-- 12 subcarriers -->
+                <rect x="0" y="62" width="580" height="14" rx="2" fill="#1a3a5c" stroke="#2d5a8e" stroke-width="0.3"/>
+                <text x="8" y="73" fill="rgba(255,255,255,0.5)" font-size="9">SC</text>
+                <rect x="26" y="66" width="34" height="6" rx="1" fill="#5a9fd4" opacity="0.5"/>
+
+                <rect x="0" y="78" width="580" height="14" rx="2" fill="#1a3a5c" stroke="#2d5a8e" stroke-width="0.3"/>
+                <text x="8" y="89" fill="rgba(255,255,255,0.5)" font-size="9">SC</text>
+                <rect x="26" y="82" width="34" height="6" rx="1" fill="#5a9fd4" opacity="0.5"/>
+
+                <text x="4" y="116" fill="rgba(255,255,255,0.35)" font-size="9">…×12</text>
+
+                <rect x="0" y="130" width="580" height="14" rx="2" fill="#1a3a5c" stroke="#2d5a8e" stroke-width="0.3"/>
+                <text x="8" y="141" fill="rgba(255,255,255,0.5)" font-size="9">SC</text>
+                <rect x="26" y="134" width="34" height="6" rx="1" fill="#5a9fd4" opacity="0.5"/>
+
+                <rect x="0" y="146" width="580" height="14" rx="2" fill="#1a3a5c" stroke="#2d5a8e" stroke-width="0.3"/>
+                <text x="8" y="157" fill="rgba(255,255,255,0.5)" font-size="9">SC</text>
+                <rect x="26" y="150" width="34" height="6" rx="1" fill="#5a9fd4" opacity="0.5"/>
+            </g>
+
+            <!-- RE detail callout -->
+            <text x="620" y="165" fill="rgba(255,255,255,0.5)" font-size="11">单一 RE 结构：</text>
+            <rect x="620" y="175" width="28" height="24" rx="3" fill="#5a9fd4" stroke="#fff" stroke-width="0.8"/>
+            <text x="634" y="192" fill="#fff" font-size="10" text-anchor="middle">RE</text>
+            <line x1="648" y1="187" x2="690" y2="187" stroke="rgba(255,255,255,0.4)" stroke-width="0.5"/>
+            <text x="695" y="192" fill="rgba(255,255,255,0.45)" font-size="11">1 subcarrier × 1 OFDM symbol</text>
+            <text x="695" y="208" fill="rgba(255,255,255,0.35)" font-size="10">承载 1 个调制符号（QPSK / 16QAM / …)</text>
+
+            <!-- RB summary -->
+            <g transform="translate(140, 250)">
+              <rect x="0" y="0" width="560" height="28" rx="4" fill="#2d5a8e" stroke="#5a9fd4" stroke-width="0.5" opacity="0.7"/>
+              <text x="280" y="19" fill="#fff" font-size="12" text-anchor="middle">1 RB = 12 subcarriers × 14 symbols = 168 REs</text>
+            </g>
+          </svg>
+          <p class="diagram-caption">图二：从 BWP → Carrier → RB → Subcarrier → RE 的频域层级解构</p>
+        </div>
+
+        <h4>3. LTE 与 NR 数据结构关键差异</h4>
+
+        <p>尽管 LTE 和 NR 共享无线帧和子帧的顶层结构，但在资源调度的灵活性和粒度上存在显著差异。下表总结了核心区别：</p>
+
+        <!-- 图三：LTE vs NR 对比 -->
+        <div class="diagram-container">
+          <svg viewBox="0 0 800 440" xmlns="http://www.w3.org/2000/svg">
+            <text x="400" y="24" text-anchor="middle" fill="#fff" font-size="15" font-weight="600">图三 · LTE 与 NR 数据结构区别</text>
+
+            <!-- LTE column -->
+            <rect x="40" y="44" width="340" height="48" rx="6" fill="#1a3a5c" stroke="#3b7ab8" stroke-width="1"/>
+            <text x="210" y="74" text-anchor="middle" fill="#fff" font-size="16" font-weight="700">LTE (4G)</text>
+
+            <text x="60" y="115" fill="#5a9fd4" font-size="12" font-weight="600">子载波间隔</text>
+            <rect x="60" y="122" width="300" height="28" rx="4" fill="rgba(255,255,255,0.05)"/>
+            <text x="75" y="141" fill="rgba(255,255,255,0.85)" font-size="12">固定 15 kHz（唯一选项）</text>
+
+            <text x="60" y="168" fill="#5a9fd4" font-size="12" font-weight="600">时隙结构</text>
+            <rect x="60" y="175" width="300" height="28" rx="4" fill="rgba(255,255,255,0.05)"/>
+            <text x="75" y="194" fill="rgba(255,255,255,0.85)" font-size="12">每时隙 7 符号（Normal CP）</text>
+
+            <text x="60" y="221" fill="#5a9fd4" font-size="12" font-weight="600">子帧内时隙数</text>
+            <rect x="60" y="228" width="300" height="28" rx="4" fill="rgba(255,255,255,0.05)"/>
+            <text x="75" y="247" fill="rgba(255,255,255,0.85)" font-size="12">固定 2 时隙 / 子帧</text>
+
+            <text x="60" y="274" fill="#5a9fd4" font-size="12" font-weight="600">每 RB 的 RE 数</text>
+            <rect x="60" y="281" width="300" height="28" rx="4" fill="rgba(255,255,255,0.05)"/>
+            <text x="75" y="300" fill="rgba(255,255,255,0.85)" font-size="12">12 × 7 = 84 RE（时隙级）</text>
+
+            <text x="60" y="327" fill="#5a9fd4" font-size="12" font-weight="600">Mini-Slot</text>
+            <rect x="60" y="334" width="300" height="28" rx="4" fill="rgba(255,255,255,0.05)"/>
+            <text x="75" y="353" fill="rgba(255,255,255,0.85)" font-size="12">不支持</text>
+
+            <text x="60" y="380" fill="#5a9fd4" font-size="12" font-weight="600">BWP</text>
+            <rect x="60" y="387" width="300" height="28" rx="4" fill="rgba(255,255,255,0.05)"/>
+            <text x="75" y="406" fill="rgba(255,255,255,0.85)" font-size="12">不支持</text>
+
+            <!-- NR column -->
+            <rect x="420" y="44" width="340" height="48" rx="6" fill="#0d3b2e" stroke="#2d8e6e" stroke-width="1"/>
+            <text x="590" y="74" text-anchor="middle" fill="#5af0a0" font-size="16" font-weight="700">NR (5G)</text>
+
+            <text x="440" y="115" fill="#5af0a0" font-size="12" font-weight="600">子载波间隔</text>
+            <rect x="440" y="122" width="300" height="28" rx="4" fill="rgba(255,255,255,0.05)"/>
+            <text x="455" y="141" fill="rgba(255,255,255,0.85)" font-size="12">15 / 30 / 60 / 120 / 240 kHz（灵活）</text>
+
+            <text x="440" y="168" fill="#5af0a0" font-size="12" font-weight="600">时隙结构</text>
+            <rect x="440" y="175" width="300" height="28" rx="4" fill="rgba(255,255,255,0.05)"/>
+            <text x="455" y="194" fill="rgba(255,255,255,0.85)" font-size="12">每时隙 14 符号（Normal CP）</text>
+
+            <text x="440" y="221" fill="#5af0a0" font-size="12" font-weight="600">子帧内时隙数</text>
+            <rect x="440" y="228" width="300" height="28" rx="4" fill="rgba(255,255,255,0.05)"/>
+            <text x="455" y="247" fill="rgba(255,255,255,0.85)" font-size="12">1 / 2 / 4 / 8 / 16（取决于 μ）</text>
+
+            <text x="440" y="274" fill="#5af0a0" font-size="12" font-weight="600">每 RB 的 RE 数</text>
+            <rect x="440" y="281" width="300" height="28" rx="4" fill="rgba(255,255,255,0.05)"/>
+            <text x="455" y="300" fill="rgba(255,255,255,0.85)" font-size="12">12 × 14 = 168 RE（时隙级）</text>
+
+            <text x="440" y="327" fill="#5af0a0" font-size="12" font-weight="600">Mini-Slot</text>
+            <rect x="440" y="334" width="300" height="28" rx="4" fill="rgba(255,255,255,0.05)"/>
+            <text x="455" y="353" fill="rgba(255,255,255,0.85)" font-size="12">✅ 支持（2 / 4 / 7 符号，URLLC）</text>
+
+            <text x="440" y="380" fill="#5af0a0" font-size="12" font-weight="600">BWP</text>
+            <rect x="440" y="387" width="300" height="28" rx="4" fill="rgba(255,255,255,0.05)"/>
+            <text x="455" y="406" fill="rgba(255,255,255,0.85)" font-size="12">✅ 支持（Bandwidth Part，灵活频谱利用）</text>
+          </svg>
+          <p class="diagram-caption">图三：LTE 与 NR 在子载波间隔、时隙结构、Mini-Slot 和 BWP 等维度的对比</p>
+        </div>
+
+        <h4>4. 总结</h4>
+
+        <p>LTE 的数据结构以「简单、固定」为特征——15 kHz 唯一 SCS、7 符号时隙、无 Mini-Slot 和 BWP——这种一致性简化了系统设计和终端实现，适合 eMBB 初期的移动宽带需求。</p>
+
+        <p>NR 在继承 LTE 顶层框架的基础上，引入了 <strong>Numerology</strong>、<strong>Mini-Slot</strong> 和 <strong>BWP</strong> 三大创新，使其数据结构具备前所未有的灵活性：高 SCS 为毫米波和低时延提供短符号；低 SCS 为广覆盖和大连接提供长 CP。这种「一刀不切」的设计哲学，正是 5G 能够同时服务 eMBB、URLLC 和 mMTC 三大场景的物理层基础。</p>
+
+      </div>
+    </div>
+
   </div>
 </section>
 
@@ -518,6 +859,16 @@
 <footer class="footer">
   <p>© 2026 小美. All rights reserved.</p>
 </footer>
+
+<script>
+function switchPanel(name) {
+  document.querySelectorAll('.sub-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.sub-nav a').forEach(a => a.classList.remove('active'));
+  document.getElementById('panel-' + name).classList.add('active');
+  event.target.classList.add('active');
+  event.preventDefault();
+}
+</script>
 
 </body>
 </html>
