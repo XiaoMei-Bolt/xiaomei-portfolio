@@ -1099,12 +1099,226 @@
         <p>NR 在继承 LTE 顶层框架的基础上，引入了 <strong>Numerology</strong>、<strong>Mini-Slot</strong> 和 <strong>BWP</strong> 三大创新，使其数据结构具备前所未有的灵活性：高 SCS 为毫米波和低时延提供短符号；低 SCS 为广覆盖和大连接提供长 CP。这种「一刀不切」的设计哲学，正是 5G 能够同时服务 eMBB、URLLC 和 mMTC 三大场景的物理层基础。通过对数据结构的深入理解，可以从系统级视角把握无线通信资源调度的核心逻辑。</p>
 
       </div>
+
+      <hr style="border:none;border-top:1px solid rgba(255,255,255,0.08);margin:40px 0;">
+
+      <p style="font-size:14px;color:rgba(255,255,255,0.4);margin-bottom:24px;">📅 2026 年 6 月 · 产品开发</p>
+
+      <h3>L-DiFEM 产品线开发流程</h3>
+
+      <p>L-DiFEM（集成 LNA + SWITCH + FILTER 的接收模组）开发分为两大阶段：<strong>可行性阶段（TR1–TR3）</strong>完成架构/工艺/尺寸/Floorplan 四维评估；<strong>设计开发阶段（TR4）</strong>按 Phase 1→3 推进 LNA / SWITCH / FILTER / MODULE 四条线并行开发，各阶段有明确的交付物与接口关系。</p>
+
+      <div class="diagram-container">
+        <svg viewBox="0 0 800 750" xmlns="http://www.w3.org/2000/svg">
+
+          <!-- ===== 可行性阶段 ===== -->
+          <text x="30" y="28" fill="#f0a050" font-size="14" font-weight="700">可行性阶段 · TR1–TR3</text>
+          <rect x="30" y="38" width="740" height="110" rx="8" fill="rgba(240,160,80,0.06)" stroke="rgba(240,160,80,0.25)" stroke-width="1.5"/>
+
+          <!-- 架构 -->
+          <rect x="46" y="50" width="172" height="86" rx="6" fill="rgba(0,113,227,0.1)" stroke="rgba(0,113,227,0.25)"/>
+          <text x="132" y="70" text-anchor="middle" fill="#5a9fd4" font-size="12" font-weight="700">架构评估</text>
+          <line x1="60" y1="78" x2="204" y2="78" stroke="rgba(255,255,255,0.08)"/>
+          <text x="54" y="96" fill="rgba(255,255,255,0.75)" font-size="10">LNA: BANK / CSWITCH</text>
+          <text x="54" y="114" fill="rgba(255,255,255,0.75)" font-size="10">FILTER: DMS / Ladder</text>
+
+          <!-- 箭头 -->
+          <polygon points="222,93 232,88 232,98" fill="rgba(255,255,255,0.2)"/>
+
+          <!-- 工艺 -->
+          <rect x="238" y="50" width="172" height="86" rx="6" fill="rgba(0,113,227,0.1)" stroke="rgba(0,113,227,0.25)"/>
+          <text x="324" y="70" text-anchor="middle" fill="#5a9fd4" font-size="12" font-weight="700">工艺评估</text>
+          <line x1="252" y1="78" x2="396" y2="78" stroke="rgba(255,255,255,0.08)"/>
+          <text x="246" y="96" fill="rgba(255,255,255,0.75)" font-size="10">TJ / HHG</text>
+          <text x="246" y="114" fill="rgba(255,255,255,0.75)" font-size="10">65nm / 130nm</text>
+          <text x="246" y="130" fill="rgba(255,255,255,0.55)" font-size="9">POI / NSAW</text>
+
+          <polygon points="414,93 424,88 424,98" fill="rgba(255,255,255,0.2)"/>
+
+          <!-- 尺寸 -->
+          <rect x="430" y="50" width="160" height="86" rx="6" fill="rgba(0,113,227,0.1)" stroke="rgba(0,113,227,0.25)"/>
+          <text x="510" y="70" text-anchor="middle" fill="#5a9fd4" font-size="12" font-weight="700">尺寸评估</text>
+          <line x1="444" y1="78" x2="576" y2="78" stroke="rgba(255,255,255,0.08)"/>
+          <text x="438" y="102" fill="rgba(255,255,255,0.75)" font-size="10">各 Die 尺寸估算</text>
+
+          <polygon points="594,93 604,88 604,98" fill="rgba(255,255,255,0.2)"/>
+
+          <!-- Floorplan -->
+          <rect x="610" y="50" width="148" height="86" rx="6" fill="rgba(0,113,227,0.1)" stroke="rgba(0,113,227,0.25)"/>
+          <text x="684" y="70" text-anchor="middle" fill="#5a9fd4" font-size="12" font-weight="700">Floorplan</text>
+          <line x1="624" y1="78" x2="744" y2="78" stroke="rgba(255,255,255,0.08)"/>
+          <text x="618" y="102" fill="rgba(255,255,255,0.75)" font-size="10">模组 Layout 规划</text>
+
+          <!-- Feasibility → Design arrow -->
+          <line x1="400" y1="152" x2="400" y2="176" stroke="#f0a050" stroke-width="1.5" marker-end="url(#arrowOrange)"/>
+          <defs><marker id="arrowOrange" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#f0a050"/></marker></defs>
+          <defs><marker id="arrowGreen" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#4ade80"/></marker></defs>
+
+          <!-- ===== 设计开发阶段 ===== -->
+          <text x="30" y="196" fill="#4ade80" font-size="14" font-weight="700">设计开发阶段 · TR4</text>
+
+          <!-- ===== Swimlane Table ===== -->
+          <!-- Background -->
+          <rect x="30" y="208" width="740" height="360" rx="8" fill="rgba(74,222,128,0.04)" stroke="rgba(74,222,128,0.2)" stroke-width="1"/>
+
+          <!-- Column headers -->
+          <rect x="130" y="208" width="150" height="30" rx="0" fill="rgba(0,113,227,0.15)"/>
+          <text x="205" y="228" text-anchor="middle" fill="#5a9fd4" font-size="11" font-weight="700">Phase 1</text>
+
+          <rect x="288" y="208" width="160" height="30" rx="0" fill="rgba(16,185,129,0.12)"/>
+          <text x="368" y="228" text-anchor="middle" fill="#10b981" font-size="11" font-weight="700">Phase 2（前半）</text>
+
+          <rect x="456" y="208" width="160" height="30" rx="0" fill="rgba(16,185,129,0.18)"/>
+          <text x="536" y="228" text-anchor="middle" fill="#10b981" font-size="11" font-weight="700">Phase 2（后半）</text>
+
+          <rect x="624" y="208" width="146" height="30" rx="0" fill="rgba(74,222,128,0.15)"/>
+          <text x="697" y="228" text-anchor="middle" fill="#4ade80" font-size="11" font-weight="700">Phase 3</text>
+
+          <!-- Row separator lines -->
+          <line x1="30" y1="238" x2="770" y2="238" stroke="rgba(255,255,255,0.1)"/>
+          <line x1="30" y1="298" x2="770" y2="298" stroke="rgba(255,255,255,0.08)"/>
+          <line x1="30" y1="358" x2="770" y2="358" stroke="rgba(255,255,255,0.08)"/>
+          <line x1="30" y1="418" x2="770" y2="418" stroke="rgba(255,255,255,0.08)"/>
+          <line x1="30" y1="478" x2="770" y2="478" stroke="rgba(255,255,255,0.08)"/>
+          <line x1="30" y1="538" x2="770" y2="538" stroke="rgba(255,255,255,0.08)"/>
+
+          <!-- Column separator lines -->
+          <line x1="130" y1="208" x2="130" y2="568" stroke="rgba(255,255,255,0.1)"/>
+          <line x1="280" y1="208" x2="280" y2="568" stroke="rgba(255,255,255,0.08)"/>
+          <line x1="448" y1="208" x2="448" y2="568" stroke="rgba(255,255,255,0.08)"/>
+          <line x1="616" y1="208" x2="616" y2="568" stroke="rgba(255,255,255,0.08)"/>
+
+          <!-- ===== Row: LNA ===== -->
+          <rect x="35" y="239" width="90" height="58" rx="4" fill="rgba(0,113,227,0.15)"/>
+          <text x="80" y="273" text-anchor="middle" fill="#0071e3" font-size="13" font-weight="700">LNA</text>
+
+          <!-- P1 LNA -->
+          <text x="155" y="256" fill="#fff" font-size="9" font-weight="600">设计开始</text>
+          <text x="140" y="274" fill="rgba(255,255,255,0.6)" font-size="9">→ SP 参数（schematic）</text>
+          <rect x="138" y="280" width="40" height="12" rx="3" fill="rgba(0,113,227,0.2)"/>
+          <text x="158" y="289" text-anchor="middle" fill="#5a9fd4" font-size="7">交付</text>
+
+          <!-- P2a LNA -->
+          <text x="310" y="256" fill="#fff" font-size="9" font-weight="600">设计过程</text>
+          <text x="296" y="274" fill="rgba(255,255,255,0.6)" font-size="9">→ pad GDS</text>
+          <rect x="312" y="280" width="40" height="12" rx="3" fill="rgba(0,113,227,0.2)"/>
+          <text x="332" y="289" text-anchor="middle" fill="#5a9fd4" font-size="7">交付</text>
+
+          <!-- P2b LNA -->
+          <text x="478" y="256" fill="#fff" font-size="9" font-weight="600">设计结束</text>
+          <text x="466" y="274" fill="rgba(255,255,255,0.6)" font-size="9">→ EM 参数</text>
+          <rect x="480" y="280" width="40" height="12" rx="3" fill="rgba(0,113,227,0.2)"/>
+          <text x="500" y="289" text-anchor="middle" fill="#5a9fd4" font-size="7">交付</text>
+
+          <!-- P3 LNA -->
+          <text x="677" y="266" fill="rgba(255,255,255,0.25)" font-size="10">—</text>
+
+          <!-- ===== Row: SWITCH ===== -->
+          <rect x="35" y="299" width="90" height="58" rx="4" fill="rgba(16,185,129,0.15)"/>
+          <text x="80" y="333" text-anchor="middle" fill="#10b981" font-size="13" font-weight="700">SWITCH</text>
+
+          <text x="155" y="316" fill="#fff" font-size="9" font-weight="600">设计开始</text>
+          <text x="140" y="334" fill="rgba(255,255,255,0.6)" font-size="9">→ SP 参数（schematic）</text>
+          <rect x="138" y="340" width="40" height="12" rx="3" fill="rgba(16,185,129,0.2)"/>
+          <text x="158" y="349" text-anchor="middle" fill="#10b981" font-size="7">交付</text>
+
+          <text x="310" y="316" fill="#fff" font-size="9" font-weight="600">设计过程</text>
+          <text x="296" y="334" fill="rgba(255,255,255,0.6)" font-size="9">→ pad GDS</text>
+          <rect x="312" y="340" width="40" height="12" rx="3" fill="rgba(16,185,129,0.2)"/>
+          <text x="332" y="349" text-anchor="middle" fill="#10b981" font-size="7">交付</text>
+
+          <text x="478" y="316" fill="#fff" font-size="9" font-weight="600">设计结束</text>
+          <text x="466" y="334" fill="rgba(255,255,255,0.6)" font-size="9">→ EM 参数</text>
+          <rect x="480" y="340" width="40" height="12" rx="3" fill="rgba(16,185,129,0.2)"/>
+          <text x="500" y="349" text-anchor="middle" fill="#10b981" font-size="7">交付</text>
+
+          <text x="677" y="326" fill="rgba(255,255,255,0.25)" font-size="10">—</text>
+
+          <!-- ===== Row: FILTER ===== -->
+          <rect x="35" y="359" width="90" height="58" rx="4" fill="rgba(139,92,246,0.15)"/>
+          <text x="80" y="393" text-anchor="middle" fill="#8b5cf6" font-size="13" font-weight="700">FILTER</text>
+
+          <text x="185" y="388" fill="rgba(255,255,255,0.25)" font-size="10">—</text>
+
+          <text x="310" y="380" fill="#fff" font-size="9" font-weight="600">设计开始</text>
+
+          <text x="478" y="376" fill="#fff" font-size="9" font-weight="600">设计过程</text>
+          <text x="466" y="394" fill="rgba(255,255,255,0.6)" font-size="9">→ 匹配需求</text>
+          <rect x="480" y="400" width="40" height="12" rx="3" fill="rgba(139,92,246,0.2)"/>
+          <text x="500" y="409" text-anchor="middle" fill="#8b5cf6" font-size="7">交付</text>
+
+          <text x="646" y="376" fill="#fff" font-size="9" font-weight="600">设计结束</text>
+          <text x="632" y="394" fill="rgba(255,255,255,0.6)" font-size="9">→ EM 参数</text>
+          <rect x="680" y="400" width="40" height="12" rx="3" fill="rgba(139,92,246,0.2)"/>
+          <text x="700" y="409" text-anchor="middle" fill="#8b5cf6" font-size="7">交付</text>
+
+          <!-- ===== Row: MODULE ===== -->
+          <rect x="35" y="419" width="90" height="58" rx="4" fill="rgba(245,158,11,0.15)"/>
+          <text x="80" y="453" text-anchor="middle" fill="#f59e0b" font-size="13" font-weight="700">MODULE</text>
+
+          <text x="148" y="436" fill="#fff" font-size="9" font-weight="600">连接 LNA+SW 电路</text>
+          <text x="140" y="454" fill="rgba(255,255,255,0.6)" font-size="9">→ 参数合理性检查</text>
+          <rect x="142" y="460" width="60" height="12" rx="3" fill="rgba(245,158,11,0.2)"/>
+          <text x="172" y="469" text-anchor="middle" fill="#f59e0b" font-size="7">交付给 FILTER</text>
+
+          <text x="310" y="436" fill="#fff" font-size="9" font-weight="600">设计开始</text>
+          <text x="296" y="454" fill="rgba(255,255,255,0.6)" font-size="9">→ 确认 pad GDS OK</text>
+          <rect x="312" y="460" width="40" height="12" rx="3" fill="rgba(245,158,11,0.2)"/>
+          <text x="332" y="469" text-anchor="middle" fill="#f59e0b" font-size="7">确认</text>
+
+          <text x="478" y="436" fill="#fff" font-size="9" font-weight="600">设计过程</text>
+          <text x="464" y="454" fill="rgba(255,255,255,0.6)" font-size="9">→ DiFEM / BANK+LG EM</text>
+          <rect x="474" y="460" width="60" height="12" rx="3" fill="rgba(245,158,11,0.2)"/>
+          <text x="504" y="469" text-anchor="middle" fill="#f59e0b" font-size="7">交付给 FILTER</text>
+
+          <text x="646" y="436" fill="#fff" font-size="9" font-weight="600">设计结束</text>
+          <text x="640" y="454" fill="rgba(255,255,255,0.6)" font-size="9">→ 完整性能</text>
+          <rect x="680" y="460" width="40" height="12" rx="3" fill="rgba(74,222,128,0.2)"/>
+          <text x="700" y="469" text-anchor="middle" fill="#4ade80" font-size="7">交付</text>
+
+          <!-- Flow arrows between phases -->
+          <!-- LNA flow arrows -->
+          <line x1="268" y1="268" x2="286" y2="268" stroke="#0071e3" stroke-width="1" stroke-dasharray="3,2" opacity="0.5"/>
+          <line x1="436" y1="268" x2="454" y2="268" stroke="#0071e3" stroke-width="1" stroke-dasharray="3,2" opacity="0.5"/>
+          <line x1="604" y1="268" x2="622" y2="268" stroke="#0071e3" stroke-width="1" stroke-dasharray="3,2" opacity="0.3"/>
+
+          <!-- SWITCH flow arrows -->
+          <line x1="268" y1="328" x2="286" y2="328" stroke="#10b981" stroke-width="1" stroke-dasharray="3,2" opacity="0.5"/>
+          <line x1="436" y1="328" x2="454" y2="328" stroke="#10b981" stroke-width="1" stroke-dasharray="3,2" opacity="0.5"/>
+          <line x1="604" y1="328" x2="622" y2="328" stroke="#10b981" stroke-width="1" stroke-dasharray="3,2" opacity="0.3"/>
+
+          <!-- FILTER flow arrows -->
+          <line x1="436" y1="388" x2="454" y2="388" stroke="#8b5cf6" stroke-width="1" stroke-dasharray="3,2" opacity="0.5"/>
+          <line x1="604" y1="388" x2="622" y2="388" stroke="#8b5cf6" stroke-width="1" stroke-dasharray="3,2" opacity="0.6"/>
+
+          <!-- MODULE flow arrows -->
+          <line x1="268" y1="448" x2="286" y2="448" stroke="#f59e0b" stroke-width="1" stroke-dasharray="3,2" opacity="0.5"/>
+          <line x1="436" y1="448" x2="454" y2="448" stroke="#f59e0b" stroke-width="1" stroke-dasharray="3,2" opacity="0.5"/>
+          <line x1="604" y1="448" x2="622" y2="448" stroke="#f59e0b" stroke-width="1" stroke-dasharray="3,2" opacity="0.6"/>
+
+          <!-- Cross-row delivery arrows (MODULE → FILTER) -->
+          <path d="M172,472 C172,490 490,490 490,472" fill="none" stroke="#f59e0b" stroke-width="0.8" stroke-dasharray="3,3" opacity="0.4"/>
+          <path d="M504,472 C504,495 495,495 495,410" fill="none" stroke="#f59e0b" stroke-width="0.8" stroke-dasharray="3,3" opacity="0.4" marker-end="url(#arrowOrange)"/>
+
+          <!-- Notes section -->
+          <rect x="30" y="545" width="740" height="55" rx="6" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.06)"/>
+
+          <text x="50" y="565" fill="rgba(255,255,255,0.4)" font-size="9" font-weight="600">📌 备注</text>
+
+          <circle cx="56" cy="580" r="3" fill="rgba(255,255,255,0.3)"/>
+          <text x="65" y="584" fill="rgba(255,255,255,0.45)" font-size="9">所有交付给 FILTER 的参数均由 MODULE 统一提供</text>
+
+          <circle cx="370" cy="580" r="3" fill="rgba(255,255,255,0.3)"/>
+          <text x="379" y="584" fill="rgba(255,255,255,0.45)" font-size="9">EM 参数 ≡ 顶层金属 + Schematic Cell 合成参数</text>
+
+          <circle cx="56" cy="594" r="3" fill="rgba(255,255,255,0.3)"/>
+          <text x="65" y="598" fill="rgba(255,255,255,0.45)" font-size="9">DiFEM 与 BANK+LG 需含匹配处的 Tuning Port，但 Tuning Port 不可出现在 SWITCH / LNA / FILTER 的 I/O Pad 上</text>
+
+        </svg>
+        <p class="diagram-caption">图：L-DiFEM 从 TR1 可行性评估到 TR4 设计交付的完整工作流。四条线的交付物通过 MODULE 统一向 FILTER 传递。</p>
+      </div>
+
     </div>
-
-  </div>
-</section>
-
-<!-- 读书笔记 -->
 <section class="section section-light" id="reading">
   <div class="section-inner">
     <p class="section-label">读书笔记</p>
