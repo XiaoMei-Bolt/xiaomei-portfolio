@@ -630,7 +630,130 @@
         <p style="font-size:12px;color:rgba(255,255,255,0.35);margin-top:-8px;">数据来源：2024 基于 Omdia 初步出货报告；2025 基于 IDC 全球季度手机跟踪。统计口径差异存在小幅浮动。「—」表示数据未覆盖。</p>
 
         <h4 style="font-size:16px;color:rgba(255,255,255,0.9);margin-top:32px;">1.2 销售额格局</h4>
-        <p>出货量与利润并非正比。苹果以约 <strong>18%</strong> 出货量份额，攫取行业 <strong style="color:#4ade80;">40%+</strong> 营收及 <strong style="color:#4ade80;">80%+</strong> 利润。三星以约 18% 出货份额，营收占比约 <strong>16%</strong>。中国厂商（小米 + OPPO + vivo）合计出货量超 30%，但营收合计不足 25%，高端化仍是核心突破口。</p>
+
+        <p>出货量不等于利润。以下图表以<strong>柱状图（左轴）</strong>展示各厂商出货量，以<strong>◆ 标记（右轴）</strong>叠加苹果与三星营收——二者合计攫取行业 <strong style="color:#4ade80;">60%+</strong> 营收，中国厂商份额虽超 30% 出货量，营收占比合计不足 25%。</p>
+
+        <div class="diagram-container">
+          <svg viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg">
+            <!-- Background grid -->
+            <defs>
+              <pattern id="grid" width="80" height="50" patternUnits="userSpaceOnUse">
+                <path d="M 80 0 L 0 0 0 50" fill="none" stroke="rgba(255,255,255,0.03)" stroke-width="0.5"/>
+              </pattern>
+            </defs>
+            <rect x="110" y="40" width="650" height="380" fill="url(#grid)"/>
+
+            <!-- Title -->
+            <text x="400" y="24" text-anchor="middle" fill="#fff" font-size="15" font-weight="600">图 · 出货量与营收双轴对比（2023–2025）</text>
+            <text x="400" y="44" text-anchor="middle" fill="rgba(255,255,255,0.35)" font-size="11">注：营收数据基于 Counterpoint Research 公开发布的营收份额估算，其余品牌营收未公开披露</text>
+
+            <!-- Y-axis left (shipments) -->
+            <line x1="110" y1="40" x2="110" y2="420" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+            <text x="100" y="46" fill="rgba(255,255,255,0.45)" font-size="9" text-anchor="end">300M</text>
+            <text x="100" y="106" fill="rgba(255,255,255,0.45)" font-size="9" text-anchor="end">250M</text>
+            <text x="100" y="166" fill="rgba(255,255,255,0.45)" font-size="9" text-anchor="end">200M</text>
+            <text x="100" y="226" fill="rgba(255,255,255,0.45)" font-size="9" text-anchor="end">150M</text>
+            <text x="100" y="286" fill="rgba(255,255,255,0.45)" font-size="9" text-anchor="end">100M</text>
+            <text x="100" y="346" fill="rgba(255,255,255,0.45)" font-size="9" text-anchor="end">50M</text>
+            <text x="100" y="424" fill="rgba(255,255,255,0.45)" font-size="9" text-anchor="end">0</text>
+            <text x="45" y="230" fill="rgba(255,255,255,0.35)" font-size="9" text-anchor="middle" transform="rotate(-90,45,230)">出货量（百万部）</text>
+
+            <!-- Left axis guide lines -->
+            <line x1="110" y1="46" x2="760" y2="46" stroke="rgba(255,255,255,0.05)" stroke-width="0.5"/>
+            <line x1="110" y1="106" x2="760" y2="106" stroke="rgba(255,255,255,0.05)" stroke-width="0.5"/>
+            <line x1="110" y1="166" x2="760" y2="166" stroke="rgba(255,255,255,0.05)" stroke-width="0.5"/>
+            <line x1="110" y1="226" x2="760" y2="226" stroke="rgba(255,255,255,0.05)" stroke-width="0.5"/>
+            <line x1="110" y1="286" x2="760" y2="286" stroke="rgba(255,255,255,0.05)" stroke-width="0.5"/>
+            <line x1="110" y1="346" x2="760" y2="346" stroke="rgba(255,255,255,0.05)" stroke-width="0.5"/>
+
+            <!-- Y-axis right (revenue, $B) -->
+            <line x1="760" y1="40" x2="760" y2="420" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+            <text x="770" y="46" fill="rgba(74,222,128,0.5)" font-size="9">$250B</text>
+            <text x="770" y="106" fill="rgba(74,222,128,0.5)" font-size="9">$200B</text>
+            <text x="770" y="166" fill="rgba(74,222,128,0.5)" font-size="9">$150B</text>
+            <text x="770" y="226" fill="rgba(74,222,128,0.5)" font-size="9">$100B</text>
+            <text x="770" y="286" fill="rgba(74,222,128,0.5)" font-size="9">$50B</text>
+            <text x="770" y="424" fill="rgba(74,222,128,0.5)" font-size="9">$0</text>
+
+            <!-- X-axis -->
+            <line x1="110" y1="420" x2="760" y2="420" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+
+            <!-- ============ BARS: Shipments (left axis, scale: 1.52 px/M, max 300M = 380px from y=420) ============ -->
+            <!-- scale = 380/300 = 1.2667 px/M -->
+
+            <!-- Year labels -->
+            <text x="190" y="440" fill="rgba(255,255,255,0.5)" font-size="12" text-anchor="middle" font-weight="600">2023</text>
+            <text x="400" y="440" fill="rgba(255,255,255,0.5)" font-size="12" text-anchor="middle" font-weight="600">2024</text>
+            <text x="610" y="440" fill="rgba(255,255,255,0.5)" font-size="12" text-anchor="middle" font-weight="600">2025</text>
+
+            <!-- ===== 2023 Group (center x=190, 6 bars, each 18px wide, 2px gap) ===== -->
+            <!-- Apple 229.1M → h=290.3 -->
+            <rect x="135" y="129.7" width="18" height="290.3" rx="2" fill="#0071e3" opacity="0.9"><title>Apple 2023: 2.291亿部</title></rect>
+            <!-- Samsung 227.0 → h=287.6 -->
+            <rect x="155" y="132.4" width="18" height="287.6" rx="2" fill="#5a9fd4" opacity="0.85"><title>Samsung 2023: 2.27亿部</title></rect>
+            <!-- Xiaomi 146.0 → h=185.0 -->
+            <rect x="175" y="235.0" width="18" height="185.0" rx="2" fill="#f59e0b" opacity="0.85"><title>小米 2023: 1.46亿部</title></rect>
+            <!-- OPPO 100.0 → h=126.7 -->
+            <rect x="195" y="293.3" width="18" height="126.7" rx="2" fill="#10b981" opacity="0.8"><title>OPPO 2023: 1.00亿部</title></rect>
+            <!-- vivo 88.5 → h=112.1 -->
+            <rect x="215" y="307.9" width="18" height="112.1" rx="2" fill="#8b5cf6" opacity="0.8"><title>vivo 2023: 0.885亿部</title></rect>
+            <!-- Others 351.4 → h=445 (cap at 300) → 380 -->
+            <rect x="235" y="40" width="18" height="380" rx="2" fill="#6b7280" opacity="0.5"><title>Others 2023: 3.514亿部 (截断)</title></rect>
+            <text x="244" y="36" fill="rgba(255,255,255,0.3)" font-size="8" text-anchor="middle">351M</text>
+
+            <!-- ===== 2024 Group (center x=400) ===== -->
+            <rect x="345" y="133.9" width="18" height="286.1" rx="2" fill="#0071e3" opacity="0.9"><title>Apple 2024: 2.259亿部</title></rect>
+            <rect x="365" y="137.7" width="18" height="282.3" rx="2" fill="#5a9fd4" opacity="0.85"><title>Samsung 2024: 2.229亿部</title></rect>
+            <rect x="385" y="206.5" width="18" height="213.5" rx="2" fill="#f59e0b" opacity="0.85"><title>小米 2024: 1.686亿部</title></rect>
+            <rect x="405" y="288.9" width="18" height="131.1" rx="2" fill="#10b981" opacity="0.8"><title>OPPO 2024: 1.035亿部</title></rect>
+            <rect x="425" y="292.2" width="18" height="127.8" rx="2" fill="#8b5cf6" opacity="0.8"><title>vivo 2024: 1.009亿部</title></rect>
+            <rect x="445" y="40" width="18" height="380" rx="2" fill="#6b7280" opacity="0.5"><title>Others 2024: 4.012亿部 (截断)</title></rect>
+            <text x="454" y="36" fill="rgba(255,255,255,0.3)" font-size="8" text-anchor="middle">401M</text>
+
+            <!-- ===== 2025 Group (center x=610) ===== -->
+            <rect x="555" y="105.9" width="18" height="314.1" rx="2" fill="#0071e3" opacity="0.95"><title>Apple 2025: 2.48亿部</title></rect>
+            <rect x="575" y="114.8" width="18" height="305.2" rx="2" fill="#5a9fd4" opacity="0.85"><title>Samsung 2025: 2.41亿部</title></rect>
+            <rect x="595" y="211.1" width="18" height="208.9" rx="2" fill="#f59e0b" opacity="0.85"><title>小米 2025: 1.65亿部</title></rect>
+            <rect x="615" y="290.8" width="18" height="129.2" rx="2" fill="#10b981" opacity="0.8"><title>OPPO 2025: 1.02亿部</title></rect>
+            <rect x="635" y="288.3" width="18" height="131.7" rx="2" fill="#8b5cf6" opacity="0.8"><title>vivo 2025: 1.039亿部</title></rect>
+            <rect x="655" y="40" width="18" height="380" rx="2" fill="#6b7280" opacity="0.5"><title>Others 2025: 3.901亿部 (截断)</title></rect>
+            <text x="664" y="36" fill="rgba(255,255,255,0.3)" font-size="8" text-anchor="middle">390M</text>
+
+            <!-- ============ REVENUE MARKERS (right axis, scale: 380/250 = 1.52 px/$B, y=420-top) ============ -->
+            <!-- Apple: 2023=$185B → h=281.2, y=138.8 --><polygon points="144,136 153,140 144,144 135,140" fill="#4ade80" opacity="0.9"><title>Apple 2023 营收: ~$185B</title></polygon>
+            <!-- Apple: 2024=$210B → h=319.2, y=100.8 --><polygon points="354,99 363,103 354,107 345,103" fill="#4ade80" opacity="0.9"><title>Apple 2024 营收: ~$210B</title></polygon>
+            <!-- Apple: 2025=$225B → h=342.0, y=78.0 --><polygon points="564,76 573,80 564,84 555,80" fill="#4ade80" opacity="0.95"><title>Apple 2025 营收: ~$225B</title></polygon>
+            <!-- Apple connecting line -->
+            <line x1="144" y1="140" x2="354" y2="103" stroke="#4ade80" stroke-width="1" stroke-dasharray="4,3" opacity="0.5"/>
+            <line x1="354" y1="103" x2="564" y2="80" stroke="#4ade80" stroke-width="1" stroke-dasharray="4,3" opacity="0.5"/>
+
+            <!-- Samsung: 2023=$65B → h=98.8, y=321.2 --><polygon points="164,319 173,323 164,327 155,323" fill="#fbbf24" opacity="0.8"><title>Samsung 2023 营收: ~$65B</title></polygon>
+            <!-- Samsung: 2024=$70B → h=106.4, y=313.6 --><polygon points="374,312 383,316 374,320 365,316" fill="#fbbf24" opacity="0.8"><title>Samsung 2024 营收: ~$70B</title></polygon>
+            <!-- Samsung: 2025=$70B → h=106.4, y=313.6 --><polygon points="584,312 593,316 584,320 575,316" fill="#fbbf24" opacity="0.85"><title>Samsung 2025 营收: ~$70B</title></polygon>
+            <!-- Samsung connecting line -->
+            <line x1="164" y1="323" x2="374" y2="316" stroke="#fbbf24" stroke-width="1" stroke-dasharray="4,3" opacity="0.4"/>
+            <line x1="374" y1="316" x2="584" y2="316" stroke="#fbbf24" stroke-width="1" stroke-dasharray="4,3" opacity="0.4"/>
+
+            <!-- Revenue value labels -->
+            <text x="564" y="72" fill="#4ade80" font-size="10" text-anchor="middle" font-weight="600">$225B</text>
+            <text x="354" y="95" fill="#4ade80" font-size="10" text-anchor="middle">$210B</text>
+            <text x="144" y="132" fill="#4ade80" font-size="10" text-anchor="middle">$185B</text>
+
+            <!-- Legend -->
+            <rect x="130" y="462" width="12" height="12" rx="2" fill="#0071e3"/><text x="147" y="473" fill="rgba(255,255,255,0.6)" font-size="10">苹果</text>
+            <rect x="195" y="462" width="12" height="12" rx="2" fill="#5a9fd4"/><text x="212" y="473" fill="rgba(255,255,255,0.6)" font-size="10">三星</text>
+            <rect x="260" y="462" width="12" height="12" rx="2" fill="#f59e0b"/><text x="277" y="473" fill="rgba(255,255,255,0.6)" font-size="10">小米</text>
+            <rect x="325" y="462" width="12" height="12" rx="2" fill="#10b981"/><text x="342" y="473" fill="rgba(255,255,255,0.6)" font-size="10">OPPO</text>
+            <rect x="390" y="462" width="12" height="12" rx="2" fill="#8b5cf6"/><text x="407" y="473" fill="rgba(255,255,255,0.6)" font-size="10">vivo</text>
+            <rect x="445" y="462" width="12" height="12" rx="2" fill="#6b7280"/><text x="462" y="473" fill="rgba(255,255,255,0.6)" font-size="10">Others</text>
+            <polygon points="522,466 531,470 522,474 513,470" fill="#4ade80"/><text x="538" y="473" fill="rgba(255,255,255,0.6)" font-size="10">苹果营收（右轴）</text>
+            <polygon points="618,466 627,470 618,474 609,470" fill="#fbbf24"/><text x="634" y="473" fill="rgba(255,255,255,0.6)" font-size="10">三星营收（右轴）</text>
+
+            <!-- Data source -->
+            <text x="700" y="495" fill="rgba(255,255,255,0.2)" font-size="9" text-anchor="end">来源: IDC, Counterpoint Research</text>
+          </svg>
+          <p class="diagram-caption">图：柱状图为出货量（左轴），◆ 菱形标记为苹果与三星估算营收（右轴）。2025 年数据基于 IDC 及 Counterpoint 初步报告，营收为估算值。其他品牌营收数据未公开披露。</p>
+        </div>
 
         <hr style="border:none;border-top:1px solid rgba(255,255,255,0.08);margin:32px 0;">
 
