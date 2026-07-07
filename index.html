@@ -207,7 +207,7 @@
       padding: 32px; box-shadow: var(--card-shadow); margin-bottom: 20px;
     }
     .edu-block h3 {
-      font-size: 19px; font-weight: 600; margin-bottom: 20px;
+      font-size: 21px; font-weight: 600; margin-bottom: 20px;
       letter-spacing: -0.16px;
     }
     .edu-item {
@@ -410,6 +410,19 @@
       border-top: 1px solid rgba(255,255,255,0.06);
     }
     .article-card-body .article-body { padding-top: 16px; }
+
+    /* Article cards on light background */
+    .section-light .article-card {
+      background: var(--white); box-shadow: var(--card-shadow);
+    }
+    .section-light .article-card:hover { background: #f0f0f2; }
+    .section-light .article-card-title { color: var(--near-black); }
+    .section-light .article-card-meta { color: var(--text-tertiary); }
+    .section-light .article-card-arrow { color: rgba(0,0,0,0.2); }
+    .section-light .article-card-body-inner { border-top-color: rgba(0,0,0,0.06); }
+    .section-light .article-body { color: var(--text-secondary); }
+    .section-light .article-body h4 { color: var(--near-black); }
+    .section-light .article-body strong { color: var(--near-black); }
   </style>
 </head>
 <body>
@@ -1620,10 +1633,49 @@
     <p class="section-desc">
       读书是成本最低的旅行。这里记录我的阅读感悟，从技术到人文，从商业到哲学。
     </p>
-    <div class="placeholder-card">
-      <div class="placeholder-icon">📚</div>
-      <div class="placeholder-title">读书笔记即将上线</div>
-      <div class="placeholder-desc">正在整理阅读记录…敬请期待</div>
+    <div class="article-card" onclick="this.classList.toggle('open')">
+      <div class="article-card-header">
+        <div>
+          <div class="article-card-title">郑渊洁《十二生肖童话》— 猪王照相 · 鲍尔历险记</div>
+          <div class="article-card-meta">📅 2026 年夏 · 亲子共读 — 和果果一起聊童话里的复杂世界</div>
+        </div>
+        <div class="article-card-arrow">▼</div>
+      </div>
+      <div class="article-card-body">
+        <div class="article-card-body-inner">
+          <div class="article-body">
+
+<h4>又被一本童书"震"到了</h4>
+
+<p>每年暑假都是和果果共度的大好时机。继 <em>The One and Only Ivan</em>、<em>Number the Stars</em>、<em>The Alchemist</em> 之后，今天又一次被优秀的儿童文学作品震撼。说实话，每次陪果果读书，到最后分不清是谁在陪谁——这些儿童作家太厉害了，用童言童语就把复杂的人世铺垫得明明白白。孩子们真幸福，有这么多"大朋友"用故事帮他们理解这个世界。</p>
+
+<h4>鲍尔历险记：一头猪的奇幻漂流</h4>
+
+<p>《猪王照相》里的鲍尔是一头不普通的猪——他有一项超能力：拍照能拍出人心里想的东西。不是拍你长什么样，是拍你心里装着什么。这个设定本身就够妙的，但郑渊洁没停在这儿。</p>
+
+<p>鲍尔因为这个能力被各路"大人物"盯上——有人想利用他，有人想控制他，有人想毁掉他。一路上他被追、被骗、被囚禁，也遇到了真正对他好的人。整个故事就像一部微型<strong>动物版《西游记》</strong>，紧张又好笑，读着读着就忘了时间。</p>
+
+<p style="background:#fef3c7;padding:14px 18px;border-radius:8px;border-left:4px solid #f59e0b;font-style:italic;margin:16px 0;">
+💬 <strong>金句：</strong>"鲍尔只知道，这世界上，有两个人救过他的命。一个是老鼠清道夫，一个是黑猫黑虎，他俩现在都生死未卜。鲍尔还知道，在伤害他的人中，一个是清道夫的同胞缺耳朵，一个是黑虎的同胞大花猫。"
+</p>
+
+<p>看到这段的时候，我停了下来。果果也停了。这段话没有一个字在讲道理，但道理全在里头了。</p>
+
+<h4>果果的读后感（让我很惊讶）</h4>
+
+<p>读完鲍尔的故事，果果跟我分享了两个观察：</p>
+
+<p><strong>第一，鲍尔和神笔马良很像。</strong>她说："鲍尔有超能力，马良有神笔也有超能力，他们都经历了各种被抢和各种惊险。好像有超能力更要知道怎么保护自己，不然可能有很大的麻烦。"——我愣了一下。一个七岁小孩自己总结出来的，比我给她讲的任何道理都到位。</p>
+
+<p><strong>第二，老鼠不一定是坏的，猫也不一定是好的。</strong>她说金句那段让她想了很多："老鼠不一定都是好的或者坏的，猫也一样，猪也是。这么复杂的动物世界和人一样。"——好了，这不就是整本书想说的吗？一个故事的价值，就是让孩子自己走到这个结论面前。</p>
+
+<h4>写在最后</h4>
+
+<p>郑渊洁这代中国儿童文学作家有一种很特别的功力：不煽情、不说教、不把小孩当傻子。他把成人世界的复杂（权力、背叛、善恶的相对性）装在动物的壳子里递给孩子，轻得像一颗糖，但咽下去才发现是颗种子。果果说下一本要看《龙珠风波》——看来暑假的阅读计划又要加码了 📚</p>
+
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
