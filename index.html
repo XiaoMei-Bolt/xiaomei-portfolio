@@ -279,6 +279,20 @@
     .article-body td {
       padding: 10px 14px; border-bottom: 1px solid rgba(255,255,255,0.06);
     }
+    .table-wrap { margin: 24px 0; overflow-x: auto; }
+    .table-caption {
+      font-size: 12px; color: rgba(255,255,255,0.35);
+      margin-top: -12px; margin-bottom: 20px; text-align: center;
+    }
+    .article-body .ref {
+      font-size: 11px; color: rgba(255,255,255,0.4);
+      vertical-align: super;
+    }
+    .article-body ol.refs {
+      font-size: 12px; color: rgba(255,255,255,0.45);
+      margin: 16px 0 0 20px; line-height: 1.8;
+    }
+    .article-body ol.refs li { margin-bottom: 4px; }
 
     .diagram-container {
       margin: 32px 0; text-align: center;
@@ -1366,6 +1380,223 @@
         <p class="diagram-caption">图：L-DiFEM 从 TR1 可行性评估到 TR4 设计交付的完整工作流。</p>
       </div>
 
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 3: SOI Capacitor -->
+      <div class="article-card" onclick="this.classList.toggle('open')">
+        <div class="article-card-header">
+          <div>
+            <div class="article-card-title">SOI 工艺中的电容</div>
+            <div class="article-card-meta">📅 2026 年 7 月 · 半导体工艺 — MIM 与 MOM 电容的结构、工艺与性能对比</div>
+          </div>
+          <div class="article-card-arrow">▼</div>
+        </div>
+        <div class="article-card-body">
+          <div class="article-card-body-inner">
+            <div class="article-body">
+
+        <h4>第一部分：电容在电路中的作用</h4>
+
+        <p>电容是集成电路中最基础、最不可或缺的无源器件之一。无论在模拟、射频还是数字电路中，电容都承担着不可替代的角色：</p>
+
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>功能</th><th>作用</th><th>典型应用</th></tr></thead>
+            <tbody>
+              <tr><td><strong>隔直（DC Blocking）</strong></td><td>阻断直流分量，仅允许交流信号通过，防止前后级偏置电压相互干扰</td><td>射频 PA 与天线之间的耦合、级间信号传输</td></tr>
+              <tr><td><strong>去耦（Decoupling）</strong></td><td>滤除电源线上的瞬态噪声与纹波，为有源电路提供稳定的本地供电</td><td>芯片电源引脚旁路、VCO 电源退耦</td></tr>
+              <tr><td><strong>匹配（Matching）</strong></td><td>实现阻抗变换与共轭匹配，最大化功率传输效率并最小化反射</td><td>LNA 输入/输出匹配网络、PA 级间匹配</td></tr>
+              <tr><td><strong>滤波（Filtering）</strong></td><td>与电感、电阻构成频率选择网络，实现低通/高通/带通等滤波特性</td><td>环路滤波器、抗混叠滤波器、谐波抑制</td></tr>
+            </tbody>
+          </table>
+          <p class="table-caption">表1：电容在电路中的四大核心功能</p>
+        </div>
+
+        <p>在射频前端模组中，一颗芯片往往需要数十甚至上百个电容来同时完成上述功能——缺少任何一个，系统性能都会显著劣化。因此，片上电容的密度、品质因数（Q 值）和工艺兼容性是 RF-SOI 工艺平台的核心竞争力指标之一 <span class="ref">[1]</span>。</p>
+
+        <h4>第二部分：SOI 工艺中的电容类型与对比</h4>
+
+        <p>SOI 工艺中常用的片上电容主要分为两类：<strong>MIM（Metal-Insulator-Metal）</strong>电容和 <strong>MOM（Metal-Oxide-Metal）</strong>电容。二者在结构、工艺和性能上存在本质差异。</p>
+
+        <h4>2.1 MIM 电容</h4>
+
+        <p>MIM 电容由上下两层金属极板夹一层<strong>专用高介电常数介质</strong>构成，需要额外的光刻掩模版（Mask）来定义极板和介质区域。以常见的 <strong>65nm RF-SOI 工艺</strong>为例，采用 SiN（氮化硅）作为电容介质，根据电极材料的不同，主要有三种实现方案：</p>
+
+        <!-- MIM Comparison Diagram -->
+        <div class="diagram-container">
+          <svg viewBox="0 0 800 340" xmlns="http://www.w3.org/2000/svg">
+            <text x="400" y="22" text-anchor="middle" fill="#fff" font-size="14" font-weight="600">图一 · 三种 MIM 电容结构对比（65nm RF-SOI, SiN 介质）</text>
+
+            <!-- Al electrode -->
+            <rect x="30" y="38" width="230" height="270" rx="8" fill="rgba(0,113,227,0.06)" stroke="rgba(0,113,227,0.2)"/>
+            <text x="145" y="60" text-anchor="middle" fill="#5a9fd4" font-size="13" font-weight="700">Al 电极 MIM</text>
+            <line x1="50" y1="68" x2="240" y2="68" stroke="rgba(0,113,227,0.15)"/>
+
+            <!-- Stack diagram for Al -->
+            <rect x="60" y="80" width="170" height="22" rx="3" fill="#b0c4de"/><text x="145" y="95" text-anchor="middle" fill="#1d1d1f" font-size="10" font-weight="600">Top 电极 (Al) — MCT</text>
+            <rect x="60" y="105" width="170" height="22" rx="3" fill="#ffe0b2"/><text x="145" y="120" text-anchor="middle" fill="#1d1d1f" font-size="10" font-weight="600">SiN 介质 · 330Å</text>
+            <rect x="60" y="130" width="170" height="22" rx="3" fill="#b0c4de"/><text x="145" y="145" text-anchor="middle" fill="#1d1d1f" font-size="10" font-weight="600">Bottom 电极 (Al) — MCB</text>
+            <rect x="60" y="155" width="170" height="22" rx="3" fill="#e0e0e0"/><text x="145" y="170" text-anchor="middle" fill="#666" font-size="9">SiO₂ 衬底</text>
+
+            <text x="60" y="200" fill="#5a9fd4" font-size="10" font-weight="600">工艺参数</text>
+            <text x="60" y="218" fill="rgba(255,255,255,0.7)" font-size="9">· 3 张 Mask（AM+MCT+MCB）</text>
+            <text x="60" y="234" fill="rgba(255,255,255,0.7)" font-size="9">· 干法刻蚀工艺</text>
+            <text x="60" y="250" fill="rgba(255,255,255,0.7)" font-size="9">· 密度: <tspan fill="#4ade80" font-weight="700">2.0 fF/μm²</tspan></text>
+            <text x="60" y="266" fill="rgba(255,255,255,0.7)" font-size="9">· Q@2GHz (1.3pF): <tspan fill="#4ade80" font-weight="700">130</tspan></text>
+            <text x="60" y="282" fill="rgba(255,255,255,0.7)" font-size="9">· 介质厚度: 330Å</text>
+
+            <!-- Cu electrode -->
+            <rect x="285" y="38" width="230" height="270" rx="8" fill="rgba(16,185,129,0.06)" stroke="rgba(16,185,129,0.2)"/>
+            <text x="400" y="60" text-anchor="middle" fill="#10b981" font-size="13" font-weight="700">Cu 电极 MIM</text>
+            <line x1="305" y1="68" x2="495" y2="68" stroke="rgba(16,185,129,0.15)"/>
+
+            <rect x="315" y="80" width="170" height="22" rx="3" fill="#d4a574"/><text x="400" y="95" text-anchor="middle" fill="#1d1d1f" font-size="10" font-weight="600">Top 电极 (Cu) — MCT</text>
+            <rect x="315" y="105" width="170" height="22" rx="3" fill="#ffe0b2"/><text x="400" y="120" text-anchor="middle" fill="#1d1d1f" font-size="10" font-weight="600">SiN 介质 · 4400Å</text>
+            <rect x="315" y="130" width="170" height="22" rx="3" fill="#d4a574"/><text x="400" y="145" text-anchor="middle" fill="#1d1d1f" font-size="10" font-weight="600">Bottom 电极 (Cu)</text>
+            <rect x="315" y="155" width="170" height="22" rx="3" fill="#e0e0e0"/><text x="400" y="170" text-anchor="middle" fill="#666" font-size="9">SiO₂ 衬底</text>
+
+            <text x="315" y="200" fill="#10b981" font-size="10" font-weight="600">工艺参数</text>
+            <text x="315" y="218" fill="rgba(255,255,255,0.7)" font-size="9">· 2 张 Mask（AM+MCT）</text>
+            <text x="315" y="234" fill="rgba(255,255,255,0.7)" font-size="9">· 大马士革工艺</text>
+            <text x="315" y="250" fill="rgba(255,255,255,0.7)" font-size="9">· 密度: <tspan fill="#f59e0b" font-weight="700">1.5 fF/μm²</tspan></text>
+            <text x="315" y="266" fill="rgba(255,255,255,0.7)" font-size="9">· Q@2GHz (1.3pF): <tspan fill="#4ade80" font-weight="700">220</tspan></text>
+            <text x="315" y="282" fill="rgba(255,255,255,0.7)" font-size="9">· 介质厚度: 4400Å</text>
+
+            <!-- TiN electrode -->
+            <rect x="540" y="38" width="230" height="270" rx="8" fill="rgba(139,92,246,0.06)" stroke="rgba(139,92,246,0.2)"/>
+            <text x="655" y="60" text-anchor="middle" fill="#8b5cf6" font-size="13" font-weight="700">TiN 电极 MIM</text>
+            <line x1="560" y1="68" x2="750" y2="68" stroke="rgba(139,92,246,0.15)"/>
+
+            <rect x="570" y="80" width="170" height="22" rx="3" fill="#c4b5fd"/><text x="655" y="95" text-anchor="middle" fill="#1d1d1f" font-size="10" font-weight="600">Top 电极 (TiN) — MCT</text>
+            <rect x="570" y="105" width="170" height="22" rx="3" fill="#ffe0b2"/><text x="655" y="120" text-anchor="middle" fill="#1d1d1f" font-size="10" font-weight="600">SiN 介质 · 330Å</text>
+            <rect x="570" y="130" width="170" height="22" rx="3" fill="#c4b5fd"/><text x="655" y="145" text-anchor="middle" fill="#1d1d1f" font-size="10" font-weight="600">Bottom 电极 (TiN) — MCB</text>
+            <rect x="570" y="155" width="170" height="22" rx="3" fill="#e0e0e0"/><text x="655" y="170" text-anchor="middle" fill="#666" font-size="9">SiO₂ 衬底</text>
+
+            <text x="570" y="200" fill="#8b5cf6" font-size="10" font-weight="600">工艺参数</text>
+            <text x="570" y="218" fill="rgba(255,255,255,0.7)" font-size="9">· 3 张 Mask（AM+MCT+MCB）</text>
+            <text x="570" y="234" fill="rgba(255,255,255,0.7)" font-size="9">· 干法刻蚀工艺</text>
+            <text x="570" y="250" fill="rgba(255,255,255,0.7)" font-size="9">· 密度: <tspan fill="#4ade80" font-weight="700">2.0 fF/μm²</tspan></text>
+            <text x="570" y="266" fill="rgba(255,255,255,0.7)" font-size="9">· Q@2GHz (1.3pF): <tspan fill="#ef4444" font-weight="700">40</tspan></text>
+            <text x="570" y="282" fill="rgba(255,255,255,0.7)" font-size="9">· 介质厚度: 330Å</text>
+          </svg>
+          <p class="diagram-caption">图一：三种 MIM 电容的截面结构与关键工艺参数对比</p>
+        </div>
+
+        <h4>2.2 MOM 电容</h4>
+
+        <p>MOM 电容利用<strong>同层或相邻层金属线条之间的侧壁寄生电容</strong>来实现容值，其本质是叉指（Interdigitated）结构。与 MIM 不同，MOM 电容<strong>不新增专用于电容的 Mask</strong>——它在标准金属互连层（如 M1、M2、M3）中以版图形式实现。</p>
+
+        <p>在常见的 <strong>1P4M（1 层多晶硅 + 4 层金属）SOI 工艺</strong>中，使用 M1、M2、M3 三层金属插指构成的 MOM 电容，其典型密度为 <strong>1.5 fF/μm²</strong>。电容密度由金属层数、金属间距（由设计规则决定的最小线宽/间距）和金属厚度共同决定——层数越多、间距越小、金属越厚，单位面积容值越高。</p>
+
+        <!-- MOM Structure Diagram -->
+        <div class="diagram-container">
+          <svg viewBox="0 0 800 280" xmlns="http://www.w3.org/2000/svg">
+            <text x="400" y="22" text-anchor="middle" fill="#fff" font-size="14" font-weight="600">图二 · MOM 电容结构示意（1P4M SOI, M1–M3 叉指）</text>
+
+            <!-- Cross-section view -->
+            <rect x="30" y="40" width="360" height="220" rx="6" fill="rgba(255,255,255,0.02)" stroke="rgba(255,255,255,0.08)"/>
+            <text x="210" y="60" text-anchor="middle" fill="#f0a050" font-size="11" font-weight="600">截面视图</text>
+
+            <!-- Substrate -->
+            <rect x="50" y="200" width="320" height="46" rx="3" fill="#e0e0e0"/>
+            <text x="210" y="228" text-anchor="middle" fill="#666" font-size="9">SiO₂ 衬底</text>
+
+            <!-- M1 fingers -->
+            <rect x="60" y="182" width="24" height="16" rx="2" fill="#5a9fd4"/><text x="72" y="194" text-anchor="middle" fill="#fff" font-size="7">M1+</text>
+            <rect x="100" y="182" width="24" height="16" rx="2" fill="#5a9fd4"/><text x="112" y="194" text-anchor="middle" fill="#fff" font-size="7">M1-</text>
+            <rect x="140" y="182" width="24" height="16" rx="2" fill="#5a9fd4"/><text x="152" y="194" text-anchor="middle" fill="#fff" font-size="7">M1+</text>
+            <rect x="180" y="182" width="24" height="16" rx="2" fill="#5a9fd4"/><text x="192" y="194" text-anchor="middle" fill="#fff" font-size="7">M1-</text>
+            <rect x="220" y="182" width="24" height="16" rx="2" fill="#5a9fd4"/><text x="232" y="194" text-anchor="middle" fill="#fff" font-size="7">M1+</text>
+            <rect x="260" y="182" width="24" height="16" rx="2" fill="#5a9fd4"/><text x="272" y="194" text-anchor="middle" fill="#fff" font-size="7">M1-</text>
+            <rect x="300" y="182" width="24" height="16" rx="2" fill="#5a9fd4"/><text x="312" y="194" text-anchor="middle" fill="#fff" font-size="7">M1+</text>
+
+            <!-- M2 fingers -->
+            <rect x="80" y="146" width="24" height="16" rx="2" fill="#10b981"/><text x="92" y="158" text-anchor="middle" fill="#fff" font-size="7">M2-</text>
+            <rect x="120" y="146" width="24" height="16" rx="2" fill="#10b981"/><text x="132" y="158" text-anchor="middle" fill="#fff" font-size="7">M2+</text>
+            <rect x="160" y="146" width="24" height="16" rx="2" fill="#10b981"/><text x="172" y="158" text-anchor="middle" fill="#fff" font-size="7">M2-</text>
+            <rect x="200" y="146" width="24" height="16" rx="2" fill="#10b981"/><text x="212" y="158" text-anchor="middle" fill="#fff" font-size="7">M2+</text>
+            <rect x="240" y="146" width="24" height="16" rx="2" fill="#10b981"/><text x="252" y="158" text-anchor="middle" fill="#fff" font-size="7">M2-</text>
+            <rect x="280" y="146" width="24" height="16" rx="2" fill="#10b981"/><text x="292" y="158" text-anchor="middle" fill="#fff" font-size="7">M2+</text>
+            <rect x="320" y="146" width="24" height="16" rx="2" fill="#10b981"/><text x="332" y="158" text-anchor="middle" fill="#fff" font-size="7">M2-</text>
+
+            <!-- M3 fingers -->
+            <rect x="60" y="110" width="24" height="16" rx="2" fill="#8b5cf6"/><text x="72" y="122" text-anchor="middle" fill="#fff" font-size="7">M3+</text>
+            <rect x="100" y="110" width="24" height="16" rx="2" fill="#8b5cf6"/><text x="112" y="122" text-anchor="middle" fill="#fff" font-size="7">M3-</text>
+            <rect x="140" y="110" width="24" height="16" rx="2" fill="#8b5cf6"/><text x="152" y="122" text-anchor="middle" fill="#fff" font-size="7">M3+</text>
+            <rect x="180" y="110" width="24" height="16" rx="2" fill="#8b5cf6"/><text x="192" y="122" text-anchor="middle" fill="#fff" font-size="7">M3-</text>
+            <rect x="220" y="110" width="24" height="16" rx="2" fill="#8b5cf6"/><text x="232" y="122" text-anchor="middle" fill="#fff" font-size="7">M3+</text>
+            <rect x="260" y="110" width="24" height="16" rx="2" fill="#8b5cf6"/><text x="272" y="122" text-anchor="middle" fill="#fff" font-size="7">M3-</text>
+            <rect x="300" y="110" width="24" height="16" rx="2" fill="#8b5cf6"/><text x="312" y="122" text-anchor="middle" fill="#fff" font-size="7">M3+</text>
+
+            <!-- Vias -->
+            <line x1="72" y1="126" x2="92" y2="146" stroke="rgba(255,255,255,0.2)" stroke-width="0.5"/>
+            <line x1="112" y1="126" x2="132" y2="146" stroke="rgba(255,255,255,0.2)" stroke-width="0.5"/>
+            <line x1="92" y1="162" x2="72" y2="182" stroke="rgba(255,255,255,0.2)" stroke-width="0.5"/>
+            <line x1="132" y1="162" x2="112" y2="182" stroke="rgba(255,255,255,0.2)" stroke-width="0.5"/>
+
+            <text x="210" y="260" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-size="9">M1 (蓝)、M2 (绿)、M3 (紫) 插指形成侧壁电容 C = ε·A/d</text>
+
+            <!-- Right side: key features -->
+            <rect x="410" y="40" width="360" height="220" rx="6" fill="rgba(255,255,255,0.02)" stroke="rgba(255,255,255,0.08)"/>
+            <text x="590" y="60" text-anchor="middle" fill="#f0a050" font-size="11" font-weight="600">关键特征</text>
+
+            <text x="430" y="88" fill="#fff" font-size="11" font-weight="600">✅ 零额外 Mask</text>
+            <text x="430" y="108" fill="rgba(255,255,255,0.55)" font-size="10">不新增任何光刻掩模版，完全利用标准金属互连层</text>
+
+            <text x="430" y="138" fill="#fff" font-size="11" font-weight="600">📐 密度由几何决定</text>
+            <text x="430" y="158" fill="rgba(255,255,255,0.55)" font-size="10">层数越多、线条间距越小、金属越厚 → 密度越高</text>
+
+            <text x="430" y="188" fill="#fff" font-size="11" font-weight="600">🔧 1P4M 典型参数</text>
+            <text x="430" y="208" fill="rgba(255,255,255,0.55)" font-size="10">M1+M2+M3 三层插指 · 密度 ~1.5 fF/μm²</text>
+
+            <text x="430" y="238" fill="#fff" font-size="11" font-weight="600">⚡ 寄生参数</text>
+            <text x="430" y="258" fill="rgba(255,255,255,0.55)" font-size="10">MOM 电容与衬底之间有寄生电容，高频下需建模</text>
+          </svg>
+          <p class="diagram-caption">图二：MOM 电容叉指结构与关键特征</p>
+        </div>
+
+        <h4>2.3 MIM vs MOM 综合对比</h4>
+
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>参数</th><th>Al 电极 MIM</th><th>Cu 电极 MIM</th><th>TiN 电极 MIM</th><th>MOM（M1–M3）</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Mask 数量</strong></td><td>3（AM+MCT+MCB）</td><td>2（AM+MCT）</td><td>3（AM+MCT+MCB）</td><td><strong>0（无新增）</strong></td></tr>
+              <tr><td><strong>电容密度</strong></td><td>2.0 fF/μm²</td><td>1.5 fF/μm²</td><td>2.0 fF/μm²</td><td>1.5 fF/μm²</td></tr>
+              <tr><td><strong>介质材料</strong></td><td>SiN</td><td>SiN</td><td>SiN</td><td>SiO₂（层间介质）</td></tr>
+              <tr><td><strong>介质厚度</strong></td><td>330 Å</td><td>4400 Å</td><td>330 Å</td><td>—（由金属间距决定）</td></tr>
+              <tr><td><strong>刻蚀工艺</strong></td><td>干法刻蚀</td><td>大马士革</td><td>干法刻蚀</td><td>—（标准 BEOL）</td></tr>
+              <tr><td><strong>Q 值 @2GHz (1.3pF)</strong></td><td><strong>130</strong></td><td><strong>220</strong> 🏆</td><td>40</td><td>—（中等）</td></tr>
+              <tr><td><strong>优点</strong></td><td>高密度、中等 Q 值</td><td>最高 Q 值、少 Mask</td><td>高密度</td><td>零额外 Mask、工艺最简单</td></tr>
+              <tr><td><strong>缺点</strong></td><td>需要 3 张额外 Mask</td><td>密度较低</td><td>Q 值最低</td><td>密度受限、寄生较大</td></tr>
+            </tbody>
+          </table>
+          <p class="table-caption">表2：MIM（Al/Cu/TiN）与 MOM 电容在 65nm SOI 工艺下的综合对比</p>
+        </div>
+
+        <p><strong>选型建议：</strong></p>
+        <ul>
+          <li>若追求<strong>最高 Q 值</strong>（如 VCO 谐振腔、低噪声匹配网络），Cu 电极 MIM 是最优选择——Q=220 远超其他方案。</li>
+          <li>若追求<strong>密度与 Q 值的平衡</strong>（如去耦电容、中等精度滤波），Al 电极 MIM 提供了 2.0 fF/μm² + Q=130 的优异折衷。</li>
+          <li>若需<strong>低成本、零额外 Mask</strong>（如数字去耦、非关键滤波），MOM 电容是最经济的选择——但需评估其密度和寄生是否满足规格。</li>
+          <li>TiN 电极 MIM 尽管密度高，但其 Q 值仅 40，通常仅适用于对 Q 值要求不高的低频或 DC 场景。</li>
+        </ul>
+
+        <h4>第三部分：总结</h4>
+
+        <p>SOI 工艺中电容的选择是<strong>密度、Q 值、Mask 成本</strong>三者之间的权衡。MIM 电容通过增加专用 Mask 和介质层来换取高密度和可控的 Q 值——其中 Cu 电极方案以少 Mask 和超高 Q 值（220）脱颖而出，Al 电极则在密度（2.0 fF/μm²）和 Q 值（130）之间取得平衡。MOM 电容以<strong>零额外 Mask</strong>的极低成本实现约 1.5 fF/μm² 的密度，适合对成本敏感且对精度要求适中的应用场景。</p>
+
+        <p>在 RF 前端模组设计中，设计者通常<strong>混合使用</strong>两种电容：MIM 用于对 Q 值和匹配精度要求严苛的射频信号路径，MOM 用于电源去耦和偏置网络的旁路——以最小化 Mask 增量成本，同时最大化整体电路性能 <span class="ref">[1][2]</span>。</p>
+
+        <h4>参考文献</h4>
+        <ol class="refs">
+          <li>J. D. Cressler and G. Niu, <em>Silicon-Germanium Heterojunction Bipolar Transistors</em>, Artech House, 2003, Ch. 6: Passive Components in SiGe BiCMOS.</li>
+          <li>T. H. Lee, <em>The Design of CMOS Radio-Frequency Integrated Circuits</em>, 2nd ed., Cambridge University Press, 2004, Ch. 4: Capacitors and Inductors.</li>
+        </ol>
+
+            </div>
           </div>
         </div>
       </div>
