@@ -629,11 +629,18 @@
 
     <!-- 行业分析 Panel -->
     <div class="sub-panel active" id="panel-analysis">
-      <div class="article-body">
 
-        <p style="font-size:14px;color:rgba(255,255,255,0.4);margin-bottom:24px;">📅 2026 年 6 月 · 市场分析</p>
-
-        <h3>全球智能手机市场格局分析（2023–2025）</h3>
+      <div class="article-card" onclick="this.classList.toggle('open')">
+        <div class="article-card-header">
+          <div>
+            <div class="article-card-title">全球智能手机市场格局分析（2023–2025）</div>
+            <div class="article-card-meta">📅 2026 年 6 月 · 市场分析 — 出货量、营收格局与供应链成本对比</div>
+          </div>
+          <div class="article-card-arrow">▼</div>
+        </div>
+        <div class="article-card-body">
+          <div class="article-card-body-inner">
+            <div class="article-body">
 
         <p>全球智能手机市场经历「下滑 → 反弹 → 温和增长」的完整周期：<strong>2023</strong> 年行业触底，出货 11.4 亿部；<strong>2024</strong> 年强劲复苏至 12.2 亿部（<span style="color:#4ade80;">+7.1%</span>）；<strong>2025</strong> 年延续增长达 12.5 亿部，但增速放缓至 <span style="color:#4ade80;">+1.9%</span>。高端化与成本博弈成为主线。</p>
 
@@ -939,7 +946,11 @@
 
         <p style="font-size:12px;color:rgba(255,255,255,0.3);margin-top:32px;">📌 数据来源：IDC、Counterpoint、Omdia 公开发布报告。详细 BoM 及分供应商报价为商业机密，可通过 Counterpoint Teardown & BoM 分析服务获取精确数据。</p>
 
+            </div>
+          </div>
+        </div>
       </div>
+
     </div>
 
     <!-- 技术文章 Panel -->
@@ -1403,15 +1414,15 @@
 
         <div class="table-wrap">
           <table>
-            <thead><tr><th>功能</th><th>作用</th><th>典型应用</th></tr></thead>
+            <thead><tr><th>功能</th><th>简要说明</th></tr></thead>
             <tbody>
-              <tr><td><strong>隔直（DC Blocking）</strong></td><td>阻断直流分量，仅允许交流信号通过，防止前后级偏置电压相互干扰</td><td>射频 PA 与天线之间的耦合、级间信号传输</td></tr>
-              <tr><td><strong>去耦（Decoupling）</strong></td><td>滤除电源线上的瞬态噪声与纹波，为有源电路提供稳定的本地供电</td><td>芯片电源引脚旁路、VCO 电源退耦</td></tr>
-              <tr><td><strong>匹配（Matching）</strong></td><td>实现阻抗变换与共轭匹配，最大化功率传输效率并最小化反射</td><td>LNA 输入/输出匹配网络、PA 级间匹配</td></tr>
-              <tr><td><strong>滤波（Filtering）</strong></td><td>与电感、电阻构成频率选择网络，实现低通/高通/带通等滤波特性</td><td>环路滤波器、抗混叠滤波器、谐波抑制</td></tr>
+              <tr><td><strong>隔直</strong></td><td>阻断直流偏置，仅通过交流信号</td></tr>
+              <tr><td><strong>去耦</strong></td><td>滤除电源噪声，提供稳定本地供电</td></tr>
+              <tr><td><strong>匹配</strong></td><td>实现阻抗变换，最大化功率传输</td></tr>
+              <tr><td><strong>滤波</strong></td><td>与 L/R 构成频率选择网络</td></tr>
             </tbody>
           </table>
-          <p class="table-caption">表1：电容在电路中的四大核心功能</p>
+          <p class="table-caption">表1：电容的四大核心功能</p>
         </div>
 
         <p>在射频前端模组中，一颗芯片往往需要数十甚至上百个电容来同时完成上述功能——缺少任何一个，系统性能都会显著劣化。因此，片上电容的密度、品质因数（Q 值）和工艺兼容性是 RF-SOI 工艺平台的核心竞争力指标之一 <span class="ref">[1]</span>。</p>
@@ -1453,7 +1464,7 @@
             <line x1="305" y1="68" x2="495" y2="68" stroke="rgba(16,185,129,0.15)"/>
 
             <rect x="315" y="80" width="170" height="22" rx="3" fill="#d4a574"/><text x="400" y="95" text-anchor="middle" fill="#1d1d1f" font-size="10" font-weight="600">Top 电极 (Cu) — MCT</text>
-            <rect x="315" y="105" width="170" height="22" rx="3" fill="#ffe0b2"/><text x="400" y="120" text-anchor="middle" fill="#1d1d1f" font-size="10" font-weight="600">SiN 介质 · 4400Å</text>
+            <rect x="315" y="105" width="170" height="22" rx="3" fill="#ffe0b2"/><text x="400" y="120" text-anchor="middle" fill="#1d1d1f" font-size="10" font-weight="600">SiN 介质 · 440Å</text>
             <rect x="315" y="130" width="170" height="22" rx="3" fill="#d4a574"/><text x="400" y="145" text-anchor="middle" fill="#1d1d1f" font-size="10" font-weight="600">Bottom 电极 (Cu)</text>
             <rect x="315" y="155" width="170" height="22" rx="3" fill="#e0e0e0"/><text x="400" y="170" text-anchor="middle" fill="#666" font-size="9">SiO₂ 衬底</text>
 
@@ -1462,7 +1473,7 @@
             <text x="315" y="234" fill="rgba(255,255,255,0.7)" font-size="9">· 大马士革工艺</text>
             <text x="315" y="250" fill="rgba(255,255,255,0.7)" font-size="9">· 密度: <tspan fill="#f59e0b" font-weight="700">1.5 fF/μm²</tspan></text>
             <text x="315" y="266" fill="rgba(255,255,255,0.7)" font-size="9">· Q@2GHz (1.3pF): <tspan fill="#4ade80" font-weight="700">220</tspan></text>
-            <text x="315" y="282" fill="rgba(255,255,255,0.7)" font-size="9">· 介质厚度: 4400Å</text>
+            <text x="315" y="282" fill="rgba(255,255,255,0.7)" font-size="9">· 介质厚度: 440Å</text>
 
             <!-- TiN electrode -->
             <rect x="540" y="38" width="230" height="270" rx="8" fill="rgba(139,92,246,0.06)" stroke="rgba(139,92,246,0.2)"/>
@@ -1566,7 +1577,7 @@
               <tr><td><strong>Mask 数量</strong></td><td>3（AM+MCT+MCB）</td><td>2（AM+MCT）</td><td>3（AM+MCT+MCB）</td><td><strong>0（无新增）</strong></td></tr>
               <tr><td><strong>电容密度</strong></td><td>2.0 fF/μm²</td><td>1.5 fF/μm²</td><td>2.0 fF/μm²</td><td>1.5 fF/μm²</td></tr>
               <tr><td><strong>介质材料</strong></td><td>SiN</td><td>SiN</td><td>SiN</td><td>SiO₂（层间介质）</td></tr>
-              <tr><td><strong>介质厚度</strong></td><td>330 Å</td><td>4400 Å</td><td>330 Å</td><td>—（由金属间距决定）</td></tr>
+              <tr><td><strong>介质厚度</strong></td><td>330 Å</td><td>440 Å</td><td>330 Å</td><td>—（由金属间距决定）</td></tr>
               <tr><td><strong>刻蚀工艺</strong></td><td>干法刻蚀</td><td>大马士革</td><td>干法刻蚀</td><td>—（标准 BEOL）</td></tr>
               <tr><td><strong>Q 值 @2GHz (1.3pF)</strong></td><td><strong>130</strong></td><td><strong>220</strong> 🏆</td><td>40</td><td>—（中等）</td></tr>
               <tr><td><strong>优点</strong></td><td>高密度、中等 Q 值</td><td>最高 Q 值、少 Mask</td><td>高密度</td><td>零额外 Mask、工艺最简单</td></tr>
