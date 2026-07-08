@@ -1625,6 +1625,176 @@
         </div>
       </div>
 
+      <!-- Card 4: Semiconductor Fundamentals -->
+      <div class="article-card" onclick="this.classList.toggle('open')">
+        <div class="article-card-header">
+          <div>
+            <div class="article-card-title">半导体物理基础：掌控「导电开关」的艺术</div>
+            <div class="article-card-meta">📅 2026 年 7 月 · 半导体物理 — 从能带理论到掺杂工程，理解电流的可控性</div>
+          </div>
+          <div class="article-card-arrow">▼</div>
+        </div>
+        <div class="article-card-body">
+          <div class="article-card-body-inner">
+            <div class="article-body">
+
+        <p>为什么半导体能成为信息时代的基石？答案在于其<strong>无与伦比的可控性</strong>——像水龙头精确控制水流一样，控制电流的"有"与"无"、"大"与"小"。这份能力从何而来？从最基本的物理原理说起。</p>
+
+        <h4>第一章：世界的三种电学面孔</h4>
+
+        <p>物质根据导电性分为三大类，本质区别在于内部电子状态：</p>
+
+        <ul>
+          <li><strong>导体：</strong>电子高速公路。海量自由电子，电压一来即刻奔腾。典型：铜、银、金、铝。</li>
+          <li><strong>绝缘体：</strong>坚实城墙。电子被紧紧束缚。典型：橡胶、玻璃、SiO₂。</li>
+          <li><strong>半导体：</strong>可控闸道。导电性介于二者之间，且"通断"可被精确操控。典型：硅（Si）、锗（Ge）。</li>
+        </ul>
+
+        <h4>能带理论：固体导电的底层逻辑</h4>
+
+        <p>固体中电子的能量状态形成"能带"——<strong>价带</strong>（电子的"家"）、<strong>导带</strong>（电子的"公路"）、二者之间的<strong>禁带</strong>（"能量鸿沟"）。禁带宽度（Eg）决定了材料的导电本质。</p>
+
+        <div class="diagram-container">
+          <svg viewBox="0 0 800 260" xmlns="http://www.w3.org/2000/svg">
+            <text x="400" y="20" text-anchor="middle" fill="#fff" font-size="14" font-weight="600">图一 · 三种材料的能带结构对比</text>
+            <rect x="30" y="35" width="230" height="210" rx="8" fill="rgba(249,115,22,0.06)" stroke="rgba(249,115,22,0.2)"/>
+            <text x="145" y="58" text-anchor="middle" fill="#f97316" font-size="13" font-weight="700">导体（Cu / Al）</text>
+            <rect x="60" y="72" width="170" height="60" rx="4" fill="#f97316" opacity="0.35"/><text x="145" y="107" text-anchor="middle" fill="#fff" font-size="11" font-weight="600">导带</text>
+            <rect x="60" y="132" width="170" height="60" rx="4" fill="#f97316" opacity="0.2"/><text x="145" y="167" text-anchor="middle" fill="#f97316" font-size="11" font-weight="600">价带</text>
+            <text x="145" y="196" text-anchor="middle" fill="rgba(255,255,255,0.5)" font-size="10">重叠 · 无禁带</text>
+            <text x="145" y="230" text-anchor="middle" fill="#f97316" font-size="11" font-weight="600">电子高速公路 🛣️</text>
+            <rect x="285" y="35" width="230" height="210" rx="8" fill="rgba(0,113,227,0.08)" stroke="rgba(0,113,227,0.25)"/>
+            <text x="400" y="58" text-anchor="middle" fill="#0071e3" font-size="13" font-weight="700">半导体（Si / Ge）</text>
+            <rect x="315" y="72" width="170" height="45" rx="4" fill="#0071e3" opacity="0.15"/><text x="400" y="99" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-size="11">导带（空）</text>
+            <rect x="315" y="163" width="170" height="55" rx="4" fill="#0071e3" opacity="0.3"/><text x="400" y="195" text-anchor="middle" fill="#fff" font-size="11" font-weight="600">价带（满）</text>
+            <rect x="315" y="119" width="170" height="42" rx="2" fill="none" stroke="#f0a050" stroke-width="2" stroke-dasharray="4,3"/>
+            <text x="400" y="144" text-anchor="middle" fill="#f0a050" font-size="11" font-weight="700">Eg ≈ 1.1 eV</text>
+            <text x="400" y="230" text-anchor="middle" fill="#0071e3" font-size="11" font-weight="600">可控闸道 🚦</text>
+            <rect x="540" y="35" width="230" height="210" rx="8" fill="rgba(107,114,128,0.06)" stroke="rgba(107,114,128,0.2)"/>
+            <text x="655" y="58" text-anchor="middle" fill="#9ca3af" font-size="13" font-weight="700">绝缘体（SiO₂）</text>
+            <rect x="570" y="72" width="170" height="35" rx="4" fill="#9ca3af" opacity="0.1"/><text x="655" y="94" text-anchor="middle" fill="rgba(255,255,255,0.35)" font-size="11">导带（空）</text>
+            <rect x="570" y="185" width="170" height="60" rx="4" fill="#9ca3af" opacity="0.25"/><text x="655" y="220" text-anchor="middle" fill="#9ca3af" font-size="11" font-weight="600">价带（满）</text>
+            <rect x="570" y="109" width="170" height="74" rx="2" fill="none" stroke="#f87171" stroke-width="2" stroke-dasharray="4,3"/>
+            <text x="655" y="150" text-anchor="middle" fill="#f87171" font-size="11" font-weight="700">Eg > 5 eV</text>
+            <text x="655" y="230" text-anchor="middle" fill="#9ca3af" font-size="11" font-weight="600">坚固城墙 🧱</text>
+          </svg>
+          <p class="diagram-caption">图一：导体/半导体/绝缘体的能带结构——禁带宽度的差异决定了导电性</p>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>材料类型</th><th>禁带 Eg</th><th>导电性</th><th>费米能级</th><th>典型材料</th></tr></thead>
+            <tbody>
+              <tr><td><strong>导体</strong></td><td>0（重叠）</td><td>极高</td><td>在导带中</td><td>Cu、Al、Au、Ag</td></tr>
+              <tr><td><strong>半导体</strong></td><td>~1 eV</td><td>可控</td><td>在禁带中央</td><td>Si (1.12)、Ge (0.67)、GaAs (1.43)</td></tr>
+              <tr><td><strong>绝缘体</strong></td><td>> 3 eV</td><td>极低</td><td>在禁带中</td><td>SiO₂ (~9)、Si₃N₄ (~5)</td></tr>
+            </tbody>
+          </table>
+          <p class="table-caption">表1：三大类材料的能带与导电性对比</p>
+        </div>
+
+        <h4>关键参数：电阻率与方块电阻</h4>
+
+        <p><strong>电阻率（ρ）</strong>是材料的本征属性，衡量阻碍电流的能力，与几何形状无关。正是电阻率的巨大差异——从铜的 ~1.7×10⁻⁸ Ω·m 到 SiO₂ 的 >10¹⁴ Ω·m——划分了导体、半导体与绝缘体的边界。<strong>方块电阻（R□ = ρ/t）</strong>用于衡量均匀薄膜的电阻，是芯片制造中监控掺杂和金属淀积工艺的核心参数。</p>
+
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>金属</th><th>电阻率 ρ (Ω·m)</th><th>IC 中用途</th></tr></thead>
+            <tbody>
+              <tr><td>银（Ag）</td><td>1.59 × 10⁻⁸</td><td>—（极少用于 IC）</td></tr>
+              <tr><td>铜（Cu）</td><td>1.68 × 10⁻⁸</td><td>大马士革互连（BEOL）</td></tr>
+              <tr><td>金（Au）</td><td>2.44 × 10⁻⁸</td><td>键合线、凸点</td></tr>
+              <tr><td>铝（Al）</td><td>2.65 × 10⁻⁸</td><td>传统互连、MIM 电极</td></tr>
+              <tr><td>钨（W）</td><td>5.60 × 10⁻⁸</td><td>通孔插塞（Via Plug）</td></tr>
+              <tr><td>钛（Ti）</td><td>4.20 × 10⁻⁷</td><td>粘附层/阻挡层</td></tr>
+            </tbody>
+          </table>
+          <p class="table-caption">表2：常见金属电阻率（300K）及在 IC 工艺中的用途</p>
+        </div>
+
+        <h4>第二章：半导体的灵魂——掺杂</h4>
+
+        <p>纯净（本征）半导体的导电性平平无奇——在绝对零度时甚至是绝缘体。它的真正价值在于：它是一块"璞玉"，通过<strong>掺杂</strong>这门艺术，才能焕发光彩。</p>
+
+        <h4>N 型与 P 型：两种掺杂，两个方向</h4>
+
+        <ul>
+          <li><strong>N 型（掺磷 P / 砷 As）：</strong>五价原子贡献一个多余"自由电子"——施主。施主能级靠近导带底（仅 ~0.05 eV），电子极易跃入导带。<strong>多数载流子：电子。</strong></li>
+          <li><strong>P 型（掺硼 B）：</strong>三价原子创建一个"空穴"——受主。受主能级靠近价带顶，价带电子极易跃入，留下可移动空穴。<strong>多数载流子：空穴。</strong></li>
+        </ul>
+
+        <h4>费米能级：掺杂的"晴雨表"</h4>
+
+        <p>费米能级（Ef）是电子填充水平的标志。本征半导体 Ef 位于禁带正中央；<strong>N 型掺杂使 Ef 上移靠近导带，P 型掺杂使 Ef 下移靠近价带</strong>——掺杂浓度越高，偏移越大。Ef 的位置直接决定了载流子浓度和后续所有器件特性。</p>
+
+        <div class="diagram-container">
+          <svg viewBox="0 0 800 220" xmlns="http://www.w3.org/2000/svg">
+            <text x="400" y="20" text-anchor="middle" fill="#fff" font-size="14" font-weight="600">图二 · 费米能级随掺杂类型与浓度的变化</text>
+            <line x1="80" y1="40" x2="80" y2="200" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+            <text x="70" y="50" fill="rgba(255,255,255,0.4)" font-size="9" text-anchor="end">E↑</text>
+            <rect x="120" y="35" width="110" height="170" rx="6" fill="rgba(0,113,227,0.08)" stroke="rgba(0,113,227,0.2)"/>
+            <text x="175" y="52" text-anchor="middle" fill="#0071e3" font-size="10" font-weight="700">N⁺ 重掺</text>
+            <rect x="130" y="62" width="90" height="35" rx="3" fill="#0071e3" opacity="0.2"/><text x="175" y="84" text-anchor="middle" fill="rgba(255,255,255,0.45)" font-size="9">Ec</text>
+            <line x1="130" y1="140" x2="220" y2="140" stroke="#4ade80" stroke-width="2"/><text x="228" y="144" fill="#4ade80" font-size="9">Ef ↑</text>
+            <rect x="130" y="152" width="90" height="50" rx="3" fill="#0071e3" opacity="0.3"/><text x="175" y="182" text-anchor="middle" fill="#fff" font-size="9">Ev</text>
+            <rect x="250" y="35" width="110" height="170" rx="6" fill="rgba(0,113,227,0.05)" stroke="rgba(0,113,227,0.12)"/>
+            <text x="305" y="52" text-anchor="middle" fill="#5a9fd4" font-size="10" font-weight="700">N⁻ 轻掺</text>
+            <rect x="260" y="62" width="90" height="35" rx="3" fill="#0071e3" opacity="0.2"/><text x="305" y="84" text-anchor="middle" fill="rgba(255,255,255,0.45)" font-size="9">Ec</text>
+            <line x1="260" y1="120" x2="350" y2="120" stroke="#4ade80" stroke-width="2"/><text x="358" y="124" fill="#4ade80" font-size="9">Ef</text>
+            <rect x="260" y="152" width="90" height="50" rx="3" fill="#0071e3" opacity="0.3"/><text x="305" y="182" text-anchor="middle" fill="#fff" font-size="9">Ev</text>
+            <rect x="380" y="35" width="110" height="170" rx="6" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.08)"/>
+            <text x="435" y="52" text-anchor="middle" fill="rgba(255,255,255,0.6)" font-size="10" font-weight="700">本征</text>
+            <rect x="390" y="62" width="90" height="35" rx="3" fill="rgba(255,255,255,0.05)"/><text x="435" y="84" text-anchor="middle" fill="rgba(255,255,255,0.35)" font-size="9">Ec</text>
+            <line x1="390" y1="107" x2="480" y2="107" stroke="#f0a050" stroke-width="2" stroke-dasharray="4,3"/><text x="488" y="111" fill="#f0a050" font-size="9">Ef = Ei</text>
+            <rect x="390" y="152" width="90" height="50" rx="3" fill="rgba(255,255,255,0.08)"/><text x="435" y="182" text-anchor="middle" fill="rgba(255,255,255,0.45)" font-size="9">Ev</text>
+            <rect x="510" y="35" width="110" height="170" rx="6" fill="rgba(239,68,68,0.05)" stroke="rgba(239,68,68,0.12)"/>
+            <text x="565" y="52" text-anchor="middle" fill="#f87171" font-size="10" font-weight="700">P⁻ 轻掺</text>
+            <rect x="520" y="62" width="90" height="35" rx="3" fill="rgba(239,68,68,0.1)"/><text x="565" y="84" text-anchor="middle" fill="rgba(255,255,255,0.35)" font-size="9">Ec</text>
+            <line x1="520" y1="95" x2="610" y2="95" stroke="#f87171" stroke-width="2"/><text x="618" y="99" fill="#f87171" font-size="9">Ef</text>
+            <rect x="520" y="152" width="90" height="50" rx="3" fill="rgba(239,68,68,0.15)"/><text x="565" y="182" text-anchor="middle" fill="rgba(255,255,255,0.55)" font-size="9">Ev</text>
+            <rect x="640" y="35" width="110" height="170" rx="6" fill="rgba(239,68,68,0.08)" stroke="rgba(239,68,68,0.2)"/>
+            <text x="695" y="52" text-anchor="middle" fill="#ef4444" font-size="10" font-weight="700">P⁺ 重掺</text>
+            <rect x="650" y="62" width="90" height="35" rx="3" fill="rgba(239,68,68,0.1)"/><text x="695" y="84" text-anchor="middle" fill="rgba(255,255,255,0.35)" font-size="9">Ec</text>
+            <line x1="650" y1="75" x2="740" y2="75" stroke="#ef4444" stroke-width="2"/><text x="748" y="79" fill="#ef4444" font-size="9">Ef ↓</text>
+            <rect x="650" y="152" width="90" height="50" rx="3" fill="rgba(239,68,68,0.15)"/><text x="695" y="182" text-anchor="middle" fill="rgba(255,255,255,0.55)" font-size="9">Ev</text>
+            <text x="400" y="212" text-anchor="middle" fill="rgba(255,255,255,0.3)" font-size="9">N 型：Ef 上移靠近 Ec · 本征：Ef 居中 · P 型：Ef 下移靠近 Ev · 浓度越高偏移越大</text>
+          </svg>
+          <p class="diagram-caption">图二：费米能级（Ef）从 N⁺→N⁻→本征→P⁻→P⁺ 的渐变——掺杂是调控 Ef 的唯一手段</p>
+        </div>
+
+        <h4>第三章：从可控材料到可控开关——PN 结与 Vth</h4>
+
+        <p>当 P 型与 N 型半导体接触，奇迹发生了：由于接触前 Ef 高低不同，电子与空穴相互扩散，在界面处形成由正负离子组成的<strong>耗尽层</strong>和从 N 指向 P 的<strong>内建电场</strong>。该电场使能带弯曲，直到双方 Ef 拉平——这个势垒就是<strong>内建电势 Vbi</strong>，其大小直接由掺杂浓度决定的原始 Ef 之差决定。</p>
+
+        <p>将 PN 结或 MOSFET 接入电路后，<strong>阈值电压（Vth）</strong>就是打开"电流闸门"所需的最小控制电压。其物理本质，是克服由掺杂浓度决定的内建势垒与表面势垒，从而强效开启导电通道的"敲门砖"。工程师通过<strong>精确控制掺杂浓度</strong>，就能设计出不同 Vth 的晶体管，实现复杂的逻辑电路。</p>
+
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>关键参数</th><th>物理意义</th><th>决定因素</th></tr></thead>
+            <tbody>
+              <tr><td><strong>禁带宽度 Eg</strong></td><td>价带与导带间的能量差</td><td>材料本身（本征属性）</td></tr>
+              <tr><td><strong>费米能级 Ef</strong></td><td>电子填充水平的标志</td><td>掺杂类型与浓度</td></tr>
+              <tr><td><strong>内建电势 Vbi</strong></td><td>PN 结内部的自然势垒</td><td>N 区与 P 区的 Ef 之差</td></tr>
+              <tr><td><strong>阈值电压 Vth</strong></td><td>开启晶体管的最小栅压</td><td>掺杂浓度、Vbi、栅氧层厚度</td></tr>
+            </tbody>
+          </table>
+          <p class="table-caption">表3：半导体关键参数关系链：Eg → 掺杂 → Ef → Vbi → Vth</p>
+        </div>
+
+        <h4>总结</h4>
+
+        <p>半导体的可控性，源于其<strong>独特的能带结构</strong>与<strong>精湛的掺杂工艺</strong>的完美配合。禁带宽度 ~1 eV 的"恰到好处"，使得外部能量（电压、光、热）可以精确调控载流子浓度；而掺杂则赋予工程师"点石成金"的能力——通过控制杂质种类与浓度，精准设定费米能级，进而决定 PN 结和晶体管的核心特性。从一块高纯硅片到一颗包含数十亿晶体管的芯片，整个现代电子文明的根基，正是建立在对电导率这一基本物理量的<strong>精妙控制</strong>之上 <span class="ref">[1]</span>。</p>
+
+        <h4>参考文献</h4>
+        <ol class="refs">
+          <li>S. M. Sze and K. K. Ng, <em>Physics of Semiconductor Devices</em>, 3rd ed., Wiley, 2007, Ch. 1–2.</li>
+        </ol>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
 <section class="section section-light" id="reading">
   <div class="section-inner">
