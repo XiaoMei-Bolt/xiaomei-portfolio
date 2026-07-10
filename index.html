@@ -1206,7 +1206,7 @@
           <li><strong>时隙（Slot）：</strong>构成子帧的基本单元，也是资源块（RB）的时域跨度。在 LTE 中，1 个子帧包含 <strong>2 个时隙</strong>，每个时隙的时长为 <strong>0.5 ms</strong>。从调度角度看，资源块（RB）的定义在时域上就是一个时隙。</li>
           <li><strong>OFDM 符号（OFDM Symbol）：</strong>时域上最小的基本单位，一个符号在一个子载波上承载一个调制后的复数数据（例如 QPSK、16QAM 等）。在 LTE 常规循环前缀（Normal CP）配置下，每个时隙包含 <strong>7 个 OFDM 符号</strong>。因此，一个子帧（1ms）共有 14 个符号。
             <br>每个 OFDM 符号由<strong>「有用符号」</strong>和<strong>「循环前缀」</strong>两部分串联构成：
-            <br>· 有用符号时长（T<sub>u</sub>）：在 LTE 15 kHz 子载波间隔下，T<sub>u</sub> = 1 / 15 kHz ≈ <strong>66.67 µs</strong>，承载实际用户数据。
+            <br>· 有用符号时长（T<sub>u</sub>）：在 LTE 15 KHz 子载波间隔下，T<sub>u</sub> = 1 / 15 KHz ≈ <strong>66.67 µs</strong>，承载实际用户数据。
             <br>· 循环前缀时长（CP）：常规配置下约 <strong>4.7 µs</strong>。CP 通过复制符号尾部一段样点并置于符号开头，用于对抗多径效应带来的符号间干扰（ISI，Inter-Symbol Interference）和子载波间干扰（ICI，Inter-Carrier Interference）。
           </li>
         </ol>
@@ -1220,7 +1220,7 @@
               <linearGradient id="gradSlot" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#3b7ab8"/><stop offset="100%" stop-color="#2d5a8e"/></linearGradient>
               <linearGradient id="gradSymbol" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#5a9fd4"/><stop offset="100%" stop-color="#3b7ab8"/></linearGradient>
             </defs>
-            <text x="400" y="24" text-anchor="middle" fill="#fff" font-size="15" font-weight="600">图一 · 时域资源结构（NR, μ=1, SCS=30kHz）</text>
+            <text x="400" y="24" text-anchor="middle" fill="#fff" font-size="15" font-weight="600">图一 · 时域资源结构（NR, μ=0, SCS=15KHz）</text>
             <rect x="30" y="40" width="740" height="34" rx="6" fill="url(#gradFrame)" stroke="#3b7ab8" stroke-width="1"/>
             <text x="45" y="62" fill="#fff" font-size="13" font-weight="600">Radio Frame = 10 ms</text>
             <text x="740" y="62" fill="rgba(255,255,255,0.5)" font-size="11" text-anchor="end">10 subframes</text>
@@ -1240,25 +1240,24 @@
             <defs><marker id="arrowOrange" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#f0a050"/></marker></defs>
             <text x="30" y="158" fill="rgba(255,255,255,0.5)" font-size="11">Subframe #0 (1ms)</text>
             <rect x="90" y="148" width="168" height="28" rx="4" fill="url(#gradSlot)" stroke="#3b7ab8" stroke-width="0.5"/>
-            <text x="174" y="166" fill="#fff" font-size="12" text-anchor="middle">Slot 0 (0.5 ms, 14 symbols)</text>
+            <text x="174" y="166" fill="#fff" font-size="12" text-anchor="middle">Slot 0 (0.5 ms, 7 symbols)</text>
             <rect x="260" y="148" width="168" height="28" rx="4" fill="url(#gradSlot)" stroke="#3b7ab8" stroke-width="0.5"/>
-            <text x="344" y="166" fill="#fff" font-size="12" text-anchor="middle">Slot 1 (0.5 ms, 14 symbols)</text>
+            <text x="344" y="166" fill="#fff" font-size="12" text-anchor="middle">Slot 1 (0.5 ms, 7 symbols)</text>
             <line x1="174" y1="178" x2="130" y2="205" stroke="#f0a050" stroke-width="1.5" marker-end="url(#arrowOrange)"/>
-            <text x="30" y="222" fill="rgba(255,255,255,0.5)" font-size="11">Slot 0 (14 OFDM symbols)</text>
+            <text x="30" y="222" fill="rgba(255,255,255,0.5)" font-size="11">Slot 0 (7 OFDM symbols)</text>
               <rect x="90" y="212" width="34" height="28" rx="3" fill="url(#gradSymbol)" stroke="#5a9fd4" stroke-width="0.3"/><text x="107" y="230" fill="#fff" font-size="9" text-anchor="middle">0</text>
               <rect x="126" y="212" width="34" height="28" rx="3" fill="url(#gradSymbol)" stroke="#5a9fd4" stroke-width="0.3"/><text x="143" y="230" fill="#fff" font-size="9" text-anchor="middle">1</text>
               <rect x="162" y="212" width="34" height="28" rx="3" fill="url(#gradSymbol)" stroke="#5a9fd4" stroke-width="0.3"/><text x="179" y="230" fill="#fff" font-size="9" text-anchor="middle">2</text>
               <text x="200" y="230" fill="rgba(255,255,255,0.4)" font-size="10">…</text>
-              <rect x="220" y="212" width="34" height="28" rx="3" fill="url(#gradSymbol)" stroke="#5a9fd4" stroke-width="0.3"/><text x="237" y="230" fill="#fff" font-size="9" text-anchor="middle">11</text>
-              <rect x="256" y="212" width="34" height="28" rx="3" fill="url(#gradSymbol)" stroke="#5a9fd4" stroke-width="0.3"/><text x="273" y="230" fill="#fff" font-size="9" text-anchor="middle">12</text>
-              <rect x="292" y="212" width="34" height="28" rx="3" fill="url(#gradSymbol)" stroke="#5a9fd4" stroke-width="0.3"/><text x="309" y="230" fill="#fff" font-size="9" text-anchor="middle">13</text>
-            <text x="580" y="212" fill="rgba(255,255,255,0.4)" font-size="11">单个 Symbol 结构（Normal CP）：</text>
-            <rect x="580" y="222" width="120" height="18" rx="3" fill="#2d5a8e" stroke="#5a9fd4" stroke-width="0.5"/>
-            <text x="640" y="235" fill="#fff" font-size="10" text-anchor="middle">CP</text>
-            <rect x="702" y="222" width="80" height="18" rx="3" fill="#5a9fd4" stroke="#5a9fd4" stroke-width="0.5"/>
-            <text x="742" y="235" fill="#fff" font-size="10" text-anchor="middle">Data (FFT)</text>
-            <text x="580" y="260" fill="rgba(255,255,255,0.35)" font-size="10">CP: 循环前缀，消除符号间干扰（ISI）</text>
-            <text x="580" y="275" fill="rgba(255,255,255,0.35)" font-size="10">Tu: 有用符号时长 ≈ 66.67 µs（15kHz SCS）</text>
+              <rect x="220" y="212" width="34" height="28" rx="3" fill="url(#gradSymbol)" stroke="#5a9fd4" stroke-width="0.3"/><text x="237" y="230" fill="#fff" font-size="9" text-anchor="middle">5</text>
+              <rect x="256" y="212" width="34" height="28" rx="3" fill="url(#gradSymbol)" stroke="#5a9fd4" stroke-width="0.3"/><text x="273" y="230" fill="#fff" font-size="9" text-anchor="middle">6</text>
+            <text x="580" y="252" fill="rgba(255,255,255,0.4)" font-size="11">单个 Symbol 结构（Normal CP）：</text>
+            <rect x="580" y="262" width="120" height="18" rx="3" fill="#2d5a8e" stroke="#5a9fd4" stroke-width="0.5"/>
+            <text x="640" y="275" fill="#fff" font-size="10" text-anchor="middle">CP</text>
+            <rect x="702" y="262" width="80" height="18" rx="3" fill="#5a9fd4" stroke="#5a9fd4" stroke-width="0.5"/>
+            <text x="742" y="275" fill="#fff" font-size="10" text-anchor="middle">Data (FFT)</text>
+            <text x="580" y="300" fill="rgba(255,255,255,0.35)" font-size="10">CP: 循环前缀，消除符号间干扰（ISI）</text>
+            <text x="580" y="315" fill="rgba(255,255,255,0.35)" font-size="10">Tu: 有用符号时长 ≈ 66.67 µs（15KHz SCS）</text>
             <line x1="90" y1="310" x2="400" y2="310" stroke="rgba(255,255,255,0.3)" stroke-width="1"/>
             <polygon points="400,310 395,306 395,314" fill="rgba(255,255,255,0.3)"/>
             <text x="245" y="325" fill="rgba(255,255,255,0.4)" font-size="11" text-anchor="middle">时间 t →</text>
@@ -1271,8 +1270,8 @@
         <p>频域资源的划分从大到小依次为：信道带宽（Channel Bandwidth）、资源块（Resource Block）、子载波（Subcarrier）。</p>
 
         <ol>
-          <li><strong>子载波（Subcarrier）：</strong>频域上最小的粒度，是 OFDM 系统中的基础频率单元。在 LTE 中，子载波间隔（SCS，Subcarrier Spacing）固定为 <strong>15 kHz</strong>。一个子载波的有效带宽等同于其子载波间隔，即 15 kHz。相邻子载波的中心频率间隔也是 15 kHz，它们在频域上紧密排列，通过正交性（Orthogonality）实现无干扰复用。</li>
-          <li><strong>资源块（Resource Block, RB）：</strong>物理层进行资源调度的基本单位。网络在进行数据调度时，以 RB 为单位为用户分配资源。一个 RB 在频域上由 <strong>12 个连续的子载波</strong>组成，带宽为 12 × 15 kHz = <strong>180 kHz</strong>。</li>
+          <li><strong>子载波（Subcarrier）：</strong>频域上最小的粒度，是 OFDM 系统中的基础频率单元。在 LTE 中，子载波间隔（SCS，Subcarrier Spacing）固定为 <strong>15 KHz</strong>。一个子载波的有效带宽等同于其子载波间隔，即 15 KHz。相邻子载波的中心频率间隔也是 15 KHz，它们在频域上紧密排列，通过正交性（Orthogonality）实现无干扰复用。</li>
+          <li><strong>资源块（Resource Block, RB）：</strong>物理层进行资源调度的基本单位。网络在进行数据调度时，以 RB 为单位为用户分配资源。一个 RB 在频域上由 <strong>12 个连续的子载波</strong>组成，带宽为 12 × 15 KHz = <strong>180 KHz</strong>。</li>
         </ol>
 
         <p>NR 还引入了<strong>带宽部分（BWP，Bandwidth Part）</strong>的概念，允许在一个载波内定义多个频域子集，每个 BWP 可独立配置 SCS 和带宽，实现灵活的频谱利用和终端省电。</p>
@@ -1280,22 +1279,22 @@
         <!-- 图二：频域资源结构示意 -->
         <div class="diagram-container">
           <svg viewBox="0 0 800 380" xmlns="http://www.w3.org/2000/svg">
-            <text x="400" y="24" text-anchor="middle" fill="#fff" font-size="15" font-weight="600">图二 · 频域资源结构（NR, μ=0, SCS=15kHz）</text>
+            <text x="400" y="24" text-anchor="middle" fill="#fff" font-size="15" font-weight="600">图二 · 频域资源结构（NR, μ=0, SCS=15KHz）</text>
             <text x="48" y="54" fill="#5a9fd4" font-size="12" font-weight="600">频域 ↑</text>
             <line x1="80" y1="48" x2="80" y2="330" stroke="#f0a050" stroke-width="1.5" marker-end="url(#arrowFreq)"/>
             <defs><marker id="arrowFreq" markerWidth="6" markerHeight="8" refX="3" refY="8" orient="auto"><path d="M0,0 L6,0 L3,8 Z" fill="#f0a050"/></marker></defs>
             <rect x="120" y="45" width="650" height="280" rx="8" fill="none" stroke="#5a9fd4" stroke-width="1.5" stroke-dasharray="8,4"/>
-            <text x="135" y="65" fill="#5a9fd4" font-size="12" font-weight="600">BWP (Bandwidth Part): 0–100 MHz, SCS=15kHz</text>
-            <text x="135" y="95" fill="rgba(255,255,255,0.4)" font-size="11">Carrier Bandwidth = 273 RBs × 180 kHz = 49.14 MHz</text>
+            <text x="135" y="65" fill="#5a9fd4" font-size="12" font-weight="600">BWP (Bandwidth Part): 0–100 MHz, SCS=15KHz</text>
+            <text x="135" y="95" fill="rgba(255,255,255,0.4)" font-size="11">Carrier Bandwidth = 273 RBs × 180 KHz = 49.14 MHz</text>
             <g transform="translate(140, 110)">
               <rect x="0" y="0" width="120" height="24" rx="3" fill="url(#gradSlot)" stroke="#3b7ab8" stroke-width="0.3"/>
-              <text x="60" y="16" fill="#fff" font-size="11" text-anchor="middle">RB #0 (180 kHz)</text>
+              <text x="60" y="16" fill="#fff" font-size="11" text-anchor="middle">RB #0 (180 KHz)</text>
               <rect x="140" y="0" width="120" height="24" rx="3" fill="url(#gradSlot)" stroke="#3b7ab8" stroke-width="0.3"/>
-              <text x="200" y="16" fill="#fff" font-size="11" text-anchor="middle">RB #1 (180 kHz)</text>
+              <text x="200" y="16" fill="#fff" font-size="11" text-anchor="middle">RB #1 (180 KHz)</text>
               <rect x="280" y="0" width="60" height="24" rx="3" fill="url(#gradSlot)" stroke="#3b7ab8" stroke-width="0.3" opacity="0.4"/>
               <text x="310" y="16" fill="rgba(255,255,255,0.4)" font-size="11" text-anchor="middle">…</text>
               <rect x="360" y="0" width="120" height="24" rx="3" fill="url(#gradSlot)" stroke="#3b7ab8" stroke-width="0.3"/>
-              <text x="420" y="16" fill="#fff" font-size="11" text-anchor="middle">RB #272 (180 kHz)</text>
+              <text x="420" y="16" fill="#fff" font-size="11" text-anchor="middle">RB #272 (180 KHz)</text>
               <text x="0" y="52" fill="rgba(255,255,255,0.5)" font-size="11">RB #0 内部结构：</text>
                 <rect x="0" y="62" width="580" height="14" rx="2" fill="#1a3a5c" stroke="#2d5a8e" stroke-width="0.3"/><text x="8" y="73" fill="rgba(255,255,255,0.5)" font-size="9">SC</text><rect x="26" y="66" width="34" height="6" rx="1" fill="#5a9fd4" opacity="0.5"/>
                 <rect x="0" y="78" width="580" height="14" rx="2" fill="#1a3a5c" stroke="#2d5a8e" stroke-width="0.3"/><text x="8" y="89" fill="rgba(255,255,255,0.5)" font-size="9">SC</text><rect x="26" y="82" width="34" height="6" rx="1" fill="#5a9fd4" opacity="0.5"/>
@@ -1321,13 +1320,13 @@
 
         <p>NR 相对于 LTE，最大的演进在于引入了灵活的参数集（Flexible Numerology），其核心区别集中在子载波间隔和由此衍生的时域结构变化上。</p>
 
-        <p><strong>子载波间隔（SCS）：</strong>LTE 固定使用 15 kHz；NR 支持 15/30/60/120/240 kHz 的灵活配置，以应对高频段（毫米波）的相位噪声和多普勒频移，同时缩短符号时长以降低空口时延。</p>
+        <p><strong>子载波间隔（SCS）：</strong>LTE 固定使用 15 KHz；NR 支持 15/30/60/120/240 KHz 的灵活配置，以应对高频段（毫米波）的相位噪声和多普勒频移，同时缩短符号时长以降低空口时延。</p>
 
-        <p><strong>时隙结构：</strong>LTE 中一个子帧（1ms）均分为 2 个时隙，每时隙 7 个符号。NR 则将每时隙符号数固定为 14，子帧内时隙数随 SCS 增大而增加（= SCS / 15kHz），时隙绝对时长也随之变短——60 kHz SCS 下每时隙仅 0.25 ms。</p>
+        <p><strong>时隙结构：</strong>LTE 中一个子帧（1ms）均分为 2 个时隙，每时隙 7 个符号。NR 则将每时隙符号数固定为 14，子帧内时隙数随 SCS 增大而增加（= SCS / 15KHz），时隙绝对时长也随之变短——60 KHz SCS 下每时隙仅 0.25 ms。</p>
 
-        <p><strong>资源块带宽：</strong>两者均以 12 个子载波为一个 RB，但 LTE 的 RB 固定 180 kHz 带宽，NR 的 RB 绝对带宽随 SCS 线性增宽（30 kHz SCS 时为 360 kHz）。在相同信道带宽内，更大 SCS 意味着可用 RB 总数减少。</p>
+        <p><strong>资源块带宽：</strong>两者均以 12 个子载波为一个 RB，但 LTE 的 RB 固定 180 KHz 带宽，NR 的 RB 绝对带宽随 SCS 线性增宽（30 KHz SCS 时为 360 KHz）。在相同信道带宽内，更大 SCS 意味着可用 RB 总数减少。</p>
 
-        <p><strong>符号时长：</strong>LTE 的符号时长固定约 71.4 µs（T<sub>u</sub> = 66.7 µs + CP ≈ 4.7 µs）。NR 的符号时长 = 1/SCS + CP，随 SCS 增大而等比例缩短——30 kHz SCS 时约为 15 kHz 的一半。</p>
+        <p><strong>符号时长：</strong>LTE 的符号时长固定约 71.4 µs（T<sub>u</sub> = 66.7 µs + CP ≈ 4.7 µs）。NR 的符号时长 = 1/SCS + CP，随 SCS 增大而等比例缩短——30 KHz SCS 时约为 15 KHz 的一半。</p>
 
         <p><strong>频谱效率：</strong>LTE 在相同信道带宽下 RB 总数更多，频谱效率较高。NR 在大 SCS 下虽能支持更快调度，但因循环前缀和保护带宽的绝对开销不变，有效频谱效率通常略低于小 SCS 配置。</p>
 
@@ -1339,7 +1338,7 @@
             <text x="210" y="74" text-anchor="middle" fill="#fff" font-size="16" font-weight="700">LTE (4G)</text>
             <text x="60" y="115" fill="#5a9fd4" font-size="12" font-weight="600">子载波间隔（SCS）</text>
             <rect x="60" y="122" width="300" height="28" rx="4" fill="rgba(255,255,255,0.05)"/>
-            <text x="75" y="141" fill="rgba(255,255,255,0.85)" font-size="12">固定 15 kHz（唯一选项）</text>
+            <text x="75" y="141" fill="rgba(255,255,255,0.85)" font-size="12">固定 15 KHz（唯一选项）</text>
             <text x="60" y="168" fill="#5a9fd4" font-size="12" font-weight="600">时隙结构</text>
             <rect x="60" y="175" width="300" height="28" rx="4" fill="rgba(255,255,255,0.05)"/>
             <text x="75" y="194" fill="rgba(255,255,255,0.85)" font-size="12">1子帧=2时隙，每时隙 7 符号</text>
@@ -1359,7 +1358,7 @@
             <text x="590" y="74" text-anchor="middle" fill="#5af0a0" font-size="16" font-weight="700">NR (5G)</text>
             <text x="440" y="115" fill="#5af0a0" font-size="12" font-weight="600">子载波间隔（SCS）</text>
             <rect x="440" y="122" width="300" height="28" rx="4" fill="rgba(255,255,255,0.05)"/>
-            <text x="455" y="141" fill="rgba(255,255,255,0.85)" font-size="12">15 / 30 / 60 / 120 / 240 kHz（灵活）</text>
+            <text x="455" y="141" fill="rgba(255,255,255,0.85)" font-size="12">15 / 30 / 60 / 120 / 240 KHz（灵活）</text>
             <text x="440" y="168" fill="#5af0a0" font-size="12" font-weight="600">时隙结构</text>
             <rect x="440" y="175" width="300" height="28" rx="4" fill="rgba(255,255,255,0.05)"/>
             <text x="455" y="194" fill="rgba(255,255,255,0.85)" font-size="12">每时隙固定 14 符号</text>
@@ -1381,7 +1380,7 @@
 
         <h4>第四部分：总结</h4>
 
-        <p>LTE 的数据结构设计奠定了 OFDM 资源网格（Resource Grid）的基础，以「简单、固定」为特征——15 kHz 唯一 SCS、7 符号时隙、无 Mini-Slot 和 BWP——这种一致性简化了系统设计和终端实现，适合 eMBB 初期的移动宽带需求。</p>
+        <p>LTE 的数据结构设计奠定了 OFDM 资源网格（Resource Grid）的基础，以「简单、固定」为特征——15 KHz 唯一 SCS、7 符号时隙、无 Mini-Slot 和 BWP——这种一致性简化了系统设计和终端实现，适合 eMBB 初期的移动宽带需求。</p>
 
         <p>NR 在继承 LTE 顶层框架的基础上，引入了 <strong>Numerology</strong>、<strong>Mini-Slot</strong> 和 <strong>BWP</strong> 三大创新，使其数据结构具备前所未有的灵活性：高 SCS 为毫米波和低时延提供短符号；低 SCS 为广覆盖和大连接提供长 CP。这种「一刀不切」的设计哲学，正是 5G 能够同时服务 eMBB、URLLC 和 mMTC 三大场景的物理层基础。通过对数据结构的深入理解，可以从系统级视角把握无线通信资源调度的核心逻辑。</p>
 
