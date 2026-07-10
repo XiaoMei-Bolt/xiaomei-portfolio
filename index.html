@@ -1989,6 +1989,115 @@
         </div>
       </div>
 
+      <!-- Card: 波形技术 -->
+      <div class="article-card" onclick="this.classList.toggle('open')">
+        <div class="article-card-header">
+          <div>
+            <div class="article-card-title">4G LTE 与 5G NR 通信中的波形技术</div>
+            <div class="article-card-meta">📅 2026 年 7 月 · 通信物理层 — 从 OFDM 到 CP-OFDM/DFT-s-OFDM 的波形演进</div>
+          </div>
+          <div class="article-card-arrow">▼</div>
+        </div>
+        <div class="article-card-body">
+          <div class="article-card-body-inner">
+            <div class="article-body">
+
+        <h4>第一部分 · 从 2G 到 5G：波形技术的代际演进</h4>
+
+        <p>从 2G 到 5G，移动通信每一次代际跃迁的核心都在物理层波形技术的变革。这个演进过程，本质上是一段在<strong>更高频谱效率、更快数据速率、更复杂应用场景</strong>三者之间寻找最优信号"载体"的历史。</p>
+
+        <div style="overflow-x:auto;margin:24px 0;">
+        <table style="font-size:13px;min-width:700px;">
+        <thead>
+        <tr><th style="width:10%;">代际</th><th style="width:14%;">时代</th><th style="width:18%;">波形技术</th><th>关键技术特点</th></tr>
+        </thead>
+        <tbody>
+        <tr style="background:rgba(0,113,227,0.05);">
+          <td><strong>2G</strong></td><td>数字时代</td><td>TDMA / FDMA</td><td>从模拟到数字的里程碑；GSM 采用 TDMA + GMSK 调制，首次实现数字化语音与短信</td></tr>
+        <tr>
+          <td><strong>3G</strong></td><td>多媒体时代</td><td>CDMA（码分多址）</td><td>扩频技术使多用户共享同一频段；WCDMA/CDMA2000 支持语音+数据并发，首次引入移动互联网</td></tr>
+        <tr style="background:rgba(0,113,227,0.05);">
+          <td><strong>4G</strong></td><td>高速移动宽带</td><td><strong>OFDM</strong>（正交频分复用）</td><td>多载波并行传输，频谱效率跃升；MIMO 天然适配，奠定移动宽带基础</td></tr>
+        <tr>
+          <td><strong>5G</strong></td><td>万物互联</td><td><strong>CP-OFDM / DFT-s-OFDM</strong></td><td>可扩展参数集（Numerology），灵活适配 eMBB/URLLC/mMTC 三大场景；统一上下行波形 + 保留低 PAPR 上行选项</td></tr>
+        </tbody>
+        </table>
+        </div>
+
+        <p style="font-size:12px;color:rgba(255,255,255,0.3);">参考文献：3GPP TS 36.211 (LTE Physical Channels and Modulation); 3GPP TS 38.211 (NR Physical Channels and Modulation); A. Goldsmith, <em>Wireless Communications</em>, Cambridge University Press, 2005.</p>
+
+        <hr style="border:none;border-top:1px solid rgba(255,255,255,0.08);margin:32px 0;">
+
+        <h4>第二部分 · 4G 与 5G 波形技术详解</h4>
+
+        <h4 style="font-size:16px;color:rgba(255,255,255,0.9);">4G LTE：OFDM — 多载波革命的"分水岭"</h4>
+
+        <p>4G LTE 的物理层突破在于采用了 <strong>OFDM（Orthogonal Frequency-Division Multiplexing，正交频分复用）</strong>。其核心思想是将高速串行数据流<strong>分散到多个正交的子载波上并行传输</strong>：每个子载波上的符号速率大幅度降低，符号周期远大于信道最大多径时延，从而几乎消除了频率选择性衰落带来的符号间干扰（ISI）。</p>
+
+        <p>在下行链路，LTE 选用 OFDMA（正交频分多址），以子载波为粒度在多用户间灵活分配频率资源。在上行链路，出于终端功耗和功放效率的考虑，LTE 采用 <strong>SC-FDMA（单载波频分多址）</strong>——其核心 DFT-s-OFDM 结构在频域生成 OFDM 信号的同时，保持时域信号的<strong>低峰均比（PAPR）</strong>特性，使终端功放可以工作在更高效率区间，这对小区边缘覆盖至关重要。</p>
+
+        <p style="font-size:12px;color:rgba(255,255,255,0.3);">参考文献：3GPP TS 36.211 V15.0.0, §5–6; E. Dahlman et al., <em>4G: LTE/LTE-Advanced for Mobile Broadband</em>, 2nd ed., Academic Press, 2014, Ch. 4–5.</p>
+
+        <h4 style="font-size:16px;color:rgba(255,255,255,0.9);margin-top:28px;">5G NR：CP-OFDM 统一 + DFT-s-OFDM 保留</h4>
+
+        <p><strong>统一的基础波形：CP-OFDM。</strong>5G NR 在上下行链路均以 <strong>CP-OFDM（循环前缀-正交频分复用）</strong>为基础波形。这一设计带来三重优势：</p>
+        <ol>
+          <li><strong>天然 MIMO 支持</strong>——每根天线的每层空间流可独立映射到子载波，预编码、波束赋形与 OFDM 无缝集成；</li>
+          <li><strong>实现复杂度低</strong>——统一的收发链路简化了终端和基站设计；</li>
+          <li><strong>灵活的参数集（Numerology）</strong>——通过可扩展的子载波间隔（15/30/60/120/240 KHz），同一套波形框架可平滑适配从 sub-1 GHz 广覆盖到毫米波（mmWave）超大带宽的全频段需求，同时以短符号周期满足 URLLC 低时延场景。</li>
+        </ol>
+
+        <p><strong>保留的上行选项：DFT-s-OFDM。</strong>尽管 CP-OFDM 是上行"主力"，5G NR 仍保留 4G 时代的 DFT-s-OFDM 作为上行可选波形。这是典型的<strong>覆盖优先</strong>设计思维：在小区边缘等信号较弱场景下，终端可利用 DFT-s-OFDM 的<strong>低峰均比（PAPR）</strong>优势，以更高平均功率发射信号而不引起功放非线性失真，从而保证上行覆盖范围。</p>
+
+        <p>这一双波形架构在实际测试中有直接体现。以 <strong>n77 频段 L-PAMiF（低噪声功放模块集成前端）</strong>的发射测试为例<strong>：</strong></p>
+        <ul>
+          <li><strong>MRP0（最大额定功率 0 dB 回退）</strong>：采用 <strong>DFT-s-OFDM QPSK，100 MHz Inner RB</strong> 分配——利用低 PAPR 优势，功放可推至饱和区附近而不引入显著失真，验证终端最大发射能力；</li>
+          <li><strong>MPR3（最大功率回退 3 dB）</strong>：采用 <strong>CP-OFDM QPSK，100 MHz Full RB</strong> 分配——CP-OFDM 的较高 PAPR 要求功放必须回退工作点以避免非线性产物超标，此时测试的是波形对功放线性度和 ACLR（邻道泄漏比）的压力。</li>
+        </ul>
+
+        <div style="overflow-x:auto;margin:24px 0;">
+        <table style="font-size:13px;min-width:700px;">
+        <thead>
+        <tr><th style="width:14%;">对比维度</th><th style="width:36%;">CP-OFDM</th><th style="width:36%;">DFT-s-OFDM</th></tr>
+        </thead>
+        <tbody>
+        <tr style="background:rgba(0,113,227,0.05);">
+          <td><strong>波形本质</strong></td><td>频域直接映射数据符号到子载波</td><td>时域数据经 DFT 扩展至频域后再做 OFDM 调制（本质是单载波传输）</td></tr>
+        <tr>
+          <td><strong>峰均比（PAPR）</strong></td><td>较高（~10–12 dB）</td><td><strong>低</strong>（~6–8 dB）</td></tr>
+        <tr style="background:rgba(0,113,227,0.05);">
+          <td><strong>MIMO 兼容性</strong></td><td><strong>天然适配</strong>——每层可直接映射</td><td>仅支持单层传输</td></tr>
+        <tr>
+          <td><strong>频谱效率</strong></td><td><strong>高</strong>（配合高阶 QAM 和 MIMO）</td><td>中等（受限于单层和高 PAPR 回退需求较低）</td></tr>
+        <tr style="background:rgba(0,113,227,0.05);">
+          <td><strong>功放效率</strong></td><td>低（需要大回退）</td><td><strong>高</strong>（可推至接近饱和）</td></tr>
+        <tr>
+          <td><strong>覆盖能力</strong></td><td>受限于回退后的发射功率</td><td><strong>强</strong>（更高平均发射功率）</td></tr>
+        <tr style="background:rgba(0,113,227,0.05);">
+          <td><strong>5G NR 应用</strong></td><td><strong>上下行主力波形</strong>——eMBB 高速数据、MU-MIMO 多用户空分</td><td><strong>上行覆盖增强</strong>——小区边缘、功率受限终端、控制信道（PUCCH 格式 0/1 等）</td></tr>
+        </tbody>
+        </table>
+        </div>
+
+        <p style="font-size:12px;color:rgba(255,255,255,0.3);">参考文献：3GPP TS 38.211 V17.0.0, §5.3–5.4; 3GPP TS 38.101-1 V17.0.0, §6.2 (UE Power Class and MPR); E. Dahlman et al., <em>5G NR: The Next Generation Wireless Access Technology</em>, 2nd ed., Academic Press, 2021, Ch. 7–8.</p>
+
+        <hr style="border:none;border-top:1px solid rgba(255,255,255,0.08);margin:32px 0;">
+
+        <h4>第三部分 · 总结</h4>
+
+        <p>从 2G 到 5G，移动通信的波形技术走过了从<strong>单一多址方式（FDMA/TDMA → CDMA）</strong>到<strong>以 OFDM 为基础的多载波统一框架</strong>的演进之路。</p>
+
+        <p><strong>4G 是关键"分水岭"</strong>——OFDM 的引入彻底改变了物理层的设计范式，频谱效率的量级跃升使移动宽带成为现实。这一代确立了"下行 OFDMA + 上行 SC-FDMA"的非对称波形架构，在频谱效率与终端功放效率之间取得了精巧平衡。</p>
+
+        <p><strong>5G 在 4G 的成功基础上更进一步</strong>——通过 <strong>CP-OFDM 实现上下行波形统一</strong>，消除了跨链路的不对称性，使 MIMO 和波束赋形在全链路无缝部署；同时<strong>保留 DFT-s-OFDM</strong> 作为上行覆盖增强选项，以务实的工程设计解决了 CP-OFDM 高 PAPR 带来的小区边缘覆盖短板。配合可扩展的 Numerology，5G NR 的波形架构以单一框架同时服务 eMBB（高速率）、URLLC（低时延）和 mMTC（大连接）三大差异化场景，为万物互联时代铺平了物理层基础。</p>
+
+        <p style="font-size:12px;color:rgba(255,255,255,0.3);margin-top:24px;">📌 参考文献：3GPP TS 36.211, TS 36.300 (LTE Overall Description); 3GPP TS 38.211, TS 38.300 (NR Overall Description); A. Goldsmith, <em>Wireless Communications</em>, Cambridge, 2005; E. Dahlman, S. Parkvall, J. Sköld, <em>5G NR: The Next Generation Wireless Access Technology</em>, 2nd ed., Academic Press, 2021; D. Tse and P. Viswanath, <em>Fundamentals of Wireless Communication</em>, Cambridge, 2005.</p>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
 <section class="section section-light" id="reading">
   <div class="section-inner">
