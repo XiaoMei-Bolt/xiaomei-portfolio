@@ -2179,6 +2179,190 @@
         </div>
       </div>
 
+      <!-- Card: SRS 与天线切换分集 -->
+      <div class="article-card" onclick="this.classList.toggle('open')">
+        <div class="article-card-header">
+          <div>
+            <div class="article-card-title">5G NR 与 4G LTE 中的 SRS 与天线切换分集技术</div>
+            <div class="article-card-meta">📅 2026 年 7 月 · 通信物理层 — SRS 上行探测与 AS Div 天线切换的协同机制</div>
+          </div>
+          <div class="article-card-arrow">▼</div>
+        </div>
+        <div class="article-card-body">
+          <div class="article-card-body-inner">
+            <div class="article-body">
+
+        <p>SRS（探测参考信号，Sounding Reference Signal）与 AS Div（天线切换分集，Antenna Switch Diversity）是 4G LTE 和 5G NR 中两项紧密协同的物理层关键技术。SRS 负责上行信道探测，辅助基站利用<strong>信道互易性</strong>优化下行传输；AS Div 通过智能天线切换提升终端接收性能。在双连接（EN-DC / NR CA）场景下，二者通过射频前端路径联合重配置，避免 SRS 探测对另一载波通信造成中断 <span class="ref">[1]–[3]</span>。</p>
+
+        <h4>一、SRS：探测参考信号</h4>
+
+        <p>SRS 是终端向基站发送的上行参考信号，核心功能是辅助基站评估上行信道质量。在 TDD 频段，利用<strong>信道互易性</strong>（Channel Reciprocity），基站通过 SRS 测量可间接推断下行信道状态信息（CSI），据此优化调制编码方案（MCS）与预编码矩阵 <span class="ref">[1][2]</span>。</p>
+
+        <p>SRS 通过<strong>天线切换</strong>实现多天线探测：终端在不同天线端口上轮流发送 SRS，使基站获得完整的多天线信道信息。典型配置以 <strong>xTyR</strong> 格式表示（x 个发射端口，y 个接收端口），常见模式包括 <strong>1T2R、1T4R、2T4R</strong>。3GPP R17 进一步扩展至最多 <strong>8 接收天线</strong>探测，并引入 11 比特位图用于能力上报 <span class="ref">[2][4]</span>。</p>
+
+        <!-- 图一：SRS 天线切换示意 -->
+        <div class="diagram-container">
+          <svg viewBox="0 0 800 300" xmlns="http://www.w3.org/2000/svg">
+            <text x="400" y="24" text-anchor="middle" fill="#fff" font-size="14" font-weight="600">图一 · SRS 天线切换探测机制（1T4R 示例）</text>
+
+            <!-- UE side -->
+            <rect x="30" y="50" width="110" height="220" rx="8" fill="rgba(0,113,227,0.08)" stroke="rgba(0,113,227,0.25)"/>
+            <text x="85" y="75" text-anchor="middle" fill="#5a9fd4" font-size="12" font-weight="700">UE 终端</text>
+            <text x="85" y="95" text-anchor="middle" fill="rgba(255,255,255,0.5)" font-size="9">1T4R 配置</text>
+
+            <!-- TX block -->
+            <rect x="48" y="108" width="74" height="22" rx="3" fill="rgba(16,185,129,0.2)" stroke="#10b981" stroke-width="1"/>
+            <text x="85" y="123" text-anchor="middle" fill="#10b981" font-size="10" font-weight="600">TX (1 通道)</text>
+
+            <!-- Switch -->
+            <rect x="60" y="140" width="50" height="16" rx="2" fill="rgba(240,160,80,0.3)" stroke="#f0a050" stroke-width="0.8"/>
+            <text x="85" y="152" text-anchor="middle" fill="#f0a050" font-size="8" font-weight="600">RF SW</text>
+
+            <!-- RX antennas -->
+            <rect x="35" y="170" width="40" height="24" rx="3" fill="rgba(90,159,212,0.15)" stroke="#5a9fd4" stroke-width="0.8"/>
+            <text x="55" y="185" text-anchor="middle" fill="#5a9fd4" font-size="9" font-weight="600">Ant 0</text>
+            <rect x="80" y="170" width="40" height="24" rx="3" fill="rgba(90,159,212,0.15)" stroke="#5a9fd4" stroke-width="0.8"/>
+            <text x="100" y="185" text-anchor="middle" fill="#5a9fd4" font-size="9" font-weight="600">Ant 1</text>
+
+            <!-- Vertical lines from SW to Ant -->
+            <line x1="77" y1="156" x2="55" y2="170" stroke="rgba(240,160,80,0.4)" stroke-width="0.8"/>
+            <line x1="85" y1="156" x2="75" y2="170" stroke="rgba(240,160,80,0.4)" stroke-width="0.8" stroke-dasharray="2,2"/>
+            <line x1="95" y1="156" x2="100" y2="170" stroke="rgba(240,160,80,0.4)" stroke-width="0.8" stroke-dasharray="2,2"/>
+
+            <text x="35" y="220" fill="rgba(255,255,255,0.3)" font-size="8">Ant 2/3 同理</text>
+            <text x="35" y="235" fill="rgba(255,255,255,0.3)" font-size="8">交替连接 TX</text>
+
+            <!-- gNB side -->
+            <rect x="600" y="50" width="170" height="80" rx="8" fill="rgba(16,185,129,0.06)" stroke="rgba(16,185,129,0.2)"/>
+            <text x="685" y="78" text-anchor="middle" fill="#10b981" font-size="12" font-weight="700">gNB 基站</text>
+            <text x="685" y="100" text-anchor="middle" fill="rgba(255,255,255,0.5)" font-size="10">信道互易性估计</text>
+            <text x="685" y="118" text-anchor="middle" fill="rgba(255,255,255,0.35)" font-size="9">SRS → 下行 CSI</text>
+
+            <!-- Timeline at bottom -->
+            <rect x="170" y="210" width="420" height="70" rx="6" fill="rgba(255,255,255,0.02)" stroke="rgba(255,255,255,0.08)"/>
+            <text x="380" y="232" text-anchor="middle" fill="rgba(255,255,255,0.6)" font-size="11" font-weight="600">SRS 天线轮询时序（时分切换）</text>
+
+            <!-- Time slots -->
+            <rect x="190" y="244" width="80" height="24" rx="4" fill="rgba(90,159,212,0.15)" stroke="#5a9fd4" stroke-width="0.8"/>
+            <text x="230" y="260" text-anchor="middle" fill="#5a9fd4" font-size="10" font-weight="600">T1: Ant 0/1</text>
+
+            <polygon points="274,256 284,256 284,268 274,268" fill="rgba(255,255,255,0.4)"/>
+
+            <rect x="288" y="244" width="80" height="24" rx="4" fill="rgba(16,185,129,0.12)" stroke="#10b981" stroke-width="0.8"/>
+            <text x="328" y="260" text-anchor="middle" fill="#10b981" font-size="10" font-weight="600">T2: Ant 2/3</text>
+
+            <polygon points="372,256 382,256 382,268 372,268" fill="rgba(255,255,255,0.4)"/>
+
+            <rect x="386" y="244" width="80" height="24" rx="4" fill="rgba(139,92,246,0.12)" stroke="#8b5cf6" stroke-width="0.8"/>
+            <text x="426" y="260" text-anchor="middle" fill="#8b5cf6" font-size="10" font-weight="600">T3: Ant 0/1</text>
+
+            <polygon points="470,256 480,256 480,268 470,268" fill="rgba(255,255,255,0.4)"/>
+
+            <rect x="484" y="244" width="90" height="24" rx="4" fill="rgba(245,158,11,0.1)" stroke="rgba(245,158,11,0.3)"/>
+            <text x="529" y="260" text-anchor="middle" fill="rgba(255,255,255,0.3)" font-size="10">…</text>
+
+            <!-- Arrows: UE → gNB -->
+            <path d="M140,130 C300,110 480,80 600,90" fill="none" stroke="#f0a050" stroke-width="1.5" stroke-dasharray="6,3" opacity="0.5"/>
+            <text x="370" y="100" text-anchor="middle" fill="rgba(240,160,80,0.5)" font-size="9">SRS 上行探测</text>
+
+            <text x="230" y="294" fill="rgba(255,255,255,0.3)" font-size="9">基站将多时刻测量整合 → 获得全部天线信道信息 → Massive MIMO 波束成形</text>
+          </svg>
+          <p class="diagram-caption">图一：1T4R 终端利用单一发射机，在不同时刻轮流连接至各接收天线发送 SRS 的原理</p>
+        </div>
+
+        <h4>二、AS Div：天线切换分集</h4>
+
+        <p>AS Div 是终端的<strong>接收分集</strong>技术，通过智能选择信号质量最优的天线进行数据接收，提升下行接收性能与上行链路质量。其切换由多种准则联合触发 <span class="ref">[3][5]</span>：</p>
+
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>触发准则</th><th>机制</th><th>回切条件</th></tr></thead>
+            <tbody>
+              <tr><td><strong>RSRP 差值触发</strong></td><td>主接收与分集接收路径的 RSRP 差值超过预设阈值</td><td>差值回落至阈值以下</td></tr>
+              <tr><td><strong>发射功率监控</strong></td><td>达到最大发射功率极限的次数超过设定值</td><td>功率余量恢复</td></tr>
+              <tr><td><strong>TPC 命令追踪</strong></td><td>新天线上功率跃升超过阈值时触发回切</td><td>功率稳定</td></tr>
+            </tbody>
+          </table>
+          <p class="table-caption">表1：AS Div 的三种天线切换触发准则 <span class="ref">[5]</span></p>
+        </div>
+
+        <p>在载波聚合（CA）场景中，改进方案对主小区（PCell）与辅小区（SCell）采用<strong>独立切换控制</strong>，避免辅小区盲目跟随主小区切换而导致性能劣化。</p>
+
+        <h4>三、SRS 与 AS Div 的协同机制</h4>
+
+        <p>在双连接（EN-DC 或 NR CA）模式下，SRS 天线切换与 AS Div 的协同尤为关键。当 NR 载波执行 SRS 探测时，若 LTE 的射频路径与被探测天线<strong>共享同一物理通路</strong>，SRS 天线切换的瞬态中断会导致 LTE 通信掉线 <span class="ref">[4][6]</span>。</p>
+
+        <!-- 协同机制流程图 -->
+        <div class="diagram-container">
+          <svg viewBox="0 0 800 180" xmlns="http://www.w3.org/2000/svg">
+            <text x="400" y="22" text-anchor="middle" fill="#fff" font-size="14" font-weight="600">图二 · SRS 与 AS Div 协同机制</text>
+
+            <rect x="20" y="42" width="170" height="56" rx="8" fill="rgba(90,159,212,0.12)" stroke="#5a9fd4" stroke-width="1.2"/>
+            <text x="105" y="64" text-anchor="middle" fill="#5a9fd4" font-size="11" font-weight="700">① 天线分组识别</text>
+            <text x="105" y="84" text-anchor="middle" fill="rgba(255,255,255,0.6)" font-size="9">识别各载波 TX 路径</text>
+            <text x="105" y="96" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-size="8">所属天线组（顶部/底部面板）</text>
+
+            <polygon points="194,70 208,70 208,82 194,82" fill="rgba(255,255,255,0.4)"/>
+
+            <rect x="212" y="42" width="170" height="56" rx="8" fill="rgba(16,185,129,0.12)" stroke="#10b981" stroke-width="1.2"/>
+            <text x="297" y="64" text-anchor="middle" fill="#10b981" font-size="11" font-weight="700">② RF 路径评估</text>
+            <text x="297" y="84" text-anchor="middle" fill="rgba(255,255,255,0.6)" font-size="9">搜索可选路径，优先</text>
+            <text x="297" y="96" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-size="8">选择级联开关最少的路径</text>
+
+            <polygon points="386,70 400,70 400,82 386,82" fill="rgba(255,255,255,0.4)"/>
+
+            <rect x="404" y="42" width="200" height="56" rx="8" fill="rgba(74,222,128,0.12)" stroke="#4ade80" stroke-width="1.2"/>
+            <text x="504" y="64" text-anchor="middle" fill="#4ade80" font-size="11" font-weight="700">③ 联合重配置</text>
+            <text x="504" y="84" text-anchor="middle" fill="rgba(255,255,255,0.6)" font-size="9">动态将冲突载波路径切换至</text>
+            <text x="504" y="96" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-size="8">另一侧天线，保障双连接通信连续</text>
+
+            <polygon points="608,70 622,70 622,82 608,82" fill="rgba(74,222,128,0.6)"/>
+
+            <rect x="626" y="42" width="150" height="56" rx="8" fill="rgba(74,222,128,0.18)" stroke="#4ade80" stroke-width="1.5"/>
+            <text x="701" y="76" text-anchor="middle" fill="#4ade80" font-size="12" font-weight="700">✅ 无中断</text>
+
+            <text x="400" y="128" text-anchor="middle" fill="rgba(255,255,255,0.35)" font-size="10">核心思想：射频前端共享资源 → 冲突检测 → 路径重映射 → 双载波并发无中断</text>
+          </svg>
+          <p class="diagram-caption">图二：EN-DC 场景下 SRS 天线切换与 AS Div 的三步协同流程</p>
+        </div>
+
+        <h4>四、总结</h4>
+
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>技术</th><th>角色</th><th>核心功能</th><th>关键配置</th></tr></thead>
+            <tbody>
+              <tr><td><strong>SRS</strong></td><td>上行探测</td><td>辅助基站评估信道，利用互易性优化下行 MCS 与预编码</td><td>xTyR 配置、天线轮询切换</td></tr>
+              <tr><td><strong>AS Div</strong></td><td>接收分集</td><td>智能切换天线，维持最优接收性能与上行链路质量</td><td>RSRP / 功率 / TPC 多准则触发</td></tr>
+              <tr><td><strong>协同</strong></td><td>资源协调</td><td>RF 前端路径联合重配置，避免 SRS 探测瞬态中断</td><td>天线分组 → 路径评估 → 重映射</td></tr>
+            </tbody>
+          </table>
+          <p class="table-caption">表2：SRS / AS Div / 协同机制的技术对比 <span class="ref">[1]–[6]</span></p>
+        </div>
+
+        <h4>附：SRS 跳频机制——天线端口轮询</h4>
+
+        <p>SRS 所称「跳频」并非频率跳变（Frequency Hopping），而是指<strong>天线端口的时分轮询切换</strong>——终端利用数量有限的发射机（TX），在不同时刻轮流连接至多根接收天线（RX），向基站发送探测信号。</p>
+
+        <p>以 <strong>1T4R</strong> 为例：终端仅 1 个发射机，需探测 4 根接收天线。在时刻 T₁ 连接 Ant 0/1、时刻 T₂ 连接 Ant 2/3，交替发送 SRS。基站将各时刻测量结果整合，获得全部天线的信道信息，为下行 <strong>Massive MIMO 波束成形</strong>提供依据 <span class="ref">[1][2]</span>。</p>
+
+        <p>该机制的核心代价是<strong>天线切换瞬时中断</strong>——射频前端物理开关的切换短暂打断正在进行的业务接收（如 LTE 数据），这正是前文「SRS 与 AS Div 协同」所解决的根本冲突。</p>
+
+        <h4>参考文献</h4>
+        <ol class="refs">
+          <li>3GPP TS 38.211, "NR; Physical channels and modulation," V18.3.0, 2024, §6.4.1 (SRS).</li>
+          <li>3GPP TS 38.214, "NR; Physical layer procedures for data," V18.3.0, 2024, §6.2.1 (SRS resource configuration).</li>
+          <li>3GPP TS 38.101-1, "NR; UE radio transmission and reception; Part 1," V18.5.0, 2024, §6.2 (UE power class, MPR, xTyR capability).</li>
+          <li>3GPP TR 38.876, "Study on NR SRS antenna switching enhancement," V17.0.0, 2022, §5.</li>
+          <li>E. Dahlman, S. Parkvall, and J. Sköld, <em>5G NR: The Next Generation Wireless Access Technology</em>, 2nd ed., Academic Press, 2020, Ch. 8 (Uplink Physical-Layer Processing).</li>
+          <li>3GPP TS 38.213, "NR; Physical layer procedures for control," V18.3.0, 2024, §7 (SRS switching and EN-DC coordination).</li>
+        </ol>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
 <section class="section section-light" id="reading">
   <div class="section-inner">
