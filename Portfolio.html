@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>小美 | 半导体 · 好奇 · 成长</title>
+  <style>
+    :root {
+      --black: #000000;
+      --near-black: #1d1d1f;
+      --light-gray: #f5f5f7;
+      --white: #ffffff;
+      --apple-blue: #0071e3;
+      --link-blue: #0066cc;
+      --text-secondary: rgba(0, 0, 0, 0.8);
+      --text-tertiary: rgba(0, 0, 0, 0.48);
+      --nav-glass-bg: rgba(0, 0, 0, 0.8);
+      --card-bg: #ffffff;
+      --card-shadow: 0 2px 12px rgba(0,0,0,0.08);
+      --accent-gold: #b8860b;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      background: var(--white);
+      color: var(--near-black);
+      line-height: 1.47;
+      letter-spacing: -0.374px;
+    }
+
+    /* Navigation */
+    .nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      height: 48px;
+      background: var(--nav-glass-bg);
+      backdrop-filter: saturate(180%) blur(20px);
+      -webkit-backdrop-filter: saturate(180%) blur(20px);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .nav-inner {
+      max-width: 980px; width: 100%; padding: 0 22px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-logo {
+      font-size: 21px; font-weight: 600; color: var(--white);
+      text-decoration: none; letter-spacing: -0.28px;
+    }
+    .nav-links { display: flex; list-style: none; gap: 28px; }
+    .nav-links a {
+      font-size: 12px; font-weight: 400;
+      color: rgba(255,255,255,0.8); text-decoration: none;
+      letter-spacing: -0.12px; transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--white); }
+
+    /* Hero */
+    .hero {
+      min-height: 100vh; display: flex; align-items: center;
+      justify-content: center; background: var(--black);
+      text-align: center; padding: 80px 24px 60px;
+    }
+    .hero-content { max-width: 680px; }
+    .hero-eyebrow {
+      font-size: 21px; font-weight: 400;
+      color: rgba(255,255,255,0.64);
+      letter-spacing: 0.231px; margin-bottom: 8px;
+    }
+    .hero-name {
+      font-size: 56px; font-weight: 600; color: var(--white);
+      letter-spacing: -0.28px; line-height: 1.07; margin-bottom: 20px;
+    }
+    .hero-subtitle {
+      font-size: 19px; font-weight: 400; color: rgba(255,255,255,0.8);
+      letter-spacing: 0.1px; line-height: 1.6; margin-bottom: 32px;
+      max-width: 560px; margin-left: auto; margin-right: auto;
+    }
+    .hero-ctas { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+    .btn-primary {
+      display: inline-block; background: var(--apple-blue);
+      color: var(--white); padding: 10px 20px; border-radius: 8px;
+      font-size: 17px; text-decoration: none; transition: background 0.2s;
+    }
+    .btn-primary:hover { background: #0077ed; }
+    .btn-outline {
+      display: inline-block; background: transparent; color: var(--white);
+      padding: 10px 20px; border-radius: 980px;
+      font-size: 17px; text-decoration: none;
+      border: 1px solid rgba(255,255,255,0.4);
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .btn-outline:hover { border-color: var(--white); background: rgba(255,255,255,0.1); }
+
+    /* Section Common */
+    .section { padding: 100px 24px; }
+    .section-dark { background: var(--black); color: var(--white); }
+    .section-light { background: var(--light-gray); color: var(--near-black); }
+    .section-inner { max-width: 800px; margin: 0 auto; }
+    .section-label {
+      font-size: 14px; font-weight: 600; letter-spacing: -0.224px;
+      text-transform: uppercase; margin-bottom: 12px;
+    }
+    .section-light .section-label { color: rgba(0,0,0,0.48); }
+    .section-dark .section-label { color: rgba(255,255,255,0.48); }
+    .section-heading {
+      font-size: 40px; font-weight: 600; letter-spacing: 0;
+      line-height: 1.10; margin-bottom: 16px;
+    }
+    .section-desc {
+      font-size: 17px; font-weight: 400; line-height: 1.47;
+      letter-spacing: -0.374px; margin-bottom: 48px; max-width: 560px;
+    }
+    .section-light .section-desc { color: var(--text-secondary); }
+    .section-dark .section-desc { color: rgba(255,255,255,0.64); }
+
+    /* Resume - Intro Card */
+    .resume-intro {
+      background: var(--card-bg); border-radius: 12px;
+      padding: 32px; box-shadow: var(--card-shadow); margin-bottom: 40px;
+    }
+    .resume-intro p {
+      font-size: 17px; line-height: 1.7; margin-bottom: 16px;
+    }
+    .resume-intro p:last-child { margin-bottom: 0; }
+    .resume-highlights {
+      display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px;
+    }
+    .resume-tag {
+      font-size: 13px; padding: 5px 14px; border-radius: 980px;
+      background: #e8f0fe; color: #1a73e8; font-weight: 500;
+    }
+
+    /* Work Experience */
+    .exp-card {
+      background: var(--card-bg); border-radius: 12px;
+      box-shadow: var(--card-shadow); margin-bottom: 20px;
+      overflow: hidden;
+    }
+    .exp-header {
+      padding: 24px 28px; cursor: pointer;
+      display: flex; justify-content: space-between; align-items: flex-start;
+      gap: 16px;
+    }
+    .exp-header:hover { background: #fafafa; }
+    .exp-company {
+      font-size: 19px; font-weight: 600; letter-spacing: -0.16px;
+    }
+    .exp-role {
+      font-size: 15px; font-weight: 500; color: var(--text-secondary);
+      margin-top: 2px;
+    }
+    .exp-meta {
+      text-align: right; flex-shrink: 0;
+    }
+    .exp-date {
+      font-size: 13px; color: var(--text-tertiary); letter-spacing: -0.12px;
+    }
+    .exp-location {
+      font-size: 13px; color: var(--text-tertiary); margin-top: 2px;
+    }
+
+    /* Collapsible details */
+    .exp-details {
+      max-height: 0; overflow: hidden;
+      transition: max-height 0.4s ease;
+    }
+    .exp-card.open .exp-details {
+      max-height: 3000px;
+    }
+    .exp-details-inner {
+      padding: 0 28px 28px;
+      border-top: 1px solid #eee;
+    }
+    .exp-details-inner h4 {
+      font-size: 15px; font-weight: 600; margin: 20px 0 8px;
+      color: var(--near-black);
+    }
+    .exp-details-inner h4:first-child { margin-top: 16px; }
+    .exp-details-inner ul {
+      list-style: none; padding-left: 0;
+    }
+    .exp-details-inner li {
+      font-size: 15px; line-height: 1.7; padding: 6px 0;
+      padding-left: 16px; position: relative;
+      color: var(--text-secondary);
+    }
+    .exp-details-inner li::before {
+      content: "—"; position: absolute; left: 0; color: var(--apple-blue);
+      font-weight: 600;
+    }
+    .exp-arrow {
+      font-size: 12px; color: var(--text-tertiary);
+      transition: transform 0.3s; margin-top: 4px;
+    }
+    .exp-card.open .exp-arrow { transform: rotate(180deg); }
+    .exp-toggle-hint {
+      font-size: 12px; color: var(--apple-blue); margin-top: 4px;
+    }
+    .exp-card.open .exp-toggle-hint { display: none; }
+
+    /* Education & Honors */
+    .edu-block {
+      background: var(--card-bg); border-radius: 12px;
+      padding: 32px; box-shadow: var(--card-shadow); margin-bottom: 20px;
+    }
+    .edu-block h3 {
+      font-size: 19px; font-weight: 600; margin-bottom: 20px;
+      letter-spacing: -0.16px;
+    }
+    .edu-item {
+      display: flex; justify-content: space-between; align-items: baseline;
+      padding: 8px 0; border-bottom: 1px solid #f0f0f0;
+    }
+    .edu-item:last-child { border-bottom: none; }
+    .edu-degree { font-size: 15px; color: var(--near-black); }
+    .edu-school { font-size: 14px; color: var(--text-tertiary); margin-top: 2px; }
+    .edu-date { font-size: 13px; color: var(--text-tertiary); flex-shrink: 0; margin-left: 16px; }
+
+    .honor-list { list-style: none; }
+    .honor-list li {
+      font-size: 14px; line-height: 1.7; padding: 6px 0;
+      padding-left: 16px; position: relative;
+      color: var(--text-secondary);
+    }
+    .honor-list li::before {
+      content: "✦"; position: absolute; left: 0;
+      color: var(--accent-gold); font-size: 10px; top: 10px;
+    }
+
+    /* Placeholder sections */
+    .placeholder-card {
+      background: var(--card-bg); border-radius: 12px;
+      padding: 48px 32px; box-shadow: var(--card-shadow);
+      text-align: center;
+    }
+    .placeholder-icon { font-size: 48px; margin-bottom: 16px; }
+    .placeholder-title {
+      font-size: 21px; font-weight: 600; margin-bottom: 8px;
+      letter-spacing: -0.16px;
+    }
+    .placeholder-desc {
+      font-size: 15px; color: var(--text-tertiary); line-height: 1.6;
+    }
+
+    /* Footer */
+    .footer {
+      background: var(--light-gray); color: var(--text-tertiary);
+      padding: 32px 24px; text-align: center;
+      font-size: 12px; letter-spacing: -0.12px;
+    }
+
+    /* Animations */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .hero-content { animation: fadeUp 0.8s ease-out; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .hero-content { animation: none; }
+    }
+
+    /* Responsive */
+    @media (max-width: 834px) {
+      .hero-name { font-size: 40px; }
+      .hero-subtitle { font-size: 17px; }
+      .section-heading { font-size: 32px; }
+      .nav-links { display: none; }
+      .exp-header { flex-direction: column; }
+      .exp-meta { text-align: left; }
+    }
+    @media (max-width: 480px) {
+      .hero-name { font-size: 32px; }
+      .hero { padding: 60px 16px 40px; }
+      .section { padding: 64px 16px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Navigation -->
+<nav class="nav" role="navigation">
+  <div class="nav-inner">
+    <a href="#" class="nav-logo">小美</a>
+    <ul class="nav-links">
+      <li><a href="#resume">履历</a></li>
+      <li><a href="#deepdive">专业深挖</a></li>
+      <li><a href="#reading">读书笔记</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-content">
+    <p class="hero-eyebrow">半导体从业者 &amp; 好奇家</p>
+    <h1 class="hero-name">你好，我是小美</h1>
+    <p class="hero-subtitle">
+      10 年+ 射频芯片研发，国家级青年人才，30 余项专利。<br>
+      从硅谷创业到深圳研发管理，服务华为、苹果、三星等全球顶级供应链。<br>
+      在事业成熟期，寻求更广阔平台，持续自我提升。
+    </p>
+    <div class="hero-ctas">
+      <a href="#resume" class="btn-primary">查看履历</a>
+      <a href="#deepdive" class="btn-outline">专业深挖</a>
+    </div>
+  </div>
+</section>
+
+<!-- 履历 -->
+<section class="section section-light" id="resume">
+  <div class="section-inner">
+    <p class="section-label">履历</p>
+    <h2 class="section-heading">专业轨迹</h2>
+    <p class="section-desc">
+      拥有 10 年以上射频领域经验的连续创业者和技术管理者。职业路径涵盖美国雷达创业公司创始成员 → Skyworks/Qorvo 高级工程师 → 国内射频创业公司创始研发人，兼具国际大厂系统化研发思维与多国创业实战经验。
+    </p>
+
+    <!-- 稳态摘要 -->
+    <div class="resume-intro">
+      <p>
+        <strong>核心领域：</strong>基站射频模组及手机射频前端模组（Sub6 L-FEM、L-PAMiD、DiFEM、Wi-Fi FEM、LNA Bank），覆盖从产品定义到量产交付的全流程。
+      </p>
+      <p>
+        <strong>客户网络：</strong>三星、华为、OPPO、DJI、诺基亚等全球顶级品牌供应链，累计贡献销售额数亿元。
+      </p>
+      <div class="resume-highlights">
+        <span class="resume-tag">🏆 国家级青年人才</span>
+        <span class="resume-tag">🎓 南方科技大学校外硕导</span>
+        <span class="resume-tag">📜 副高级工程师</span>
+        <span class="resume-tag">📋 专利 30+ 项</span>
+      </div>
+    </div>
+
+    <!-- 工作经历 -->
+    <h3 style="font-size:21px;font-weight:600;margin-bottom:20px;letter-spacing:-0.16px;">工作经历</h3>
+
+    <!-- 锐石创芯 -->
+    <div class="exp-card" id="exp-radrock" onclick="this.classList.toggle('open')">
+      <div class="exp-header">
+        <div>
+          <div class="exp-company">锐石创芯（Radrock）</div>
+          <div class="exp-role">高级研发经理</div>
+        </div>
+        <div class="exp-meta">
+          <div class="exp-date">2020 年至今</div>
+          <div class="exp-location">中国</div>
+          <div class="exp-toggle-hint">点击展开详情</div>
+          <div class="exp-arrow">▼</div>
+        </div>
+      </div>
+      <div class="exp-details">
+        <div class="exp-details-inner">
+          <h4>团队与体系建设</h4>
+          <ul>
+            <li>从 0 到 1 组建接收链路、模组及滤波器研发团队（15-20 人），培养具备全链条能力的核心技术队伍</li>
+            <li>主导从产品定义到量产交付的全流程，建立标准化研发设计流程，搭建 IP 库及自动化测试平台，提升开发效率并降低开发成本</li>
+            <li>主导实现模组及内部核心芯片的全面自研与国产化替代，保障供应链自主可控</li>
+          </ul>
+
+          <h4>产品线核心战绩</h4>
+          <ul>
+            <li><strong>Sub6 L-FEM/L-PAMiF</strong>（5 代全量产）：功耗 ↓50%（14mA→7mA，业界领先），增益 ↑至 18.5dB。第 4 代成本实现业界最优，成为公司营收主力</li>
+            <li><strong>DiFEM</strong>（4 核 1X，2026 战略重点）：第 3 代综合性能超越高通（Qualcomm），成本 ↓55%，开发效率 ↑3 倍</li>
+            <li><strong>LNA Bank</strong>：功耗 ↓33%（12mA→8mA），增益 ↑至 21dB，保持行业领先和迭代节奏</li>
+            <li><strong>Wi-Fi FEM</strong>：业界首家为 DJI 定制 FEM；手机方向布局已完成</li>
+            <li><strong>L-PAMiD</strong>：全国产供应链，量产 2 代</li>
+          </ul>
+
+          <h4>关键成果</h4>
+          <ul>
+            <li>性能领先：主力 L-FEM 性能国际一流，DiFEM 综合性能超越高通</li>
+            <li>成本控制：多条核心产品线综合成本降低 40%-55%</li>
+            <li>研发效率：通过流程优化，研发效率大幅提升</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Skyworks -->
+    <div class="exp-card" id="exp-skyworks" onclick="this.classList.toggle('open')">
+      <div class="exp-header">
+        <div>
+          <div class="exp-company">Skyworks Solutions Inc.</div>
+          <div class="exp-role">高级射频工程师</div>
+        </div>
+        <div class="exp-meta">
+          <div class="exp-date">2015–2020</div>
+          <div class="exp-location">美国</div>
+          <div class="exp-toggle-hint">点击展开详情</div>
+          <div class="exp-arrow">▼</div>
+        </div>
+      </div>
+      <div class="exp-details">
+        <div class="exp-details-inner">
+          <h4>核心项目</h4>
+          <ul>
+            <li><strong>华为旗舰项目（PAMiD, SKY78113）</strong>：负责模组开发，成功解决 TX LKG 等关键难题，项目顺利量产并出货至华为旗舰机型</li>
+            <li><strong>苹果定制项目（UHB77830）</strong>：参与苹果定制项目，负责 n77/n79 频段收发模组的开发</li>
+            <li><strong>诺基亚 5G 基站项目</strong>：负责 5G 手机基站收发模组研发，成功实现多区定制模组量产，解决了切换时间、TRX 开关功率耐受性、NF 等关键难题</li>
+            <li>QM22245 Wi-Fi 产品成功量产出货至苹果</li>
+          </ul>
+          <h4>荣誉</h4>
+          <ul><li>Skyworks 期间获得 Customer Focused Award 等 7 项公司奖励</li></ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- VetGuardian -->
+    <div class="exp-card" id="exp-vetguardian" onclick="this.classList.toggle('open')">
+      <div class="exp-header">
+        <div>
+          <div class="exp-company">VetGuardian</div>
+          <div class="exp-role">雷达系统开发工程师 &amp; 创始成员</div>
+        </div>
+        <div class="exp-meta">
+          <div class="exp-date">2013–2014</div>
+          <div class="exp-location">美国</div>
+          <div class="exp-toggle-hint">点击展开详情</div>
+          <div class="exp-arrow">▼</div>
+        </div>
+      </div>
+      <div class="exp-details">
+        <div class="exp-details-inner">
+          <ul>
+            <li>作为创始成员，负责 5.8GHz 生命体征检测雷达系统的完整开发和项目导入验证</li>
+            <li>负责雷达系统设计，主导系统中 LNA（pHEMT）和 PA（HBT）的设计与测试</li>
+            <li>开发 Data-Length-Variation 算法，实现心跳信号的快速与精确提取</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- 教育经历 -->
+    <div class="edu-block" style="margin-top:40px;">
+      <h3>🎓 教育经历</h3>
+      <div class="edu-item">
+        <div>
+          <div class="edu-degree">Ph.D，电子与计算机工程</div>
+          <div class="edu-school">University of Florida</div>
+        </div>
+        <div class="edu-date">2014–2017</div>
+      </div>
+      <div class="edu-item">
+        <div>
+          <div class="edu-degree">Master，电子与计算机工程</div>
+          <div class="edu-school">University of Florida</div>
+        </div>
+        <div class="edu-date">2012–2013</div>
+      </div>
+      <div class="edu-item">
+        <div>
+          <div class="edu-degree">学士 &amp; 硕士，光电信息工程</div>
+          <div class="edu-school">哈尔滨工业大学</div>
+        </div>
+        <div class="edu-date">2005–2011</div>
+      </div>
+    </div>
+
+    <!-- 荣誉 -->
+    <div class="edu-block">
+      <h3>🏅 荣誉与资质</h3>
+      <ul class="honor-list">
+        <li>2024 — 南方科技大学校外硕士导师，副高级工程师，广东省人才优粤卡持卡人</li>
+        <li>2023 — 深圳市福田区福田英才</li>
+        <li>2022 — 国家级青年人才</li>
+        <li>2021 — 深圳市海外高层次 C 类人才</li>
+        <li>2020 至今 — 锐石创芯优秀项目奖、客户导向奖、最佳品质奖、创新创意奖等 10 余项公司奖励</li>
+        <li>2017–2020 — Skyworks Customer Focused Award 等 7 项公司奖励</li>
+        <li>2017 — Doctoral Dissertation Award $24K, University of Florida</li>
+        <li>2014 — 3rd Place, IMS 2014 Student Radar Competition</li>
+        <li>2014 — IMS and RFIC Ph.D Sponsorship Initiative</li>
+        <li>2012 — Achievement Award $12K, University of Florida</li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+<!-- 专业深挖 -->
+<section class="section section-dark" id="deepdive">
+  <div class="section-inner">
+    <p class="section-label">专业深挖与拓展</p>
+    <h2 class="section-heading">技术思考</h2>
+    <p class="section-desc">
+      在射频芯片领域深耕多年，不断拓展认知边界。这里记录我的技术洞察、行业观察和跨领域探索。
+    </p>
+    <div class="placeholder-card" style="background:rgba(255,255,255,0.04);">
+      <div class="placeholder-icon">📡</div>
+      <div class="placeholder-title" style="color:var(--white);">内容即将上线</div>
+      <div class="placeholder-desc" style="color:rgba(255,255,255,0.48);">
+        技术文章、行业分析、项目复盘…<br>敬请期待
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 读书笔记 -->
+<section class="section section-light" id="reading">
+  <div class="section-inner">
+    <p class="section-label">读书笔记</p>
+    <h2 class="section-heading">阅读与思考</h2>
+    <p class="section-desc">
+      读书是成本最低的旅行。这里记录我的阅读感悟，从技术到人文，从商业到哲学。
+    </p>
+    <div class="placeholder-card">
+      <div class="placeholder-icon">📚</div>
+      <div class="placeholder-title">读书笔记即将上线</div>
+      <div class="placeholder-desc">正在整理阅读记录…敬请期待</div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+  <p>© 2026 小美. All rights reserved.</p>
+</footer>
+
+</body>
+</html>

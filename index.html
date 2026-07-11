@@ -1,0 +1,2285 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>小美 | 半导体 · 好奇 · 成长</title>
+  <style>
+    :root {
+      --black: #000000;
+      --near-black: #1d1d1f;
+      --light-gray: #f5f5f7;
+      --white: #ffffff;
+      --apple-blue: #0071e3;
+      --link-blue: #0066cc;
+      --text-secondary: rgba(0, 0, 0, 0.8);
+      --text-tertiary: rgba(0, 0, 0, 0.48);
+      --nav-glass-bg: rgba(0, 0, 0, 0.8);
+      --card-bg: #ffffff;
+      --card-shadow: 0 2px 12px rgba(0,0,0,0.08);
+      --accent-gold: #b8860b;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      background: var(--white);
+      color: var(--near-black);
+      line-height: 1.47;
+      letter-spacing: -0.374px;
+    }
+
+    /* Navigation */
+    .nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      height: 48px;
+      background: var(--nav-glass-bg);
+      backdrop-filter: saturate(180%) blur(20px);
+      -webkit-backdrop-filter: saturate(180%) blur(20px);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .nav-inner {
+      max-width: 980px; width: 100%; padding: 0 22px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-logo {
+      font-size: 21px; font-weight: 600; color: var(--white);
+      text-decoration: none; letter-spacing: -0.28px;
+    }
+    .nav-links { display: flex; list-style: none; gap: 28px; }
+    .nav-links a {
+      font-size: 12px; font-weight: 400;
+      color: rgba(255,255,255,0.8); text-decoration: none;
+      letter-spacing: -0.12px; transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--white); }
+
+    /* Hero */
+    .hero {
+      min-height: 100vh; display: flex; align-items: center;
+      justify-content: center; background: var(--black);
+      text-align: center; padding: 80px 24px 60px;
+    }
+    .hero-content { max-width: 680px; }
+    .hero-eyebrow {
+      font-size: 21px; font-weight: 400;
+      color: rgba(255,255,255,0.64);
+      letter-spacing: 0.231px; margin-bottom: 8px;
+    }
+    .hero-name {
+      font-size: 56px; font-weight: 600; color: var(--white);
+      letter-spacing: -0.28px; line-height: 1.07; margin-bottom: 20px;
+    }
+    .hero-subtitle {
+      font-size: 19px; font-weight: 400; color: rgba(255,255,255,0.8);
+      letter-spacing: 0.1px; line-height: 1.6; margin-bottom: 32px;
+      max-width: 560px; margin-left: auto; margin-right: auto;
+    }
+    .hero-ctas { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+    .btn-primary {
+      display: inline-block; background: var(--apple-blue);
+      color: var(--white); padding: 10px 20px; border-radius: 8px;
+      font-size: 17px; text-decoration: none; transition: background 0.2s;
+    }
+    .btn-primary:hover { background: #0077ed; }
+    .btn-outline {
+      display: inline-block; background: transparent; color: var(--white);
+      padding: 10px 20px; border-radius: 980px;
+      font-size: 17px; text-decoration: none;
+      border: 1px solid rgba(255,255,255,0.4);
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .btn-outline:hover { border-color: var(--white); background: rgba(255,255,255,0.1); }
+
+    /* Section Common */
+    .section { padding: 100px 24px; }
+    .section-dark { background: var(--black); color: var(--white); }
+    .section-light { background: var(--light-gray); color: var(--near-black); }
+    .section-inner { max-width: 800px; margin: 0 auto; }
+    .section-label {
+      font-size: 14px; font-weight: 600; letter-spacing: -0.224px;
+      text-transform: uppercase; margin-bottom: 12px;
+    }
+    .section-light .section-label { color: rgba(0,0,0,0.48); }
+    .section-dark .section-label { color: rgba(255,255,255,0.48); }
+    .section-heading {
+      font-size: 40px; font-weight: 600; letter-spacing: 0;
+      line-height: 1.10; margin-bottom: 16px;
+    }
+    .section-desc {
+      font-size: 17px; font-weight: 400; line-height: 1.47;
+      letter-spacing: -0.374px; margin-bottom: 48px; max-width: 560px;
+    }
+    .section-light .section-desc { color: var(--text-secondary); }
+    .section-dark .section-desc { color: rgba(255,255,255,0.64); }
+
+    /* Resume - Intro Card */
+    .resume-intro {
+      background: var(--card-bg); border-radius: 12px;
+      padding: 32px; box-shadow: var(--card-shadow); margin-bottom: 40px;
+    }
+    .resume-intro p {
+      font-size: 17px; line-height: 1.7; margin-bottom: 16px;
+    }
+    .resume-intro p:last-child { margin-bottom: 0; }
+    .resume-highlights {
+      display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px;
+    }
+    .resume-tag {
+      font-size: 13px; padding: 5px 14px; border-radius: 980px;
+      background: #e8f0fe; color: #1a73e8; font-weight: 500;
+    }
+
+    /* Work Experience */
+    .exp-card {
+      background: var(--card-bg); border-radius: 12px;
+      box-shadow: var(--card-shadow); margin-bottom: 20px;
+      overflow: hidden;
+    }
+    .exp-header {
+      padding: 24px 28px; cursor: pointer;
+      display: flex; justify-content: space-between; align-items: flex-start;
+      gap: 16px;
+    }
+    .exp-header:hover { background: #fafafa; }
+    .exp-company {
+      font-size: 19px; font-weight: 600; letter-spacing: -0.16px;
+    }
+    .exp-role {
+      font-size: 15px; font-weight: 500; color: var(--text-secondary);
+      margin-top: 2px;
+    }
+    .exp-meta {
+      text-align: right; flex-shrink: 0;
+    }
+    .exp-date {
+      font-size: 13px; color: var(--text-tertiary); letter-spacing: -0.12px;
+    }
+    .exp-location {
+      font-size: 13px; color: var(--text-tertiary); margin-top: 2px;
+    }
+
+    /* Collapsible details */
+    .exp-details {
+      max-height: 0; overflow: hidden;
+      transition: max-height 0.4s ease;
+    }
+    .exp-card.open .exp-details {
+      max-height: 3000px;
+    }
+    .exp-details-inner {
+      padding: 0 28px 28px;
+      border-top: 1px solid #eee;
+    }
+    .exp-details-inner h4 {
+      font-size: 15px; font-weight: 600; margin: 20px 0 8px;
+      color: var(--near-black);
+    }
+    .exp-details-inner h4:first-child { margin-top: 16px; }
+    .exp-details-inner ul {
+      list-style: none; padding-left: 0;
+    }
+    .exp-details-inner li {
+      font-size: 15px; line-height: 1.7; padding: 6px 0;
+      padding-left: 16px; position: relative;
+      color: var(--text-secondary);
+    }
+    .exp-details-inner li::before {
+      content: "—"; position: absolute; left: 0; color: var(--apple-blue);
+      font-weight: 600;
+    }
+    .exp-arrow {
+      font-size: 12px; color: var(--text-tertiary);
+      transition: transform 0.3s; margin-top: 4px;
+    }
+    .exp-card.open .exp-arrow { transform: rotate(180deg); }
+    .exp-toggle-hint {
+      font-size: 12px; color: var(--apple-blue); margin-top: 4px;
+    }
+    .exp-card.open .exp-toggle-hint { display: none; }
+
+    /* Education & Honors */
+    .edu-block {
+      background: var(--card-bg); border-radius: 12px;
+      padding: 32px; box-shadow: var(--card-shadow); margin-bottom: 20px;
+    }
+    .edu-block h3 {
+      font-size: 21px; font-weight: 600; margin-bottom: 20px;
+      letter-spacing: -0.16px;
+    }
+    .edu-item {
+      display: flex; justify-content: space-between; align-items: baseline;
+      padding: 8px 0; border-bottom: 1px solid #f0f0f0;
+    }
+    .edu-item:last-child { border-bottom: none; }
+    .edu-degree { font-size: 15px; color: var(--near-black); }
+    .edu-school { font-size: 14px; color: var(--text-tertiary); margin-top: 2px; }
+    .edu-date { font-size: 13px; color: var(--text-tertiary); flex-shrink: 0; margin-left: 16px; }
+
+    .honor-list { list-style: none; }
+    .honor-list li {
+      font-size: 14px; line-height: 1.7; padding: 6px 0;
+      padding-left: 16px; position: relative;
+      color: var(--text-secondary);
+    }
+    .honor-list li::before {
+      content: "✦"; position: absolute; left: 0;
+      color: var(--accent-gold); font-size: 10px; top: 10px;
+    }
+
+    /* Sub-navigation tabs */
+    .sub-nav {
+      display: flex; gap: 0; margin-bottom: 48px;
+      border-bottom: 1px solid rgba(255,255,255,0.12);
+    }
+    .sub-nav a {
+      font-size: 15px; font-weight: 500; color: rgba(255,255,255,0.48);
+      text-decoration: none; padding: 12px 24px;
+      border-bottom: 2px solid transparent;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .sub-nav a.active, .sub-nav a:hover {
+      color: var(--white);
+      border-bottom-color: var(--apple-blue);
+    }
+    .sub-panel { display: none; }
+    .sub-panel.active { display: block; }
+
+    /* Article styles */
+    .article-body {
+      font-size: 16px; line-height: 1.8; color: rgba(255,255,255,0.85);
+    }
+    .article-body h3 {
+      font-size: 24px; font-weight: 600; color: var(--white);
+      margin: 40px 0 16px; letter-spacing: -0.16px;
+    }
+    .article-body h3:first-child { margin-top: 0; }
+    .article-body h4 {
+      font-size: 18px; font-weight: 600; color: rgba(255,255,255,0.9);
+      margin: 28px 0 10px;
+    }
+    .article-body p { margin-bottom: 14px; }
+    .article-body ul, .article-body ol {
+      margin: 8px 0 16px 20px;
+    }
+    .article-body li { margin-bottom: 6px; }
+    .article-body strong { color: var(--white); }
+    .article-body table {
+      width: 100%; border-collapse: collapse; margin: 20px 0;
+      font-size: 14px;
+    }
+    .article-body th {
+      background: rgba(255,255,255,0.08); padding: 10px 14px;
+      text-align: left; font-weight: 600; color: var(--white);
+      border-bottom: 1px solid rgba(255,255,255,0.12);
+    }
+    .article-body td {
+      padding: 10px 14px; border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .table-wrap { margin: 24px 0; overflow-x: auto; }
+    .table-caption {
+      font-size: 12px; color: rgba(255,255,255,0.35);
+      margin-top: -12px; margin-bottom: 20px; text-align: center;
+    }
+    .article-body .ref {
+      font-size: 11px; color: rgba(255,255,255,0.4);
+      vertical-align: super;
+    }
+    .article-body ol.refs {
+      font-size: 12px; color: rgba(255,255,255,0.45);
+      margin: 16px 0 0 20px; line-height: 1.8;
+    }
+    .article-body ol.refs li { margin-bottom: 4px; }
+
+    .diagram-container {
+      margin: 32px 0; text-align: center;
+    }
+    .diagram-container svg {
+      max-width: 100%; height: auto;
+    }
+    .diagram-caption {
+      font-size: 13px; color: rgba(255,255,255,0.48);
+      margin-top: 10px; font-style: italic;
+    }
+    .diagram-container svg { cursor: pointer; transition: opacity 0.2s; }
+    .diagram-container svg:hover { opacity: 0.85; }
+
+    /* Lightbox overlay */
+    .lightbox {
+      display: none; position: fixed; top: 0; left: 0;
+      width: 100vw; height: 100vh; z-index: 9999;
+      background: rgba(0,0,0,0.92);
+      justify-content: center; align-items: center;
+      cursor: zoom-out;
+    }
+    .lightbox.active { display: flex; }
+    .lightbox svg {
+      width: 95vw; height: 95vh; cursor: default;
+    }
+    .lightbox-close {
+      position: absolute; top: 20px; right: 30px;
+      font-size: 36px; color: rgba(255,255,255,0.6);
+      cursor: pointer; z-index: 10000;
+      line-height: 1; user-select: none;
+    }
+    .lightbox-close:hover { color: #fff; }
+
+    /* Placeholder sections */
+    .placeholder-card {
+      background: var(--card-bg); border-radius: 12px;
+      padding: 48px 32px; box-shadow: var(--card-shadow);
+      text-align: center;
+    }
+    .placeholder-icon { font-size: 48px; margin-bottom: 16px; }
+    .placeholder-title {
+      font-size: 21px; font-weight: 600; margin-bottom: 8px;
+      letter-spacing: -0.16px;
+    }
+    .placeholder-desc {
+      font-size: 15px; color: var(--text-tertiary); line-height: 1.6;
+    }
+
+    /* Footer */
+    .footer {
+      background: var(--light-gray); color: var(--text-tertiary);
+      padding: 32px 24px; text-align: center;
+      font-size: 12px; letter-spacing: -0.12px;
+    }
+
+    /* Animations */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .hero-content { animation: fadeUp 0.8s ease-out; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .hero-content { animation: none; }
+    }
+
+    /* Responsive */
+    @media (max-width: 834px) {
+      .hero-name { font-size: 40px; }
+      .hero-subtitle { font-size: 17px; }
+      .section-heading { font-size: 32px; }
+      .nav-links { display: none; }
+      .exp-header { flex-direction: column; }
+      .exp-meta { text-align: left; }
+    }
+    @media (max-width: 480px) {
+      .hero-name { font-size: 32px; }
+      .hero { padding: 60px 16px 40px; }
+      .section { padding: 64px 16px; }
+    }
+
+    /* Article cards (collapsible, dark theme) */
+    .article-card {
+      background: rgba(255,255,255,0.04);
+      border-radius: 12px; margin-bottom: 24px;
+      overflow: hidden; cursor: pointer;
+      transition: background 0.2s;
+    }
+    .article-card:hover { background: rgba(255,255,255,0.06); }
+    .article-card-header {
+      padding: 20px 24px;
+      display: flex; justify-content: space-between; align-items: flex-start;
+      gap: 16px;
+    }
+    .article-card-title {
+      font-size: 17px; font-weight: 600; color: var(--white);
+      letter-spacing: -0.16px;
+    }
+    .article-card-meta {
+      font-size: 13px; color: rgba(255,255,255,0.4); margin-top: 4px;
+    }
+    .article-card-arrow {
+      font-size: 12px; color: rgba(255,255,255,0.3);
+      transition: transform 0.3s; flex-shrink: 0; margin-top: 4px;
+    }
+    .article-card.open .article-card-arrow { transform: rotate(180deg); }
+    .article-card-body {
+      max-height: 0; overflow: hidden;
+      transition: max-height 0.5s ease;
+    }
+    .article-card.open .article-card-body { max-height: 12000px; }
+    .article-card-body-inner {
+      padding: 0 24px 24px;
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+    .article-card-body .article-body { padding-top: 16px; }
+
+    /* Article cards on light background */
+    .section-light .article-card {
+      background: var(--white); box-shadow: var(--card-shadow);
+    }
+    .section-light .article-card:hover { background: #f0f0f2; }
+    .section-light .article-card-title { color: var(--near-black); }
+    .section-light .article-card-meta { color: var(--text-tertiary); }
+    .section-light .article-card-arrow { color: rgba(0,0,0,0.2); }
+    .section-light .article-card-body-inner { border-top-color: rgba(0,0,0,0.06); }
+    .section-light .article-body { color: var(--text-secondary); }
+    .section-light .article-body h4 { color: var(--near-black); }
+    .section-light .article-body strong { color: var(--near-black); }
+  </style>
+</head>
+<body>
+
+<!-- Navigation -->
+<nav class="nav" role="navigation">
+  <div class="nav-inner">
+    <a href="#" class="nav-logo">小美</a>
+    <ul class="nav-links">
+      <li><a href="#resume">履历</a></li>
+      <li><a href="#deepdive">专业深挖</a></li>
+      <li><a href="#reading">读书笔记</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-content">
+    <p class="hero-eyebrow">半导体从业者 &amp; 好奇家</p>
+    <h1 class="hero-name">你好，我是小美</h1>
+    <p class="hero-subtitle">
+      10 年+ 射频芯片研发，国家级青年人才，30 余项专利。<br>
+      从美国创业和大厂研发到深圳研发管理，服务华为、苹果、三星等全球顶级供应链。
+    </p>
+    <div class="hero-ctas">
+      <a href="#resume" class="btn-primary">查看履历</a>
+      <a href="#deepdive" class="btn-outline">专业深挖</a>
+    </div>
+  </div>
+</section>
+
+<!-- 履历 -->
+<section class="section section-light" id="resume">
+  <div class="section-inner">
+    <p class="section-label">履历</p>
+    <h2 class="section-heading">专业轨迹</h2>
+    <p class="section-desc">
+      拥有 10 年以上射频领域经验的连续创业者和技术管理者。职业路径涵盖美国雷达创业公司创始成员 → Skyworks/Qorvo 高级工程师 → 国内射频创业公司创始研发人，兼具国际大厂系统化研发思维与多国创业实战经验。
+    </p>
+
+    <!-- 稳态摘要 -->
+    <div class="resume-intro">
+      <p>
+        <strong>核心领域：</strong>基站射频模组及手机射频前端模组（Sub6 L-FEM、L-PAMiD、DiFEM、Wi-Fi FEM、LNA Bank），覆盖从产品定义到量产交付的全流程。
+      </p>
+      <p>
+        <strong>客户网络：</strong>三星、华为、OPPO、DJI、诺基亚等全球顶级品牌供应链，累计贡献销售额数亿元。
+      </p>
+      <div class="resume-highlights">
+        <span class="resume-tag">🏆 国家级青年人才</span>
+        <span class="resume-tag">🎓 南方科技大学校外硕导</span>
+        <span class="resume-tag">📜 副高级工程师</span>
+        <span class="resume-tag">📋 专利 30+ 项</span>
+      </div>
+    </div>
+
+    <!-- 工作经历 -->
+    <h3 style="font-size:21px;font-weight:600;margin-bottom:20px;letter-spacing:-0.16px;">工作经历</h3>
+
+    <!-- 锐石创芯 -->
+    <div class="exp-card" id="exp-radrock" onclick="this.classList.toggle('open')">
+      <div class="exp-header">
+        <div>
+          <div class="exp-company">国内半导体创业公司</div>
+          <div class="exp-role">高级研发经理</div>
+        </div>
+        <div class="exp-meta">
+          <div class="exp-date">2020 年至今</div>
+          <div class="exp-location">中国</div>
+          <div class="exp-toggle-hint">点击展开详情</div>
+          <div class="exp-arrow">▼</div>
+        </div>
+      </div>
+      <div class="exp-details">
+        <div class="exp-details-inner">
+          <h4>团队与体系建设</h4>
+          <ul>
+            <li>从 0 到 1 组建接收链路、模组及滤波器研发团队（15-20 人），培养具备全链条能力的核心技术队伍</li>
+            <li>主导从产品定义到量产交付的全流程，建立标准化研发设计流程，搭建 IP 库及自动化测试平台，提升开发效率并降低开发成本</li>
+            <li>主导实现模组及内部核心芯片的全面自研与国产化替代，保障供应链自主可控</li>
+          </ul>
+
+          <h4>产品线核心战绩</h4>
+          <ul>
+            <li><strong>Sub6 L-FEM/L-PAMiF</strong>（5 代全量产）：功耗 ↓50%（14mA→7mA，业界领先），增益 ↑至 18.5dB。第 4 代成本实现业界最优，成为公司营收主力</li>
+            <li><strong>DiFEM</strong>（量产 2 代）：第 3 代综合性能超越高通（Qualcomm），成本 ↓55%，开发效率 ↑3 倍</li>
+            <li><strong>LNA Bank</strong>：功耗 ↓33%（12mA→8mA），增益 ↑至 21dB，保持行业领先和迭代节奏</li>
+            <li><strong>Wi-Fi FEM</strong>：业界首家为 DJI 定制 FEM；手机方向布局已完成</li>
+            <li><strong>L-PAMiD</strong>：全国产供应链，量产 2 代</li>
+          </ul>
+
+          <h4>关键成果</h4>
+          <ul>
+            <li>性能领先：主力 L-FEM 性能国际一流，DiFEM 综合性能超越高通</li>
+            <li>成本控制：多条核心产品线综合成本降低 40%-55%</li>
+            <li>研发效率：通过流程优化，研发效率大幅提升</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Skyworks -->
+    <div class="exp-card" id="exp-skyworks" onclick="this.classList.toggle('open')">
+      <div class="exp-header">
+        <div>
+          <div class="exp-company">Skyworks Solutions Inc.</div>
+          <div class="exp-role">高级射频工程师</div>
+        </div>
+        <div class="exp-meta">
+          <div class="exp-date">2015–2020</div>
+          <div class="exp-location">美国</div>
+          <div class="exp-toggle-hint">点击展开详情</div>
+          <div class="exp-arrow">▼</div>
+        </div>
+      </div>
+      <div class="exp-details">
+        <div class="exp-details-inner">
+          <h4>核心项目</h4>
+          <ul>
+            <li><strong>华为旗舰项目（PAMiD, SKY78113）</strong>：负责模组开发，成功解决 TX LKG 等关键难题，项目顺利量产并出货至华为旗舰机型</li>
+            <li><strong>苹果定制项目（UHB77830）</strong>：参与苹果定制项目，负责 n77/n79 频段收发模组的开发</li>
+            <li><strong>诺基亚 5G 基站项目</strong>：负责 5G 手机基站收发模组研发，成功实现多区定制模组量产，解决了切换时间、TRX 开关功率耐受性、NF 等关键难题</li>
+            <li>QM22245 Wi-Fi 产品成功量产出货至苹果</li>
+          </ul>
+          <h4>荣誉</h4>
+          <ul><li>Skyworks 期间获得 Customer Focused Award 等 7 项公司奖励</li></ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- VetGuardian -->
+    <div class="exp-card" id="exp-vetguardian" onclick="this.classList.toggle('open')">
+      <div class="exp-header">
+        <div>
+          <div class="exp-company">VetGuardian</div>
+          <div class="exp-role">雷达系统开发工程师 &amp; 创始成员</div>
+        </div>
+        <div class="exp-meta">
+          <div class="exp-date">2013–2014</div>
+          <div class="exp-location">美国</div>
+          <div class="exp-toggle-hint">点击展开详情</div>
+          <div class="exp-arrow">▼</div>
+        </div>
+      </div>
+      <div class="exp-details">
+        <div class="exp-details-inner">
+          <ul>
+            <li>作为创始成员，负责 5.8GHz 生命体征检测雷达系统的完整开发和项目导入验证</li>
+            <li>负责雷达系统设计，主导系统中 LNA（pHEMT）和 PA（HBT）的设计与测试</li>
+            <li>开发 Data-Length-Variation 算法，实现心跳信号的快速与精确提取</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- 教育经历 -->
+    <div class="edu-block" style="margin-top:40px;">
+      <h3 style="font-size:21px;font-weight:600;margin-bottom:20px;letter-spacing:-0.16px;">🎓 教育经历</h3>
+      <div class="edu-item">
+        <div>
+          <div class="edu-degree">Ph.D，电子与计算机工程</div>
+          <div class="edu-school">University of Florida</div>
+        </div>
+        <div class="edu-date">2014–2017</div>
+      </div>
+      <div class="edu-item">
+        <div>
+          <div class="edu-degree">Master，电子与计算机工程</div>
+          <div class="edu-school">University of Florida</div>
+        </div>
+        <div class="edu-date">2012–2013</div>
+      </div>
+      <div class="edu-item">
+        <div>
+          <div class="edu-degree">学士 &amp; 硕士，光电信息工程</div>
+          <div class="edu-school">哈尔滨工业大学</div>
+        </div>
+        <div class="edu-date">2005–2011</div>
+      </div>
+    </div>
+
+    <!-- 荣誉 -->
+    <div class="edu-block">
+      <h3 style="font-size:21px;font-weight:600;margin-bottom:20px;letter-spacing:-0.16px;">🏅 荣誉与资质</h3>
+      <ul class="honor-list">
+        <li>2020 年至今 — 锐石创芯优秀项目奖、客户导向奖、最佳品质奖、创新创意奖等 10 余项公司奖励</li>
+        <li>2024 年 — 南方科技大学校外硕士导师，副高级工程师，广东省人才优粤卡持卡人</li>
+        <li>2023 年 — 深圳市福田区福田英才</li>
+        <li>2022 年 — 国家级青年人才</li>
+        <li>2021 年 — 深圳市海外高层次 C 类人才</li>
+        <li>2017 年–2020 年 — Skyworks Customer Focused Award 等 7 项公司奖励</li>
+        <li>2017 年 — Doctoral Dissertation Award $24K, University of Florida</li>
+        <li>2014 年 — 3rd Place, IMS 2014 Student Radar Competition</li>
+        <li>2014 年 — IMS and RFIC Ph.D Sponsorship Initiative</li>
+        <li>2012 年 — Achievement Award $12K, University of Florida</li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+<!-- 专业深挖 -->
+<section class="section section-dark" id="deepdive">
+  <div class="section-inner">
+    <p class="section-label">专业深挖与拓展</p>
+    <h2 class="section-heading">技术思考</h2>
+    <p class="section-desc">
+      在射频芯片领域深耕多年，不断拓展认知边界。这里记录我的技术洞察、行业观察和跨领域探索。
+    </p>
+
+    <!-- Sub-navigation -->
+    <nav class="sub-nav">
+      <a href="#panel-analysis" class="active" onclick="switchPanel('analysis')">行业分析</a>
+      <a href="#panel-tech" onclick="switchPanel('tech')">技术探索</a>
+    </nav>
+
+    <!-- 行业分析 Panel -->
+    <div class="sub-panel active" id="panel-analysis">
+
+      <div class="article-card" onclick="this.classList.toggle('open')">
+        <div class="article-card-header">
+          <div>
+            <div class="article-card-title">全球智能手机市场格局分析（2023–2025）</div>
+            <div class="article-card-meta">📅 2026 年 6 月 · 市场分析 — 出货量、营收格局与供应链成本对比</div>
+          </div>
+          <div class="article-card-arrow">▼</div>
+        </div>
+        <div class="article-card-body">
+          <div class="article-card-body-inner">
+            <div class="article-body">
+
+        <p>全球智能手机市场经历「下滑 → 反弹 → 温和增长」的完整周期：<strong>2023</strong> 年行业触底，出货 11.4 亿部；<strong>2024</strong> 年强劲复苏至 12.2 亿部（<span style="color:#4ade80;">+7.1%</span>）；<strong>2025</strong> 年延续增长达 12.5 亿部，但增速放缓至 <span style="color:#4ade80;">+1.9%</span>。高端化与成本博弈成为主线。</p>
+
+        <hr style="border:none;border-top:1px solid rgba(255,255,255,0.08);margin:32px 0;">
+
+        <!-- ===== 第一部分 ===== -->
+        <h4>第一部分 · 出货量与市场规模</h4>
+
+        <h4 style="font-size:16px;color:rgba(255,255,255,0.9);margin-top:28px;">1.1 全球出货量 TOP 10</h4>
+
+        <p>苹果连续三年蝉联出货冠军，三星紧追。传音凭非洲市场跃居第四，华为以 <span style="color:#4ade80;">+35.8%</span> 增幅领跑复苏。2025 年头部五家数据较完整，其余品牌因统计周期尚未覆盖。</p>
+
+        <div style="overflow-x:auto;margin:24px 0;">
+        <table style="font-size:13px;min-width:720px;">
+        <thead>
+        <tr><th style="width:8%;">#</th><th style="width:14%;">厂商</th><th>2023<br>（亿部）</th><th>2024<br>（亿部）</th><th>2025<br>（亿部）</th><th>24 YoY</th><th>25 YoY</th></tr>
+        </thead>
+        <tbody>
+        <tr style="background:rgba(0,113,227,0.08);">
+          <td><strong>1</strong></td><td><strong>🍎 苹果</strong></td><td>2.291</td><td>2.259</td><td><strong>2.480</strong></td><td><span style="color:#f87171;">−1.4%</span></td><td><span style="color:#4ade80;">+6.3%</span></td></tr>
+        <tr>
+          <td>2</td><td>⭐ 三星</td><td>2.270</td><td>2.229</td><td><strong>2.410</strong></td><td><span style="color:#f87171;">−1.1%</span></td><td><span style="color:#4ade80;">+7.9%</span></td></tr>
+        <tr>
+          <td>3</td><td>🔸 小米</td><td>1.460</td><td>1.686</td><td>1.650</td><td><span style="color:#4ade80;">+15.4%</span></td><td><span style="color:#f87171;">−2.1%</span></td></tr>
+        <tr>
+          <td>4</td><td>传音</td><td>0.942</td><td>1.065</td><td>—</td><td><span style="color:#4ade80;">+15.3%</span></td><td>—</td></tr>
+        <tr>
+          <td>5</td><td>OPPO</td><td>1.000</td><td>1.035</td><td>1.020</td><td><span style="color:#4ade80;">+2.8%</span></td><td><span style="color:#f87171;">−2.7%</span></td></tr>
+        <tr>
+          <td>6</td><td>vivo</td><td>0.885</td><td>1.009</td><td>1.039</td><td><span style="color:#4ade80;">+14.0%</span></td><td><span style="color:#4ade80;">+2.7%</span></td></tr>
+        <tr>
+          <td>7</td><td>荣耀</td><td>0.566</td><td>0.640</td><td>—</td><td><span style="color:#4ade80;">+13.0%</span></td><td>—</td></tr>
+        <tr>
+          <td>8</td><td>联想</td><td>0.467</td><td>0.578</td><td>—</td><td><span style="color:#4ade80;">+23.1%</span></td><td>—</td></tr>
+        <tr>
+          <td>9</td><td>realme</td><td>0.441</td><td>0.485</td><td>—</td><td><span style="color:#4ade80;">+9.8%</span></td><td>—</td></tr>
+        <tr>
+          <td>10</td><td>华为</td><td>0.356</td><td>0.483</td><td>—</td><td><span style="color:#4ade80;">+35.8%</span></td><td>—</td></tr>
+        </tbody>
+        </table>
+        </div>
+
+        <p style="font-size:12px;color:rgba(255,255,255,0.35);margin-top:-8px;">数据来源：2024 基于 Omdia 初步出货报告；2025 基于 IDC 全球季度手机跟踪。统计口径差异存在小幅浮动。「—」表示数据未覆盖。</p>
+
+        <h4 style="font-size:16px;color:rgba(255,255,255,0.9);margin-top:32px;">1.2 销售额格局</h4>
+
+        <p>出货量不等于利润。苹果与三星以约 <strong>37%</strong> 出货量，攫取行业约 <strong style="color:#4ade80;">64%</strong> 营收；中国厂商（小米、OPPO、vivo、传音、荣耀等）出货量合计超 <strong>52%</strong>，营收占比却不足 <strong>25%</strong>。以下图表直观展示这一结构性失衡。</p>
+
+        <div class="diagram-container">
+          <svg viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg">
+            <!-- Background grid -->
+            <defs>
+              <pattern id="grid" width="80" height="50" patternUnits="userSpaceOnUse">
+                <path d="M 80 0 L 0 0 0 50" fill="none" stroke="rgba(255,255,255,0.03)" stroke-width="0.5"/>
+              </pattern>
+            </defs>
+            <rect x="110" y="40" width="650" height="380" fill="url(#grid)"/>
+
+            <!-- Title -->
+            <text x="400" y="24" text-anchor="middle" fill="#fff" font-size="15" font-weight="600">图 · 出货量与营收双轴对比（2023–2025）</text>
+            <text x="400" y="44" text-anchor="middle" fill="rgba(255,255,255,0.35)" font-size="11">注：营收数据基于 Counterpoint Research 公开发布的营收份额估算，其余品牌营收未公开披露</text>
+
+            <!-- Y-axis left (shipments) -->
+            <line x1="110" y1="40" x2="110" y2="420" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+            <text x="100" y="46" fill="rgba(255,255,255,0.45)" font-size="9" text-anchor="end">300M</text>
+            <text x="100" y="106" fill="rgba(255,255,255,0.45)" font-size="9" text-anchor="end">250M</text>
+            <text x="100" y="166" fill="rgba(255,255,255,0.45)" font-size="9" text-anchor="end">200M</text>
+            <text x="100" y="226" fill="rgba(255,255,255,0.45)" font-size="9" text-anchor="end">150M</text>
+            <text x="100" y="286" fill="rgba(255,255,255,0.45)" font-size="9" text-anchor="end">100M</text>
+            <text x="100" y="346" fill="rgba(255,255,255,0.45)" font-size="9" text-anchor="end">50M</text>
+            <text x="100" y="424" fill="rgba(255,255,255,0.45)" font-size="9" text-anchor="end">0</text>
+            <text x="45" y="230" fill="rgba(255,255,255,0.35)" font-size="9" text-anchor="middle" transform="rotate(-90,45,230)">出货量（百万部）</text>
+
+            <!-- Left axis guide lines -->
+            <line x1="110" y1="46" x2="760" y2="46" stroke="rgba(255,255,255,0.05)" stroke-width="0.5"/>
+            <line x1="110" y1="106" x2="760" y2="106" stroke="rgba(255,255,255,0.05)" stroke-width="0.5"/>
+            <line x1="110" y1="166" x2="760" y2="166" stroke="rgba(255,255,255,0.05)" stroke-width="0.5"/>
+            <line x1="110" y1="226" x2="760" y2="226" stroke="rgba(255,255,255,0.05)" stroke-width="0.5"/>
+            <line x1="110" y1="286" x2="760" y2="286" stroke="rgba(255,255,255,0.05)" stroke-width="0.5"/>
+            <line x1="110" y1="346" x2="760" y2="346" stroke="rgba(255,255,255,0.05)" stroke-width="0.5"/>
+
+            <!-- Y-axis right (revenue, $B) -->
+            <line x1="760" y1="40" x2="760" y2="420" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+            <text x="770" y="46" fill="rgba(74,222,128,0.5)" font-size="9">$250B</text>
+            <text x="770" y="106" fill="rgba(74,222,128,0.5)" font-size="9">$200B</text>
+            <text x="770" y="166" fill="rgba(74,222,128,0.5)" font-size="9">$150B</text>
+            <text x="770" y="226" fill="rgba(74,222,128,0.5)" font-size="9">$100B</text>
+            <text x="770" y="286" fill="rgba(74,222,128,0.5)" font-size="9">$50B</text>
+            <text x="770" y="424" fill="rgba(74,222,128,0.5)" font-size="9">$0</text>
+
+            <!-- X-axis -->
+            <line x1="110" y1="420" x2="760" y2="420" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+
+            <!-- ============ BARS: Shipments (left axis, scale: 1.52 px/M, max 300M = 380px from y=420) ============ -->
+            <!-- scale = 380/300 = 1.2667 px/M -->
+
+            <!-- Year labels -->
+            <text x="190" y="440" fill="rgba(255,255,255,0.5)" font-size="12" text-anchor="middle" font-weight="600">2023</text>
+            <text x="400" y="440" fill="rgba(255,255,255,0.5)" font-size="12" text-anchor="middle" font-weight="600">2024</text>
+            <text x="610" y="440" fill="rgba(255,255,255,0.5)" font-size="12" text-anchor="middle" font-weight="600">2025</text>
+
+            <!-- ===== 2023 Group (center x=190, 6 bars, each 18px wide, 2px gap) ===== -->
+            <!-- Apple 229.1M → h=290.3 -->
+            <rect x="135" y="129.7" width="18" height="290.3" rx="2" fill="#0071e3" opacity="0.9"><title>Apple 2023: 2.291亿部</title></rect>
+            <!-- Samsung 227.0 → h=287.6 -->
+            <rect x="155" y="132.4" width="18" height="287.6" rx="2" fill="#5a9fd4" opacity="0.85"><title>Samsung 2023: 2.27亿部</title></rect>
+            <!-- Xiaomi 146.0 → h=185.0 -->
+            <rect x="175" y="235.0" width="18" height="185.0" rx="2" fill="#f59e0b" opacity="0.85"><title>小米 2023: 1.46亿部</title></rect>
+            <!-- OPPO 100.0 → h=126.7 -->
+            <rect x="195" y="293.3" width="18" height="126.7" rx="2" fill="#10b981" opacity="0.8"><title>OPPO 2023: 1.00亿部</title></rect>
+            <!-- vivo 88.5 → h=112.1 -->
+            <rect x="215" y="307.9" width="18" height="112.1" rx="2" fill="#8b5cf6" opacity="0.8"><title>vivo 2023: 0.885亿部</title></rect>
+            <!-- Others 351.4 → h=445 (cap at 300) → 380 -->
+            <rect x="235" y="40" width="18" height="380" rx="2" fill="#6b7280" opacity="0.5"><title>Others 2023: 3.514亿部 (截断)</title></rect>
+            <text x="244" y="36" fill="rgba(255,255,255,0.3)" font-size="8" text-anchor="middle">351M</text>
+
+            <!-- ===== 2024 Group (center x=400) ===== -->
+            <rect x="345" y="133.9" width="18" height="286.1" rx="2" fill="#0071e3" opacity="0.9"><title>Apple 2024: 2.259亿部</title></rect>
+            <rect x="365" y="137.7" width="18" height="282.3" rx="2" fill="#5a9fd4" opacity="0.85"><title>Samsung 2024: 2.229亿部</title></rect>
+            <rect x="385" y="206.5" width="18" height="213.5" rx="2" fill="#f59e0b" opacity="0.85"><title>小米 2024: 1.686亿部</title></rect>
+            <rect x="405" y="288.9" width="18" height="131.1" rx="2" fill="#10b981" opacity="0.8"><title>OPPO 2024: 1.035亿部</title></rect>
+            <rect x="425" y="292.2" width="18" height="127.8" rx="2" fill="#8b5cf6" opacity="0.8"><title>vivo 2024: 1.009亿部</title></rect>
+            <rect x="445" y="40" width="18" height="380" rx="2" fill="#6b7280" opacity="0.5"><title>Others 2024: 4.012亿部 (截断)</title></rect>
+            <text x="454" y="36" fill="rgba(255,255,255,0.3)" font-size="8" text-anchor="middle">401M</text>
+
+            <!-- ===== 2025 Group (center x=610) ===== -->
+            <rect x="555" y="105.9" width="18" height="314.1" rx="2" fill="#0071e3" opacity="0.95"><title>Apple 2025: 2.48亿部</title></rect>
+            <rect x="575" y="114.8" width="18" height="305.2" rx="2" fill="#5a9fd4" opacity="0.85"><title>Samsung 2025: 2.41亿部</title></rect>
+            <rect x="595" y="211.1" width="18" height="208.9" rx="2" fill="#f59e0b" opacity="0.85"><title>小米 2025: 1.65亿部</title></rect>
+            <rect x="615" y="290.8" width="18" height="129.2" rx="2" fill="#10b981" opacity="0.8"><title>OPPO 2025: 1.02亿部</title></rect>
+            <rect x="635" y="288.3" width="18" height="131.7" rx="2" fill="#8b5cf6" opacity="0.8"><title>vivo 2025: 1.039亿部</title></rect>
+            <rect x="655" y="40" width="18" height="380" rx="2" fill="#6b7280" opacity="0.5"><title>Others 2025: 3.901亿部 (截断)</title></rect>
+            <text x="664" y="36" fill="rgba(255,255,255,0.3)" font-size="8" text-anchor="middle">390M</text>
+
+            <!-- ============ REVENUE MARKERS (right axis, scale: 380/250 = 1.52 px/$B, y=420-top) ============ -->
+            <!-- Apple: 2023=$185B → h=281.2, y=138.8 --><polygon points="144,132 152,140 144,148 136,140" fill="#0071e3" opacity="0.95" stroke="#0071e3" stroke-width="1"><title>Apple 2023 营收: ~$185B</title></polygon>
+            <!-- Apple: 2024=$210B → h=319.2, y=100.8 --><polygon points="354,95 362,103 354,111 346,103" fill="#0071e3" opacity="0.95" stroke="#0071e3" stroke-width="1"><title>Apple 2024 营收: ~$210B</title></polygon>
+            <!-- Apple: 2025=$225B → h=342.0, y=78.0 --><polygon points="564,72 572,80 564,88 556,80" fill="#0071e3" opacity="1" stroke="#0071e3" stroke-width="1"><title>Apple 2025 营收: ~$225B</title></polygon>
+            <!-- Apple connecting line -->
+            <line x1="144" y1="140" x2="354" y2="103" stroke="#0071e3" stroke-width="2.5" stroke-dasharray="6,3" opacity="0.75"/>
+            <line x1="354" y1="103" x2="564" y2="80" stroke="#0071e3" stroke-width="2.5" stroke-dasharray="6,3" opacity="0.75"/>
+
+            <!-- Samsung: 2023=$65B → h=98.8, y=321.2 --><polygon points="164,316 173,323 164,330 155,323" fill="#5a9fd4" opacity="0.9" stroke="#5a9fd4" stroke-width="0.8"><title>Samsung 2023 营收: ~$65B</title></polygon>
+            <!-- Samsung: 2024=$70B → h=106.4, y=313.6 --><polygon points="374,308 383,316 374,324 365,316" fill="#5a9fd4" opacity="0.9" stroke="#5a9fd4" stroke-width="0.8"><title>Samsung 2024 营收: ~$70B</title></polygon>
+            <!-- Samsung: 2025=$70B → h=106.4, y=313.6 --><polygon points="584,308 593,316 584,324 575,316" fill="#5a9fd4" opacity="0.95" stroke="#5a9fd4" stroke-width="0.8"><title>Samsung 2025 营收: ~$70B</title></polygon>
+            <!-- Samsung connecting line -->
+            <line x1="164" y1="323" x2="374" y2="316" stroke="#5a9fd4" stroke-width="2" stroke-dasharray="6,3" opacity="0.7"/>
+            <line x1="374" y1="316" x2="584" y2="316" stroke="#5a9fd4" stroke-width="2" stroke-dasharray="6,3" opacity="0.7"/>
+
+            <!-- Xiaomi: 2023=$25B → h=38, y=382 --><polygon points="184,378 193,384 184,390 175,384" fill="#f59e0b" opacity="0.9" stroke="#f59e0b" stroke-width="0.8"><title>小米 2023 营收: ~$25B</title></polygon>
+            <!-- Xiaomi: 2024=$26B → h=39.5, y=380.5 --><polygon points="394,376 403,383 394,390 385,383" fill="#f59e0b" opacity="0.9" stroke="#f59e0b" stroke-width="0.8"><title>小米 2024 营收: ~$26B</title></polygon>
+            <!-- Xiaomi: 2025=$25B → h=38, y=382 --><polygon points="604,378 613,384 604,390 595,384" fill="#f59e0b" opacity="0.9" stroke="#f59e0b" stroke-width="0.8"><title>小米 2025 营收: ~$25B</title></polygon>
+            <line x1="184" y1="384" x2="394" y2="383" stroke="#f59e0b" stroke-width="2" stroke-dasharray="6,3" opacity="0.7"/>
+            <line x1="394" y1="383" x2="604" y2="384" stroke="#f59e0b" stroke-width="2" stroke-dasharray="6,3" opacity="0.7"/>
+
+            <!-- OPPO: 2023=$21B → h=31.9, y=388.1 --><polygon points="204,384 213,390 204,396 195,390" fill="#10b981" opacity="0.85" stroke="#10b981" stroke-width="0.8"><title>OPPO 2023 营收: ~$21B</title></polygon>
+            <!-- OPPO: 2024=$22B → h=33.4, y=386.6 --><polygon points="414,382 423,389 414,396 405,389" fill="#10b981" opacity="0.85" stroke="#10b981" stroke-width="0.8"><title>OPPO 2024 营收: ~$22B</title></polygon>
+            <!-- OPPO: 2025=$22B → h=33.4, y=386.6 --><polygon points="624,382 633,389 624,396 615,389" fill="#10b981" opacity="0.85" stroke="#10b981" stroke-width="0.8"><title>OPPO 2025 营收: ~$22B</title></polygon>
+            <line x1="204" y1="390" x2="414" y2="389" stroke="#10b981" stroke-width="2" stroke-dasharray="6,3" opacity="0.65"/>
+            <line x1="414" y1="389" x2="624" y2="389" stroke="#10b981" stroke-width="2" stroke-dasharray="6,3" opacity="0.65"/>
+
+            <!-- Revenue value labels -->
+            <text x="564" y="72" fill="#0071e3" font-size="10" text-anchor="middle" font-weight="600">$225B</text>
+            <text x="354" y="95" fill="#0071e3" font-size="10" text-anchor="middle">$210B</text>
+            <text x="144" y="132" fill="#0071e3" font-size="10" text-anchor="middle">$185B</text>
+            <text x="164" y="308" fill="#5a9fd4" font-size="9" text-anchor="middle" font-weight="600">$65B</text>
+            <text x="374" y="300" fill="#5a9fd4" font-size="9" text-anchor="middle" font-weight="600">$70B</text>
+            <text x="584" y="300" fill="#5a9fd4" font-size="9" text-anchor="middle" font-weight="600">$70B</text>
+            <text x="184" y="370" fill="#f59e0b" font-size="9" text-anchor="middle" font-weight="600">$25B</text>
+            <text x="394" y="368" fill="#f59e0b" font-size="9" text-anchor="middle" font-weight="600">$26B</text>
+            <text x="604" y="370" fill="#f59e0b" font-size="9" text-anchor="middle" font-weight="600">$25B</text>
+            <text x="204" y="376" fill="#10b981" font-size="9" text-anchor="middle" font-weight="600">$21B</text>
+            <text x="414" y="374" fill="#10b981" font-size="9" text-anchor="middle" font-weight="600">$22B</text>
+            <text x="624" y="374" fill="#10b981" font-size="9" text-anchor="middle" font-weight="600">$22B</text>
+
+            <!-- Revenue disparity annotation -->
+            <text x="395" y="470" fill="rgba(255,255,255,0.2)" font-size="8" text-anchor="middle">⚠ 小米/OPPO 营收标记集中于图表底部 — 出货量不低，但 ASP 差距悬殊</text>
+
+            <!-- Legend -->
+            <rect x="130" y="480" width="12" height="12" rx="2" fill="#0071e3"/><text x="147" y="491" fill="rgba(255,255,255,0.6)" font-size="10">苹果</text>
+            <rect x="195" y="480" width="12" height="12" rx="2" fill="#5a9fd4"/><text x="212" y="491" fill="rgba(255,255,255,0.6)" font-size="10">三星</text>
+            <rect x="260" y="480" width="12" height="12" rx="2" fill="#f59e0b"/><text x="277" y="491" fill="rgba(255,255,255,0.6)" font-size="10">小米</text>
+            <rect x="325" y="480" width="12" height="12" rx="2" fill="#10b981"/><text x="342" y="491" fill="rgba(255,255,255,0.6)" font-size="10">OPPO</text>
+            <rect x="390" y="480" width="12" height="12" rx="2" fill="#8b5cf6"/><text x="407" y="491" fill="rgba(255,255,255,0.6)" font-size="10">vivo</text>
+            <rect x="445" y="480" width="12" height="12" rx="2" fill="#6b7280"/><text x="462" y="491" fill="rgba(255,255,255,0.6)" font-size="10">Others</text>
+            <polygon points="522,484 531,488 522,492 513,488" fill="#0071e3"/><text x="538" y="491" fill="rgba(255,255,255,0.6)" font-size="10">苹果营收 ◆</text>
+            <polygon points="618,484 627,488 618,492 609,488" fill="#5a9fd4"/><text x="634" y="491" fill="rgba(255,255,255,0.6)" font-size="10">三星营收 ◆</text>
+            <polygon points="700,484 709,488 700,492 691,488" fill="#f59e0b"/><text x="716" y="491" fill="rgba(255,255,255,0.6)" font-size="10">小米营收 ◆</text>
+            <polygon points="130,502 139,506 130,510 121,506" fill="#10b981"/><text x="147" y="509" fill="rgba(255,255,255,0.6)" font-size="10">OPPO营收 ◆</text>
+
+            <!-- Data source -->
+            <text x="700" y="515" fill="rgba(255,255,255,0.2)" font-size="9" text-anchor="end">来源: IDC, Counterpoint Research</text>
+          </svg>
+          <p class="diagram-caption">图：柱状图为出货量（左轴），◆ 菱形标记为各品牌估算营收（右轴）。2025 年数据基于 IDC 及 Counterpoint 初步报告，营收为估算值（苹果/三星/小米/OPPO 分别基于 Counterpoint 营收份额推算）。其他品牌营收未公开披露。</p>
+        </div>
+
+        <hr style="border:none;border-top:1px solid rgba(255,255,255,0.08);margin:32px 0;">
+
+        <!-- ===== 第二部分 ===== -->
+        <h4>第二部分 · 品牌市场细分</h4>
+
+        <p>各品牌在不同价格区间的产品布局差异显著，直接影响营收结构与利润水平。随着全球 ASP 持续走高，<strong>$700 以上高端市场</strong>成为增长最快的价格段（2025 年同比 <span style="color:#4ade80;">+25%</span>）。</p>
+
+        <div style="overflow-x:auto;margin:24px 0;">
+        <table style="font-size:13px;min-width:680px;">
+        <thead>
+        <tr><th>品牌</th><th style="color:#4ade80;">高端机型</th><th style="color:#fbbf24;">中端机型</th><th style="color:rgba(255,255,255,0.6);">入门机型</th></tr>
+        </thead>
+        <tbody>
+        <tr style="background:rgba(0,113,227,0.06);">
+          <td><strong>🍎 苹果</strong></td>
+          <td><strong>Pro / Pro Max</strong><br><span style="font-size:11px;color:rgba(255,255,255,0.45);">$900–$1,200+ · 最新 A 芯片 + ProMotion</span></td>
+          <td><strong>标准版</strong><br><span style="font-size:11px;color:rgba(255,255,255,0.45);">$600–$900 · 核心体验保留</span></td>
+          <td><strong>SE / 旧款</strong><br><span style="font-size:11px;color:rgba(255,255,255,0.45);">$400–$600 · 预算敏感市场</span></td></tr>
+        <tr>
+          <td><strong>⭐ 三星</strong></td>
+          <td><strong>Galaxy S / Z 折叠</strong><br><span style="font-size:11px;color:rgba(255,255,255,0.45);">$700+ · 折叠屏差异化</span></td>
+          <td><strong>Galaxy A5x</strong><br><span style="font-size:11px;color:rgba(255,255,255,0.45);">$300–$600 · 主力走量</span></td>
+          <td><strong>Galaxy A0x / A1x</strong><br><span style="font-size:11px;color:rgba(255,255,255,0.45);">＜$200 · 亚太/中东强劲</span></td></tr>
+        <tr>
+          <td><strong>🔴 OPPO</strong></td>
+          <td><strong>Find X / 一加数字</strong><br><span style="font-size:11px;color:rgba(255,255,255,0.45);">$700–$1,000 · 影像旗舰</span></td>
+          <td><strong>Reno</strong><br><span style="font-size:11px;color:rgba(255,255,255,0.45);">$400–$700 · 时尚设计+人像</span></td>
+          <td><strong>A 系列 / K 系列</strong><br><span style="font-size:11px;color:rgba(255,255,255,0.45);">$200–$400 · 大众走量</span></td></tr>
+        <tr>
+          <td><strong>🔸 小米</strong></td>
+          <td><strong>小米数字 / MIX</strong><br><span style="font-size:11px;color:rgba(255,255,255,0.45);">$700–$1,000 · 国内高端突破</span></td>
+          <td><strong>Redmi K / 小米 T</strong><br><span style="font-size:11px;color:rgba(255,255,255,0.45);">$300–$600 · 性价比核心</span></td>
+          <td><strong>Redmi Note / 数字</strong><br><span style="font-size:11px;color:rgba(255,255,255,0.45);">＜$200 · 全球出货基本盘</span></td></tr>
+        </tbody>
+        </table>
+        </div>
+
+        <p style="font-size:13px;color:rgba(255,255,255,0.55);margin-top:-4px;">🔑 关键趋势：苹果是高端化最大受益者（2025 市占率 18%→20%）；OPPO 凭 Reno 14 + Find 系列实现 ASP 增长 <span style="color:#4ade80;">+6%</span>；小米全球仍依赖 Redmi 走量，2025 Q2 ASP 同比 <span style="color:#f87171;">−2.7%</span>。</p>
+
+        <hr style="border:none;border-top:1px solid rgba(255,255,255,0.08);margin:32px 0;">
+
+        <!-- ===== 第三部分 ===== -->
+        <h4>第三部分 · 供应链成本对比（OPPO vs 小米）</h4>
+
+        <p>2025–2026 年，AI 数据中心挤占 DRAM 产能，内存价格飙升，手机物料清单（BoM）成本普涨 <strong>10%–15%</strong>。同样面临成本压力，OPPO 与小米因产品结构差异，受影响程度截然不同。</p>
+
+        <div style="overflow-x:auto;margin:24px 0;">
+        <table style="font-size:13px;min-width:640px;">
+        <thead>
+        <tr><th style="width:22%;">对比维度</th><th style="width:39%;">🔴 OPPO</th><th style="width:39%;">🔸 小米</th></tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td><strong>旗舰系列</strong></td>
+          <td>Find X8 / X9（$700–$1,000）</td>
+          <td>小米 17 / MIX（$700–$1,000）</td></tr>
+        <tr>
+          <td><strong>中端系列</strong></td>
+          <td>Reno 14（$400–$700）</td>
+          <td>Redmi Note（$300–$600）</td></tr>
+        <tr>
+          <td><strong>BoM 成本涨幅</strong></td>
+          <td>+10%–15%</td>
+          <td>+10%–15%（中低端冲击更大）</td></tr>
+        <tr style="background:rgba(74,222,128,0.06);">
+          <td><strong>成本压力</strong></td>
+          <td><span style="color:#4ade80;">🟢 相对可控</span></td>
+          <td><span style="color:#f87171;">🔴 中低端承受重压</span></td></tr>
+        <tr>
+          <td><strong>关键成本驱动</strong></td>
+          <td>内存 · 显示屏 · 摄像头模组</td>
+          <td>内存 · 处理器 · 电池</td></tr>
+        <tr>
+          <td><strong>Q4 表现</strong></td>
+          <td>营收 <span style="color:#4ade80;">+23%</span>，ASP <span style="color:#4ade80;">+6%</span></td>
+          <td>营收 <span style="color:#f87171;">−9%</span>，出货 <span style="color:#f87171;">−11%</span></td></tr>
+        <tr>
+          <td><strong>应对策略</strong></td>
+          <td>高端组合扩张 + 海外拓展</td>
+          <td>国内高端突破，海外靠 Redmi 走量</td></tr>
+        </tbody>
+        </table>
+        </div>
+
+        <h4 style="font-size:16px;color:rgba(255,255,255,0.9);margin-top:28px;">关键配件供应商图谱</h4>
+
+        <div style="overflow-x:auto;margin:16px 0;">
+        <table style="font-size:13px;min-width:480px;">
+        <thead><tr><th>配件类别</th><th>主要供应商</th></tr></thead>
+        <tbody>
+        <tr><td>处理器</td><td>高通（Snapdragon 8 / 7）、联发科（天玑）</td></tr>
+        <tr><td>内存</td><td>三星 · SK 海力士 · 美光</td></tr>
+        <tr><td>显示屏</td><td>三星 Display · 京东方 · TCL 华星</td></tr>
+        <tr><td>摄像头</td><td>索尼（传感器）· 豪威科技 · 舜宇光学（镜头模组）</td></tr>
+        </tbody>
+        </table>
+        </div>
+
+        <hr style="border:none;border-top:1px solid rgba(255,255,255,0.08);margin:32px 0;">
+
+        <!-- ===== 总结 ===== -->
+        <h4>总结</h4>
+
+        <p>2023–2025 年全球手机市场完成「探底 → 反弹 → 稳态」三部曲。苹果在出货量与利润维度双双领先，三星紧追，小米、OPPO、vivo 稳居全球前五。<strong>$700+ 高端市场</strong>是增长主引擎，内存涨价则在重塑所有厂商的成本结构。</p>
+
+        <p>分水岭在于产品结构：<strong style="color:#4ade80;">OPPO 以高端矩阵对冲成本压力</strong>，实现营收与 ASP 双增；<strong style="color:#f87171;">小米受困于 Redmi 基本盘</strong>，入门级利润被元器件涨价严重侵蚀。2026 年，全行业将继续在「涨价」与「保量」之间寻找平衡点。</p>
+
+        <p style="font-size:12px;color:rgba(255,255,255,0.3);margin-top:32px;">📌 数据来源：IDC、Counterpoint、Omdia 公开发布报告。详细 BoM 及分供应商报价为商业机密，可通过 Counterpoint Teardown & BoM 分析服务获取精确数据。</p>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="article-card" onclick="this.classList.toggle('open')">
+        <div class="article-card-header">
+          <div>
+            <div class="article-card-title">大疆创新（DJI）：产品矩阵与营收战略深度解析</div>
+            <div class="article-card-meta">📅 2026 年 6 月 · 行业分析 — 从消费级到行业级，全球无人机霸主的全产品线拆解</div>
+          </div>
+          <div class="article-card-arrow">▼</div>
+        </div>
+        <div class="article-card-body">
+          <div class="article-card-body-inner">
+            <div class="article-body">
+
+        <p>大疆创新（DJI）是全球无人机市场无可争议的霸主，占据全球消费级无人机约 <strong>70%–80%</strong> 市场份额。然而，大疆早已不是一家"卖航拍飞机"的公司——它构建了一个横跨消费航拍、专业影视、行业应用、农业植保、影像生态的<strong>多维产品帝国</strong>。本文基于最新产品线数据，从定价、定位、营收结构三个维度拆解大疆的战略布局。</p>
+
+        <hr style="border:none;border-top:1px solid rgba(255,255,255,0.08);margin:32px 0;">
+
+        <h4>第一部分 · 消费级无人机矩阵——分层定价的精密阶梯</h4>
+
+        <p>大疆在消费级市场构建了从 <strong>¥1,299 到 ¥15,000+</strong> 的六层定价金字塔，每一层级精准锚定一个用户群体，环环相扣，极少内耗。</p>
+
+        <div style="overflow-x:auto;margin:24px 0;">
+        <table style="font-size:13px;min-width:720px;">
+        <thead>
+        <tr><th style="width:18%;">产品线</th><th style="width:8%;">层级</th><th style="width:18%;">代表型号</th><th style="width:16%;">大致价格区间</th><th>核心用户与场景</th></tr>
+        </thead>
+        <tbody>
+        <tr style="background:rgba(0,113,227,0.06);">
+          <td><strong>Mini / Neo / Flip</strong></td><td>入门</td><td>Mini 4K Pro · Neo · Flip</td><td>¥1,299 – ¥5,788+</td><td>旅行记录、日常 Vlog、新手入门；Flip 向上折叠开创跟拍新形态</td></tr>
+        <tr>
+          <td><strong>Air</strong></td><td>进阶</td><td>Air 3S</td><td>¥6,988 – ¥8,788+</td><td>旅拍、进阶创作、中小型商业拍摄</td></tr>
+        <tr style="background:rgba(0,113,227,0.06);">
+          <td><strong>Avata</strong></td><td>FPV</td><td>Avata 2</td><td>¥5,988 – ¥6,000+</td><td>沉浸式体验、第一人称视角飞行、极限运动跟拍</td></tr>
+        <tr>
+          <td><strong>Mavic</strong></td><td>专业</td><td>Mavic 3 Classic · Mavic 3 Pro</td><td>¥9,000 – ¥15,000+</td><td>商业航拍、影视制作、专业摄影；哈苏相机加持</td></tr>
+        </tbody>
+        </table>
+        </div>
+
+        <p><strong>战略洞察：</strong>大疆的入门产品（Mini/Neo）定价极度克制，¥1,299 的 Neo 几乎等同于"交个朋友"——它的任务不是赚钱，而是<strong>构建用户基数、占领内容生态</strong>。真正的利润引擎在 Air 和 Mavic 系列，这两个层级贡献了消费级产品的大头营收。</p>
+
+        <hr style="border:none;border-top:1px solid rgba(255,255,255,0.08);margin:32px 0;">
+
+        <h4>第二部分 · 行业级产品——高壁垒、高利润、高客单价</h4>
+
+        <p>如果说消费级无人机是"量"，行业级就是"利"。大疆的行业产品线覆盖影视、测绘、安防、农业四大垂直领域，客单价从 <strong>¥30,000 到 ¥100,000+</strong>，且多为定制化方案，利润远超消费线。</p>
+
+        <div style="overflow-x:auto;margin:24px 0;">
+        <table style="font-size:13px;min-width:720px;">
+        <thead>
+        <tr><th style="width:18%;">产品线</th><th style="width:12%;">层级</th><th style="width:20%;">大致价格区间</th><th>核心场景</th></tr>
+        </thead>
+        <tbody>
+        <tr style="background:rgba(249,115,22,0.06);">
+          <td><strong>Inspire 悟</strong></td><td>行业/影视</td><td>¥50,000+（估算）</td><td>电影制作、高端商业项目；可换镜头系统</td></tr>
+        <tr>
+          <td><strong>Matrice 经纬</strong></td><td>行业旗舰</td><td>¥100,000+（估算）</td><td>测绘、巡检、搜救、公共安全；多载荷平台</td></tr>
+        <tr style="background:rgba(249,115,22,0.06);">
+          <td><strong>Agras 农业</strong></td><td>农业</td><td>¥29,999 – ¥59,999+</td><td>植保喷洒、播种、农田测绘；中国农业无人机份额超 80%</td></tr>
+        <tr>
+          <td><strong>DJI Dock</strong></td><td>无人值守</td><td>定制化报价</td><td>无人机自动机场，7×24 无人化巡检</td></tr>
+        <tr style="background:rgba(249,115,22,0.06);">
+          <td><strong>Zenmuse 禅思</strong></td><td>行业/专业</td><td>定制化报价</td><td>行业级云台相机、激光雷达、热成像载荷</td></tr>
+        </tbody>
+        </table>
+        </div>
+
+        <p><strong>战略洞察：</strong>行业线是大疆最深的<strong>护城河</strong>。Inspire 卡位影视工业，Matrice 打公共安全与能源，Agras 统治农业——三条线各自面对不同的竞争格局，但共享同一套飞控、图传、云台底层技术。这种"技术复用 + 场景定制"的模式，让大疆在行业市场几乎<strong>没有对手可以全线抗衡</strong>。</p>
+
+        <hr style="border:none;border-top:1px solid rgba(255,255,255,0.08);margin:32px 0;">
+
+        <h4>第三部分 · 影像与生态产品——从「会飞的相机」到「完整的影像帝国」</h4>
+
+        <p>大疆的真正野心，不只是天上的无人机。Osmo 和 Ronin 产品线展示了其向<strong>地面影像市场</strong>的全方位渗透——从 ¥500 的手机云台到 ¥10,000+ 的专业电影稳定器，再到 RoboMaster 教育机器人和 DJI Power 户外电源，构建了一个"拍摄→稳定→供电→教育"的完整生态。</p>
+
+        <div style="overflow-x:auto;margin:24px 0;">
+        <table style="font-size:13px;min-width:720px;">
+        <thead>
+        <tr><th style="width:16%;">产品线</th><th style="width:10%;">定位</th><th style="width:18%;">代表型号</th><th style="width:14%;">价格区间</th><th>核心场景</th></tr>
+        </thead>
+        <tbody>
+        <tr style="background:rgba(0,200,150,0.05);">
+          <td><strong>Osmo Pocket</strong></td><td>高端/专业</td><td>Pocket 4P</td><td>¥3,000 – ¥6,000+</td><td>Vlog 创作、短视频、便携专业影像</td></tr>
+        <tr>
+          <td><strong>Osmo Action</strong></td><td>中高端</td><td>Action 6</td><td>¥2,000 – ¥4,000</td><td>运动摄影、骑行、潜水、户外极限</td></tr>
+        <tr style="background:rgba(0,200,150,0.05);">
+          <td><strong>Osmo Mobile</strong></td><td>中端</td><td>Mobile 7</td><td>¥500 – ¥1,000</td><td>手机视频拍摄稳定器、日常 Vlog</td></tr>
+        <tr>
+          <td><strong>Ronin 如影</strong></td><td>专业级</td><td>RS 系列</td><td>¥2,000 – ¥10,000+</td><td>电影、广告、纪录片拍摄的专业稳定器</td></tr>
+        <tr style="background:rgba(0,200,150,0.05);">
+          <td><strong>DJI Power</strong></td><td>中高端</td><td>Power 系列</td><td>¥1,000 – ¥5,000+</td><td>无人机及户外设备快充电源</td></tr>
+        <tr>
+          <td><strong>RoboMaster</strong></td><td>中端</td><td>RoboMaster 系列</td><td>¥3,000 – ¥5,000</td><td>机器人教育、编程学习、竞技比赛</td></tr>
+        </tbody>
+        </table>
+        </div>
+
+        <p><strong>战略洞察：</strong>影像生态产品线看似分散，实则围绕一个核心——<strong>"稳定"是大疆的基因</strong>。无论是天上的三轴云台还是地上的 Ronin 稳定器，底层技术（无刷电机控制、IMU 融合算法、图传）高度同源。更关键的是，这些产品共同构建了一个<strong>"内容创作全链路"</strong>：从用 Osmo Mobile 拍手机 Vlog，到用 Osmo Pocket 拍专业短视频，再到用 Ronin + Mavic 拍商业项目——用户在同一个品牌生态内逐级升级，迁移成本极高。</p>
+
+        <hr style="border:none;border-top:1px solid rgba(255,255,255,0.08);margin:32px 0;">
+
+        <h4>第四部分 · 营收结构与战略启示</h4>
+
+        <p>大疆为私人企业，未公开披露财务数据。但根据 Frost &amp; Sullivan、Drone Industry Insights 等第三方研究，结合产品矩阵推算：</p>
+
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:24px 0;">
+          <div style="background:rgba(0,113,227,0.06);border:1px solid rgba(0,113,227,0.15);border-radius:8px;padding:20px;text-align:center;">
+            <div style="font-size:28px;font-weight:700;color:#0071e3;margin-bottom:4px;">70%+</div>
+            <div style="font-size:12px;color:rgba(255,255,255,0.55);">全球消费级无人机<br>市场份额</div>
+          </div>
+          <div style="background:rgba(0,113,227,0.06);border:1px solid rgba(0,113,227,0.15);border-radius:8px;padding:20px;text-align:center;">
+            <div style="font-size:28px;font-weight:700;color:#0071e3;margin-bottom:4px;">~300 亿</div>
+            <div style="font-size:12px;color:rgba(255,255,255,0.55);">估算年营收（人民币）<br>2024 年</div>
+          </div>
+          <div style="background:rgba(0,113,227,0.06);border:1px solid rgba(0,113,227,0.15);border-radius:8px;padding:20px;text-align:center;">
+            <div style="font-size:28px;font-weight:700;color:#0071e3;margin-bottom:4px;">80%+</div>
+            <div style="font-size:12px;color:rgba(255,255,255,0.55);">中国农业无人机<br>市场份额</div>
+          </div>
+        </div>
+
+        <h4 style="font-size:16px;color:rgba(255,255,255,0.9);margin-top:32px;">营收结构推测</h4>
+
+        <div style="overflow-x:auto;margin:20px 0;">
+        <table style="font-size:13px;min-width:600px;">
+        <thead>
+        <tr><th>业务板块</th><th>估算营收占比</th><th>增长驱动</th></tr>
+        </thead>
+        <tbody>
+        <tr style="background:rgba(0,113,227,0.06);"><td>消费级无人机（Mini/Air/Mavic）</td><td>~40%</td><td>持续迭代 + Neo/Flip 新形态拉新</td></tr>
+        <tr><td>行业级（Inspire/Matrice/Dock）</td><td>~25%</td><td>政企采购 + 无人化巡检需求爆发</td></tr>
+        <tr style="background:rgba(0,113,227,0.06);"><td>农业（Agras）</td><td>~15%</td><td>中国农田无人机渗透率快速提升</td></tr>
+        <tr><td>影像生态（Osmo/Ronin/Power）</td><td>~15%</td><td>地面影像市场高速增长，Pocket 系列成爆款</td></tr>
+        <tr style="background:rgba(0,113,227,0.06);"><td>教育及其他（RoboMaster）</td><td>~5%</td><td>STEAM 教育长期布局</td></tr>
+        </tbody>
+        </table>
+        </div>
+
+        <h4 style="font-size:16px;color:rgba(255,255,255,0.9);margin-top:32px;">四大战略支柱</h4>
+
+        <p><strong>1. 技术纵深复用。</strong>飞控算法、无刷云台电机、OcuSync 图传——这三项核心技术几乎零成本复用到从 ¥1,299 的 Neo 到 ¥100,000+ 的 Matrice 全产品线。研发投入的边际效益极高。</p>
+
+        <p><strong>2. 定价锚点效应。</strong>大疆在每一个价格带都设置了"锚"：¥1,299 的 Neo 定义了「无人机可以多便宜」的心理底线；¥8,788 的 Air 3S 作为"性价比甜点"推动大多数用户向上跳档；¥15,000 以上的 Mavic 则是无可替代的专业工具。用户从入门到专业，可以在 DJI 体系内完成全生命周期升级。</p>
+
+        <p><strong>3. 生态锁定。</strong>Osmo + Ronin + 无人机 + Power 电源组成的内容创作闭环，让用户一旦入坑，更换品牌的成本不仅仅是设备本身，而是整个工作流的重构。这种"全家桶"式的生态粘性，与苹果的 iPhone + Mac + iPad 如出一辙。</p>
+
+        <p><strong>4. 地缘风险缓冲。</strong>面对美国国防部"黑名单"和潜在制裁，大疆通过<strong>行业级产品的高壁垒</strong>（Matrice 和 Agras 在各自领域几乎没有替代品）和<strong>新兴市场深耕</strong>（东南亚农业、拉美安防）来对冲单一市场风险。</p>
+
+        <hr style="border:none;border-top:1px solid rgba(255,255,255,0.08);margin:32px 0;">
+
+        <h4>第五部分 · 各产品线市场占有率深度分析</h4>
+
+        <p>以下基于 Drone Industry Insights、Frost &amp; Sullivan、Counterpoint 等机构公开发布数据，梳理大疆在各细分赛道的竞争地位。</p>
+
+        <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin:24px 0;">
+          <div style="background:rgba(0,113,227,0.06);border:1px solid rgba(0,113,227,0.15);border-radius:8px;padding:18px;">
+            <div style="font-size:12px;color:rgba(255,255,255,0.5);margin-bottom:4px;">🥇 消费级无人机</div>
+            <div style="font-size:26px;font-weight:700;color:#0071e3;">~76%</div>
+            <div style="font-size:11px;color:rgba(255,255,255,0.4);margin-top:4px;">全球市场 · 2024 · 主要对手：Autel（~8%）</div>
+          </div>
+          <div style="background:rgba(249,115,22,0.06);border:1px solid rgba(249,115,22,0.15);border-radius:8px;padding:18px;">
+            <div style="font-size:12px;color:rgba(255,255,255,0.5);margin-bottom:4px;">🏭 行业级无人机</div>
+            <div style="font-size:26px;font-weight:700;color:#f97316;">~65%</div>
+            <div style="font-size:11px;color:rgba(255,255,255,0.4);margin-top:4px;">全球市场 · 含测绘/安防/能源 · 对手分散</div>
+          </div>
+          <div style="background:rgba(74,222,128,0.06);border:1px solid rgba(74,222,128,0.15);border-radius:8px;padding:18px;">
+            <div style="font-size:12px;color:rgba(255,255,255,0.5);margin-bottom:4px;">🌾 农业无人机（中国）</div>
+            <div style="font-size:26px;font-weight:700;color:#4ade80;">~85%</div>
+            <div style="font-size:11px;color:rgba(255,255,255,0.4);margin-top:4px;">中国植保市场 · 2024 · XAG 极飞（~12%）</div>
+          </div>
+          <div style="background:rgba(239,68,68,0.06);border:1px solid rgba(239,68,68,0.15);border-radius:8px;padding:18px;">
+            <div style="font-size:12px;color:rgba(255,255,255,0.5);margin-bottom:4px;">📹 运动相机</div>
+            <div style="font-size:26px;font-weight:700;color:#ef4444;">~22%</div>
+            <div style="font-size:11px;color:rgba(255,255,255,0.4);margin-top:4px;">全球 Action Cam · 2024 · GoPro（~48%）</div>
+          </div>
+          <div style="background:rgba(168,85,247,0.06);border:1px solid rgba(168,85,247,0.15);border-radius:8px;padding:18px;">
+            <div style="font-size:12px;color:rgba(255,255,255,0.5);margin-bottom:4px;">🎥 专业手持稳定器</div>
+            <div style="font-size:26px;font-weight:700;color:#a855f7;">~60%</div>
+            <div style="font-size:11px;color:rgba(255,255,255,0.4);margin-top:4px;">全球专业云台 · 2024 · 智云/Zhiyun（~18%）</div>
+          </div>
+          <div style="background:rgba(250,204,21,0.06);border:1px solid rgba(250,204,21,0.15);border-radius:8px;padding:18px;">
+            <div style="font-size:12px;color:rgba(255,255,255,0.5);margin-bottom:4px;">📱 便携 Vlog 相机</div>
+            <div style="font-size:26px;font-weight:700;color:#facc15;">~35%</div>
+            <div style="font-size:11px;color:rgba(255,255,255,0.4);margin-top:4px;">Vlog 相机品类 · Pocket 开创者 · Insta360 追赶</div>
+          </div>
+        </div>
+
+        <h4 style="font-size:16px;color:rgba(255,255,255,0.9);margin-top:32px;">竞争格局解读</h4>
+
+        <p><strong>消费级：高处不胜寒。</strong>76% 的份额意味着大疆在消费级领域已触达<strong>反垄断意义上的绝对统治</strong>。Autel Robotics 是唯一的全球性竞争者（约 8% 份额），但在技术代差（图传、避障、智能飞行模式）上仍有 2-3 年差距。大疆真正的对手是自己——如何在每年迭代中持续刺激换机需求，是消费线最大的增长命题。</p>
+
+        <p><strong>行业级：对手不是无人机公司。</strong>在测绘、安防、能源巡检领域，大疆的竞争对手往往不是其他无人机厂商，而是<strong>传统的有人作业方式</strong>（直升机巡检、人工测绘）和垂直领域的系统集成商。65% 的份额反映的不只是产品力，更是"让行业客户接受无人机替代"这一市场教育成本的回报。</p>
+
+        <p><strong>农业：绝对护城河。</strong>Agras 在中国农业无人机市场 85% 的份额并非偶然——背后是大疆在<strong>飞控稳定性、喷洒算法、农田测绘、售后服务网点</strong>四项能力的全面碾压。XAG 极飞以 12% 份额位居第二，但在产品可靠性和渠道覆盖上差距明显。更关键的是，Agras 的利润模型包含<strong>飞手培训 + 维修配件 + 电池更换</strong>的持续收入，是典型的"剃须刀 + 刀片"模式。</p>
+
+        <p><strong>运动相机：最激烈的战场。</strong>这是大疆唯一不在统治地位的品类。GoPro 凭借品牌积淀仍占 48%，但 Osmo Action 从 2019 年首发时的不足 5% 追至 22%，核心突破口在于<strong>磁吸快拆设计</strong>和<strong>大疆影像技术的平移</strong>（色彩科学、电子防抖直接从无人机下放）。随着 Action 6 系列进一步缩小与 GoPro 的画质差距，2026 年有望冲击 30%。</p>
+
+        <p><strong>手持稳定器：技术下放的红利。</strong>Ronin 系列在专业影视云台市场 ~60% 的份额，本质上是大疆<strong>三轴无刷云台技术从天空到地面的平移</strong>。竞争对手智云、飞宇等在消费级手持云台有价格优势，但一旦进入专业级（电影机 + 重型镜头负载），Ronin 的电机扭矩、姿态控制精度、图传集成能力无可匹敌。</p>
+
+        <p><strong>Vlog 相机：Pocket 的品类定义权。</strong>Osmo Pocket 系列几乎凭一己之力定义了"口袋云台相机"这个品类，目前约 35% 份额。Insta360 以其全景相机差异化竞争，但在"随手即拍"的易用性和画质上仍有差距。Pocket 4P 的三轴机械增稳 + 1 英寸传感器，至今是该品类的天花板。</p>
+
+        <p style="font-size:12px;color:rgba(255,255,255,0.3);margin-top:32px;">📌 数据来源：产品矩阵与价格区间基于 DJI 官方商城及公开渠道信息整理。市场份额数据综合 Drone Industry Insights、Frost &amp; Sullivan、Counterpoint Research 公开发布报告。营收数据为大疆为私人企业未公开披露，营收结构为基于第三方研究及产品矩阵推算的估算值。</p>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- 技术文章 Panel -->
+    <div class="sub-panel" id="panel-tech">
+
+      <!-- Card 1: LTE/NR -->
+      <div class="article-card" onclick="this.classList.toggle('open')">
+        <div class="article-card-header">
+          <div>
+            <div class="article-card-title">LTE 与 NR 通信系统中的数据结构分析</div>
+            <div class="article-card-meta">📅 2026 年 6 月 · 通信协议 — OFDM 资源网格从 4G 到 5G 的演进</div>
+          </div>
+          <div class="article-card-arrow">▼</div>
+        </div>
+        <div class="article-card-body">
+          <div class="article-card-body-inner">
+            <div class="article-body">
+
+        <h4>第一部分：综述</h4>
+
+        <p>在正交频分复用（OFDM，Orthogonal Frequency-Division Multiplexing）技术为核心的移动通信系统中，数据结构是理解物理层资源分配与调度的基石。它定义了时间和频率资源的基本粒度，是 MAC 层调度器进行资源分配、物理层进行信号生成与处理的基础。</p>
+
+        <p>对于 LTE（4G）和 NR（5G）而言，虽然都基于 OFDM，但其数据结构在设计哲学上存在显著差异。LTE 采用相对静态、固定的参数集（Numerology），旨在提供稳定的广域覆盖和移动性。而 NR 则引入了高度灵活、可配置的参数集，以适应从增强移动宽带（eMBB，Enhanced Mobile Broadband）到超可靠低时延通信（URLLC，Ultra-Reliable Low-Latency Communication）等多样化的业务场景。理解两者数据结构的共性与区别，是深入掌握无线通信系统设计的关键。</p>
+
+        <h4>第二部分：数据结构基础内容</h4>
+        <p>本部分以 LTE 系统为例，详细阐述 OFDM 通信系统在时域和频域上的资源划分逻辑。</p>
+
+        <h4>2.1 时域资源结构</h4>
+
+        <p>时域资源的划分从大到小依次为：子帧（Subframe）、时隙（Slot）、符号（Symbol）。</p>
+
+        <ol>
+          <li><strong>子帧（Subframe）：</strong>通信系统中的基本时间单位，时长固定为 <strong>1 ms</strong>。无论在 LTE 还是 NR 中，1ms 的子帧时长保持不变，这为不同参数集间的互操作提供了时间基准。</li>
+          <li><strong>时隙（Slot）：</strong>构成子帧的基本单元，也是资源块（RB）的时域跨度。在 LTE 中，1 个子帧包含 <strong>2 个时隙</strong>，每个时隙的时长为 <strong>0.5 ms</strong>。从调度角度看，资源块（RB）的定义在时域上就是一个时隙。</li>
+          <li><strong>OFDM 符号（OFDM Symbol）：</strong>时域上最小的基本单位，一个符号在一个子载波上承载一个调制后的复数数据（例如 QPSK、16QAM 等）。在 LTE 常规循环前缀（Normal CP）配置下，每个时隙包含 <strong>7 个 OFDM 符号</strong>。因此，一个子帧（1ms）共有 14 个符号。
+            <br>每个 OFDM 符号由<strong>「有用符号」</strong>和<strong>「循环前缀」</strong>两部分串联构成：
+            <br>· 有用符号时长（T<sub>u</sub>）：在 LTE 15 KHz 子载波间隔下，T<sub>u</sub> = 1 / 15 KHz ≈ <strong>66.67 µs</strong>，承载实际用户数据。
+            <br>· 循环前缀时长（CP）：常规配置下约 <strong>4.7 µs</strong>。CP 通过复制符号尾部一段样点并置于符号开头，用于对抗多径效应带来的符号间干扰（ISI，Inter-Symbol Interference）和子载波间干扰（ICI，Inter-Carrier Interference）。
+          </li>
+        </ol>
+
+        <!-- 图一：时域资源结构示意 -->
+        <div class="diagram-container">
+          <svg viewBox="0 0 800 420" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="gradFrame" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#1a3a5c"/><stop offset="100%" stop-color="#0d2137"/></linearGradient>
+              <linearGradient id="gradSubframe" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#2d5a8e"/><stop offset="100%" stop-color="#1a3a5c"/></linearGradient>
+              <linearGradient id="gradSlot" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#3b7ab8"/><stop offset="100%" stop-color="#2d5a8e"/></linearGradient>
+              <linearGradient id="gradSymbol" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#5a9fd4"/><stop offset="100%" stop-color="#3b7ab8"/></linearGradient>
+            </defs>
+            <text x="400" y="24" text-anchor="middle" fill="#fff" font-size="15" font-weight="600">图一 · 时域资源结构（NR, μ=0, SCS=15KHz）</text>
+            <rect x="30" y="40" width="740" height="34" rx="6" fill="url(#gradFrame)" stroke="#3b7ab8" stroke-width="1"/>
+            <text x="45" y="62" fill="#fff" font-size="13" font-weight="600">Radio Frame = 10 ms</text>
+            <text x="740" y="62" fill="rgba(255,255,255,0.5)" font-size="11" text-anchor="end">10 subframes</text>
+            <text x="30" y="100" fill="rgba(255,255,255,0.5)" font-size="11">Subframe</text>
+            <rect x="90" y="88" width="68" height="28" rx="4" fill="url(#gradSubframe)" stroke="#2d5a8e" stroke-width="0.5"/>
+            <text x="124" y="106" fill="#fff" font-size="11" text-anchor="middle">#0 1ms</text>
+            <rect x="160" y="88" width="68" height="28" rx="4" fill="url(#gradSubframe)" stroke="#2d5a8e" stroke-width="0.5"/>
+            <text x="194" y="106" fill="#fff" font-size="11" text-anchor="middle">#1</text>
+            <rect x="230" y="88" width="68" height="28" rx="4" fill="url(#gradSubframe)" stroke="#2d5a8e" stroke-width="0.5"/>
+            <text x="264" y="106" fill="#fff" font-size="11" text-anchor="middle">#2</text>
+            <rect x="300" y="88" width="68" height="28" rx="4" fill="url(#gradSubframe)" stroke="#2d5a8e" stroke-width="0.5"/>
+            <text x="334" y="106" fill="#fff" font-size="11" text-anchor="middle">…</text>
+            <rect x="370" y="88" width="68" height="28" rx="4" fill="url(#gradSubframe)" stroke="#2d5a8e" stroke-width="0.5"/>
+            <text x="404" y="106" fill="#fff" font-size="11" text-anchor="middle">#9</text>
+            <line x1="124" y1="118" x2="124" y2="140" stroke="#f0a050" stroke-width="1.5" marker-end="url(#arrowOrange)"/>
+            <line x1="124" y1="118" x2="170" y2="140" stroke="#f0a050" stroke-width="1.5" marker-end="url(#arrowOrange)"/>
+            <defs><marker id="arrowOrange" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#f0a050"/></marker></defs>
+            <text x="30" y="158" fill="rgba(255,255,255,0.5)" font-size="11">Subframe #0 (1ms)</text>
+            <rect x="90" y="148" width="168" height="28" rx="4" fill="url(#gradSlot)" stroke="#3b7ab8" stroke-width="0.5"/>
+            <text x="174" y="166" fill="#fff" font-size="12" text-anchor="middle">Slot 0 (0.5 ms, 7 symbols)</text>
+            <rect x="260" y="148" width="168" height="28" rx="4" fill="url(#gradSlot)" stroke="#3b7ab8" stroke-width="0.5"/>
+            <text x="344" y="166" fill="#fff" font-size="12" text-anchor="middle">Slot 1 (0.5 ms, 7 symbols)</text>
+            <line x1="174" y1="178" x2="130" y2="205" stroke="#f0a050" stroke-width="1.5" marker-end="url(#arrowOrange)"/>
+            <text x="30" y="222" fill="rgba(255,255,255,0.5)" font-size="11">Slot 0 (7 OFDM symbols)</text>
+              <rect x="90" y="212" width="34" height="28" rx="3" fill="url(#gradSymbol)" stroke="#5a9fd4" stroke-width="0.3"/><text x="107" y="230" fill="#fff" font-size="9" text-anchor="middle">0</text>
+              <rect x="126" y="212" width="34" height="28" rx="3" fill="url(#gradSymbol)" stroke="#5a9fd4" stroke-width="0.3"/><text x="143" y="230" fill="#fff" font-size="9" text-anchor="middle">1</text>
+              <rect x="162" y="212" width="34" height="28" rx="3" fill="url(#gradSymbol)" stroke="#5a9fd4" stroke-width="0.3"/><text x="179" y="230" fill="#fff" font-size="9" text-anchor="middle">2</text>
+              <text x="200" y="230" fill="rgba(255,255,255,0.4)" font-size="10">…</text>
+              <rect x="220" y="212" width="34" height="28" rx="3" fill="url(#gradSymbol)" stroke="#5a9fd4" stroke-width="0.3"/><text x="237" y="230" fill="#fff" font-size="9" text-anchor="middle">5</text>
+              <rect x="256" y="212" width="34" height="28" rx="3" fill="url(#gradSymbol)" stroke="#5a9fd4" stroke-width="0.3"/><text x="273" y="230" fill="#fff" font-size="9" text-anchor="middle">6</text>
+            <text x="580" y="252" fill="rgba(255,255,255,0.4)" font-size="11">单个 Symbol 结构（Normal CP）：</text>
+            <rect x="580" y="262" width="120" height="18" rx="3" fill="#2d5a8e" stroke="#5a9fd4" stroke-width="0.5"/>
+            <text x="640" y="275" fill="#fff" font-size="10" text-anchor="middle">CP</text>
+            <rect x="702" y="262" width="80" height="18" rx="3" fill="#5a9fd4" stroke="#5a9fd4" stroke-width="0.5"/>
+            <text x="742" y="275" fill="#fff" font-size="10" text-anchor="middle">Data (FFT)</text>
+            <text x="580" y="300" fill="rgba(255,255,255,0.35)" font-size="10">CP: 循环前缀，消除符号间干扰（ISI）</text>
+            <text x="580" y="315" fill="rgba(255,255,255,0.35)" font-size="10">Tu: 有用符号时长 ≈ 66.67 µs（15KHz SCS）</text>
+            <line x1="90" y1="310" x2="400" y2="310" stroke="rgba(255,255,255,0.3)" stroke-width="1"/>
+            <polygon points="400,310 395,306 395,314" fill="rgba(255,255,255,0.3)"/>
+            <text x="245" y="325" fill="rgba(255,255,255,0.4)" font-size="11" text-anchor="middle">时间 t →</text>
+          </svg>
+          <p class="diagram-caption">图一：从 Radio Frame → Subframe → Slot → Symbol 的时域层级解构</p>
+        </div>
+
+        <h4>2.2 频域资源结构</h4>
+
+        <p>在 4G 和 5G 的物理层设计中，频域资源的划分是一个严谨的层级结构。理解这个结构，是理解网络速率、容量和部署场景的基础。我们可以将其拆解为四个环环相扣的层级：<strong>子载波 → 资源块（RB）→ 信道带宽 → 系统带宽</strong> <span class="ref">[1][2]</span>。</p>
+
+        <!-- 动画图：四层频域层级结构 -->
+        <div class="diagram-container">
+          <style>
+            @keyframes fadeSlideIn { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+            @keyframes scaleIn { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+            @keyframes drawLine { from { stroke-dashoffset: 800; } to { stroke-dashoffset: 0; } }
+            .a-l1 { animation: fadeSlideIn 0.7s ease-out both; animation-delay: 0.3s; }
+            .a-l2 { animation: fadeSlideIn 0.7s ease-out both; animation-delay: 1.3s; }
+            .a-l3 { animation: fadeSlideIn 0.7s ease-out both; animation-delay: 2.3s; }
+            .a-l4 { animation: fadeSlideIn 0.7s ease-out both; animation-delay: 3.3s; }
+            .a-sc-bars { animation: scaleIn 0.9s ease-out both; animation-delay: 1.0s; transform-origin: left center; }
+            .a-gb { animation: fadeSlideIn 0.5s ease-out both; animation-delay: 3.6s; }
+            .a-arr { animation: fadeSlideIn 0.4s ease-out both; animation-delay: 0.9s; }
+          </style>
+          <svg viewBox="0 0 800 460" xmlns="http://www.w3.org/2000/svg">
+            <text x="400" y="26" text-anchor="middle" fill="#fff" font-size="15" font-weight="600">图二 · 频域资源四层结构（动画：子载波 → 资源块 → 信道带宽 → 系统带宽）</text>
+            <g class="a-l1">
+              <text x="40" y="70" fill="#5a9fd4" font-size="13" font-weight="700">第1层 · 子载波</text>
+              <text x="40" y="88" fill="rgba(255,255,255,0.5)" font-size="11">频域最小不可分单位 — 承载调制符号</text>
+              <rect x="40" y="98" width="60" height="28" rx="4" fill="rgba(90,159,212,0.25)" stroke="#5a9fd4" stroke-width="1.5"/>
+              <text x="70" y="117" text-anchor="middle" fill="#fff" font-size="11" font-weight="600">SC</text>
+              <text x="108" y="117" fill="rgba(255,255,255,0.5)" font-size="11">← 1 个子载波</text>
+              <text x="40" y="142" fill="rgba(255,255,255,0.35)" font-size="10">LTE: 固定 15 KHz</text>
+              <text x="40" y="158" fill="rgba(255,255,255,0.35)" font-size="10">NR: 15/30/60/120 KHz</text>
+            </g>
+            <line x1="70" y1="172" x2="70" y2="200" stroke="#f0a050" stroke-width="1.5" stroke-dasharray="4,3" class="a-arr"/>
+            <text x="80" y="194" fill="#f0a050" font-size="10" font-weight="600" class="a-arr">×12 绑定</text>
+            <g class="a-l2">
+              <text x="40" y="220" fill="#10b981" font-size="13" font-weight="700">第2层 · 资源块（RB）</text>
+              <text x="40" y="238" fill="rgba(255,255,255,0.5)" font-size="11">12 个连续子载波 → 频域调度最小单位</text>
+              <g class="a-sc-bars">
+                <rect x="40" y="248" width="42" height="28" rx="3" fill="rgba(16,185,129,0.2)" stroke="#10b981" stroke-width="0.8"/>
+                <rect x="86" y="248" width="42" height="28" rx="3" fill="rgba(16,185,129,0.2)" stroke="#10b981" stroke-width="0.8"/>
+                <rect x="132" y="248" width="42" height="28" rx="3" fill="rgba(16,185,129,0.2)" stroke="#10b981" stroke-width="0.8"/>
+                <text x="408" y="268" fill="rgba(255,255,255,0.3)" font-size="14">…</text>
+                <rect x="430" y="248" width="42" height="28" rx="3" fill="rgba(16,185,129,0.2)" stroke="#10b981" stroke-width="0.8"/>
+                <rect x="476" y="248" width="42" height="28" rx="3" fill="rgba(16,185,129,0.2)" stroke="#10b981" stroke-width="0.8"/>
+                <rect x="522" y="248" width="42" height="28" rx="3" fill="rgba(16,185,129,0.2)" stroke="#10b981" stroke-width="0.8"/>
+              </g>
+              <rect x="36" y="244" width="532" height="36" rx="5" fill="none" stroke="#10b981" stroke-width="2" stroke-dasharray="8,3"/>
+              <text x="580" y="268" fill="#10b981" font-size="11" font-weight="600">= 1 RB</text>
+              <text x="40" y="302" fill="rgba(255,255,255,0.35)" font-size="10">LTE: 12×15k = 180 KHz（固定）</text>
+              <text x="40" y="318" fill="rgba(255,255,255,0.35)" font-size="10">NR: 12×SCS, 随参数集变化（180k–1440k）</text>
+            </g>
+            <line x1="300" y1="332" x2="300" y2="360" stroke="#f0a050" stroke-width="1.5" stroke-dasharray="4,3" class="a-arr"/>
+            <text x="310" y="354" fill="#f0a050" font-size="10" font-weight="600" class="a-arr">×N 构成</text>
+            <g class="a-l3">
+              <text x="40" y="380" fill="#f0a050" font-size="13" font-weight="700">第3层 · 信道带宽</text>
+              <text x="40" y="398" fill="rgba(255,255,255,0.5)" font-size="11">运营商牌照独占频带宽度（如 10/20/100 MHz）</text>
+              <rect x="40" y="406" width="580" height="28" rx="4" fill="rgba(240,160,80,0.1)" stroke="#f0a050" stroke-width="1.5"/>
+            </g>
+            <g class="a-l4">
+              <text x="40" y="460" fill="#ef4444" font-size="13" font-weight="700">第4层 · 系统带宽</text>
+              <rect x="40" y="466" width="580" height="28" rx="4" fill="rgba(74,222,128,0.15)" stroke="#4ade80" stroke-width="1.5"/>
+              <text x="330" y="486" text-anchor="middle" fill="#4ade80" font-size="11" font-weight="600">有效传输带宽 = 信道带宽 − 两侧保护带宽</text>
+              <g class="a-gb">
+                <rect x="40" y="466" width="28" height="28" rx="4" fill="rgba(239,68,68,0.3)" stroke="#ef4444" stroke-width="1" stroke-dasharray="3,2"/>
+                <rect x="592" y="466" width="28" height="28" rx="4" fill="rgba(239,68,68,0.3)" stroke="#ef4444" stroke-width="1" stroke-dasharray="3,2"/>
+                <text x="54" y="456" fill="#ef4444" font-size="9" text-anchor="middle">保护带</text>
+                <text x="606" y="456" fill="#ef4444" font-size="9" text-anchor="middle">保护带</text>
+              </g>
+            </g>
+          </svg>
+          <p class="diagram-caption">图二（动画）：频域资源从子载波 → RB → 信道带宽 → 系统带宽的四层递进结构</p>
+        </div>
+
+        <ol>
+          <li><strong>子载波（Subcarrier）——第一层 · 最小原子：</strong>频域资源中最小的、不可再分的物理单位。它是一种极窄频带的正弦波信号，用于承载经过调制的数据符号（如 QPSK、16QAM 等）。在 LTE 中，子载波间隔（SCS）固定为 <strong>15 KHz</strong>；而 5G NR 为了适应更多样化的场景，引入了<strong>可扩展的参数集（Numerology）</strong>，支持 15/30/60/120/240 KHz 多种子载波间隔 <span class="ref">[1][2]</span>。</li>
+          <li><strong>资源块（Resource Block, RB）——第二层 · 调度单位：</strong>单个子载波容量有限，逐个子载波管理效率极低。因此，3GPP 规定将 <strong>12 个连续子载波</strong>捆绑在一起，组成一个<strong>资源块（RB）</strong>，作为频域资源调度的最小分配单位。RB 的频域宽度直接由 SCS 决定：<strong>RB 宽度 = 12 × SCS</strong> <span class="ref">[1][5]</span>。</li>
+          <li><strong>信道带宽（Channel Bandwidth）——第三层 · 物理边界：</strong>运营商从监管机构（如工信部、FCC）经频谱拍卖获得的独占频带宽度。它是写在频谱牌照上的物理数值，是信号发射不可逾越的硬性边界。LTE 常见信道带宽为 1.4–20 MHz，NR FR1 支持 5–100 MHz，FR2（毫米波）最高可达 <strong>400 MHz</strong> <span class="ref">[3][4]</span>。</li>
+          <li><strong>系统带宽（Transmission Bandwidth）——第四层 · 有效范围：</strong>信道带宽并不完全等同于可用带宽。为防止信号能量溢出干扰相邻频段，3GPP 标准要求在信道带宽两侧预留<strong>保护带宽（Guard Band）</strong>。扣除保护带宽后，真正用于数据传输的频域范围称为<strong>系统带宽</strong> <span class="ref">[3][4]</span>。RB 总数由系统带宽除以单个 RB 宽度得出：</li>
+        </ol>
+        <p style="text-align:center;font-size:15px;color:#4ade80;margin:16px 0;"><strong>系统带宽 = 信道带宽 − 两侧保护带宽 &nbsp;→&nbsp; RB 总数 = 系统带宽 ÷ RB 宽度</strong></p>
+
+        <h4>4G 与 5G 频域结构核心对比</h4>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>对比维度</th><th>4G LTE</th><th>5G NR</th></tr></thead>
+            <tbody>
+              <tr><td><strong>子载波间隔（SCS）</strong></td><td>固定 15 KHz</td><td>灵活可变：15 / 30 / 60 / 120 KHz<sup>∗</sup></td></tr>
+              <tr><td><strong>每 RB 子载波数</strong></td><td>固定 12 个</td><td>固定 12 个</td></tr>
+              <tr><td><strong>单个 RB 带宽</strong></td><td>180 KHz（恒定）</td><td>随 SCS：180 / 360 / 720 / 1440 KHz</td></tr>
+              <tr><td><strong>信道带宽范围</strong></td><td>1.4 ~ 20 MHz</td><td>FR1: 5 ~ 100 MHz；FR2: ≤ 400 MHz</td></tr>
+              <tr><td><strong>10 MHz 信道 → RB 数</strong></td><td>系统带宽 ~9 MHz → <strong>50 个 RB</strong></td><td>15k SCS: 50 RB；30k SCS: <strong>25 个 RB</strong></td></tr>
+              <tr><td><strong>设计思想</strong></td><td>统一固定，简化部署</td><td>灵活可变，因频制宜</td></tr>
+            </tbody>
+          </table>
+          <p class="table-caption">表1：4G LTE 与 5G NR 频域资源结构关键参数对比 <span class="ref">[1]–[6]</span> · ∗NR 还支持 240 KHz SCS（μ=4），用于 FR2 毫米波</p>
+        </div>
+
+        <h4>实例：4G LTE 20 MHz 频域资源完整计算</h4>
+        <p>下面以 LTE 中最常见的 20 MHz 信道为例，将上述四层结构套入具体数值，完整走一遍计算流程 <span class="ref">[3][5]</span>：</p>
+        <div class="diagram-container">
+          <svg viewBox="0 0 800 280" xmlns="http://www.w3.org/2000/svg">
+            <text x="400" y="24" text-anchor="middle" fill="#fff" font-size="14" font-weight="600">图 · LTE 20 MHz 频域资源计算流程</text>
+            <rect x="30" y="42" width="168" height="52" rx="6" fill="rgba(90,159,212,0.12)" stroke="#5a9fd4" stroke-width="1"/><text x="114" y="62" text-anchor="middle" fill="#5a9fd4" font-size="11" font-weight="700">① 最小颗粒</text><text x="114" y="84" text-anchor="middle" fill="#fff" font-size="12">1 SC = 15 KHz</text>
+            <polygon points="202,68 216,68 216,80 202,80" fill="rgba(255,255,255,0.5)"/>
+            <rect x="220" y="42" width="168" height="52" rx="6" fill="rgba(16,185,129,0.12)" stroke="#10b981" stroke-width="1"/><text x="304" y="62" text-anchor="middle" fill="#10b981" font-size="11" font-weight="700">② 成组管理</text><text x="304" y="84" text-anchor="middle" fill="#fff" font-size="12">1 RB = 12×15k = 180 KHz</text>
+            <polygon points="392,68 406,68 406,80 392,80" fill="rgba(255,255,255,0.5)"/>
+            <rect x="410" y="42" width="176" height="52" rx="6" fill="rgba(240,160,80,0.12)" stroke="#f0a050" stroke-width="1"/><text x="498" y="62" text-anchor="middle" fill="#f0a050" font-size="11" font-weight="700">③ 物理边界</text><text x="498" y="84" text-anchor="middle" fill="#fff" font-size="12">信道带宽 = 20 MHz</text>
+            <polygon points="590,68 604,68 604,80 590,80" fill="rgba(255,255,255,0.5)"/>
+            <rect x="608" y="42" width="168" height="52" rx="6" fill="rgba(239,68,68,0.12)" stroke="#ef4444" stroke-width="1"/><text x="692" y="62" text-anchor="middle" fill="#ef4444" font-size="11" font-weight="700">④ 扣除保护带</text><text x="692" y="84" text-anchor="middle" fill="#fff" font-size="12">系统带宽 ≈ 18 MHz</text>
+            <rect x="120" y="120" width="560" height="46" rx="8" fill="rgba(74,222,128,0.12)" stroke="#4ade80" stroke-width="1.5"/><text x="400" y="142" text-anchor="middle" fill="#4ade80" font-size="13" font-weight="600">⑤ 最终容量：RB 总数 = 18 MHz ÷ 180 KHz = 100 个 RB</text><text x="400" y="160" text-anchor="middle" fill="rgba(255,255,255,0.45)" font-size="11">基站可在 20 MHz 内同时调度 100 个资源块</text>
+            <rect x="40" y="190" width="720" height="40" rx="6" fill="none" stroke="#f0a050" stroke-width="2"/><text x="400" y="220" text-anchor="middle" fill="#f0a050" font-size="12" font-weight="600">信道带宽 20 MHz（频谱牌照）</text>
+            <rect x="44" y="192" width="24" height="36" rx="3" fill="rgba(239,68,68,0.4)" stroke="#ef4444" stroke-width="0.5"/><text x="56" y="215" text-anchor="middle" fill="#ef4444" font-size="8" font-weight="600">保护带</text>
+            <rect x="70" y="194" width="668" height="32" rx="3" fill="rgba(74,222,128,0.2)" stroke="#4ade80" stroke-width="0.8"/><text x="404" y="215" text-anchor="middle" fill="#4ade80" font-size="11" font-weight="600">系统带宽 ~18 MHz = 100 RBs</text>
+            <rect x="740" y="192" width="18" height="36" rx="3" fill="rgba(239,68,68,0.4)" stroke="#ef4444" stroke-width="0.5"/><text x="749" y="215" text-anchor="middle" fill="#ef4444" font-size="8" font-weight="600">保护带</text>
+            <text x="404" y="260" text-anchor="middle" fill="rgba(255,255,255,0.35)" font-size="10">保护带宽合计约 2 MHz（3GPP TS 36.101 定义）</text>
+          </svg>
+          <p class="diagram-caption">图：LTE 20 MHz 频域资源从子载波到 RB 总数的完整计算流程</p>
+        </div>
+        <p>这个计算结果表明，在 20 MHz 的 LTE 网络中，基站可以将频域资源划分为 100 个独立的「资源块」，并根据用户信道条件和业务需求动态调度——这是 OFDM 多址接入（OFDMA）实现频谱高效利用的核心机制 <span class="ref">[5]</span>。</p>
+
+        <h4>小结：固定与灵活的选择</h4>
+        <p><strong>4G LTE</strong> 采用「固定车位」模式——子载波间隔和 RB 宽度均为定值（15 KHz / 180 KHz），逻辑简单、实现稳定，完美满足移动互联网初期的需求。<strong>5G NR</strong> 则演进为「可变车位」模式——通过 Numerology 引入多种子载波间隔，RB 宽度可灵活变化：低频段（如 700 MHz）用 15 KHz SCS 实现广覆盖，高频段（如毫米波）用 120 KHz SCS 承载超大带宽业务，真正做到了<strong>「因频制宜」</strong> <span class="ref">[2][6]</span>。</p>
+
+
+        <h4>第三部分：LTE 与 NR 数据结构的核心区别</h4>
+
+        <p>NR 相对于 LTE，最大的演进在于引入了灵活的参数集（Flexible Numerology），其核心区别集中在子载波间隔和由此衍生的时域结构变化上。</p>
+
+        <p><strong>子载波间隔（SCS）：</strong>LTE 固定使用 15 KHz；NR 支持 15/30/60/120/240 KHz 的灵活配置，以应对高频段（毫米波）的相位噪声和多普勒频移，同时缩短符号时长以降低空口时延。</p>
+
+        <p><strong>时隙结构：</strong>LTE 中一个子帧（1ms）均分为 2 个时隙，每时隙 7 个符号。NR 则将每时隙符号数固定为 14，子帧内时隙数随 SCS 增大而增加（= SCS / 15KHz），时隙绝对时长也随之变短——60 KHz SCS 下每时隙仅 0.25 ms。</p>
+
+        <p><strong>资源块带宽：</strong>两者均以 12 个子载波为一个 RB，但 LTE 的 RB 固定 180 KHz 带宽，NR 的 RB 绝对带宽随 SCS 线性增宽（30 KHz SCS 时为 360 KHz）。在相同信道带宽内，更大 SCS 意味着可用 RB 总数减少。</p>
+
+        <p><strong>符号时长：</strong>LTE 的符号时长固定约 71.4 µs（T<sub>u</sub> = 66.7 µs + CP ≈ 4.7 µs）。NR 的符号时长 = 1/SCS + CP，随 SCS 增大而等比例缩短——30 KHz SCS 时约为 15 KHz 的一半。</p>
+
+        <p><strong>频谱效率：</strong>LTE 在相同信道带宽下 RB 总数更多，频谱效率较高。NR 在大 SCS 下虽能支持更快调度，但因循环前缀和保护带宽的绝对开销不变，有效频谱效率通常略低于小 SCS 配置。</p>
+
+        <!-- 图三：LTE vs NR 对比 -->
+        <div class="diagram-container">
+          <svg viewBox="0 0 800 440" xmlns="http://www.w3.org/2000/svg">
+            <text x="400" y="24" text-anchor="middle" fill="#fff" font-size="15" font-weight="600">图三 · LTE 与 NR 数据结构区别</text>
+            <rect x="40" y="44" width="340" height="48" rx="6" fill="#1a3a5c" stroke="#3b7ab8" stroke-width="1"/>
+            <text x="210" y="74" text-anchor="middle" fill="#fff" font-size="16" font-weight="700">LTE (4G)</text>
+            <text x="60" y="115" fill="#5a9fd4" font-size="12" font-weight="600">子载波间隔（SCS）</text>
+            <rect x="60" y="122" width="300" height="28" rx="4" fill="rgba(255,255,255,0.05)"/>
+            <text x="75" y="141" fill="rgba(255,255,255,0.85)" font-size="12">固定 15 KHz（唯一选项）</text>
+            <text x="60" y="168" fill="#5a9fd4" font-size="12" font-weight="600">时隙结构</text>
+            <rect x="60" y="175" width="300" height="28" rx="4" fill="rgba(255,255,255,0.05)"/>
+            <text x="75" y="194" fill="rgba(255,255,255,0.85)" font-size="12">1子帧=2时隙，每时隙 7 符号</text>
+            <text x="60" y="221" fill="#5a9fd4" font-size="12" font-weight="600">子帧内时隙数</text>
+            <rect x="60" y="228" width="300" height="28" rx="4" fill="rgba(255,255,255,0.05)"/>
+            <text x="75" y="247" fill="rgba(255,255,255,0.85)" font-size="12">固定 2 时隙 / 子帧</text>
+            <text x="60" y="274" fill="#5a9fd4" font-size="12" font-weight="600">每时隙 RB 的 RE 数</text>
+            <rect x="60" y="281" width="300" height="28" rx="4" fill="rgba(255,255,255,0.05)"/>
+            <text x="75" y="300" fill="rgba(255,255,255,0.85)" font-size="12">12 × 7 = 84 RE</text>
+            <text x="60" y="327" fill="#5a9fd4" font-size="12" font-weight="600">Mini-Slot</text>
+            <rect x="60" y="334" width="300" height="28" rx="4" fill="rgba(255,255,255,0.05)"/>
+            <text x="75" y="353" fill="rgba(255,255,255,0.85)" font-size="12">不支持</text>
+            <text x="60" y="380" fill="#5a9fd4" font-size="12" font-weight="600">BWP</text>
+            <rect x="60" y="387" width="300" height="28" rx="4" fill="rgba(255,255,255,0.05)"/>
+            <text x="75" y="406" fill="rgba(255,255,255,0.85)" font-size="12">不支持</text>
+            <rect x="420" y="44" width="340" height="48" rx="6" fill="#0d3b2e" stroke="#2d8e6e" stroke-width="1"/>
+            <text x="590" y="74" text-anchor="middle" fill="#5af0a0" font-size="16" font-weight="700">NR (5G)</text>
+            <text x="440" y="115" fill="#5af0a0" font-size="12" font-weight="600">子载波间隔（SCS）</text>
+            <rect x="440" y="122" width="300" height="28" rx="4" fill="rgba(255,255,255,0.05)"/>
+            <text x="455" y="141" fill="rgba(255,255,255,0.85)" font-size="12">15 / 30 / 60 / 120 / 240 KHz（灵活）</text>
+            <text x="440" y="168" fill="#5af0a0" font-size="12" font-weight="600">时隙结构</text>
+            <rect x="440" y="175" width="300" height="28" rx="4" fill="rgba(255,255,255,0.05)"/>
+            <text x="455" y="194" fill="rgba(255,255,255,0.85)" font-size="12">每时隙固定 14 符号</text>
+            <text x="440" y="221" fill="#5af0a0" font-size="12" font-weight="600">子帧内时隙数</text>
+            <rect x="440" y="228" width="300" height="28" rx="4" fill="rgba(255,255,255,0.05)"/>
+            <text x="455" y="247" fill="rgba(255,255,255,0.85)" font-size="12">1 / 2 / 4 / 8 / 16（取决于 μ）</text>
+            <text x="440" y="274" fill="#5af0a0" font-size="12" font-weight="600">每时隙 RB 的 RE 数</text>
+            <rect x="440" y="281" width="300" height="28" rx="4" fill="rgba(255,255,255,0.05)"/>
+            <text x="455" y="300" fill="rgba(255,255,255,0.85)" font-size="12">12 × 14 = 168 RE</text>
+            <text x="440" y="327" fill="#5af0a0" font-size="12" font-weight="600">Mini-Slot</text>
+            <rect x="440" y="334" width="300" height="28" rx="4" fill="rgba(255,255,255,0.05)"/>
+            <text x="455" y="353" fill="rgba(255,255,255,0.85)" font-size="12">✅ 支持（2 / 4 / 7 符号，URLLC）</text>
+            <text x="440" y="380" fill="#5af0a0" font-size="12" font-weight="600">BWP</text>
+            <rect x="440" y="387" width="300" height="28" rx="4" fill="rgba(255,255,255,0.05)"/>
+            <text x="455" y="406" fill="rgba(255,255,255,0.85)" font-size="12">✅ 支持（灵活频谱利用+终端省电）</text>
+          </svg>
+          <p class="diagram-caption">图三：LTE 与 NR 在 SCS、时隙结构、Mini-Slot 和 BWP 等维度的对比</p>
+        </div>
+
+        <h4>第四部分：总结</h4>
+
+        <p>LTE 的数据结构设计奠定了 OFDM 资源网格（Resource Grid）的基础，以「简单、固定」为特征——15 KHz 唯一 SCS、7 符号时隙、无 Mini-Slot 和 BWP——这种一致性简化了系统设计和终端实现，适合 eMBB 初期的移动宽带需求。</p>
+
+        <p>NR 在继承 LTE 顶层框架的基础上，引入了 <strong>Numerology</strong>、<strong>Mini-Slot</strong> 和 <strong>BWP</strong> 三大创新，使其数据结构具备前所未有的灵活性：高 SCS 为毫米波和低时延提供短符号；低 SCS 为广覆盖和大连接提供长 CP。这种「一刀不切」的设计哲学，正是 5G 能够同时服务 eMBB、URLLC 和 mMTC 三大场景的物理层基础。通过对数据结构的深入理解，可以从系统级视角把握无线通信资源调度的核心逻辑。</p>
+
+            
+        <h4>参考文献</h4>
+        <ol class="refs">
+          <li>3GPP TS 36.211, "Evolved Universal Terrestrial Radio Access (E-UTRA); Physical channels and modulation," V16.2.0, 2020, §5–6.</li>
+          <li>3GPP TS 38.211, "NR; Physical channels and modulation," V18.3.0, 2024, §4–5.</li>
+          <li>3GPP TS 36.101, "E-UTRA; User Equipment (UE) radio transmission and reception," V16.9.0, 2021, §5.</li>
+          <li>3GPP TS 38.101-1, "NR; User Equipment (UE) radio transmission and reception; Part 1: Range 1 Standalone," V18.5.0, 2024, §5.</li>
+          <li>E. Dahlman, S. Parkvall, and J. Sköld, <em>4G: LTE/LTE-Advanced for Mobile Broadband</em>, 2nd ed., Academic Press, 2014, Ch. 9–10.</li>
+          <li>E. Dahlman, S. Parkvall, and J. Sköld, <em>5G NR: The Next Generation Wireless Access Technology</em>, 2nd ed., Academic Press, 2020, Ch. 7–8.</li>
+        </ol>
+
+</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2: L-DiFEM -->
+      <div class="article-card" onclick="this.classList.toggle('open')">
+        <div class="article-card-header">
+          <div>
+            <div class="article-card-title">L-DiFEM 产品线开发流程</div>
+            <div class="article-card-meta">📅 2026 年 6 月 · 产品开发 — 从 TR1 可行性评估到 TR4 设计交付的全流程</div>
+          </div>
+          <div class="article-card-arrow">▼</div>
+        </div>
+        <div class="article-card-body">
+          <div class="article-card-body-inner">
+
+      <p>L-DiFEM（集成 LNA + SWITCH + FILTER 的接收模组）开发分为两大阶段：<strong>可行性阶段（TR1–TR3）</strong>完成架构/工艺/尺寸/Floorplan 四维评估；<strong>设计开发阶段（TR4）</strong>按 Phase 1→3 推进 LNA / SWITCH / FILTER / MODULE 四条线并行开发，各阶段有明确的交付物与接口关系。</p>
+
+      <div class="diagram-container">
+        <svg viewBox="0 0 800 750" xmlns="http://www.w3.org/2000/svg">
+
+          <!-- ===== 可行性阶段 ===== -->
+          <text x="30" y="28" fill="#f0a050" font-size="14" font-weight="700">可行性阶段 · TR1–TR3</text>
+          <rect x="30" y="38" width="740" height="110" rx="8" fill="rgba(240,160,80,0.06)" stroke="rgba(240,160,80,0.25)" stroke-width="1.5"/>
+
+          <!-- 架构 -->
+          <rect x="46" y="50" width="172" height="86" rx="6" fill="rgba(0,113,227,0.1)" stroke="rgba(0,113,227,0.25)"/>
+          <text x="132" y="70" text-anchor="middle" fill="#5a9fd4" font-size="12" font-weight="700">架构评估</text>
+          <line x1="60" y1="78" x2="204" y2="78" stroke="rgba(255,255,255,0.08)"/>
+          <text x="54" y="96" fill="rgba(255,255,255,0.75)" font-size="10">LNA: BANK / CSWITCH</text>
+          <text x="54" y="114" fill="rgba(255,255,255,0.75)" font-size="10">FILTER: DMS / Ladder</text>
+
+          <!-- 箭头 -->
+          <polygon points="222,93 232,88 232,98" fill="rgba(255,255,255,0.2)"/>
+
+          <!-- 工艺 -->
+          <rect x="238" y="50" width="172" height="86" rx="6" fill="rgba(0,113,227,0.1)" stroke="rgba(0,113,227,0.25)"/>
+          <text x="324" y="70" text-anchor="middle" fill="#5a9fd4" font-size="12" font-weight="700">工艺评估</text>
+          <line x1="252" y1="78" x2="396" y2="78" stroke="rgba(255,255,255,0.08)"/>
+          <text x="246" y="96" fill="rgba(255,255,255,0.75)" font-size="10">TJ / HHG</text>
+          <text x="246" y="114" fill="rgba(255,255,255,0.75)" font-size="10">65nm / 130nm</text>
+          <text x="246" y="130" fill="rgba(255,255,255,0.55)" font-size="9">POI / NSAW</text>
+
+          <polygon points="414,93 424,88 424,98" fill="rgba(255,255,255,0.2)"/>
+
+          <!-- 尺寸 -->
+          <rect x="430" y="50" width="160" height="86" rx="6" fill="rgba(0,113,227,0.1)" stroke="rgba(0,113,227,0.25)"/>
+          <text x="510" y="70" text-anchor="middle" fill="#5a9fd4" font-size="12" font-weight="700">尺寸评估</text>
+          <line x1="444" y1="78" x2="576" y2="78" stroke="rgba(255,255,255,0.08)"/>
+          <text x="438" y="102" fill="rgba(255,255,255,0.75)" font-size="10">各 Die 尺寸估算</text>
+
+          <polygon points="594,93 604,88 604,98" fill="rgba(255,255,255,0.2)"/>
+
+          <!-- Floorplan -->
+          <rect x="610" y="50" width="148" height="86" rx="6" fill="rgba(0,113,227,0.1)" stroke="rgba(0,113,227,0.25)"/>
+          <text x="684" y="70" text-anchor="middle" fill="#5a9fd4" font-size="12" font-weight="700">Floorplan</text>
+          <line x1="624" y1="78" x2="744" y2="78" stroke="rgba(255,255,255,0.08)"/>
+          <text x="618" y="102" fill="rgba(255,255,255,0.75)" font-size="10">模组 Layout 规划</text>
+
+          <!-- Feasibility → Design arrow -->
+          <line x1="400" y1="152" x2="400" y2="176" stroke="#f0a050" stroke-width="1.5" marker-end="url(#arrowOrange)"/>
+          <defs><marker id="arrowOrange" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#f0a050"/></marker></defs>
+          <defs><marker id="arrowGreen" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#4ade80"/></marker></defs>
+
+          <!-- ===== 设计开发阶段 ===== -->
+          <text x="30" y="196" fill="#4ade80" font-size="14" font-weight="700">设计开发阶段 · TR4</text>
+
+          <!-- ===== Swimlane Table ===== -->
+          <!-- Background -->
+          <rect x="30" y="208" width="740" height="360" rx="8" fill="rgba(74,222,128,0.04)" stroke="rgba(74,222,128,0.2)" stroke-width="1"/>
+
+          <!-- Column headers -->
+          <rect x="130" y="208" width="150" height="30" rx="0" fill="rgba(0,113,227,0.15)"/>
+          <text x="205" y="228" text-anchor="middle" fill="#5a9fd4" font-size="11" font-weight="700">Phase 1</text>
+
+          <rect x="288" y="208" width="160" height="30" rx="0" fill="rgba(16,185,129,0.12)"/>
+          <text x="368" y="228" text-anchor="middle" fill="#10b981" font-size="11" font-weight="700">Phase 2（前半）</text>
+
+          <rect x="456" y="208" width="160" height="30" rx="0" fill="rgba(16,185,129,0.18)"/>
+          <text x="536" y="228" text-anchor="middle" fill="#10b981" font-size="11" font-weight="700">Phase 2（后半）</text>
+
+          <rect x="624" y="208" width="146" height="30" rx="0" fill="rgba(74,222,128,0.15)"/>
+          <text x="697" y="228" text-anchor="middle" fill="#4ade80" font-size="11" font-weight="700">Phase 3</text>
+
+          <!-- Row separator lines -->
+          <line x1="30" y1="238" x2="770" y2="238" stroke="rgba(255,255,255,0.1)"/>
+          <line x1="30" y1="298" x2="770" y2="298" stroke="rgba(255,255,255,0.08)"/>
+          <line x1="30" y1="358" x2="770" y2="358" stroke="rgba(255,255,255,0.08)"/>
+          <line x1="30" y1="418" x2="770" y2="418" stroke="rgba(255,255,255,0.08)"/>
+          <line x1="30" y1="478" x2="770" y2="478" stroke="rgba(255,255,255,0.08)"/>
+          <line x1="30" y1="538" x2="770" y2="538" stroke="rgba(255,255,255,0.08)"/>
+
+          <!-- Column separator lines -->
+          <line x1="130" y1="208" x2="130" y2="568" stroke="rgba(255,255,255,0.1)"/>
+          <line x1="280" y1="208" x2="280" y2="568" stroke="rgba(255,255,255,0.08)"/>
+          <line x1="448" y1="208" x2="448" y2="568" stroke="rgba(255,255,255,0.08)"/>
+          <line x1="616" y1="208" x2="616" y2="568" stroke="rgba(255,255,255,0.08)"/>
+
+          <!-- ===== Row: LNA ===== -->
+          <rect x="35" y="239" width="90" height="58" rx="4" fill="rgba(0,113,227,0.15)"/>
+          <text x="80" y="273" text-anchor="middle" fill="#0071e3" font-size="13" font-weight="700">LNA</text>
+
+          <!-- P1 LNA -->
+          <text x="155" y="256" fill="#fff" font-size="11" font-weight="600">设计开始</text>
+          <text x="140" y="274" fill="rgba(255,255,255,0.6)" font-size="9">→ SP 参数（schematic）</text>
+          <rect x="138" y="280" width="40" height="12" rx="3" fill="rgba(0,113,227,0.2)"/>
+          <text x="158" y="289" text-anchor="middle" fill="#5a9fd4" font-size="9">交付</text>
+
+          <!-- P2a LNA -->
+          <text x="310" y="256" fill="#fff" font-size="11" font-weight="600">设计过程</text>
+          <text x="296" y="274" fill="rgba(255,255,255,0.6)" font-size="9">→ pad GDS</text>
+          <rect x="312" y="280" width="40" height="12" rx="3" fill="rgba(0,113,227,0.2)"/>
+          <text x="332" y="289" text-anchor="middle" fill="#5a9fd4" font-size="9">交付</text>
+
+          <!-- P2b LNA -->
+          <text x="478" y="256" fill="#fff" font-size="11" font-weight="600">设计结束</text>
+          <text x="466" y="274" fill="rgba(255,255,255,0.6)" font-size="9">→ EM 参数</text>
+          <rect x="480" y="280" width="40" height="12" rx="3" fill="rgba(0,113,227,0.2)"/>
+          <text x="500" y="289" text-anchor="middle" fill="#5a9fd4" font-size="9">交付</text>
+
+          <!-- P3 LNA -->
+          <text x="677" y="266" fill="rgba(255,255,255,0.25)" font-size="10">—</text>
+
+          <!-- ===== Row: SWITCH ===== -->
+          <rect x="35" y="299" width="90" height="58" rx="4" fill="rgba(16,185,129,0.15)"/>
+          <text x="80" y="333" text-anchor="middle" fill="#10b981" font-size="13" font-weight="700">SWITCH</text>
+
+          <text x="155" y="316" fill="#fff" font-size="11" font-weight="600">设计开始</text>
+          <text x="140" y="334" fill="rgba(255,255,255,0.6)" font-size="9">→ SP 参数（schematic）</text>
+          <rect x="138" y="340" width="40" height="12" rx="3" fill="rgba(16,185,129,0.2)"/>
+          <text x="158" y="349" text-anchor="middle" fill="#10b981" font-size="9">交付</text>
+
+          <text x="310" y="316" fill="#fff" font-size="11" font-weight="600">设计过程</text>
+          <text x="296" y="334" fill="rgba(255,255,255,0.6)" font-size="9">→ pad GDS</text>
+          <rect x="312" y="340" width="40" height="12" rx="3" fill="rgba(16,185,129,0.2)"/>
+          <text x="332" y="349" text-anchor="middle" fill="#10b981" font-size="9">交付</text>
+
+          <text x="478" y="316" fill="#fff" font-size="11" font-weight="600">设计结束</text>
+          <text x="466" y="334" fill="rgba(255,255,255,0.6)" font-size="9">→ EM 参数</text>
+          <rect x="480" y="340" width="40" height="12" rx="3" fill="rgba(16,185,129,0.2)"/>
+          <text x="500" y="349" text-anchor="middle" fill="#10b981" font-size="9">交付</text>
+
+          <text x="677" y="326" fill="rgba(255,255,255,0.25)" font-size="10">—</text>
+
+          <!-- ===== Row: FILTER ===== -->
+          <rect x="35" y="359" width="90" height="58" rx="4" fill="rgba(139,92,246,0.15)"/>
+          <text x="80" y="393" text-anchor="middle" fill="#8b5cf6" font-size="13" font-weight="700">FILTER</text>
+
+          <text x="185" y="388" fill="rgba(255,255,255,0.25)" font-size="10">—</text>
+
+          <text x="310" y="380" fill="#fff" font-size="11" font-weight="600">设计开始</text>
+
+          <text x="478" y="376" fill="#fff" font-size="11" font-weight="600">设计过程</text>
+          <text x="466" y="394" fill="rgba(255,255,255,0.6)" font-size="9">→ 匹配需求</text>
+          <rect x="480" y="400" width="40" height="12" rx="3" fill="rgba(139,92,246,0.2)"/>
+          <text x="500" y="409" text-anchor="middle" fill="#8b5cf6" font-size="9">交付</text>
+
+          <text x="646" y="376" fill="#fff" font-size="11" font-weight="600">设计结束</text>
+          <text x="632" y="394" fill="rgba(255,255,255,0.6)" font-size="9">→ EM 参数</text>
+          <rect x="680" y="400" width="40" height="12" rx="3" fill="rgba(139,92,246,0.2)"/>
+          <text x="700" y="409" text-anchor="middle" fill="#8b5cf6" font-size="9">交付</text>
+
+          <!-- ===== Row: MODULE ===== -->
+          <rect x="35" y="419" width="90" height="58" rx="4" fill="rgba(245,158,11,0.15)"/>
+          <text x="80" y="453" text-anchor="middle" fill="#f59e0b" font-size="13" font-weight="700">MODULE</text>
+
+          <text x="148" y="436" fill="#fff" font-size="11" font-weight="600">连接 LNA+SW 电路</text>
+          <text x="140" y="454" fill="rgba(255,255,255,0.6)" font-size="9">→ 参数合理性检查</text>
+          <rect x="142" y="460" width="60" height="12" rx="3" fill="rgba(245,158,11,0.2)"/>
+          <text x="172" y="469" text-anchor="middle" fill="#f59e0b" font-size="9">交付给 FILTER</text>
+
+          <text x="310" y="436" fill="#fff" font-size="11" font-weight="600">设计开始</text>
+          <text x="296" y="454" fill="rgba(255,255,255,0.6)" font-size="9">→ 确认 pad GDS OK</text>
+          <rect x="312" y="460" width="40" height="12" rx="3" fill="rgba(245,158,11,0.2)"/>
+          <text x="332" y="469" text-anchor="middle" fill="#f59e0b" font-size="9">确认</text>
+
+          <text x="478" y="436" fill="#fff" font-size="11" font-weight="600">设计过程</text>
+          <text x="464" y="454" fill="rgba(255,255,255,0.6)" font-size="9">→ DiFEM / BANK+LG EM</text>
+          <rect x="474" y="460" width="60" height="12" rx="3" fill="rgba(245,158,11,0.2)"/>
+          <text x="504" y="469" text-anchor="middle" fill="#f59e0b" font-size="9">交付给 FILTER</text>
+
+          <text x="646" y="436" fill="#fff" font-size="11" font-weight="600">设计结束</text>
+          <text x="640" y="454" fill="rgba(255,255,255,0.6)" font-size="9">→ 完整性能</text>
+          <rect x="680" y="460" width="40" height="12" rx="3" fill="rgba(74,222,128,0.2)"/>
+          <text x="700" y="469" text-anchor="middle" fill="#4ade80" font-size="9">交付</text>
+
+          <!-- Flow arrows between phases -->
+          <!-- LNA flow arrows -->
+          <line x1="268" y1="268" x2="286" y2="268" stroke="#0071e3" stroke-width="1" opacity="0.5"/>
+          <line x1="436" y1="268" x2="454" y2="268" stroke="#0071e3" stroke-width="1" opacity="0.5"/>
+          <line x1="604" y1="268" x2="622" y2="268" stroke="#0071e3" stroke-width="1" opacity="0.3"/>
+
+          <!-- SWITCH flow arrows -->
+          <line x1="268" y1="328" x2="286" y2="328" stroke="#10b981" stroke-width="1" opacity="0.5"/>
+          <line x1="436" y1="328" x2="454" y2="328" stroke="#10b981" stroke-width="1" opacity="0.5"/>
+          <line x1="604" y1="328" x2="622" y2="328" stroke="#10b981" stroke-width="1" opacity="0.3"/>
+
+          <!-- FILTER flow arrows -->
+          <line x1="436" y1="388" x2="454" y2="388" stroke="#8b5cf6" stroke-width="1" opacity="0.5"/>
+          <line x1="604" y1="388" x2="622" y2="388" stroke="#8b5cf6" stroke-width="1" opacity="0.6"/>
+
+          <!-- MODULE flow arrows -->
+          <line x1="268" y1="448" x2="286" y2="448" stroke="#f59e0b" stroke-width="1" opacity="0.5"/>
+          <line x1="436" y1="448" x2="454" y2="448" stroke="#f59e0b" stroke-width="1" opacity="0.5"/>
+          <line x1="604" y1="448" x2="622" y2="448" stroke="#f59e0b" stroke-width="1" opacity="0.6"/>
+
+          <!-- Cross-row delivery arrows (MODULE → FILTER) 
+          <path d="M172,472 C172,490 490,490 490,472" fill="none" stroke="#f59e0b" stroke-width="0.8" opacity="0.4"/>
+          <path d="M504,472 C504,495 495,495 495,410" fill="none" stroke="#f59e0b" stroke-width="0.8" opacity="0.4" marker-end="url(#arrowOrange)"/>
+          -->
+
+          <!-- Notes section -->
+          <rect x="30" y="540" width="740" height="76" rx="6" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.08)"/>
+
+          <text x="50" y="560" fill="rgba(255,255,255,0.5)" font-size="10" font-weight="600">📌 备注</text>
+
+          <text x="50" y="580" fill="rgba(255,255,255,0.55)" font-size="10">① 所有交付给 FILTER 的参数均由 MODULE 统一提供</text>
+          <text x="50" y="596" fill="rgba(255,255,255,0.55)" font-size="10">② EM 参数 ≡ 顶层金属 + Schematic Cell 合成参数</text>
+          <text x="50" y="612" fill="rgba(255,255,255,0.55)" font-size="10">③ DiFEM 与 BANK+LG 需含匹配处的 Tuning Port，但不可出现在 SWITCH / LNA / FILTER I/O Pad</text>
+
+        </svg>
+        <p class="diagram-caption">图：L-DiFEM 从 TR1 可行性评估到 TR4 设计交付的完整工作流。</p>
+      </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 3: SOI Capacitor -->
+      <div class="article-card" onclick="this.classList.toggle('open')">
+        <div class="article-card-header">
+          <div>
+            <div class="article-card-title">SOI 工艺中的电容</div>
+            <div class="article-card-meta">📅 2026 年 7 月 · 半导体工艺 — MIM 与 MOM 电容的结构、工艺与性能对比</div>
+          </div>
+          <div class="article-card-arrow">▼</div>
+        </div>
+        <div class="article-card-body">
+          <div class="article-card-body-inner">
+            <div class="article-body">
+
+        <h4>第一部分：电容在电路中的作用</h4>
+
+        <p>电容是集成电路中最基础、最不可或缺的无源器件之一。无论在模拟、射频还是数字电路中，电容都承担着不可替代的角色：</p>
+
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>功能</th><th>简要说明</th></tr></thead>
+            <tbody>
+              <tr><td><strong>隔直</strong></td><td>阻断直流偏置，仅通过交流信号</td></tr>
+              <tr><td><strong>去耦</strong></td><td>滤除电源噪声，提供稳定本地供电</td></tr>
+              <tr><td><strong>匹配</strong></td><td>实现阻抗变换，最大化功率传输</td></tr>
+              <tr><td><strong>滤波</strong></td><td>与 L/R 构成频率选择网络</td></tr>
+            </tbody>
+          </table>
+          <p class="table-caption">表1：电容的四大核心功能</p>
+        </div>
+
+        <p>在射频前端模组中，一颗芯片往往需要数十甚至上百个电容来同时完成上述功能——缺少任何一个，系统性能都会显著劣化。因此，片上电容的密度、品质因数（Q 值）和工艺兼容性是 RF-SOI 工艺平台的核心竞争力指标之一 <span class="ref">[1]</span>。</p>
+
+        <h4>第二部分：SOI 工艺中的电容类型与对比</h4>
+
+        <p>SOI 工艺中常用的片上电容主要分为两类：<strong>MIM（Metal-Insulator-Metal）</strong>电容和 <strong>MOM（Metal-Oxide-Metal）</strong>电容。二者在结构、工艺和性能上存在本质差异。</p>
+
+        <h4>2.1 MIM 电容</h4>
+
+        <p>MIM 电容由上下两层金属极板夹一层<strong>专用高介电常数介质</strong>构成，需要额外的光刻掩模版（Mask）来定义极板和介质区域。以常见的 <strong>65nm RF-SOI 工艺</strong>为例，采用 SiN（氮化硅）作为电容介质，根据电极材料的不同，主要有三种实现方案：</p>
+
+        <!-- MIM Comparison Diagram -->
+        <div class="diagram-container">
+          <svg viewBox="0 0 800 340" xmlns="http://www.w3.org/2000/svg">
+            <text x="400" y="22" text-anchor="middle" fill="#fff" font-size="14" font-weight="600">图一 · 三种 MIM 电容结构对比（65nm RF-SOI, SiN 介质）</text>
+
+            <!-- Al electrode -->
+            <rect x="30" y="38" width="230" height="270" rx="8" fill="rgba(0,113,227,0.06)" stroke="rgba(0,113,227,0.2)"/>
+            <text x="145" y="60" text-anchor="middle" fill="#5a9fd4" font-size="13" font-weight="700">Al 电极 MIM</text>
+            <line x1="50" y1="68" x2="240" y2="68" stroke="rgba(0,113,227,0.15)"/>
+
+            <!-- Stack diagram for Al -->
+            <rect x="60" y="80" width="170" height="22" rx="3" fill="#b0c4de"/><text x="145" y="95" text-anchor="middle" fill="#1d1d1f" font-size="10" font-weight="600">Top 电极 (Al) — MCT</text>
+            <rect x="60" y="105" width="170" height="22" rx="3" fill="#ffe0b2"/><text x="145" y="120" text-anchor="middle" fill="#1d1d1f" font-size="10" font-weight="600">SiN 介质 · 330Å</text>
+            <rect x="60" y="130" width="170" height="22" rx="3" fill="#b0c4de"/><text x="145" y="145" text-anchor="middle" fill="#1d1d1f" font-size="10" font-weight="600">Bottom 电极 (Al) — MCB</text>
+            <rect x="60" y="155" width="170" height="22" rx="3" fill="#e0e0e0"/><text x="145" y="170" text-anchor="middle" fill="#666" font-size="9">SiO₂ 衬底</text>
+
+            <text x="60" y="200" fill="#5a9fd4" font-size="10" font-weight="600">工艺参数</text>
+            <text x="60" y="218" fill="rgba(255,255,255,0.7)" font-size="9">· 3 张 Mask（AM+MCT+MCB）</text>
+            <text x="60" y="234" fill="rgba(255,255,255,0.7)" font-size="9">· 干法刻蚀工艺</text>
+            <text x="60" y="250" fill="rgba(255,255,255,0.7)" font-size="9">· 密度: <tspan fill="#4ade80" font-weight="700">2.0 fF/μm²</tspan></text>
+            <text x="60" y="266" fill="rgba(255,255,255,0.7)" font-size="9">· Q@2GHz (1.3pF): <tspan fill="#4ade80" font-weight="700">130</tspan></text>
+            <text x="60" y="282" fill="rgba(255,255,255,0.7)" font-size="9">· 介质厚度: 330Å</text>
+
+            <!-- Cu electrode -->
+            <rect x="285" y="38" width="230" height="270" rx="8" fill="rgba(16,185,129,0.06)" stroke="rgba(16,185,129,0.2)"/>
+            <text x="400" y="60" text-anchor="middle" fill="#10b981" font-size="13" font-weight="700">Cu 电极 MIM</text>
+            <line x1="305" y1="68" x2="495" y2="68" stroke="rgba(16,185,129,0.15)"/>
+
+            <rect x="315" y="80" width="170" height="22" rx="3" fill="#d4a574"/><text x="400" y="95" text-anchor="middle" fill="#1d1d1f" font-size="10" font-weight="600">Top 电极 (Cu) — MCT</text>
+            <rect x="315" y="105" width="170" height="22" rx="3" fill="#ffe0b2"/><text x="400" y="120" text-anchor="middle" fill="#1d1d1f" font-size="10" font-weight="600">SiN 介质 · 440Å</text>
+            <rect x="315" y="130" width="170" height="22" rx="3" fill="#d4a574"/><text x="400" y="145" text-anchor="middle" fill="#1d1d1f" font-size="10" font-weight="600">Bottom 电极 (Cu)</text>
+            <rect x="315" y="155" width="170" height="22" rx="3" fill="#e0e0e0"/><text x="400" y="170" text-anchor="middle" fill="#666" font-size="9">SiO₂ 衬底</text>
+
+            <text x="315" y="200" fill="#10b981" font-size="10" font-weight="600">工艺参数</text>
+            <text x="315" y="218" fill="rgba(255,255,255,0.7)" font-size="9">· 2 张 Mask（AM+MCT）</text>
+            <text x="315" y="234" fill="rgba(255,255,255,0.7)" font-size="9">· 大马士革工艺</text>
+            <text x="315" y="250" fill="rgba(255,255,255,0.7)" font-size="9">· 密度: <tspan fill="#f59e0b" font-weight="700">1.5 fF/μm²</tspan></text>
+            <text x="315" y="266" fill="rgba(255,255,255,0.7)" font-size="9">· Q@2GHz (1.3pF): <tspan fill="#4ade80" font-weight="700">220</tspan></text>
+            <text x="315" y="282" fill="rgba(255,255,255,0.7)" font-size="9">· 介质厚度: 440Å</text>
+
+            <!-- TiN electrode -->
+            <rect x="540" y="38" width="230" height="270" rx="8" fill="rgba(139,92,246,0.06)" stroke="rgba(139,92,246,0.2)"/>
+            <text x="655" y="60" text-anchor="middle" fill="#8b5cf6" font-size="13" font-weight="700">TiN 电极 MIM</text>
+            <line x1="560" y1="68" x2="750" y2="68" stroke="rgba(139,92,246,0.15)"/>
+
+            <rect x="570" y="80" width="170" height="22" rx="3" fill="#c4b5fd"/><text x="655" y="95" text-anchor="middle" fill="#1d1d1f" font-size="10" font-weight="600">Top 电极 (TiN) — MCT</text>
+            <rect x="570" y="105" width="170" height="22" rx="3" fill="#ffe0b2"/><text x="655" y="120" text-anchor="middle" fill="#1d1d1f" font-size="10" font-weight="600">SiN 介质 · 330Å</text>
+            <rect x="570" y="130" width="170" height="22" rx="3" fill="#c4b5fd"/><text x="655" y="145" text-anchor="middle" fill="#1d1d1f" font-size="10" font-weight="600">Bottom 电极 (TiN) — MCB</text>
+            <rect x="570" y="155" width="170" height="22" rx="3" fill="#e0e0e0"/><text x="655" y="170" text-anchor="middle" fill="#666" font-size="9">SiO₂ 衬底</text>
+
+            <text x="570" y="200" fill="#8b5cf6" font-size="10" font-weight="600">工艺参数</text>
+            <text x="570" y="218" fill="rgba(255,255,255,0.7)" font-size="9">· 3 张 Mask（AM+MCT+MCB）</text>
+            <text x="570" y="234" fill="rgba(255,255,255,0.7)" font-size="9">· 干法刻蚀工艺</text>
+            <text x="570" y="250" fill="rgba(255,255,255,0.7)" font-size="9">· 密度: <tspan fill="#4ade80" font-weight="700">2.0 fF/μm²</tspan></text>
+            <text x="570" y="266" fill="rgba(255,255,255,0.7)" font-size="9">· Q@2GHz (1.3pF): <tspan fill="#ef4444" font-weight="700">40</tspan></text>
+            <text x="570" y="282" fill="rgba(255,255,255,0.7)" font-size="9">· 介质厚度: 330Å</text>
+          </svg>
+          <p class="diagram-caption">图一：三种 MIM 电容的截面结构与关键工艺参数对比</p>
+        </div>
+
+        <h4>2.2 MOM 电容</h4>
+
+        <p>MOM 电容利用<strong>同层或相邻层金属线条之间的侧壁寄生电容</strong>来实现容值，其本质是叉指（Interdigitated）结构。与 MIM 不同，MOM 电容<strong>不新增专用于电容的 Mask</strong>——它在标准金属互连层（如 M1、M2、M3）中以版图形式实现。</p>
+
+        <p>在常见的 <strong>1P4M（1 层多晶硅 + 4 层金属）SOI 工艺</strong>中，使用 M1、M2、M3 三层金属插指构成的 MOM 电容，其典型密度为 <strong>1.5 fF/μm²</strong>。电容密度由金属层数、金属间距（由设计规则决定的最小线宽/间距）和金属厚度共同决定——层数越多、间距越小、金属越厚，单位面积容值越高。</p>
+
+        <!-- MOM Structure Diagram -->
+        <div class="diagram-container">
+          <svg viewBox="0 0 800 280" xmlns="http://www.w3.org/2000/svg">
+            <text x="400" y="22" text-anchor="middle" fill="#fff" font-size="14" font-weight="600">图二 · MOM 电容结构示意（1P4M SOI, M1–M3 叉指）</text>
+
+            <!-- Cross-section view -->
+            <rect x="30" y="40" width="360" height="220" rx="6" fill="rgba(255,255,255,0.02)" stroke="rgba(255,255,255,0.08)"/>
+            <text x="210" y="60" text-anchor="middle" fill="#f0a050" font-size="11" font-weight="600">截面视图</text>
+
+            <!-- Substrate -->
+            <rect x="50" y="200" width="320" height="46" rx="3" fill="#e0e0e0"/>
+            <text x="210" y="228" text-anchor="middle" fill="#666" font-size="9">SiO₂ 衬底</text>
+
+            <!-- M1 fingers -->
+            <rect x="60" y="182" width="24" height="16" rx="2" fill="#5a9fd4"/><text x="72" y="194" text-anchor="middle" fill="#fff" font-size="7">M1+</text>
+            <rect x="100" y="182" width="24" height="16" rx="2" fill="#5a9fd4"/><text x="112" y="194" text-anchor="middle" fill="#fff" font-size="7">M1-</text>
+            <rect x="140" y="182" width="24" height="16" rx="2" fill="#5a9fd4"/><text x="152" y="194" text-anchor="middle" fill="#fff" font-size="7">M1+</text>
+            <rect x="180" y="182" width="24" height="16" rx="2" fill="#5a9fd4"/><text x="192" y="194" text-anchor="middle" fill="#fff" font-size="7">M1-</text>
+            <rect x="220" y="182" width="24" height="16" rx="2" fill="#5a9fd4"/><text x="232" y="194" text-anchor="middle" fill="#fff" font-size="7">M1+</text>
+            <rect x="260" y="182" width="24" height="16" rx="2" fill="#5a9fd4"/><text x="272" y="194" text-anchor="middle" fill="#fff" font-size="7">M1-</text>
+            <rect x="300" y="182" width="24" height="16" rx="2" fill="#5a9fd4"/><text x="312" y="194" text-anchor="middle" fill="#fff" font-size="7">M1+</text>
+
+            <!-- M2 fingers -->
+            <rect x="80" y="146" width="24" height="16" rx="2" fill="#10b981"/><text x="92" y="158" text-anchor="middle" fill="#fff" font-size="7">M2-</text>
+            <rect x="120" y="146" width="24" height="16" rx="2" fill="#10b981"/><text x="132" y="158" text-anchor="middle" fill="#fff" font-size="7">M2+</text>
+            <rect x="160" y="146" width="24" height="16" rx="2" fill="#10b981"/><text x="172" y="158" text-anchor="middle" fill="#fff" font-size="7">M2-</text>
+            <rect x="200" y="146" width="24" height="16" rx="2" fill="#10b981"/><text x="212" y="158" text-anchor="middle" fill="#fff" font-size="7">M2+</text>
+            <rect x="240" y="146" width="24" height="16" rx="2" fill="#10b981"/><text x="252" y="158" text-anchor="middle" fill="#fff" font-size="7">M2-</text>
+            <rect x="280" y="146" width="24" height="16" rx="2" fill="#10b981"/><text x="292" y="158" text-anchor="middle" fill="#fff" font-size="7">M2+</text>
+            <rect x="320" y="146" width="24" height="16" rx="2" fill="#10b981"/><text x="332" y="158" text-anchor="middle" fill="#fff" font-size="7">M2-</text>
+
+            <!-- M3 fingers -->
+            <rect x="60" y="110" width="24" height="16" rx="2" fill="#8b5cf6"/><text x="72" y="122" text-anchor="middle" fill="#fff" font-size="7">M3+</text>
+            <rect x="100" y="110" width="24" height="16" rx="2" fill="#8b5cf6"/><text x="112" y="122" text-anchor="middle" fill="#fff" font-size="7">M3-</text>
+            <rect x="140" y="110" width="24" height="16" rx="2" fill="#8b5cf6"/><text x="152" y="122" text-anchor="middle" fill="#fff" font-size="7">M3+</text>
+            <rect x="180" y="110" width="24" height="16" rx="2" fill="#8b5cf6"/><text x="192" y="122" text-anchor="middle" fill="#fff" font-size="7">M3-</text>
+            <rect x="220" y="110" width="24" height="16" rx="2" fill="#8b5cf6"/><text x="232" y="122" text-anchor="middle" fill="#fff" font-size="7">M3+</text>
+            <rect x="260" y="110" width="24" height="16" rx="2" fill="#8b5cf6"/><text x="272" y="122" text-anchor="middle" fill="#fff" font-size="7">M3-</text>
+            <rect x="300" y="110" width="24" height="16" rx="2" fill="#8b5cf6"/><text x="312" y="122" text-anchor="middle" fill="#fff" font-size="7">M3+</text>
+
+            <!-- Vias -->
+            <line x1="72" y1="126" x2="92" y2="146" stroke="rgba(255,255,255,0.2)" stroke-width="0.5"/>
+            <line x1="112" y1="126" x2="132" y2="146" stroke="rgba(255,255,255,0.2)" stroke-width="0.5"/>
+            <line x1="92" y1="162" x2="72" y2="182" stroke="rgba(255,255,255,0.2)" stroke-width="0.5"/>
+            <line x1="132" y1="162" x2="112" y2="182" stroke="rgba(255,255,255,0.2)" stroke-width="0.5"/>
+
+            <text x="210" y="260" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-size="9">M1 (蓝)、M2 (绿)、M3 (紫) 插指形成侧壁电容 C = ε·A/d</text>
+
+            <!-- Right side: key features -->
+            <rect x="410" y="40" width="360" height="220" rx="6" fill="rgba(255,255,255,0.02)" stroke="rgba(255,255,255,0.08)"/>
+            <text x="590" y="60" text-anchor="middle" fill="#f0a050" font-size="11" font-weight="600">关键特征</text>
+
+            <text x="430" y="88" fill="#fff" font-size="11" font-weight="600">✅ 零额外 Mask</text>
+            <text x="430" y="108" fill="rgba(255,255,255,0.55)" font-size="10">不新增任何光刻掩模版，完全利用标准金属互连层</text>
+
+            <text x="430" y="138" fill="#fff" font-size="11" font-weight="600">📐 密度由几何决定</text>
+            <text x="430" y="158" fill="rgba(255,255,255,0.55)" font-size="10">层数越多、线条间距越小、金属越厚 → 密度越高</text>
+
+            <text x="430" y="188" fill="#fff" font-size="11" font-weight="600">🔧 1P4M 典型参数</text>
+            <text x="430" y="208" fill="rgba(255,255,255,0.55)" font-size="10">M1+M2+M3 三层插指 · 密度 ~1.5 fF/μm²</text>
+
+            <text x="430" y="238" fill="#fff" font-size="11" font-weight="600">⚡ 寄生参数</text>
+            <text x="430" y="258" fill="rgba(255,255,255,0.55)" font-size="10">MOM 电容与衬底之间有寄生电容，高频下需建模</text>
+          </svg>
+          <p class="diagram-caption">图二：MOM 电容叉指结构与关键特征</p>
+        </div>
+
+        <h4>2.3 MIM vs MOM 综合对比</h4>
+
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>参数</th><th>Al 电极 MIM</th><th>Cu 电极 MIM</th><th>TiN 电极 MIM</th><th>MOM（M1–M3）</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Mask 数量</strong></td><td>3（AM+MCT+MCB）</td><td>2（AM+MCT）</td><td>3（AM+MCT+MCB）</td><td><strong>0（无新增）</strong></td></tr>
+              <tr><td><strong>电容密度</strong></td><td>2.0 fF/μm²</td><td>1.5 fF/μm²</td><td>2.0 fF/μm²</td><td>1.5 fF/μm²</td></tr>
+              <tr><td><strong>介质材料</strong></td><td>SiN</td><td>SiN</td><td>SiN</td><td>SiO₂（层间介质）</td></tr>
+              <tr><td><strong>介质厚度</strong></td><td>330 Å</td><td>440 Å</td><td>330 Å</td><td>—（由金属间距决定）</td></tr>
+              <tr><td><strong>刻蚀工艺</strong></td><td>干法刻蚀</td><td>大马士革</td><td>干法刻蚀</td><td>—（标准 BEOL）</td></tr>
+              <tr><td><strong>Q 值 @2GHz (1.3pF)</strong></td><td><strong>130</strong></td><td><strong>220</strong> 🏆</td><td>40</td><td>—（中等）</td></tr>
+              <tr><td><strong>优点</strong></td><td>高密度、中等 Q 值</td><td>最高 Q 值、少 Mask</td><td>高密度</td><td>零额外 Mask、工艺最简单</td></tr>
+              <tr><td><strong>缺点</strong></td><td>需要 3 张额外 Mask</td><td>密度较低</td><td>Q 值最低</td><td>密度受限、寄生较大</td></tr>
+            </tbody>
+          </table>
+          <p class="table-caption">表2：MIM（Al/Cu/TiN）与 MOM 电容在 65nm SOI 工艺下的综合对比</p>
+        </div>
+
+        <p><strong>选型建议：</strong></p>
+        <ul>
+          <li>若追求<strong>最高 Q 值</strong>（如 VCO 谐振腔、低噪声匹配网络），Cu 电极 MIM 是最优选择——Q=220 远超其他方案。</li>
+          <li>若追求<strong>密度与 Q 值的平衡</strong>（如去耦电容、中等精度滤波），Al 电极 MIM 提供了 2.0 fF/μm² + Q=130 的优异折衷。</li>
+          <li>若需<strong>低成本、零额外 Mask</strong>（如数字去耦、非关键滤波），MOM 电容是最经济的选择——但需评估其密度和寄生是否满足规格。</li>
+          <li>TiN 电极 MIM 尽管密度高，但其 Q 值仅 40，通常仅适用于对 Q 值要求不高的低频或 DC 场景。</li>
+        </ul>
+
+        <h4>第三部分：总结</h4>
+
+        <p>SOI 工艺中电容的选择是<strong>密度、Q 值、Mask 成本</strong>三者之间的权衡。MIM 电容通过增加专用 Mask 和介质层来换取高密度和可控的 Q 值——其中 Cu 电极方案以少 Mask 和超高 Q 值（220）脱颖而出，Al 电极则在密度（2.0 fF/μm²）和 Q 值（130）之间取得平衡。MOM 电容以<strong>零额外 Mask</strong>的极低成本实现约 1.5 fF/μm² 的密度，适合对成本敏感且对精度要求适中的应用场景。</p>
+
+        <p>在 RF 前端模组设计中，设计者通常<strong>混合使用</strong>两种电容：MIM 用于对 Q 值和匹配精度要求严苛的射频信号路径，MOM 用于电源去耦和偏置网络的旁路——以最小化 Mask 增量成本，同时最大化整体电路性能 <span class="ref">[1][2]</span>。</p>
+
+        <h4>参考文献</h4>
+        <ol class="refs">
+          <li>J. D. Cressler and G. Niu, <em>Silicon-Germanium Heterojunction Bipolar Transistors</em>, Artech House, 2003, Ch. 6: Passive Components in SiGe BiCMOS.</li>
+          <li>T. H. Lee, <em>The Design of CMOS Radio-Frequency Integrated Circuits</em>, 2nd ed., Cambridge University Press, 2004, Ch. 4: Capacitors and Inductors.</li>
+        </ol>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 4: Semiconductor Fundamentals -->
+      <div class="article-card" onclick="this.classList.toggle('open')">
+        <div class="article-card-header">
+          <div>
+            <div class="article-card-title">半导体物理基础：掌控「导电开关」的艺术</div>
+            <div class="article-card-meta">📅 2026 年 7 月 · 半导体物理 — 从能带理论到掺杂工程，理解电流的可控性</div>
+          </div>
+          <div class="article-card-arrow">▼</div>
+        </div>
+        <div class="article-card-body">
+          <div class="article-card-body-inner">
+            <div class="article-body">
+
+        <p>为什么半导体能成为信息时代的基石？答案在于其<strong>无与伦比的可控性</strong>——像水龙头精确控制水流一样，控制电流的"有"与"无"、"大"与"小"。这份能力从何而来？从最基本的物理原理说起。</p>
+
+        <h4>第一章：世界的三种电学面孔</h4>
+
+        <p>物质根据导电性分为三大类，本质区别在于内部电子状态：</p>
+
+        <ul>
+          <li><strong>导体：</strong>电子高速公路。海量自由电子，电压一来即刻奔腾。典型：铜、银、金、铝。</li>
+          <li><strong>绝缘体：</strong>坚实城墙。电子被紧紧束缚。典型：橡胶、玻璃、SiO₂。</li>
+          <li><strong>半导体：</strong>可控闸道。导电性介于二者之间，且"通断"可被精确操控。典型：硅（Si）、锗（Ge）。</li>
+        </ul>
+
+        <h4>能带理论：固体导电的底层逻辑</h4>
+
+        <p>固体中电子的能量状态形成"能带"——<strong>价带</strong>（电子的"家"）、<strong>导带</strong>（电子的"公路"）、二者之间的<strong>禁带</strong>（"能量鸿沟"）。禁带宽度（Eg）决定了材料的导电本质。</p>
+
+        <div class="diagram-container">
+          <svg viewBox="0 0 800 260" xmlns="http://www.w3.org/2000/svg">
+            <text x="400" y="20" text-anchor="middle" fill="#fff" font-size="14" font-weight="600">图一 · 三种材料的能带结构对比</text>
+            <rect x="30" y="35" width="230" height="210" rx="8" fill="rgba(249,115,22,0.06)" stroke="rgba(249,115,22,0.2)"/>
+            <text x="145" y="58" text-anchor="middle" fill="#f97316" font-size="13" font-weight="700">导体（Cu / Al）</text>
+            <rect x="60" y="72" width="170" height="60" rx="4" fill="#f97316" opacity="0.35"/><text x="145" y="107" text-anchor="middle" fill="#fff" font-size="11" font-weight="600">导带</text>
+            <rect x="60" y="132" width="170" height="60" rx="4" fill="#f97316" opacity="0.2"/><text x="145" y="167" text-anchor="middle" fill="#f97316" font-size="11" font-weight="600">价带</text>
+            <text x="145" y="196" text-anchor="middle" fill="rgba(255,255,255,0.5)" font-size="10">重叠 · 无禁带</text>
+            <text x="145" y="230" text-anchor="middle" fill="#f97316" font-size="11" font-weight="600">电子高速公路 🛣️</text>
+            <rect x="285" y="35" width="230" height="210" rx="8" fill="rgba(0,113,227,0.08)" stroke="rgba(0,113,227,0.25)"/>
+            <text x="400" y="58" text-anchor="middle" fill="#0071e3" font-size="13" font-weight="700">半导体（Si / Ge）</text>
+            <rect x="315" y="72" width="170" height="45" rx="4" fill="#0071e3" opacity="0.15"/><text x="400" y="99" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-size="11">导带（空）</text>
+            <rect x="315" y="163" width="170" height="55" rx="4" fill="#0071e3" opacity="0.3"/><text x="400" y="195" text-anchor="middle" fill="#fff" font-size="11" font-weight="600">价带（满）</text>
+            <rect x="315" y="119" width="170" height="42" rx="2" fill="none" stroke="#f0a050" stroke-width="2" stroke-dasharray="4,3"/>
+            <text x="400" y="144" text-anchor="middle" fill="#f0a050" font-size="11" font-weight="700">Eg ≈ 1.1 eV</text>
+            <text x="400" y="230" text-anchor="middle" fill="#0071e3" font-size="11" font-weight="600">可控闸道 🚦</text>
+            <rect x="540" y="35" width="230" height="210" rx="8" fill="rgba(107,114,128,0.06)" stroke="rgba(107,114,128,0.2)"/>
+            <text x="655" y="58" text-anchor="middle" fill="#9ca3af" font-size="13" font-weight="700">绝缘体（SiO₂）</text>
+            <rect x="570" y="72" width="170" height="35" rx="4" fill="#9ca3af" opacity="0.1"/><text x="655" y="94" text-anchor="middle" fill="rgba(255,255,255,0.35)" font-size="11">导带（空）</text>
+            <rect x="570" y="185" width="170" height="60" rx="4" fill="#9ca3af" opacity="0.25"/><text x="655" y="220" text-anchor="middle" fill="#9ca3af" font-size="11" font-weight="600">价带（满）</text>
+            <rect x="570" y="109" width="170" height="74" rx="2" fill="none" stroke="#f87171" stroke-width="2" stroke-dasharray="4,3"/>
+            <text x="655" y="150" text-anchor="middle" fill="#f87171" font-size="11" font-weight="700">Eg > 5 eV</text>
+            <text x="655" y="230" text-anchor="middle" fill="#9ca3af" font-size="11" font-weight="600">坚固城墙 🧱</text>
+          </svg>
+          <p class="diagram-caption">图一：导体/半导体/绝缘体的能带结构——禁带宽度的差异决定了导电性</p>
+        </div>
+
+        <h4>关键参数：电阻率与方块电阻</h4>
+
+        <p><strong>电阻率（ρ）</strong>是材料的本征属性，衡量阻碍电流的能力，与几何形状无关。铜 ~1.7×10⁻⁸ Ω·m 到 SiO₂ >10¹⁴ Ω·m，跨 22 个量级，由此划分出导体、半导体与绝缘体。</p>
+        <p><strong>方块电阻（Sheet Resistance）R□ = ρ / t</strong>，单位 Ω/□（欧姆每方）。对于厚度 t 的均匀薄膜，取任意大小的正方形——长宽比抵消，电阻恒为 ρ/t，与正方形尺寸无关。四探针法在芯片线上昼夜不停地测它，快速反馈掺杂剂量和金属膜厚。</p>
+
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>金属</th><th>电阻率 ρ (Ω·m)</th><th>IC 中用途</th></tr></thead>
+            <tbody>
+              <tr><td>银（Ag）</td><td>1.59 × 10⁻⁸</td><td>—（极少用于 IC）</td></tr>
+              <tr><td>铜（Cu）</td><td>1.68 × 10⁻⁸</td><td>大马士革互连（BEOL）</td></tr>
+              <tr><td>金（Au）</td><td>2.44 × 10⁻⁸</td><td>键合线、凸点</td></tr>
+              <tr><td>铝（Al）</td><td>2.65 × 10⁻⁸</td><td>传统互连、MIM 电极</td></tr>
+              <tr><td>钨（W）</td><td>5.60 × 10⁻⁸</td><td>通孔插塞（Via Plug）</td></tr>
+              <tr><td>钛（Ti）</td><td>4.20 × 10⁻⁷</td><td>粘附层/阻挡层</td></tr>
+            </tbody>
+          </table>
+          <p class="table-caption">表1：常见金属电阻率（300K）及在 IC 工艺中的用途</p>
+        </div>
+
+        <h4>第二章：半导体的灵魂——掺杂</h4>
+
+        <p>纯净（本征）半导体的导电性平平无奇——在绝对零度时甚至是绝缘体。它的真正价值在于：它是一块"璞玉"，通过<strong>掺杂</strong>这门艺术，才能焕发光彩。</p>
+
+        <h4>N 型与 P 型：两种掺杂，两个方向</h4>
+
+        <ul>
+          <li><strong>N 型（掺磷 P / 砷 As）：</strong>五价原子贡献一个多余"自由电子"——施主。施主能级靠近导带底（仅 ~0.05 eV），电子极易跃入导带。<strong>多数载流子：电子。</strong></li>
+          <li><strong>P 型（掺硼 B）：</strong>三价原子创建一个"空穴"——受主。受主能级靠近价带顶，价带电子极易跃入，留下可移动空穴。<strong>多数载流子：空穴。</strong></li>
+        </ul>
+
+        <h4>费米能级：掺杂的"晴雨表"</h4>
+
+        <p><strong>费米能级（Ef）</strong>是半导体物理的"灵魂参数"。物理含义：在热平衡下，能量为 Ef 的量子态被电子占据的概率恰好为 50%。形象地说，它像一条<strong>水位线</strong>——Ef 以上"空座"多，Ef 以下"满座"多。本征半导体 Ef 恰好处在禁带正中央；<strong>而掺杂的本质，就是移动这条水位线：N 型注入多余电子，推高 Ef，使其靠近导带底；P 型挖出空穴，拉低 Ef，使其靠近价带顶。</strong>掺杂浓度越高，Ef 偏移越大。Ef 的位置直接决定了电子和空穴的浓度分布，进而决定了 PN 结内建电势、阈值电压等一切器件特性的起点。<strong>一句话：掺杂的艺术，就是移动费米能级的艺术。</strong></p>
+
+        <div class="diagram-container">
+          <svg viewBox="0 0 800 220" xmlns="http://www.w3.org/2000/svg">
+            <text x="400" y="20" text-anchor="middle" fill="#fff" font-size="14" font-weight="600">图二 · 费米能级随掺杂类型与浓度的变化</text>
+            <line x1="80" y1="40" x2="80" y2="200" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+            <text x="70" y="50" fill="rgba(255,255,255,0.4)" font-size="9" text-anchor="end">E↑</text>
+            <rect x="120" y="35" width="110" height="170" rx="6" fill="rgba(0,113,227,0.08)" stroke="rgba(0,113,227,0.2)"/>
+            <text x="175" y="52" text-anchor="middle" fill="#0071e3" font-size="10" font-weight="700">N⁺ 重掺</text>
+            <rect x="130" y="62" width="90" height="35" rx="3" fill="#0071e3" opacity="0.2"/><text x="175" y="84" text-anchor="middle" fill="rgba(255,255,255,0.45)" font-size="9">Ec</text>
+            <line x1="130" y1="102" x2="220" y2="102" stroke="#4ade80" stroke-width="2"/><text x="228" y="106" fill="#4ade80" font-size="9">Ef ↑</text>
+            <rect x="130" y="152" width="90" height="50" rx="3" fill="#0071e3" opacity="0.3"/><text x="175" y="182" text-anchor="middle" fill="#fff" font-size="9">Ev</text>
+            <rect x="250" y="35" width="110" height="170" rx="6" fill="rgba(0,113,227,0.05)" stroke="rgba(0,113,227,0.12)"/>
+            <text x="305" y="52" text-anchor="middle" fill="#5a9fd4" font-size="10" font-weight="700">N⁻ 轻掺</text>
+            <rect x="260" y="62" width="90" height="35" rx="3" fill="#0071e3" opacity="0.2"/><text x="305" y="84" text-anchor="middle" fill="rgba(255,255,255,0.45)" font-size="9">Ec</text>
+            <line x1="260" y1="115" x2="350" y2="115" stroke="#4ade80" stroke-width="2"/><text x="358" y="119" fill="#4ade80" font-size="9">Ef</text>
+            <rect x="260" y="152" width="90" height="50" rx="3" fill="#0071e3" opacity="0.3"/><text x="305" y="182" text-anchor="middle" fill="#fff" font-size="9">Ev</text>
+            <rect x="380" y="35" width="110" height="170" rx="6" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.08)"/>
+            <text x="435" y="52" text-anchor="middle" fill="rgba(255,255,255,0.6)" font-size="10" font-weight="700">本征</text>
+            <rect x="390" y="62" width="90" height="35" rx="3" fill="rgba(255,255,255,0.05)"/><text x="435" y="84" text-anchor="middle" fill="rgba(255,255,255,0.35)" font-size="9">Ec</text>
+            <line x1="390" y1="125" x2="480" y2="125" stroke="#f0a050" stroke-width="2" stroke-dasharray="4,3"/><text x="488" y="129" fill="#f0a050" font-size="9">Ef = Ei</text>
+            <rect x="390" y="152" width="90" height="50" rx="3" fill="rgba(255,255,255,0.08)"/><text x="435" y="182" text-anchor="middle" fill="rgba(255,255,255,0.45)" font-size="9">Ev</text>
+            <rect x="510" y="35" width="110" height="170" rx="6" fill="rgba(239,68,68,0.05)" stroke="rgba(239,68,68,0.12)"/>
+            <text x="565" y="52" text-anchor="middle" fill="#f87171" font-size="10" font-weight="700">P⁻ 轻掺</text>
+            <rect x="520" y="62" width="90" height="35" rx="3" fill="rgba(239,68,68,0.1)"/><text x="565" y="84" text-anchor="middle" fill="rgba(255,255,255,0.35)" font-size="9">Ec</text>
+            <line x1="520" y1="135" x2="610" y2="135" stroke="#f87171" stroke-width="2"/><text x="618" y="139" fill="#f87171" font-size="9">Ef</text>
+            <rect x="520" y="152" width="90" height="50" rx="3" fill="rgba(239,68,68,0.15)"/><text x="565" y="182" text-anchor="middle" fill="rgba(255,255,255,0.55)" font-size="9">Ev</text>
+            <rect x="640" y="35" width="110" height="170" rx="6" fill="rgba(239,68,68,0.08)" stroke="rgba(239,68,68,0.2)"/>
+            <text x="695" y="52" text-anchor="middle" fill="#ef4444" font-size="10" font-weight="700">P⁺ 重掺</text>
+            <rect x="650" y="62" width="90" height="35" rx="3" fill="rgba(239,68,68,0.1)"/><text x="695" y="84" text-anchor="middle" fill="rgba(255,255,255,0.35)" font-size="9">Ec</text>
+            <line x1="650" y1="147" x2="740" y2="147" stroke="#ef4444" stroke-width="2"/><text x="748" y="151" fill="#ef4444" font-size="9">Ef ↓</text>
+            <rect x="650" y="152" width="90" height="50" rx="3" fill="rgba(239,68,68,0.15)"/><text x="695" y="182" text-anchor="middle" fill="rgba(255,255,255,0.55)" font-size="9">Ev</text>
+            <text x="400" y="212" text-anchor="middle" fill="rgba(255,255,255,0.3)" font-size="9">N 型：Ef 上移靠近 Ec · 本征：Ef 居中 · P 型：Ef 下移靠近 Ev · 浓度越高偏移越大</text>
+          </svg>
+          <p class="diagram-caption">图二：费米能级（Ef）从 N⁺→N⁻→本征→P⁻→P⁺ 的渐变——掺杂是调控 Ef 的唯一手段</p>
+        </div>
+
+        <h4>第三章：从可控材料到可控开关——PN 结与 Vth</h4>
+
+        <p>当 P 型与 N 型半导体接触，奇迹发生了：由于接触前 Ef 高低不同，电子与空穴相互扩散，在界面处形成由正负离子组成的<strong>耗尽层</strong>和从 N 指向 P 的<strong>内建电场</strong>。该电场使能带弯曲，直到双方 Ef 拉平——这个势垒就是<strong>内建电势 Vbi</strong>，其大小直接由掺杂浓度决定的原始 Ef 之差决定。</p>
+
+        <p>将 PN 结或 MOSFET 接入电路后，<strong>阈值电压（Vth）</strong>就是打开"电流闸门"所需的最小控制电压。其物理本质，是克服由掺杂浓度决定的内建势垒与表面势垒，从而强效开启导电通道的"敲门砖"。工程师通过<strong>精确控制掺杂浓度</strong>，就能设计出不同 Vth 的晶体管，实现复杂的逻辑电路。</p>
+
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>关键参数</th><th>物理意义</th><th>决定因素</th></tr></thead>
+            <tbody>
+              <tr><td><strong>禁带宽度 Eg</strong></td><td>价带与导带间的能量差</td><td>材料本身（本征属性）</td></tr>
+              <tr><td><strong>费米能级 Ef</strong></td><td>电子填充水平的标志</td><td>掺杂类型与浓度</td></tr>
+              <tr><td><strong>内建电势 Vbi</strong></td><td>PN 结内部的自然势垒</td><td>N 区与 P 区的 Ef 之差</td></tr>
+              <tr><td><strong>阈值电压 Vth</strong></td><td>开启晶体管的最小栅压</td><td>掺杂浓度、Vbi、栅氧层厚度</td></tr>
+            </tbody>
+          </table>
+          <p class="table-caption">表2：半导体关键参数关系链：Eg → 掺杂 → Ef → Vbi → Vth</p>
+        </div>
+
+        <h4>总结</h4>
+
+        <p>半导体的可控性，源于其<strong>独特的能带结构</strong>与<strong>精湛的掺杂工艺</strong>的完美配合。禁带宽度 ~1 eV 的"恰到好处"，使得外部能量（电压、光、热）可以精确调控载流子浓度；而掺杂则赋予工程师"点石成金"的能力——通过控制杂质种类与浓度，精准设定费米能级，进而决定 PN 结和晶体管的核心特性。从一块高纯硅片到一颗包含数十亿晶体管的芯片，整个现代电子文明的根基，正是建立在对电导率这一基本物理量的<strong>精妙控制</strong>之上 <span class="ref">[1]</span>。</p>
+
+        <h4>参考文献</h4>
+        <ol class="refs">
+          <li>S. M. Sze and K. K. Ng, <em>Physics of Semiconductor Devices</em>, 3rd ed., Wiley, 2007, Ch. 1–2.</li>
+        </ol>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card: 波形技术 -->
+      <div class="article-card" onclick="this.classList.toggle('open')">
+        <div class="article-card-header">
+          <div>
+            <div class="article-card-title">4G LTE 与 5G NR 通信中的波形技术</div>
+            <div class="article-card-meta">📅 2026 年 7 月 · 通信物理层 — 从 OFDM 到 CP-OFDM/DFT-s-OFDM 的波形演进</div>
+          </div>
+          <div class="article-card-arrow">▼</div>
+        </div>
+        <div class="article-card-body">
+          <div class="article-card-body-inner">
+            <div class="article-body">
+
+        <h4>第一部分 · 从 2G 到 5G：波形技术的代际演进</h4>
+
+        <p>从 2G 到 5G，移动通信每一次代际跃迁的核心都在物理层波形技术的变革。这个演进过程，本质上是一段在<strong>更高频谱效率、更快数据速率、更复杂应用场景</strong>三者之间寻找最优信号"载体"的历史。</p>
+
+        <div style="overflow-x:auto;margin:24px 0;">
+        <table style="font-size:13px;min-width:700px;">
+        <thead>
+        <tr><th style="width:10%;">代际</th><th style="width:14%;">时代</th><th style="width:18%;">波形技术</th><th>关键技术特点</th></tr>
+        </thead>
+        <tbody>
+        <tr style="background:rgba(0,113,227,0.05);">
+          <td><strong>2G</strong></td><td>数字时代</td><td>TDMA / FDMA</td><td>从模拟到数字的里程碑；GSM 采用 TDMA + GMSK 调制，首次实现数字化语音与短信</td></tr>
+        <tr>
+          <td><strong>3G</strong></td><td>多媒体时代</td><td>CDMA（码分多址）</td><td>扩频技术使多用户共享同一频段；WCDMA/CDMA2000 支持语音+数据并发，首次引入移动互联网</td></tr>
+        <tr style="background:rgba(0,113,227,0.05);">
+          <td><strong>4G</strong></td><td>高速移动宽带</td><td><strong>OFDM</strong>（正交频分复用）</td><td>多载波并行传输，频谱效率跃升；MIMO 天然适配，奠定移动宽带基础</td></tr>
+        <tr>
+          <td><strong>5G</strong></td><td>万物互联</td><td><strong>CP-OFDM / DFT-s-OFDM</strong></td><td>可扩展参数集（Numerology），灵活适配 eMBB/URLLC/mMTC 三大场景；统一上下行波形 + 保留低 PAPR 上行选项</td></tr>
+        </tbody>
+        </table>
+        </div>
+
+        <p style="font-size:12px;color:rgba(255,255,255,0.3);">参考文献：3GPP TS 36.211 (LTE Physical Channels and Modulation); 3GPP TS 38.211 (NR Physical Channels and Modulation); A. Goldsmith, <em>Wireless Communications</em>, Cambridge University Press, 2005.</p>
+
+        <hr style="border:none;border-top:1px solid rgba(255,255,255,0.08);margin:32px 0;">
+
+        <h4>第二部分 · 4G 与 5G 波形技术详解</h4>
+
+        <h4 style="font-size:16px;color:rgba(255,255,255,0.9);">4G LTE：OFDM — 多载波革命的"分水岭"</h4>
+
+        <p>4G LTE 的物理层突破在于采用了 <strong>OFDM（Orthogonal Frequency-Division Multiplexing，正交频分复用）</strong>。其核心思想是将高速串行数据流<strong>分散到多个正交的子载波上并行传输</strong>：每个子载波上的符号速率大幅度降低，符号周期远大于信道最大多径时延，从而几乎消除了频率选择性衰落带来的符号间干扰（ISI）。</p>
+
+        <p>在下行链路，LTE 选用 OFDMA（正交频分多址），以子载波为粒度在多用户间灵活分配频率资源。在上行链路，出于终端功耗和功放效率的考虑，LTE 采用 <strong>SC-FDMA（单载波频分多址）</strong>——其核心 DFT-s-OFDM 结构在频域生成 OFDM 信号的同时，保持时域信号的<strong>低峰均比（PAPR）</strong>特性，使终端功放可以工作在更高效率区间，这对小区边缘覆盖至关重要。</p>
+
+        <p style="font-size:12px;color:rgba(255,255,255,0.3);">参考文献：3GPP TS 36.211 V15.0.0, §5–6; E. Dahlman et al., <em>4G: LTE/LTE-Advanced for Mobile Broadband</em>, 2nd ed., Academic Press, 2014, Ch. 4–5.</p>
+
+        <h4 style="font-size:16px;color:rgba(255,255,255,0.9);margin-top:28px;">5G NR：CP-OFDM 统一 + DFT-s-OFDM 保留</h4>
+
+        <p><strong>统一的基础波形：CP-OFDM。</strong>5G NR 在上下行链路均以 <strong>CP-OFDM（循环前缀-正交频分复用）</strong>为基础波形。这一设计带来三重优势：</p>
+        <ol>
+          <li><strong>天然 MIMO 支持</strong>——每根天线的每层空间流可独立映射到子载波，预编码、波束赋形与 OFDM 无缝集成；</li>
+          <li><strong>实现复杂度低</strong>——统一的收发链路简化了终端和基站设计；</li>
+          <li><strong>灵活的参数集（Numerology）</strong>——通过可扩展的子载波间隔（15/30/60/120/240 KHz），同一套波形框架可平滑适配从 sub-1 GHz 广覆盖到毫米波（mmWave）超大带宽的全频段需求，同时以短符号周期满足 URLLC 低时延场景。</li>
+        </ol>
+
+        <p><strong>保留的上行选项：DFT-s-OFDM。</strong>尽管 CP-OFDM 是上行"主力"，5G NR 仍保留 4G 时代的 DFT-s-OFDM 作为上行可选波形。这是典型的<strong>覆盖优先</strong>设计思维：在小区边缘等信号较弱场景下，终端可利用 DFT-s-OFDM 的<strong>低峰均比（PAPR）</strong>优势，以更高平均功率发射信号而不引起功放非线性失真，从而保证上行覆盖范围。</p>
+
+        <p>这一双波形架构在实际测试中有直接体现。以 <strong>n77 频段 L-PAMiF（低噪声功放模块集成前端）</strong>的发射测试为例<strong>：</strong></p>
+        <ul>
+          <li><strong>MRP0（最大额定功率 0 dB 回退）</strong>：采用 <strong>DFT-s-OFDM QPSK，100 MHz Inner RB</strong> 分配——利用低 PAPR 优势，功放可推至饱和区附近而不引入显著失真，验证终端最大发射能力；</li>
+          <li><strong>MPR3（最大功率回退 3 dB）</strong>：采用 <strong>CP-OFDM QPSK，100 MHz Full RB</strong> 分配——CP-OFDM 的较高 PAPR 要求功放必须回退工作点以避免非线性产物超标，此时测试的是波形对功放线性度和 ACLR（邻道泄漏比）的压力。</li>
+        </ul>
+
+        <div style="overflow-x:auto;margin:24px 0;">
+        <table style="font-size:13px;min-width:700px;">
+        <thead>
+        <tr><th style="width:14%;">对比维度</th><th style="width:36%;">CP-OFDM</th><th style="width:36%;">DFT-s-OFDM</th></tr>
+        </thead>
+        <tbody>
+        <tr style="background:rgba(0,113,227,0.05);">
+          <td><strong>波形本质</strong></td><td>频域直接映射数据符号到子载波</td><td>时域数据经 DFT 扩展至频域后再做 OFDM 调制（本质是单载波传输）</td></tr>
+        <tr>
+          <td><strong>峰均比（PAPR）</strong></td><td>较高（~10–12 dB）</td><td><strong>低</strong>（~6–8 dB）</td></tr>
+        <tr style="background:rgba(0,113,227,0.05);">
+          <td><strong>MIMO 兼容性</strong></td><td><strong>天然适配</strong>——每层可直接映射</td><td>仅支持单层传输</td></tr>
+        <tr>
+          <td><strong>频谱效率</strong></td><td><strong>高</strong>（配合高阶 QAM 和 MIMO）</td><td>中等（受限于单层和高 PAPR 回退需求较低）</td></tr>
+        <tr style="background:rgba(0,113,227,0.05);">
+          <td><strong>功放效率</strong></td><td>低（需要大回退）</td><td><strong>高</strong>（可推至接近饱和）</td></tr>
+        <tr>
+          <td><strong>覆盖能力</strong></td><td>受限于回退后的发射功率</td><td><strong>强</strong>（更高平均发射功率）</td></tr>
+        <tr style="background:rgba(0,113,227,0.05);">
+          <td><strong>5G NR 应用</strong></td><td><strong>上下行主力波形</strong>——eMBB 高速数据、MU-MIMO 多用户空分</td><td><strong>上行覆盖增强</strong>——小区边缘、功率受限终端、控制信道（PUCCH 格式 0/1 等）</td></tr>
+        </tbody>
+        </table>
+        </div>
+
+        <p style="font-size:12px;color:rgba(255,255,255,0.3);">参考文献：3GPP TS 38.211 V17.0.0, §5.3–5.4; 3GPP TS 38.101-1 V17.0.0, §6.2 (UE Power Class and MPR); E. Dahlman et al., <em>5G NR: The Next Generation Wireless Access Technology</em>, 2nd ed., Academic Press, 2021, Ch. 7–8.</p>
+
+        <hr style="border:none;border-top:1px solid rgba(255,255,255,0.08);margin:32px 0;">
+
+        <h4>第三部分 · 总结</h4>
+
+        <p>从 2G 到 5G，移动通信的波形技术走过了从<strong>单一多址方式（FDMA/TDMA → CDMA）</strong>到<strong>以 OFDM 为基础的多载波统一框架</strong>的演进之路。</p>
+
+        <p><strong>4G 是关键"分水岭"</strong>——OFDM 的引入彻底改变了物理层的设计范式，频谱效率的量级跃升使移动宽带成为现实。这一代确立了"下行 OFDMA + 上行 SC-FDMA"的非对称波形架构，在频谱效率与终端功放效率之间取得了精巧平衡。</p>
+
+        <p><strong>5G 在 4G 的成功基础上更进一步</strong>——通过 <strong>CP-OFDM 实现上下行波形统一</strong>，消除了跨链路的不对称性，使 MIMO 和波束赋形在全链路无缝部署；同时<strong>保留 DFT-s-OFDM</strong> 作为上行覆盖增强选项，以务实的工程设计解决了 CP-OFDM 高 PAPR 带来的小区边缘覆盖短板。配合可扩展的 Numerology，5G NR 的波形架构以单一框架同时服务 eMBB（高速率）、URLLC（低时延）和 mMTC（大连接）三大差异化场景，为万物互联时代铺平了物理层基础。</p>
+
+        <p style="font-size:12px;color:rgba(255,255,255,0.3);margin-top:24px;">📌 参考文献：3GPP TS 36.211, TS 36.300 (LTE Overall Description); 3GPP TS 38.211, TS 38.300 (NR Overall Description); A. Goldsmith, <em>Wireless Communications</em>, Cambridge, 2005; E. Dahlman, S. Parkvall, J. Sköld, <em>5G NR: The Next Generation Wireless Access Technology</em>, 2nd ed., Academic Press, 2021; D. Tse and P. Viswanath, <em>Fundamentals of Wireless Communication</em>, Cambridge, 2005.</p>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+<section class="section section-light" id="reading">
+  <div class="section-inner">
+    <p class="section-label">读书笔记</p>
+    <h2 class="section-heading">阅读与思考</h2>
+    <p class="section-desc">
+      读书是成本最低的旅行。这里记录我的阅读感悟，从技术到人文，从商业到哲学。
+    </p>
+    <div class="article-card" onclick="this.classList.toggle('open')">
+      <div class="article-card-header">
+        <div>
+          <div class="article-card-title">郑渊洁《十二生肖童话》— 鲍尔历险记</div>
+          <div class="article-card-meta">📅 2026 年夏 · 亲子共读 — 一只玩具熊猫告诉我们的</div>
+        </div>
+        <div class="article-card-arrow">▼</div>
+      </div>
+      <div class="article-card-body">
+        <div class="article-card-body-inner">
+          <div class="article-body">
+
+    <p>暑假带娃读书这件事，说实话，容易上瘾。</p>
+
+    <p>最早是果果拉着我读 <em>The One and Only Ivan</em>，后来一发不可收拾——<em>Number the Stars</em>、<em>The Alchemist</em>，一本接一本。读着读着，我发现自己比她还投入。这些写童书的人，真是一群怪物——三言两语，就把成人世界那点遮遮掩掩的东西，给你摊在太阳底下。小孩读故事，大人读人生，各取所需。</p>
+
+    <p>这次轮到郑渊洁。果果十岁了，开始对"好人坏人"这种二分法产生怀疑。正好，郑渊洁最擅长的，就是把这条线画得弯弯绕绕。</p>
+
+    <h4>一只玩具熊猫的奇幻漂流</h4>
+
+    <p>鲍尔是一只<strong>玩具熊猫</strong>。不是真熊猫，是流水线上被做出来的那种。但郑渊洁给他注入了灵魂——他活了。不是那种拟人化的"活"，是真的在故事里成了一个有感知、有恐惧、有牵绊的角色。</p>
+
+    <p>一个玩具熊猫怎么活下来的？被丢弃、被捡走、被转卖、被当成礼物送来送去。他一路跌跌撞撞，遇到各种各样的人和动物——有的对他好，有的想要他的命。他从一个不知道自己是"货"还是"活物"的困惑开始，慢慢找到了属于自己的答案。</p>
+
+    <p style="background:#fef3c7;padding:14px 18px;border-radius:8px;border-left:4px solid #f59e0b;margin:16px 0;">
+    💬 <strong>全书最让我停下来的一段：</strong>"鲍尔只知道，这世界上，有两个人救过他的命。一个是老鼠清道夫，一个是黑猫黑虎，他俩现在都生死未卜。鲍尔还知道，在伤害他的人中，一个是清道夫的同胞缺耳朵，一个是黑虎的同胞大花猫。"
+    </p>
+
+    <p>我读到这里，把书放下了。果果也放下了。</p>
+
+    <p>救你的和害你的，来自同一个地方。清道夫和缺耳朵是同类，黑虎和大花猫也是同类——可一个舍命救你，一个往死里整你。郑渊洁用一个玩具熊猫的旅程告诉了孩子一个成人都不一定能想明白的道理：<strong>善恶不按物种分。不按种族分。不按出身分。只能一个一个地认。</strong></p>
+
+    <h4>果果说了两句话，把我震住了</h4>
+
+    <p>读完以后，我问她感觉怎么样。她说——</p>
+
+    <p><strong>"鲍尔和马良好像。"</strong>她说鲍尔虽然是只玩具熊猫，但他有"活着"的能力，马良有神笔能画啥成啥，"他们都是因为太特别了，才惹来那么多麻烦。好像与众不同的人，第一件事不是去帮别人，是先学会保护自己。"</p>
+
+    <p>我心想，你十岁，一句话把超级英雄电影的核心矛盾给总结了。</p>
+
+    <p><strong>"老鼠不一定是坏的，猫也不一定是好的。"</strong>她说金句那段她想了很久。老鼠有好有坏，猫也是，玩具熊猫也是，人也是。"所以不能听到'这是只老鼠'就说它是坏的，也不能听到'这是只猫'就说它是好的。"</p>
+
+    <p>行了。这本书没白读。一个故事最好的结局，不是主角赢了，是孩子自己摸到了那个道理。</p>
+
+    <h4>最后说一句</h4>
+
+    <p>郑渊洁这批中国儿童文学作家，有一种特别厉害的功夫：他们不把小孩当傻子。他们不煽情，不说教，不往故事里塞"中心思想"。他们只是把世界的复杂——关于权力，关于背叛，关于善恶从来不是按标签分配的——揉进一只玩具熊猫的壳子里，递给你。你以为你拿了只毛绒玩具，翻开才发现，那里面装着一个真的灵魂。</p>
+
+        </div>
+      </div>
+    </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+  <p>© 2026 小美. All rights reserved.</p>
+</footer>
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <span class="lightbox-close">&times;</span>
+  <svg id="lightbox-svg" viewBox="0 0 800 440" xmlns="http://www.w3.org/2000/svg"></svg>
+</div>
+
+<script>
+function switchPanel(name) {
+  document.querySelectorAll('.sub-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.sub-nav a').forEach(a => a.classList.remove('active'));
+  document.getElementById('panel-' + name).classList.add('active');
+  event.target.classList.add('active');
+  event.preventDefault();
+}
+
+// Lightbox: click any diagram SVG to expand
+document.querySelectorAll('.diagram-container svg').forEach(svg => {
+  svg.addEventListener('click', function(e) {
+    e.stopPropagation();
+    var lb = document.getElementById('lightbox');
+    var target = document.getElementById('lightbox-svg');
+    target.innerHTML = this.innerHTML;
+    target.setAttribute('viewBox', this.getAttribute('viewBox'));
+    lb.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  });
+});
+
+function closeLightbox() {
+  document.getElementById('lightbox').classList.remove('active');
+  document.body.style.overflow = '';
+}
+</script>
+
+</body>
+</html>
