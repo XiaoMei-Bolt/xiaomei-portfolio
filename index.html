@@ -1335,17 +1335,12 @@
           <p class="diagram-caption">图二（动画）：频域资源从子载波 → RB → 信道带宽 → 系统带宽的四层递进结构</p>
         </div>
 
-        <h4>一、第一层：最小原子——子载波（Subcarrier）</h4>
-        <p>子载波是频域资源中最小的、不可再分的物理单位。它是一种极窄频带的正弦波信号，用于承载经过调制的数据符号（如 QPSK、16QAM 等）。在 LTE 中，子载波间隔（SCS）固定为 <strong>15 KHz</strong>；而 5G NR 为了适应更多样化的场景，引入了<strong>可扩展的参数集（Numerology）</strong>，支持 15/30/60/120/240 KHz 多种子载波间隔 <span class="ref">[1][2]</span>。</p>
-
-        <h4>二、第二层：调度单位——资源块（Resource Block, RB）</h4>
-        <p>单个子载波容量有限，逐个子载波管理效率极低。因此，3GPP 规定将 <strong>12 个连续子载波</strong>捆绑在一起，组成一个<strong>资源块（RB）</strong>，作为频域资源调度的最小分配单位。由于每次捆绑的子载波数量固定为 12，RB 的频域宽度直接由 SCS 决定：<strong>RB 宽度 = 12 × SCS</strong> <span class="ref">[1][5]</span>。</p>
-
-        <h4>三、第三层：物理边界——信道带宽（Channel Bandwidth）</h4>
-        <p>这是运营商从监管机构（如工信部、FCC）经频谱拍卖获得的独占频带宽度。它是写在频谱牌照上的物理数值，是信号发射不可逾越的硬性边界。LTE 常见信道带宽为 1.4–20 MHz，NR FR1 支持 5–100 MHz，FR2（毫米波）最高可达 <strong>400 MHz</strong> <span class="ref">[3][4]</span>。</p>
-
-        <h4>四、第四层：有效范围——系统带宽（Transmission Bandwidth）</h4>
-        <p>信道带宽并不完全等同于可用带宽。为防止信号能量溢出干扰相邻频段，3GPP 标准要求在信道带宽两侧预留<strong>保护带宽（Guard Band）</strong>。扣除保护带宽后，真正用于数据传输的频域范围称为<strong>系统带宽</strong> <span class="ref">[3][4]</span>。RB 总数由系统带宽除以单个 RB 宽度得出：</p>
+        <ol>
+          <li><strong>子载波（Subcarrier）——第一层 · 最小原子：</strong>频域资源中最小的、不可再分的物理单位。它是一种极窄频带的正弦波信号，用于承载经过调制的数据符号（如 QPSK、16QAM 等）。在 LTE 中，子载波间隔（SCS）固定为 <strong>15 KHz</strong>；而 5G NR 为了适应更多样化的场景，引入了<strong>可扩展的参数集（Numerology）</strong>，支持 15/30/60/120/240 KHz 多种子载波间隔 <span class="ref">[1][2]</span>。</li>
+          <li><strong>资源块（Resource Block, RB）——第二层 · 调度单位：</strong>单个子载波容量有限，逐个子载波管理效率极低。因此，3GPP 规定将 <strong>12 个连续子载波</strong>捆绑在一起，组成一个<strong>资源块（RB）</strong>，作为频域资源调度的最小分配单位。RB 的频域宽度直接由 SCS 决定：<strong>RB 宽度 = 12 × SCS</strong> <span class="ref">[1][5]</span>。</li>
+          <li><strong>信道带宽（Channel Bandwidth）——第三层 · 物理边界：</strong>运营商从监管机构（如工信部、FCC）经频谱拍卖获得的独占频带宽度。它是写在频谱牌照上的物理数值，是信号发射不可逾越的硬性边界。LTE 常见信道带宽为 1.4–20 MHz，NR FR1 支持 5–100 MHz，FR2（毫米波）最高可达 <strong>400 MHz</strong> <span class="ref">[3][4]</span>。</li>
+          <li><strong>系统带宽（Transmission Bandwidth）——第四层 · 有效范围：</strong>信道带宽并不完全等同于可用带宽。为防止信号能量溢出干扰相邻频段，3GPP 标准要求在信道带宽两侧预留<strong>保护带宽（Guard Band）</strong>。扣除保护带宽后，真正用于数据传输的频域范围称为<strong>系统带宽</strong> <span class="ref">[3][4]</span>。RB 总数由系统带宽除以单个 RB 宽度得出：</li>
+        </ol>
         <p style="text-align:center;font-size:15px;color:#4ade80;margin:16px 0;"><strong>系统带宽 = 信道带宽 − 两侧保护带宽 &nbsp;→&nbsp; RB 总数 = 系统带宽 ÷ RB 宽度</strong></p>
 
         <h4>4G 与 5G 频域结构核心对比</h4>
