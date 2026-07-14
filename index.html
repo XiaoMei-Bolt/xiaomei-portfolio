@@ -2363,6 +2363,166 @@
         </div>
       </div>
 
+      <!-- Card: 灵敏度退化 -->
+      <div class="article-card" onclick="this.classList.toggle('open')">
+        <div class="article-card-header">
+          <div>
+            <div class="article-card-title">射频前端中的灵敏度退化与优化方法</div>
+            <div class="article-card-meta">📅 2026 年 7 月 · RF 前端设计 — MIPI 引入的 De-sense 机制与 RF FEM 级优化策略</div>
+          </div>
+          <div class="article-card-arrow">▼</div>
+        </div>
+        <div class="article-card-body">
+          <div class="article-card-body-inner">
+            <div class="article-body">
+
+        <p><strong>灵敏度</strong>（Sensitivity）是接收链路在满足指定误码率（BER）条件下可解调的最小信号功率，直接决定手机在弱信号环境（小区边缘、地下室）下的通信能力。灵敏度每劣化 1 dB，小区覆盖半径收缩约 10–15%，掉线率显著上升 <span class="ref">[1]</span>。</p>
+
+        <p>灵敏度退化（De-sense）可归为三类：① <strong>Reference Sensitivity 退化</strong>——由天线口插入损耗、Transceiver NF 偏高、FEM 增益不足等设计基础问题导致，本文不展开；② <strong>TX 相关 De-sense</strong>——PA Rx Band Noise、IMDx 交调产物等发射链路对接收链路的干扰，另文讨论；③ <strong>MIPI 引入的 De-sense</strong>——本文聚焦于此。</p>
+
+        <h4>一、MIPI 为何会引入灵敏度退化</h4>
+
+        <p>现代手机射频前端通过 <strong>MIPI RFFE</strong>（RF Front-End Control Interface）总线控制开关、LNA、PA 等器件。典型平台配置 <strong>2–4 路</strong> MIPI bus，每路挂载多个从设备，时钟频率通常为 <strong>26 MHz 或 52 MHz</strong>（RFFE v2.0/v2.1） <span class="ref">[2]</span>。</p>
+
+        <p>问题的根源在于<strong>时序异步</strong>：手机的接收时隙（RX Slot）与 MIPI 指令写入窗口存在重叠。当某一路 MIPI bus 正在接收通路正常工作时，另一路 bus 可能在同时下发 Band 切换或增益调整指令——这些指令引发的 CLK/DATA 信号翻转通过<strong>传导耦合</strong>（VIO 电源纹波）和<strong>辐射耦合</strong>（谐波串扰）进入接收通路，恶化灵敏度 <span class="ref">[3]</span>。</p>
+
+        <!-- 图一：MIPI De-sense 耦合路径 -->
+        <div class="diagram-container">
+          <svg viewBox="0 0 800 340" xmlns="http://www.w3.org/2000/svg">
+            <text x="400" y="24" text-anchor="middle" fill="#fff" font-size="14" font-weight="600">图一 · MIPI 引入灵敏度退化的传导与辐射耦合路径</text>
+
+            <!-- MIPI source -->
+            <rect x="20" y="48" width="180" height="100" rx="8" fill="rgba(239,68,68,0.08)" stroke="rgba(239,68,68,0.25)"/>
+            <text x="110" y="72" text-anchor="middle" fill="#ef4444" font-size="12" font-weight="700">MIPI Bus A（异步写入）</text>
+            <text x="110" y="92" text-anchor="middle" fill="rgba(255,255,255,0.5)" font-size="10">CLK 52 MHz · DATA · VIO 1.8V</text>
+            <text x="110" y="110" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-size="9">Band 切换 / 增益调整指令</text>
+            <text x="110" y="130" text-anchor="middle" fill="rgba(239,68,68,0.6)" font-size="9">信号翻转 → 高 di/dt 电流尖峰</text>
+
+            <!-- RX path -->
+            <rect x="600" y="48" width="180" height="100" rx="8" fill="rgba(74,222,128,0.06)" stroke="rgba(74,222,128,0.2)"/>
+            <text x="690" y="72" text-anchor="middle" fill="#4ade80" font-size="12" font-weight="700">接收通路（RX Slot）</text>
+            <text x="690" y="92" text-anchor="middle" fill="rgba(255,255,255,0.5)" font-size="10">MIPI Bus B · 正常工作</text>
+            <text x="690" y="110" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-size="9">SW → Filter → LNA → TRx</text>
+            <text x="690" y="130" text-anchor="middle" fill="rgba(74,222,128,0.6)" font-size="9">干扰耦合 → NF 抬升 → De-sense</text>
+
+            <!-- Coupling path: conducted -->
+            <path d="M200,82 C300,60 500,60 600,82" fill="none" stroke="#f0a050" stroke-width="1.8" stroke-dasharray="6,3"/>
+            <text x="370" y="55" text-anchor="middle" fill="#f0a050" font-size="10" font-weight="600">传导耦合：VIO 电源纹波 → 共享电源网络</text>
+
+            <!-- Coupling path: radiated -->
+            <path d="M200,110 C300,140 500,140 600,110" fill="none" stroke="#8b5cf6" stroke-width="1.8" stroke-dasharray="4,4"/>
+            <text x="370" y="152" text-anchor="middle" fill="#8b5cf6" font-size="10" font-weight="600">辐射耦合：MIPI 谐波 → 基板串扰 / 空间耦合</text>
+
+            <!-- Isolation barrier -->
+            <rect x="340" y="175" width="120" height="22" rx="4" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.12)"/>
+            <text x="400" y="191" text-anchor="middle" fill="rgba(255,255,255,0.35)" font-size="10">隔离度不足 ↓</text>
+
+            <!-- Bottom: result -->
+            <rect x="120" y="220" width="560" height="42" rx="8" fill="rgba(239,68,68,0.08)" stroke="rgba(239,68,68,0.2)"/>
+            <text x="400" y="240" text-anchor="middle" fill="#ef4444" font-size="12" font-weight="600">MIPI 谐波落入 RX 通带 → 噪底抬升 → 灵敏度退化（De-sense）</text>
+            <text x="400" y="256" text-anchor="middle" fill="rgba(255,255,255,0.35)" font-size="10">谐波频率 = n × 52 MHz（n = 奇次为主，实际奇偶次均出现，低次谐波能量更高）</text>
+
+            <!-- Key insight -->
+            <text x="400" y="300" text-anchor="middle" fill="rgba(255,255,255,0.3)" font-size="10">关键：手机板端多路 MIPI bus <tspan fill="#f0a050" font-weight="600">全局异步</tspan>，RX slot 期间其他 bus 可能正在下发指令 → 无法通过时序避让根除</text>
+          </svg>
+          <p class="diagram-caption">图一：MIPI 指令写入通过 VIO 传导和谐波辐射两条路径耦合进入接收通路的机制</p>
+        </div>
+
+        <h4>二、MIPI 谐波对常用频段的干扰</h4>
+
+        <p>MIPI CLK 为近似方波信号。理想方波仅含奇次谐波，但实际手机板端因<strong>信号完整性劣化</strong>（阻抗失配、反射、串扰），奇偶次谐波往往同时出现且强度相当；<strong>低次谐波</strong>能量更高，危害更大 <span class="ref">[3][4]</span>。以 52 MHz MIPI 时钟为例，计算各常用频段受谐波干扰的情况：</p>
+
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Band</th><th>RX 频率 (MHz)</th><th>落入通带内的 MIPI 谐波次数</th><th>干扰频率 (MHz)</th><th>风险等级</th></tr></thead>
+            <tbody>
+              <tr><td><strong>B8</strong></td><td>925–960</td><td>18 次</td><td>936</td><td style="color:#ef4444;font-weight:700;">高</td></tr>
+              <tr><td><strong>B20</strong></td><td>791–821</td><td>15 次</td><td>780</td><td style="color:#f0a050;font-weight:600;">中</td></tr>
+              <tr><td><strong>B26</strong></td><td>859–894</td><td>16–17 次</td><td>832 / 884</td><td style="color:#ef4444;font-weight:700;">高</td></tr>
+              <tr><td><strong>B28</strong></td><td>758–803</td><td>14–15 次</td><td>728 / 780</td><td style="color:#f0a050;font-weight:600;">中</td></tr>
+              <tr><td><strong>B3</strong></td><td>1805–1880</td><td>35 次</td><td>1820</td><td style="color:#ef4444;font-weight:700;">高</td></tr>
+              <tr><td><strong>B66</strong></td><td>2110–2200</td><td>41–42 次</td><td>2132 / 2184</td><td style="color:#ef4444;font-weight:700;">高</td></tr>
+              <tr><td><strong>B34</strong></td><td>2010–2025</td><td>39 次</td><td>2028</td><td style="color:#f0a050;font-weight:600;">中</td></tr>
+              <tr><td><strong>B39</strong></td><td>1880–1920</td><td>36–37 次</td><td>1872 / 1924</td><td style="color:#ef4444;font-weight:700;">高</td></tr>
+              <tr><td><strong>B40</strong></td><td>2300–2400</td><td>44–46 次</td><td>2288 / 2340 / 2392</td><td style="color:#ef4444;font-weight:700;">高</td></tr>
+              <tr><td><strong>B41</strong></td><td>2496–2690</td><td>48–51 次</td><td>2496 / 2548 / 2600 / 2652</td><td style="color:#ef4444;font-weight:700;">高</td></tr>
+            </tbody>
+          </table>
+          <p class="table-caption">表1：52 MHz MIPI 时钟谐波对常用频段的干扰分析 · 风险等级：<tspan style="color:#ef4444;">高</tspan> = 谐波直接落入 RX 通带中心区域；<tspan style="color:#f0a050;">中</tspan> = 谐波落入通带边缘或邻道</p>
+        </div>
+
+        <p>上表可见，<strong>B3/B8/B26/B39/B40/B41/B66</strong> 等主力频段均被 52 MHz MIPI 的某一谐波直接命中。这是 RF FEM 必须从芯片级、模组级系统性解决的设计挑战。</p>
+
+        <h4>三、RF FEM 灵敏度优化方法</h4>
+
+        <p>以下从<strong>开关芯片</strong>、<strong>LNA 芯片</strong>、<strong>模组集成</strong>三个层面展开，汇总经过量产验证的优化策略。</p>
+
+        <h4>3.1 开关芯片（Switch）优化</h4>
+
+        <ol>
+          <li><strong>减小寄存器数量：</strong>每 Bit 门电路在 CLK/DATA 翻转时产生瞬时电流尖峰叠加到 VIO 上。精简寄存器位宽（如从 32-bit 裁剪至必要位宽），直接降低瞬态电流总量，并配合 VIO 端 π 型滤波（串联磁珠 + 并联去耦电容）抑制电源纹波。</li>
+          <li><strong>Charge Pump 频率优化：</strong>CP 为开关管提供正/反向偏置电压，其充放电周期在 VIO 上产生周期性电流尖峰。优化策略：
+            <ul>
+              <li>常规工作频率从 8 MHz 降至 <strong>1 MHz</strong>，大幅降低 di/dt</li>
+              <li>保留开启阶段 <strong>8 MHz 快启 + 稳态 1 MHz</strong> 的双速方案，兼顾开关建立时间（< 5 µs）与稳态噪声</li>
+            </ul>
+          </li>
+          <li><strong>版图隔离优化：</strong>将 CP 模块、VIO/CLK/DATA Pad 在 die 上<strong>远离</strong>受 MIPI 谐波命中频段（表1 高风险 Band）对应的射频通路端口，增大物理间距，降低基板耦合。</li>
+        </ol>
+
+        <h4>3.2 LNA 芯片优化</h4>
+
+        <ol>
+          <li><strong>版图隔离：</strong>与开关同理，MIPI 敏感频段的 LNA 输入级在 die 上远离 VIO/CLK/DATA 区域。</li>
+          <li><strong>精简寄存器：</strong>LNA die 中常驻大量 <strong>工程寄存器</strong>（仅供调试用），量产时处于 Default 状态。增加 <strong>Default 模式冻结</strong>机制——上电后工程寄存器不参与任何写入操作，对应的门电路不翻转，消除其贡献的 VIO 电流尖峰。</li>
+          <li><strong>VIO 去耦滤波：</strong>与开关相同，VIO Pad 近端布置 π 型滤波网络。</li>
+          <li><strong>射频开关电路独立供电：</strong>LNA 内部的射频开关电路（Bypass 开关、增益级切换开关等）若由 VIO 供电，其切换瞬态直接注入射频信号路径。改用<strong>洁净的 VDD</strong>（经独立 LDO 稳压）为射频开关供电，将开关瞬态与射频通路解耦 <span class="ref">[4]</span>。</li>
+        </ol>
+
+        <h4>3.3 模组级集成优化</h4>
+
+        <ol>
+          <li><strong>MIPI 与射频分区隔离：</strong>基板 Layout 上将 VIO/CLK/DATA 走线与 LNA 输入至天线端口之间的全部射频走线（含匹配网络）实施<strong>物理分区 + 接地隔离带</strong>，保证 ≥ 30 dB 的基板级隔离度。</li>
+          <li><strong>层叠优化：</strong>将 MIPI 走线布置在内层，上下以完整地平面屏蔽；射频走线优先布置在表层，减少过孔和层间耦合。</li>
+        </ol>
+
+        <!-- 优化策略总结 -->
+        <h4>四、总结</h4>
+
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>层面</th><th>优化手段</th><th>作用机制</th><th>典型效果</th></tr></thead>
+            <tbody>
+              <tr><td rowspan="3"><strong>开关芯片</strong></td><td>精简寄存器 + VIO π 滤波</td><td>降低 CLK/DATA 翻转的瞬态电流总量</td><td>VIO 纹波 ↓ 60–80%</td></tr>
+              <tr><td>CP 频率 8M→1M 或双速</td><td>降低 CP 充放电 di/dt</td><td>CP 尖峰电流 ↓ 8×</td></tr>
+              <tr><td>CP/VIO 远离敏感频段端口</td><td>增大物理隔离，弱化基板耦合</td><td>邻频隔离度 ↑ 10–15 dB</td></tr>
+              <tr><td rowspan="4"><strong>LNA 芯片</strong></td><td>敏感频段 LNA 远离 MIPI 区域</td><td>同上</td><td>同上</td></tr>
+              <tr><td>工程寄存器 Default 冻结</td><td>消除未使用门电路的翻转电流</td><td>VIO 纹波额外 ↓ 20–30%</td></tr>
+              <tr><td>VIO π 型去耦</td><td>滤除传导至 VIO 的纹波</td><td>VIO 噪声 ↓ 15–20 dB</td></tr>
+              <tr><td>射频开关改用 VDD 供电</td><td>开关瞬态与射频信号路径解耦</td><td>开关噪声耦合 ↓ 20–30 dB</td></tr>
+              <tr><td rowspan="2"><strong>模组集成</strong></td><td>MIPI 与射频分区 + 接地隔离带</td><td>阻断基板级传导/辐射耦合</td><td>隔离度 ↑ 15–20 dB</td></tr>
+              <tr><td>MIPI 走线内层布设 + 地平面屏蔽</td><td>层间屏蔽，抑制空间辐射</td><td>远场耦合 ↓ 10–15 dB</td></tr>
+            </tbody>
+          </table>
+          <p class="table-caption">表2：RF FEM 灵敏度优化策略总结——芯片级到模组级的系统方法</p>
+        </div>
+
+        <p>MIPI 引入的灵敏度退化本质上是一个<strong>系统级电磁兼容（EMC）问题</strong>——源头在多路异步 MIPI bus 的同步开关噪声（SSN），耦合路径为 VIO 传导和基板辐射，受害者为接收通路 LNA 输入端。优化的核心思路是从三个环节同时切入：<strong>源头抑制</strong>（精简寄存器、降低 CP 频率）、<strong>路径阻断</strong>（VIO 滤波、分区隔离、独立供电）、<strong>版图避让</strong>（MIPI 模块远离敏感频段端口），形成芯片到模组的完整防御体系 <span class="ref">[3]–[5]</span>。</p>
+
+        <h4>参考文献</h4>
+        <ol class="refs">
+          <li>3GPP TS 36.101, "E-UTRA; UE radio transmission and reception," V16.9.0, 2021, §7.3 (Reference sensitivity).</li>
+          <li>MIPI Alliance, "MIPI RFFE Specification v2.1," 2018. (Bus architecture, clock rates, multi-slave configuration.)</li>
+          <li>B. Razavi, <em>RF Microelectronics</em>, 2nd ed., Prentice Hall, 2012, Ch. 2 (Noise and nonlinearity), Ch. 8 (Mixers and switching noise).</li>
+          <li>G. Hueber and R. B. Staszewski, eds., <em>Multi-Mode / Multi-Band RF Transceivers for Wireless Communications</em>, Wiley, 2011, Ch. 10 (Front-end module integration and desense).</li>
+          <li>H. W. Ott, <em>Electromagnetic Compatibility Engineering</em>, Wiley, 2009, Ch. 3–4 (Crosstalk and grounding in mixed-signal PCBs).</li>
+        </ol>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
 <section class="section section-light" id="reading">
   <div class="section-inner">
