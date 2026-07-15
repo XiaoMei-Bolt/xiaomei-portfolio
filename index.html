@@ -2542,7 +2542,7 @@
 
         <p>参考灵敏度由热噪声底、收发信机噪声系数、前端插损和实现裕量四部分构成：</p>
 
-        <p style="text-align:center;font-size:15px;color:#4ade80;margin:16px 0;"><strong>RxSens = −174 + 10log₁₀(BW) + NF<sub>TRx</sub> + IL<sub>FE</sub> + IM − SINR + G<sub>RxDiv</sub></strong></p>
+        <p style="text-align:center;font-size:15px;color:#4ade80;margin:16px 0;"><strong>RxSens = −174 + 10log₁₀(BW) + NF<sub>TRx</sub> + IL(FE) + IM − SINR + G(RxDiv)</strong></p>
 
         <div class="table-wrap">
           <table>
@@ -2550,10 +2550,10 @@
             <tbody>
               <tr><td>热噪声底</td><td>−174 dBm/Hz + 69.5 dB = <strong>−104.5 dBm</strong></td><td>BW = 50 RB × 180 kHz = 9 MHz</td></tr>
               <tr><td>TRx NF</td><td>+2.3 dB</td><td>收发信机噪声系数，典型 2–3 dB</td></tr>
-              <tr><td>前端插损 IL<sub>FE</sub></td><td>+3.5 dB</td><td>Ant → LNA 输入路径总损耗</td></tr>
+              <tr><td>前端插损 IL(FE)</td><td>+3.5 dB</td><td>Ant → LNA 输入路径总损耗</td></tr>
               <tr><td>实现裕量 IM</td><td>+2.5 dB</td><td>基带数字处理、非理想解调器</td></tr>
               <tr><td>SINR<sub>min</sub></td><td>−1 dB</td><td>QPSK 1/3 码率理论需求</td></tr>
-              <tr><td>分集增益 G<sub>RxDiv</sub></td><td>−3 dB</td><td>双天线接收，理论最大 3 dB</td></tr>
+              <tr><td>分集增益 G(RxDiv)</td><td>−3 dB</td><td>双天线接收，理论最大 3 dB</td></tr>
               <tr style="background:rgba(74,222,128,0.08);"><td><strong>参考灵敏度</strong></td><td><strong>−99.75 dBm / 9 MHz</strong></td><td>天线端口参考值</td></tr>
             </tbody>
           </table>
@@ -2562,7 +2562,7 @@
 
         <h4>二、前端插损：1dB/dB 的刚性关系</h4>
 
-        <p>前端插入损耗 IL<sub>FE</sub> 对灵敏度的影响是 <strong>1dB/dB</strong>——每增加 1 dB 天线到 LNA 输入之间的损耗，参考灵敏度直接恶化 1 dB。这是灵敏度链路中最「刚性」的参数：</p>
+        <p>前端插入损耗 IL(FE) 对灵敏度的影响是 <strong>1dB/dB</strong>——每增加 1 dB 天线到 LNA 输入之间的损耗，参考灵敏度直接恶化 1 dB。这是灵敏度链路中最「刚性」的参数：</p>
 
         <div class="diagram-container">
           <svg viewBox="0 0 800 240" xmlns="http://www.w3.org/2000/svg">
@@ -2575,7 +2575,7 @@
             <polygon points="134,66 148,66 148,78 134,78" fill="#666666"/>
 
             <rect x="152" y="44" width="130" height="44" rx="6" fill="#1a1a1a" stroke="#ef4444" stroke-width="1.5"/>
-            <text x="217" y="62" text-anchor="middle" fill="#ef4444" font-size="10" font-weight="700">前端插损 IL<sub>FE</sub></text>
+            <text x="217" y="62" text-anchor="middle" fill="#ef4444" font-size="10" font-weight="700">前端插损 IL(FE)</text>
             <text x="217" y="78" text-anchor="middle" fill="#808080" font-size="8">1 dB/dB 刚性</text>
             <polygon points="286,66 300,66 300,78 286,78" fill="#666666"/>
 
@@ -2585,7 +2585,7 @@
             <polygon points="438,66 452,66 452,78 438,78" fill="#666666"/>
 
             <rect x="456" y="44" width="160" height="44" rx="6" fill="#141414" stroke="#f0a050" stroke-width="1"/>
-            <text x="536" y="62" text-anchor="middle" fill="#f0a050" font-size="10" font-weight="700">IM + SINR − G<sub>RxDiv</sub></text>
+            <text x="536" y="62" text-anchor="middle" fill="#f0a050" font-size="10" font-weight="700">IM + SINR − G(RxDiv)</text>
             <text x="536" y="78" text-anchor="middle" fill="#808080" font-size="8">2.5 − 1 − 3 = −1.5 dB</text>
 
             <!-- Bottom: comparison bars -->
@@ -2623,7 +2623,7 @@
           <table>
             <thead><tr><th>退化机制</th><th>对灵敏度的影响</th><th>优先级</th></tr></thead>
             <tbody>
-              <tr><td>前端插损 IL<sub>FE</sub></td><td><strong>1 dB / 1 dB</strong>（刚性）</td><td style="color:#ef4444;">🔴 最高</td></tr>
+              <tr><td>前端插损 IL(FE)</td><td><strong>1 dB / 1 dB</strong>（刚性）</td><td style="color:#ef4444;">🔴 最高</td></tr>
               <tr><td>TRx 噪声系数</td><td>直接叠加至总 NF</td><td style="color:#f0a050;">🟠 高</td></tr>
               <tr><td>实现裕量 IM</td><td>1–4 dB（取决于调制阶数）</td><td style="color:#f0a050;">🟠 高</td></tr>
               <tr><td>LNA 增益压缩</td><td>NF 恶化，SNR 降低</td><td style="color:#facc15;">🟡 中</td></tr>
@@ -2714,23 +2714,23 @@
             <rect x="20" y="42" width="370" height="68" rx="8" fill="#991b1b" fill-opacity="0.12" stroke="#ef4444" stroke-opacity="0.3" stroke-width="1"/>
             <text x="205" y="63" text-anchor="middle" fill="#ef4444" font-size="12" font-weight="700">① Rx Band Noise</text>
             <text x="40" y="82" fill="#cccccc" font-size="10">TRx Noise 经 PA 放大 + PA 自身噪声 → DPX ISO → LNA</text>
-            <text x="40" y="100" fill="#ef4444" font-size="9">线性机制，功率弱依赖 ∝ P<sub>Tx</sub></text>
+            <text x="40" y="100" fill="#ef4444" font-size="9">线性机制，功率弱依赖 ∝ P(Tx)</text>
 
             <rect x="410" y="42" width="370" height="68" rx="8" fill="#7c2d12" fill-opacity="0.15" stroke="#f97316" stroke-opacity="0.3" stroke-width="1"/>
             <text x="595" y="63" text-anchor="middle" fill="#f97316" font-size="12" font-weight="700">② IMD2</text>
             <text x="430" y="82" fill="#cccccc" font-size="10">Tx 泄漏 × 混频器二阶非线性 → 包络下变频至基带</text>
-            <text x="430" y="100" fill="#f97316" font-size="9">二次依赖 ∝ P<sub>Tx</sub>²（强功率依赖）</text>
+            <text x="430" y="100" fill="#f97316" font-size="9">二次依赖 ∝ P(Tx)²（强功率依赖）</text>
 
             <!-- Row 2 -->
             <rect x="20" y="122" width="370" height="68" rx="8" fill="#4c1d95" fill-opacity="0.12" stroke="#8b5cf6" stroke-opacity="0.3" stroke-width="1"/>
             <text x="205" y="143" text-anchor="middle" fill="#8b5cf6" font-size="12" font-weight="700">③ Reciprocal Mixing</text>
             <text x="40" y="162" fill="#cccccc" font-size="10">RxLO 相位噪声 × Tx 载波泄漏 → 基带噪声叠加</text>
-            <text x="40" y="180" fill="#8b5cf6" font-size="9">线性依赖 ∝ P<sub>Tx</sub></text>
+            <text x="40" y="180" fill="#8b5cf6" font-size="9">线性依赖 ∝ P(Tx)</text>
 
             <rect x="410" y="122" width="370" height="68" rx="8" fill="#064e3b" fill-opacity="0.15" stroke="#10b981" stroke-opacity="0.3" stroke-width="1"/>
             <text x="595" y="143" text-anchor="middle" fill="#10b981" font-size="12" font-weight="700">④ Cross-Modulation</text>
             <text x="430" y="162" fill="#cccccc" font-size="10">LO 泄漏 + Tx 泄漏 × LNA 三阶非线性 → Rx 调制转移</text>
-            <text x="430" y="180" fill="#10b981" font-size="9">三次依赖 ∝ P<sub>Tx</sub>²·P<sub>LO</sub></text>
+            <text x="430" y="180" fill="#10b981" font-size="9">三次依赖 ∝ P(Tx)²·P(LO)</text>
 
             <!-- Bottom summary -->
             <line x1="20" y1="210" x2="780" y2="210" stroke="#ffffff" stroke-opacity="0.08"/>
@@ -2759,10 +2759,10 @@
           <table>
             <thead><tr><th>机制</th><th>物理本质</th><th>功率依赖</th><th>主导场景</th></tr></thead>
             <tbody>
-              <tr><td>Rx Band Noise</td><td>PA + TRx 接收频段噪声经 DPX 隔离到达 LNA</td><td>∝ P<sub>Tx</sub></td><td>全功率范围；ET 方案额外恶化</td></tr>
-              <tr><td>IMD2</td><td>Tx 泄漏 × 混频器二阶非线性 → 基带包络</td><td>∝ P<sub>Tx</sub>²</td><td>高功率 Tx；DCR 接收机固有</td></tr>
-              <tr><td>Reciprocal Mixing</td><td>RxLO 相位噪声 × Tx 泄漏 → 基带噪声</td><td>∝ P<sub>Tx</sub></td><td>Tx-Rx 频率间隔小（如 B3/B66）</td></tr>
-              <tr><td>Cross-Modulation</td><td>LO 泄漏 + Tx 泄漏 × LNA 三阶非线性</td><td>∝ P<sub>Tx</sub>²·P<sub>LO</sub></td><td>Tx 高功率 + In-Band Blocker 同时存在</td></tr>
+              <tr><td>Rx Band Noise</td><td>PA + TRx 接收频段噪声经 DPX 隔离到达 LNA</td><td>∝ P(Tx)</td><td>全功率范围；ET 方案额外恶化</td></tr>
+              <tr><td>IMD2</td><td>Tx 泄漏 × 混频器二阶非线性 → 基带包络</td><td>∝ P(Tx)²</td><td>高功率 Tx；DCR 接收机固有</td></tr>
+              <tr><td>Reciprocal Mixing</td><td>RxLO 相位噪声 × Tx 泄漏 → 基带噪声</td><td>∝ P(Tx)</td><td>Tx-Rx 频率间隔小（如 B3/B66）</td></tr>
+              <tr><td>Cross-Modulation</td><td>LO 泄漏 + Tx 泄漏 × LNA 三阶非线性</td><td>∝ P(Tx)²·P(LO)</td><td>Tx 高功率 + In-Band Blocker 同时存在</td></tr>
             </tbody>
           </table>
           <p class="table-caption">表3：Tx Related De-sense 四大机制总结</p>
@@ -2805,7 +2805,7 @@
 
             <!-- Left: Rx freq side -->
             <rect x="20" y="44" width="360" height="100" rx="8" fill="#0d0d0d" stroke="rgb(90,159,212)" stroke-opacity="0.15"/>
-            <text x="200" y="66" text-anchor="middle" fill="#5a9fd4" font-size="12" font-weight="700">Rx 频率处隔离 (f<sub>Rx</sub>)</text>
+            <text x="200" y="66" text-anchor="middle" fill="#5a9fd4" font-size="12" font-weight="700">Rx 频率处隔离 (f(Rx))</text>
             <line x1="40" y1="78" x2="360" y2="78" stroke="rgb(90,159,212)" stroke-opacity="0.1"/>
 
             <text x="40" y="98" fill="#808080" font-size="10">主导机制：Rx Band Noise（线性）</text>
@@ -2814,7 +2814,7 @@
 
             <!-- Right: Tx freq side -->
             <rect x="420" y="44" width="360" height="100" rx="8" fill="#0d0d0d" stroke="rgb(239,68,68)" stroke-opacity="0.15"/>
-            <text x="600" y="66" text-anchor="middle" fill="#ef4444" font-size="12" font-weight="700">Tx 频率处隔离 (f<sub>Tx</sub>)</text>
+            <text x="600" y="66" text-anchor="middle" fill="#ef4444" font-size="12" font-weight="700">Tx 频率处隔离 (f(Tx))</text>
             <line x1="440" y1="78" x2="760" y2="78" stroke="rgb(239,68,68)" stroke-opacity="0.1"/>
 
             <text x="440" y="98" fill="#808080" font-size="10">主导机制：IMD2 + Cross-Mod（² 依赖）</text>
@@ -2824,11 +2824,11 @@
             <!-- Bottom: comparison visual -->
             <text x="40" y="175" fill="#808080" font-size="11" font-weight="600">隔离度改善 1 dB 对 De-sense 的影响（相对值）：</text>
 
-            <text x="40" y="205" fill="#5a9fd4" font-size="10">f<sub>Rx</sub> 隔离</text>
+            <text x="40" y="205" fill="#5a9fd4" font-size="10">f(Rx) 隔离</text>
             <rect x="140" y="195" width="20" height="16" rx="3" fill="#5a9fd4" opacity="0.7"/>
             <text x="170" y="207" fill="#5a9fd4" font-size="10" font-weight="600">0.1 dB 改善</text>
 
-            <text x="320" y="205" fill="#ef4444" font-size="10">f<sub>Tx</sub> 隔离</text>
+            <text x="320" y="205" fill="#ef4444" font-size="10">f(Tx) 隔离</text>
             <rect x="420" y="195" width="200" height="16" rx="3" fill="#ef4444" opacity="0.7"/>
             <text x="630" y="207" fill="#ef4444" font-size="10" font-weight="600">2–3 dB 改善（20–30× 杠杆效应）</text>
 
@@ -2912,8 +2912,8 @@
             <!-- PA side -->
             <rect x="20" y="44" width="130" height="60" rx="6" fill="#141414" stroke="rgb(240,160,80)" stroke-opacity="0.2"/>
             <text x="85" y="68" text-anchor="middle" fill="#f0a050" font-size="11" font-weight="700">PA 输出</text>
-            <text x="85" y="86" text-anchor="middle" fill="#808080" font-size="9">Z<sub>out</sub> ≠ 50Ω</text>
-            <text x="85" y="100" text-anchor="middle" fill="#595959" font-size="8">Γ<sub>PA</sub> = f(P<sub>out</sub>, 频段, 温度)</text>
+            <text x="85" y="86" text-anchor="middle" fill="#808080" font-size="9">Zout ≠ 50Ω</text>
+            <text x="85" y="100" text-anchor="middle" fill="#595959" font-size="8">Γ(PA) = f(Pout, 频段, 温度)</text>
 
             <!-- Phase shifter / match -->
             <rect x="180" y="44" width="120" height="60" rx="6" fill="#141414" stroke="rgb(16,185,129)" stroke-opacity="0.25"/>
@@ -2924,8 +2924,8 @@
             <!-- DPX -->
             <rect x="330" y="44" width="130" height="60" rx="6" fill="#141414" stroke="rgb(90,159,212)" stroke-opacity="0.2"/>
             <text x="395" y="68" text-anchor="middle" fill="#5a9fd4" font-size="11" font-weight="700">双工器 Tx 端口</text>
-            <text x="395" y="86" text-anchor="middle" fill="#808080" font-size="9">@ f<sub>Rx</sub>: 高反射</text>
-            <text x="395" y="100" text-anchor="middle" fill="#595959" font-size="8">|Γ<sub>DPX</sub>| ≈ 1</text>
+            <text x="395" y="86" text-anchor="middle" fill="#808080" font-size="9">@ f(Rx): 高反射</text>
+            <text x="395" y="100" text-anchor="middle" fill="#595959" font-size="8">|Γ(DPX)| ≈ 1</text>
 
             <!-- Arrows -->
             <polygon points="154,74 168,74 168,86 154,86" fill="#4c4c4c"/>
@@ -2950,14 +2950,14 @@
             <circle cx="200" cy="185" r="3" fill="#4ade80"/>
             <text x="210" y="210" fill="#595959" font-size="9">最差隔离相位</text>
             <circle cx="140" cy="215" r="3" fill="#ef4444"/>
-            <text x="400" y="190" fill="#666666" font-size="9">Γ<sub>PA</sub> 轨迹</text>
+            <text x="400" y="190" fill="#666666" font-size="9">Γ(PA) 轨迹</text>
 
             <!-- Right side: key parameters -->
             <rect x="420" y="130" width="350" height="110" rx="6" fill="#050505" stroke="rgb(255,255,255)" stroke-opacity="0.08"/>
             <text x="595" y="150" text-anchor="middle" fill="#808080" font-size="11" font-weight="600">关键设计参数</text>
-            <text x="440" y="170" fill="#808080" font-size="10">① PA 输出阻抗 Γ<sub>PA</sub> —— 非 50Ω，随功率/频段/温度变化</text>
+            <text x="440" y="170" fill="#808080" font-size="10">① PA 输出阻抗 Γ(PA) —— 非 50Ω，随功率/频段/温度变化</text>
             <text x="440" y="190" fill="#808080" font-size="10">② 传输线电长度 φ —— 控制驻波相位</text>
-            <text x="440" y="210" fill="#808080" font-size="10">③ DPX Tx @ f<sub>Rx</sub> 反射系数 Γ<sub>DPX</sub> —— 接近开路/短路</text>
+            <text x="440" y="210" fill="#808080" font-size="10">③ DPX Tx @ f(Rx) 反射系数 Γ(DPX) —— 接近开路/短路</text>
             <text x="440" y="230" fill="#808080" font-size="10">④ 外部匹配网络 —— 相位旋转 + 阻抗变换</text>
           </svg>
           <p class="diagram-caption">图一：PA 非 50Ω 输出 + 相位可调匹配网络 → Tx-Rx 隔离度的相位依赖性与调谐窗口</p>
@@ -2971,8 +2971,8 @@
           <table>
             <thead><tr><th>调谐对象</th><th>频段</th><th>未调谐隔离</th><th>调谐后隔离</th><th>改善幅度</th></tr></thead>
             <tbody>
-              <tr><td>Tx-Rx 隔离 @ f<sub>Tx</sub></td><td>B5</td><td>基准值</td><td>基准值 + Δ</td><td>相位优化贡献 <strong>5–10 dB</strong></td></tr>
-              <tr><td>Tx-Rx 隔离 @ f<sub>Rx</sub></td><td>B5</td><td>基准值</td><td>基准值 + Δ</td><td>相位优化贡献 <strong>5–15 dB</strong></td></tr>
+              <tr><td>Tx-Rx 隔离 @ f(Tx)</td><td>B5</td><td>基准值</td><td>基准值 + Δ</td><td>相位优化贡献 <strong>5–10 dB</strong></td></tr>
+              <tr><td>Tx-Rx 隔离 @ f(Rx)</td><td>B5</td><td>基准值</td><td>基准值 + Δ</td><td>相位优化贡献 <strong>5–15 dB</strong></td></tr>
               <tr><td>Ant-Rx 插损</td><td>B5</td><td>—</td><td>几乎不变</td><td>相位调谐对通带插损影响极小</td></tr>
             </tbody>
           </table>
@@ -2984,10 +2984,10 @@
         <h4>三、设计方法论</h4>
 
         <ol>
-          <li><strong>表征 Γ<sub>PA</sub>：</strong>在实际工作条件（P<sub>out</sub>、频段、VSWR）下测量 PA 输出阻抗，而非依赖小信号 S 参数。</li>
+          <li><strong>表征 Γ(PA)：</strong>在实际工作条件（Pout、频段、VSWR）下测量 PA 输出阻抗，而非依赖小信号 S 参数。</li>
           <li><strong>扫描相位窗口：</strong>在 PA 与 DPX 之间插入相位可调匹配网络（如 π 型或 T 型），在史密斯圆图上扫描 360° 相位，找到隔离度最优的相位点。</li>
           <li><strong>权衡插损与隔离：</strong>最优隔离的相位点可能与最优插损的相位点不同——需在二者之间取折衷。通常隔离优先，因 Rx 频率处的插损变化极小。</li>
-          <li><strong>Robust 设计：</strong>PA 的 Γ<sub>PA</sub> 随温度、功率和 VSWR 变化，因此需在多个工况下验证相位窗口的鲁棒性，确保批量一致性。</li>
+          <li><strong>Robust 设计：</strong>PA 的 Γ(PA) 随温度、功率和 VSWR 变化，因此需在多个工况下验证相位窗口的鲁棒性，确保批量一致性。</li>
         </ol>
 
         <h4>四、总结</h4>
