@@ -703,7 +703,7 @@
         <p>出货量不等于利润。苹果与三星以约 <strong>37%</strong> 出货量，攫取行业约 <strong style="color:#4ade80;">64%</strong> 营收；中国厂商（小米、OPPO、vivo、传音、荣耀等）出货量合计超 <strong>52%</strong>，营收占比却不足 <strong>25%</strong>。以下图表直观展示这一结构性失衡。</p>
 
         <div class="diagram-container">
-          <svg viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg">
+          <svg viewBox="0 0 800 530" xmlns="http://www.w3.org/2000/svg">
             <!-- Background grid -->
             <defs>
               <pattern id="grid" width="80" height="50" patternUnits="userSpaceOnUse">
@@ -1283,7 +1283,7 @@
             .a-gb { animation: fadeSlideIn 0.5s ease-out both; animation-delay: 3.6s; }
             .a-arr { animation: fadeSlideIn 0.4s ease-out both; animation-delay: 0.9s; }
           </style>
-          <svg viewBox="0 0 800 460" xmlns="http://www.w3.org/2000/svg">
+          <svg viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg">
             <text x="400" y="26" text-anchor="middle" fill="#fff" font-size="15" font-weight="600">图二 · 频域资源四层结构（动画：子载波 → 资源块 → 信道带宽 → 系统带宽）</text>
             <g class="a-l1">
               <text x="40" y="70" fill="#5a9fd4" font-size="13" font-weight="700">第1层 · 子载波</text>
@@ -2565,25 +2565,50 @@
         <p>前端插入损耗 IL<sub>FE</sub> 对灵敏度的影响是 <strong>1dB/dB</strong>——每增加 1 dB 天线到 LNA 输入之间的损耗，参考灵敏度直接恶化 1 dB。这是灵敏度链路中最「刚性」的参数：</p>
 
         <div class="diagram-container">
-          <svg viewBox="0 0 800 200" xmlns="http://www.w3.org/2000/svg">
-            <text x="400" y="22" text-anchor="middle" fill="#fff" font-size="14" font-weight="600">图一 · 前端插损对灵敏度的影响：为何 1dB/dB？</text>
-            <rect x="30" y="42" width="180" height="50" rx="6" fill="rgba(90,159,212,0.12)" stroke="#5a9fd4" stroke-width="1"/>
-            <text x="120" y="62" text-anchor="middle" fill="#5a9fd4" font-size="11" font-weight="700">IL 增加 1 dB</text>
-            <text x="120" y="80" text-anchor="middle" fill="rgba(255,255,255,0.5)" font-size="10">信号衰减 1 dB</text>
-            <polygon points="214,67 228,67 228,79 214,79" fill="rgba(255,255,255,0.4)"/>
-            <rect x="232" y="42" width="180" height="50" rx="6" fill="rgba(239,68,68,0.08)" stroke="#ef4444" stroke-width="1"/>
-            <text x="322" y="62" text-anchor="middle" fill="#ef4444" font-size="11" font-weight="700">RxSens 恶化 1 dB</text>
-            <text x="322" y="80" text-anchor="middle" fill="rgba(255,255,255,0.5)" font-size="10">热噪底不变，SNR 降低</text>
-            <polygon points="416,67 430,67 430,79 416,79" fill="rgba(255,255,255,0.4)"/>
-            <rect x="434" y="42" width="180" height="50" rx="6" fill="rgba(239,68,68,0.12)" stroke="#ef4444" stroke-width="1.2"/>
-            <text x="524" y="62" text-anchor="middle" fill="#ef4444" font-size="11" font-weight="700">小区覆盖缩小 ~15%</text>
-            <text x="524" y="80" text-anchor="middle" fill="rgba(255,255,255,0.5)" font-size="10">基站数量需求翻倍</text>
-            <text x="400" y="130" text-anchor="middle" fill="rgba(255,255,255,0.45)" font-size="11">对比 Rx Band Noise：1 dB 额外噪声仅恶化灵敏度 <tspan fill="#4ade80" font-weight="600">~0.1 dB</tspan></text>
-            <text x="400" y="150" text-anchor="middle" fill="rgba(255,255,255,0.35)" font-size="10">因此前端插损是灵敏度设计中的第一优先级优化目标</text>
-            <rect x="60" y="168" width="680" height="20" rx="4" fill="rgba(255,255,255,0.02)" stroke="rgba(255,255,255,0.06)"/>
-            <text x="400" y="183" text-anchor="middle" fill="rgba(255,255,255,0.25)" font-size="9">De-sense 判据：所有干扰机制的总噪声需低于 LNA 输入噪底 6 dB 以上，才能将 De-sense 控制在 &lt; 1 dB</text>
+          <svg viewBox="0 0 800 240" xmlns="http://www.w3.org/2000/svg">
+            <text x="400" y="22" text-anchor="middle" fill="#fff" font-size="14" font-weight="600">图一 · 前端插损的 1dB/dB 刚性影响 vs 其他机制的软性影响</text>
+
+            <!-- Top: chain -->
+            <rect x="20" y="44" width="110" height="44" rx="6" fill="rgba(90,159,212,0.12)" stroke="#5a9fd4" stroke-width="1"/>
+            <text x="75" y="62" text-anchor="middle" fill="#5a9fd4" font-size="10" font-weight="700">天线端口</text>
+            <text x="75" y="78" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-size="8">RxSens 定义处</text>
+            <polygon points="134,66 148,66 148,78 134,78" fill="rgba(255,255,255,0.4)"/>
+
+            <rect x="152" y="44" width="130" height="44" rx="6" fill="rgba(239,68,68,0.1)" stroke="#ef4444" stroke-width="1.5"/>
+            <text x="217" y="62" text-anchor="middle" fill="#ef4444" font-size="10" font-weight="700">前端插损 IL<sub>FE</sub></text>
+            <text x="217" y="78" text-anchor="middle" fill="rgba(255,255,255,0.5)" font-size="8">1 dB/dB 刚性</text>
+            <polygon points="286,66 300,66 300,78 286,78" fill="rgba(255,255,255,0.4)"/>
+
+            <rect x="304" y="44" width="130" height="44" rx="6" fill="rgba(90,159,212,0.08)" stroke="#5a9fd4" stroke-width="1"/>
+            <text x="369" y="62" text-anchor="middle" fill="#5a9fd4" font-size="10" font-weight="700">LNA + TRx NF</text>
+            <text x="369" y="78" text-anchor="middle" fill="rgba(255,255,255,0.5)" font-size="8">直接叠加至总 NF</text>
+            <polygon points="438,66 452,66 452,78 438,78" fill="rgba(255,255,255,0.4)"/>
+
+            <rect x="456" y="44" width="160" height="44" rx="6" fill="rgba(240,160,80,0.08)" stroke="#f0a050" stroke-width="1"/>
+            <text x="536" y="62" text-anchor="middle" fill="#f0a050" font-size="10" font-weight="700">IM + SINR − G<sub>RxDiv</sub></text>
+            <text x="536" y="78" text-anchor="middle" fill="rgba(255,255,255,0.5)" font-size="8">2.5 − 1 − 3 = −1.5 dB</text>
+
+            <!-- Bottom: comparison bars -->
+            <text x="40" y="120" fill="rgba(255,255,255,0.5)" font-size="11" font-weight="600">各因素恶化 1 dB 对灵敏度的影响：</text>
+
+            <!-- IL bar -->
+            <text x="40" y="150" fill="rgba(255,255,255,0.5)" font-size="10">前端插损</text>
+            <rect x="130" y="140" width="200" height="18" rx="3" fill="#ef4444" opacity="0.7"/>
+            <text x="340" y="154" fill="#ef4444" font-size="11" font-weight="700">灵敏度恶化 1.0 dB</text>
+
+            <!-- RxBN bar -->
+            <text x="40" y="180" fill="rgba(255,255,255,0.5)" font-size="10">Rx Band Noise</text>
+            <rect x="130" y="170" width="20" height="18" rx="3" fill="#4ade80" opacity="0.7"/>
+            <text x="340" y="184" fill="#4ade80" font-size="11" font-weight="600">灵敏度恶化 0.1 dB</text>
+
+            <!-- Right: key insight -->
+            <rect x="440" y="120" width="340" height="100" rx="6" fill="rgba(239,68,68,0.05)" stroke="rgba(239,68,68,0.12)"/>
+            <text x="610" y="145" text-anchor="middle" fill="#ef4444" font-size="11" font-weight="700">🔑 关键结论</text>
+            <text x="460" y="168" fill="rgba(255,255,255,0.5)" font-size="10">· 前端插损是最刚性的灵敏度杀手</text>
+            <text x="460" y="188" fill="rgba(255,255,255,0.5)" font-size="10">· 6 dB 灵敏度恶化 → 小区面积缩半</text>
+            <text x="460" y="208" fill="rgba(255,255,255,0.5)" font-size="10">· De-sense &lt; 1 dB → 总干扰 &lt; 噪底 − 6 dB</text>
           </svg>
-          <p class="diagram-caption">图一：前端插损的 1dB/dB 刚性关系 vs Rx Band Noise 的 0.1dB/dB 软性关系</p>
+          <p class="diagram-caption">图一：灵敏度链路中前端插损（1 dB/dB）与 Rx Band Noise（0.1 dB/dB）的影响对比</p>
         </div>
 
         <h4>三、实现裕量与 LNA 增益压缩</h4>
@@ -2782,21 +2807,42 @@
         <p>在 Rx 频率处，DPX 隔离直接控制到达 LNA 输入端的 Rx Band Noise 功率。这是<strong>线性关系</strong>——隔离度每提高 1 dB，RxBN 降低 1 dB。</p>
 
         <div class="diagram-container">
-          <svg viewBox="0 0 800 200" xmlns="http://www.w3.org/2000/svg">
-            <text x="400" y="22" text-anchor="middle" fill="#fff" font-size="14" font-weight="600">图一 · DPX Tx-Rx 隔离度与 De-sense 的关系</text>
-            <text x="30" y="55" fill="#5a9fd4" font-size="12" font-weight="700">Rx 频率处 (f<sub>Rx</sub>)</text>
-            <text x="30" y="75" fill="rgba(255,255,255,0.5)" font-size="11">→ Rx Band Noise 主导</text>
-            <text x="30" y="95" fill="rgba(255,255,255,0.5)" font-size="11">→ 线性关系：ISO ↑1dB → De-sense ↓0.1dB</text>
-            <text x="30" y="115" fill="rgba(255,255,255,0.5)" font-size="11">→ 需求：50–55 dB（4–5 dB 余量）</text>
-            <text x="430" y="55" fill="#f0a050" font-size="12" font-weight="700">Tx 频率处 (f<sub>Tx</sub>)</text>
-            <text x="430" y="75" fill="rgba(255,255,255,0.5)" font-size="11">→ Tx 泄漏功率主导</text>
-            <text x="430" y="95" fill="rgba(255,255,255,0.5)" font-size="11">→ 强功率依赖：ISO ↑1dB → De-sense ↓2–3dB</text>
-            <text x="430" y="115" fill="rgba(255,255,255,0.5)" font-size="11">→ 需求：≥ 55 dB（功率依赖放大效应）</text>
-            <line x1="30" y1="145" x2="770" y2="145" stroke="rgba(255,255,255,0.1)"/>
-            <text x="400" y="168" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-size="10">核心结论：Tx 频率处隔离对 De-sense 的杠杆效应远超 Rx 频率处——</text>
-            <text x="400" y="185" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-size="10">改善 Tx 端 ISO 1 dB 等价于改善 Rx 端 ISO 20–30 dB（因消除的是 IMD2/CM 等²依赖项的源头）</text>
+          <svg viewBox="0 0 800 260" xmlns="http://www.w3.org/2000/svg">
+            <text x="400" y="22" text-anchor="middle" fill="#fff" font-size="14" font-weight="600">图一 · DPX Tx-Rx 隔离度对 De-sense 的影响差异</text>
+
+            <!-- Left: Rx freq side -->
+            <rect x="20" y="44" width="360" height="100" rx="8" fill="rgba(90,159,212,0.05)" stroke="rgba(90,159,212,0.15)"/>
+            <text x="200" y="66" text-anchor="middle" fill="#5a9fd4" font-size="12" font-weight="700">Rx 频率处隔离 (f<sub>Rx</sub>)</text>
+            <line x1="40" y1="78" x2="360" y2="78" stroke="rgba(90,159,212,0.1)"/>
+
+            <text x="40" y="98" fill="rgba(255,255,255,0.5)" font-size="10">主导机制：Rx Band Noise（线性）</text>
+            <text x="40" y="118" fill="rgba(255,255,255,0.4)" font-size="9">ISO ↑ 1 dB → De-sense ↓ 0.1 dB</text>
+            <text x="40" y="136" fill="rgba(255,255,255,0.4)" font-size="9">需求：50–55 dB（4–5 dB 余量即可）</text>
+
+            <!-- Right: Tx freq side -->
+            <rect x="420" y="44" width="360" height="100" rx="8" fill="rgba(239,68,68,0.05)" stroke="rgba(239,68,68,0.15)"/>
+            <text x="600" y="66" text-anchor="middle" fill="#ef4444" font-size="12" font-weight="700">Tx 频率处隔离 (f<sub>Tx</sub>)</text>
+            <line x1="440" y1="78" x2="760" y2="78" stroke="rgba(239,68,68,0.1)"/>
+
+            <text x="440" y="98" fill="rgba(255,255,255,0.5)" font-size="10">主导机制：IMD2 + Cross-Mod（² 依赖）</text>
+            <text x="440" y="118" fill="rgba(255,255,255,0.4)" font-size="9">ISO ↑ 1 dB → De-sense ↓ 2–3 dB</text>
+            <text x="440" y="136" fill="rgba(255,255,255,0.4)" font-size="9">需求：≥ 55 dB（功率依赖放大效应）</text>
+
+            <!-- Bottom: comparison visual -->
+            <text x="40" y="175" fill="rgba(255,255,255,0.5)" font-size="11" font-weight="600">隔离度改善 1 dB 对 De-sense 的影响（相对值）：</text>
+
+            <text x="40" y="205" fill="#5a9fd4" font-size="10">f<sub>Rx</sub> 隔离</text>
+            <rect x="140" y="195" width="20" height="16" rx="3" fill="#5a9fd4" opacity="0.7"/>
+            <text x="170" y="207" fill="#5a9fd4" font-size="10" font-weight="600">0.1 dB 改善</text>
+
+            <text x="320" y="205" fill="#ef4444" font-size="10">f<sub>Tx</sub> 隔离</text>
+            <rect x="420" y="195" width="200" height="16" rx="3" fill="#ef4444" opacity="0.7"/>
+            <text x="630" y="207" fill="#ef4444" font-size="10" font-weight="600">2–3 dB 改善（20–30× 杠杆效应）</text>
+
+            <line x1="20" y1="232" x2="780" y2="232" stroke="rgba(255,255,255,0.06)"/>
+            <text x="400" y="252" text-anchor="middle" fill="rgba(255,255,255,0.35)" font-size="9">工程启示：改善 Tx 频率处隔离 1 dB ≈ 改善 Rx 频率处隔离 20–30 dB（因消除的是 IMD2/CM 等二次依赖项的源头）</text>
           </svg>
-          <p class="diagram-caption">图一：Rx 频率 vs Tx 频率隔离度对 De-sense 的影响差异</p>
+          <p class="diagram-caption">图一：Rx 频率 vs Tx 频率隔离度对 De-sense 的杠杆效应差异</p>
         </div>
 
         <h4>二、载波聚合场景中的谐波隔离挑战</h4>
