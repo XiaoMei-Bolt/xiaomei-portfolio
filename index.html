@@ -703,7 +703,7 @@
         <p>出货量不等于利润。苹果与三星以约 <strong>37%</strong> 出货量，攫取行业约 <strong style="color:#4ade80;">64%</strong> 营收；中国厂商（小米、OPPO、vivo、传音、荣耀等）出货量合计超 <strong>52%</strong>，营收占比却不足 <strong>25%</strong>。以下图表直观展示这一结构性失衡。</p>
 
         <div class="diagram-container">
-          <svg viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg">
+          <svg viewBox="0 0 800 530" xmlns="http://www.w3.org/2000/svg">
             <!-- Background grid -->
             <defs>
               <pattern id="grid" width="80" height="50" patternUnits="userSpaceOnUse">
@@ -1283,7 +1283,7 @@
             .a-gb { animation: fadeSlideIn 0.5s ease-out both; animation-delay: 3.6s; }
             .a-arr { animation: fadeSlideIn 0.4s ease-out both; animation-delay: 0.9s; }
           </style>
-          <svg viewBox="0 0 800 460" xmlns="http://www.w3.org/2000/svg">
+          <svg viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg">
             <text x="400" y="26" text-anchor="middle" fill="#fff" font-size="15" font-weight="600">图二 · 频域资源四层结构（动画：子载波 → 资源块 → 信道带宽 → 系统带宽）</text>
             <g class="a-l1">
               <text x="40" y="70" fill="#5a9fd4" font-size="13" font-weight="700">第1层 · 子载波</text>
@@ -2173,6 +2173,833 @@
         <p><strong>5G 在 4G 的成功基础上更进一步</strong>——通过 <strong>CP-OFDM 实现上下行波形统一</strong>，消除了跨链路的不对称性，使 MIMO 和波束赋形在全链路无缝部署；同时<strong>保留 DFT-s-OFDM</strong> 作为上行覆盖增强选项，以务实的工程设计解决了 CP-OFDM 高 PAPR 带来的小区边缘覆盖短板。配合可扩展的 Numerology，5G NR 的波形架构以单一框架同时服务 eMBB（高速率）、URLLC（低时延）和 mMTC（大连接）三大差异化场景，为万物互联时代铺平了物理层基础。</p>
 
         <p style="font-size:12px;color:rgba(255,255,255,0.3);margin-top:24px;">📌 参考文献：3GPP TS 36.211, TS 36.300 (LTE Overall Description); 3GPP TS 38.211, TS 38.300 (NR Overall Description); A. Goldsmith, <em>Wireless Communications</em>, Cambridge, 2005; E. Dahlman, S. Parkvall, J. Sköld, <em>5G NR: The Next Generation Wireless Access Technology</em>, 2nd ed., Academic Press, 2021; D. Tse and P. Viswanath, <em>Fundamentals of Wireless Communication</em>, Cambridge, 2005.</p>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card: SRS 与天线切换分集 -->
+      <div class="article-card" onclick="this.classList.toggle('open')">
+        <div class="article-card-header">
+          <div>
+            <div class="article-card-title">5G NR 与 4G LTE 中的 SRS 与 AS Div. 技术</div>
+            <div class="article-card-meta">📅 2026 年 7 月 · 通信物理层 — SRS 上行探测与 AS Div. 天线切换的协同机制</div>
+          </div>
+          <div class="article-card-arrow">▼</div>
+        </div>
+        <div class="article-card-body">
+          <div class="article-card-body-inner">
+            <div class="article-body">
+
+        <p>SRS（探测参考信号，Sounding Reference Signal）与 AS Div（天线切换分集，Antenna Switch Diversity）是 4G LTE 和 5G NR 中两项紧密协同的物理层关键技术。SRS 负责上行信道探测，辅助基站利用<strong>信道互易性</strong>优化下行传输；AS Div 通过智能天线切换提升终端接收性能。在双连接（EN-DC / NR CA）场景下，二者通过射频前端路径联合重配置，避免 SRS 探测对另一载波通信造成中断 <span class="ref">[1]–[3]</span>。</p>
+
+        <h4>一、SRS：探测参考信号</h4>
+
+        <p>SRS 是终端向基站发送的上行参考信号，核心功能是辅助基站评估上行信道质量。在 TDD 频段，利用<strong>信道互易性</strong>（Channel Reciprocity），基站通过 SRS 测量可间接推断下行信道状态信息（CSI），据此优化调制编码方案（MCS）与预编码矩阵 <span class="ref">[1][2]</span>。</p>
+
+        <p>SRS 通过<strong>天线切换</strong>实现多天线探测：终端在不同天线端口上轮流发送 SRS，使基站获得完整的多天线信道信息。典型配置以 <strong>xTyR</strong> 格式表示（x 个发射端口，y 个接收端口），常见模式包括 <strong>1T2R、1T4R、2T4R</strong>。3GPP R17 进一步扩展至最多 <strong>8 接收天线</strong>探测，并引入 11 比特位图用于能力上报 <span class="ref">[2][4]</span>。</p>
+
+        <!-- 图一：SRS 天线切换示意 -->
+        <div class="diagram-container">
+          <svg viewBox="0 0 800 300" xmlns="http://www.w3.org/2000/svg">
+            <text x="400" y="24" text-anchor="middle" fill="#fff" font-size="14" font-weight="600">图一 · SRS 天线切换探测机制（1T4R 示例）</text>
+
+            <!-- UE side -->
+            <rect x="30" y="50" width="110" height="220" rx="8" fill="#141414" stroke="rgb(0,113,227)" stroke-opacity="0.25"/>
+            <text x="85" y="75" text-anchor="middle" fill="#5a9fd4" font-size="12" font-weight="700">UE 终端</text>
+            <text x="85" y="95" text-anchor="middle" fill="#808080" font-size="9">1T4R 配置</text>
+
+            <!-- TX block -->
+            <rect x="48" y="108" width="74" height="22" rx="3" fill="#333333" stroke="#10b981" stroke-width="1"/>
+            <text x="85" y="123" text-anchor="middle" fill="#10b981" font-size="10" font-weight="600">TX (1 通道)</text>
+
+            <!-- Switch -->
+            <rect x="60" y="140" width="50" height="16" rx="2" fill="#4c4c4c" stroke="#f0a050" stroke-width="0.8"/>
+            <text x="85" y="152" text-anchor="middle" fill="#f0a050" font-size="8" font-weight="600">RF SW</text>
+
+            <!-- RX antennas -->
+            <rect x="35" y="170" width="40" height="24" rx="3" fill="#262626" stroke="#5a9fd4" stroke-width="0.8"/>
+            <text x="55" y="185" text-anchor="middle" fill="#5a9fd4" font-size="9" font-weight="600">Ant 0</text>
+            <rect x="80" y="170" width="40" height="24" rx="3" fill="#262626" stroke="#5a9fd4" stroke-width="0.8"/>
+            <text x="100" y="185" text-anchor="middle" fill="#5a9fd4" font-size="9" font-weight="600">Ant 1</text>
+
+            <!-- Vertical lines from SW to Ant -->
+            <line x1="77" y1="156" x2="55" y2="170" stroke="rgb(240,160,80)" stroke-opacity="0.4" stroke-width="0.8"/>
+            <line x1="85" y1="156" x2="75" y2="170" stroke="rgb(240,160,80)" stroke-opacity="0.4" stroke-width="0.8" stroke-dasharray="2,2"/>
+            <line x1="95" y1="156" x2="100" y2="170" stroke="rgb(240,160,80)" stroke-opacity="0.4" stroke-width="0.8" stroke-dasharray="2,2"/>
+
+            <text x="35" y="220" fill="#4c4c4c" font-size="8">Ant 2/3 同理</text>
+            <text x="35" y="235" fill="#4c4c4c" font-size="8">交替连接 TX</text>
+
+            <!-- gNB side -->
+            <rect x="600" y="50" width="170" height="80" rx="8" fill="#0f0f0f" stroke="rgb(16,185,129)" stroke-opacity="0.2"/>
+            <text x="685" y="78" text-anchor="middle" fill="#10b981" font-size="12" font-weight="700">gNB 基站</text>
+            <text x="685" y="100" text-anchor="middle" fill="#808080" font-size="10">信道互易性估计</text>
+            <text x="685" y="118" text-anchor="middle" fill="#595959" font-size="9">SRS → 下行 CSI</text>
+
+            <!-- Timeline at bottom -->
+            <rect x="170" y="210" width="420" height="70" rx="6" fill="#050505" stroke="rgb(255,255,255)" stroke-opacity="0.08"/>
+            <text x="380" y="232" text-anchor="middle" fill="#999999" font-size="11" font-weight="600">SRS 天线轮询时序（时分切换）</text>
+
+            <!-- Time slots -->
+            <rect x="190" y="244" width="80" height="24" rx="4" fill="#262626" stroke="#5a9fd4" stroke-width="0.8"/>
+            <text x="230" y="260" text-anchor="middle" fill="#5a9fd4" font-size="10" font-weight="600">T1: Ant 0/1</text>
+
+            <polygon points="274,256 284,256 284,268 274,268" fill="#666666"/>
+
+            <rect x="288" y="244" width="80" height="24" rx="4" fill="#1f1f1f" stroke="#10b981" stroke-width="0.8"/>
+            <text x="328" y="260" text-anchor="middle" fill="#10b981" font-size="10" font-weight="600">T2: Ant 2/3</text>
+
+            <polygon points="372,256 382,256 382,268 372,268" fill="#666666"/>
+
+            <rect x="386" y="244" width="80" height="24" rx="4" fill="#1f1f1f" stroke="#8b5cf6" stroke-width="0.8"/>
+            <text x="426" y="260" text-anchor="middle" fill="#8b5cf6" font-size="10" font-weight="600">T3: Ant 0/1</text>
+
+            <polygon points="470,256 480,256 480,268 470,268" fill="#666666"/>
+
+            <rect x="484" y="244" width="90" height="24" rx="4" fill="#1a1a1a" stroke="rgb(245,158,11)" stroke-opacity="0.3"/>
+            <text x="529" y="260" text-anchor="middle" fill="#4c4c4c" font-size="10">…</text>
+
+            <!-- Arrows: UE → gNB -->
+            <path d="M140,130 C300,110 480,80 600,90" fill="none" stroke="#f0a050" stroke-width="1.5" stroke-dasharray="6,3" opacity="0.5"/>
+            <text x="370" y="100" text-anchor="middle" fill="#808080" font-size="9">SRS 上行探测</text>
+
+            <text x="230" y="294" fill="#4c4c4c" font-size="9">基站将多时刻测量整合 → 获得全部天线信道信息 → Massive MIMO 波束成形</text>
+          </svg>
+          <p class="diagram-caption">图一：1T4R 终端利用单一发射机，在不同时刻轮流连接至各接收天线发送 SRS 的原理</p>
+        </div>
+
+        <h4>二、AS Div：天线切换分集</h4>
+
+        <p>AS Div 是终端的<strong>接收分集</strong>技术，通过智能选择信号质量最优的天线进行数据接收，提升下行接收性能与上行链路质量。其切换由多种准则联合触发 <span class="ref">[3][5]</span>：</p>
+
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>触发准则</th><th>机制</th><th>回切条件</th></tr></thead>
+            <tbody>
+              <tr><td><strong>RSRP 差值触发</strong></td><td>主接收与分集接收路径的 RSRP 差值超过预设阈值</td><td>差值回落至阈值以下</td></tr>
+              <tr><td><strong>发射功率监控</strong></td><td>达到最大发射功率极限的次数超过设定值</td><td>功率余量恢复</td></tr>
+              <tr><td><strong>TPC 命令追踪</strong></td><td>新天线上功率跃升超过阈值时触发回切</td><td>功率稳定</td></tr>
+            </tbody>
+          </table>
+          <p class="table-caption">表1：AS Div 的三种天线切换触发准则 <span class="ref">[5]</span></p>
+        </div>
+
+        <p>在载波聚合（CA）场景中，改进方案对主小区（PCell）与辅小区（SCell）采用<strong>独立切换控制</strong>，避免辅小区盲目跟随主小区切换而导致性能劣化。</p>
+
+        <h4>三、SRS 与 AS Div 的协同机制</h4>
+
+        <p>在双连接（EN-DC 或 NR CA）模式下，SRS 天线切换与 AS Div 的协同尤为关键。当 NR 载波执行 SRS 探测时，若 LTE 的射频路径与被探测天线<strong>共享同一物理通路</strong>，SRS 天线切换的瞬态中断会导致 LTE 通信掉线 <span class="ref">[4][6]</span>。</p>
+
+        <!-- 协同机制流程图 -->
+        <div class="diagram-container">
+          <svg viewBox="0 0 800 180" xmlns="http://www.w3.org/2000/svg">
+            <text x="400" y="22" text-anchor="middle" fill="#fff" font-size="14" font-weight="600">图二 · SRS 与 AS Div 协同机制</text>
+
+            <rect x="20" y="42" width="170" height="56" rx="8" fill="#1f1f1f" stroke="#5a9fd4" stroke-width="1.2"/>
+            <text x="105" y="64" text-anchor="middle" fill="#5a9fd4" font-size="11" font-weight="700">① 天线分组识别</text>
+            <text x="105" y="84" text-anchor="middle" fill="#999999" font-size="9">识别各载波 TX 路径</text>
+            <text x="105" y="96" text-anchor="middle" fill="#666666" font-size="8">所属天线组（顶部/底部面板）</text>
+
+            <polygon points="194,70 208,70 208,82 194,82" fill="#666666"/>
+
+            <rect x="212" y="42" width="170" height="56" rx="8" fill="#1f1f1f" stroke="#10b981" stroke-width="1.2"/>
+            <text x="297" y="64" text-anchor="middle" fill="#10b981" font-size="11" font-weight="700">② RF 路径评估</text>
+            <text x="297" y="84" text-anchor="middle" fill="#999999" font-size="9">搜索可选路径，优先</text>
+            <text x="297" y="96" text-anchor="middle" fill="#666666" font-size="8">选择级联开关最少的路径</text>
+
+            <polygon points="386,70 400,70 400,82 386,82" fill="#666666"/>
+
+            <rect x="404" y="42" width="200" height="56" rx="8" fill="#1f1f1f" stroke="#4ade80" stroke-width="1.2"/>
+            <text x="504" y="64" text-anchor="middle" fill="#4ade80" font-size="11" font-weight="700">③ 联合重配置</text>
+            <text x="504" y="84" text-anchor="middle" fill="#999999" font-size="9">动态将冲突载波路径切换至</text>
+            <text x="504" y="96" text-anchor="middle" fill="#666666" font-size="8">另一侧天线，保障双连接通信连续</text>
+
+            <polygon points="608,70 622,70 622,82 608,82" fill="#999999"/>
+
+            <rect x="626" y="42" width="150" height="56" rx="8" fill="#2e2e2e" stroke="#4ade80" stroke-width="1.5"/>
+            <text x="701" y="76" text-anchor="middle" fill="#4ade80" font-size="12" font-weight="700">✅ 无中断</text>
+
+            <text x="400" y="128" text-anchor="middle" fill="#595959" font-size="10">核心思想：射频前端共享资源 → 冲突检测 → 路径重映射 → 双载波并发无中断</text>
+          </svg>
+          <p class="diagram-caption">图二：EN-DC 场景下 SRS 天线切换与 AS Div 的三步协同流程</p>
+        </div>
+
+        <h4>四、总结</h4>
+
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>技术</th><th>角色</th><th>核心功能</th><th>关键配置</th></tr></thead>
+            <tbody>
+              <tr><td><strong>SRS</strong></td><td>上行探测</td><td>辅助基站评估信道，利用互易性优化下行 MCS 与预编码</td><td>xTyR 配置、天线轮询切换</td></tr>
+              <tr><td><strong>AS Div</strong></td><td>接收分集</td><td>智能切换天线，维持最优接收性能与上行链路质量</td><td>RSRP / 功率 / TPC 多准则触发</td></tr>
+              <tr><td><strong>协同</strong></td><td>资源协调</td><td>RF 前端路径联合重配置，避免 SRS 探测瞬态中断</td><td>天线分组 → 路径评估 → 重映射</td></tr>
+            </tbody>
+          </table>
+          <p class="table-caption">表2：SRS / AS Div / 协同机制的技术对比 <span class="ref">[1]–[6]</span></p>
+        </div>
+
+        <h4>附：SRS 跳频机制——天线端口轮询</h4>
+
+        <p>SRS 所称「跳频」并非频率跳变（Frequency Hopping），而是指<strong>天线端口的时分轮询切换</strong>——终端利用数量有限的发射机（TX），在不同时刻轮流连接至多根接收天线（RX），向基站发送探测信号。</p>
+
+        <p>以 <strong>1T4R</strong> 为例：终端仅 1 个发射机，需探测 4 根接收天线。在时刻 T₁ 连接 Ant 0/1、时刻 T₂ 连接 Ant 2/3，交替发送 SRS。基站将各时刻测量结果整合，获得全部天线的信道信息，为下行 <strong>Massive MIMO 波束成形</strong>提供依据 <span class="ref">[1][2]</span>。</p>
+
+        <p>该机制的核心代价是<strong>天线切换瞬时中断</strong>——射频前端物理开关的切换短暂打断正在进行的业务接收（如 LTE 数据），这正是前文「SRS 与 AS Div 协同」所解决的根本冲突。</p>
+
+        <h4>参考文献</h4>
+        <ol class="refs">
+          <li>3GPP TS 38.211, "NR; Physical channels and modulation," V18.3.0, 2024, §6.4.1 (SRS).</li>
+          <li>3GPP TS 38.214, "NR; Physical layer procedures for data," V18.3.0, 2024, §6.2.1 (SRS resource configuration).</li>
+          <li>3GPP TS 38.101-1, "NR; UE radio transmission and reception; Part 1," V18.5.0, 2024, §6.2 (UE power class, MPR, xTyR capability).</li>
+          <li>3GPP TR 38.876, "Study on NR SRS antenna switching enhancement," V17.0.0, 2022, §5.</li>
+          <li>E. Dahlman, S. Parkvall, and J. Sköld, <em>5G NR: The Next Generation Wireless Access Technology</em>, 2nd ed., Academic Press, 2020, Ch. 8 (Uplink Physical-Layer Processing).</li>
+          <li>3GPP TS 38.213, "NR; Physical layer procedures for control," V18.3.0, 2024, §7 (SRS switching and EN-DC coordination).</li>
+        </ol>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card: 灵敏度退化 -->
+      <div class="article-card" onclick="this.classList.toggle('open')">
+        <div class="article-card-header">
+          <div>
+            <div class="article-card-title">射频前端中灵敏度退化与优化方法之 MIPI De-sense</div>
+            <div class="article-card-meta">📅 2026 年 7 月 · RF 前端设计 — MIPI 引入的 De-sense 机制与 RF FEM 级优化策略</div>
+          </div>
+          <div class="article-card-arrow">▼</div>
+        </div>
+        <div class="article-card-body">
+          <div class="article-card-body-inner">
+            <div class="article-body">
+
+        <p><strong>灵敏度</strong>（Sensitivity）是接收链路在满足指定误码率（BER）条件下可解调的最小信号功率，直接决定手机在弱信号环境（小区边缘、地下室）下的通信能力。灵敏度每劣化 1 dB，小区覆盖半径收缩约 10–15%，掉线率显著上升 <span class="ref">[1]</span>。</p>
+
+        <p>灵敏度退化（De-sense）可归为三类：① <strong>Reference Sensitivity 退化</strong>——由天线口插入损耗、Transceiver NF 偏高、FEM 增益不足等设计基础问题导致，本文不展开；② <strong>TX 相关 De-sense</strong>——PA Rx Band Noise、IMDx 交调产物等发射链路对接收链路的干扰，另文讨论；③ <strong>MIPI 引入的 De-sense</strong>——本文聚焦于此。</p>
+
+        <h4>一、MIPI 为何会引入灵敏度退化</h4>
+
+        <p>现代手机射频前端通过 <strong>MIPI RFFE</strong>（RF Front-End Control Interface）总线控制开关、LNA、PA 等器件。典型平台配置 <strong>2–4 路</strong> MIPI bus，每路挂载多个从设备，时钟频率通常为 <strong>26 MHz 或 52 MHz</strong>（RFFE v2.0/v2.1） <span class="ref">[2]</span>。</p>
+
+        <p>问题的根源在于<strong>时序异步</strong>：手机的接收时隙（RX Slot）与 MIPI 指令写入窗口存在重叠。当某一路 MIPI bus 正在接收通路正常工作时，另一路 bus 可能在同时下发 Band 切换或增益调整指令——这些指令引发的 CLK/DATA 信号翻转通过<strong>传导耦合</strong>（VIO 电源纹波）和<strong>辐射耦合</strong>（谐波串扰）进入接收通路，恶化灵敏度 <span class="ref">[3]</span>。</p>
+
+        <!-- 图一：MIPI De-sense 耦合路径 -->
+        <div class="diagram-container">
+          <svg viewBox="0 0 800 340" xmlns="http://www.w3.org/2000/svg">
+            <text x="400" y="24" text-anchor="middle" fill="#fff" font-size="14" font-weight="600">图一 · MIPI 引入灵敏度退化的传导与辐射耦合路径</text>
+
+            <!-- MIPI source -->
+            <rect x="20" y="48" width="180" height="100" rx="8" fill="#141414" stroke="rgb(239,68,68)" stroke-opacity="0.25"/>
+            <text x="110" y="72" text-anchor="middle" fill="#ef4444" font-size="12" font-weight="700">MIPI Bus A（异步写入）</text>
+            <text x="110" y="92" text-anchor="middle" fill="#808080" font-size="10">CLK 52 MHz · DATA · VIO 1.8V</text>
+            <text x="110" y="110" text-anchor="middle" fill="#666666" font-size="9">Band 切换 / 增益调整指令</text>
+            <text x="110" y="130" text-anchor="middle" fill="#999999" font-size="9">信号翻转 → 高 di/dt 电流尖峰</text>
+
+            <!-- RX path -->
+            <rect x="600" y="48" width="180" height="100" rx="8" fill="#0f0f0f" stroke="rgb(74,222,128)" stroke-opacity="0.2"/>
+            <text x="690" y="72" text-anchor="middle" fill="#4ade80" font-size="12" font-weight="700">接收通路（RX Slot）</text>
+            <text x="690" y="92" text-anchor="middle" fill="#808080" font-size="10">MIPI Bus B · 正常工作</text>
+            <text x="690" y="110" text-anchor="middle" fill="#666666" font-size="9">SW → Filter → LNA → TRx</text>
+            <text x="690" y="130" text-anchor="middle" fill="#999999" font-size="9">干扰耦合 → NF 抬升 → De-sense</text>
+
+            <!-- Coupling path: conducted -->
+            <path d="M200,82 C300,60 500,60 600,82" fill="none" stroke="#f0a050" stroke-width="1.8" stroke-dasharray="6,3"/>
+            <text x="370" y="55" text-anchor="middle" fill="#f0a050" font-size="10" font-weight="600">传导耦合：VIO 电源纹波 → 共享电源网络</text>
+
+            <!-- Coupling path: radiated -->
+            <path d="M200,110 C300,140 500,140 600,110" fill="none" stroke="#8b5cf6" stroke-width="1.8" stroke-dasharray="4,4"/>
+            <text x="370" y="152" text-anchor="middle" fill="#8b5cf6" font-size="10" font-weight="600">辐射耦合：MIPI 谐波 → 基板串扰 / 空间耦合</text>
+
+            <!-- Isolation barrier -->
+            <rect x="340" y="175" width="120" height="22" rx="4" fill="#080808" stroke="rgb(255,255,255)" stroke-opacity="0.12"/>
+            <text x="400" y="191" text-anchor="middle" fill="#595959" font-size="10">隔离度不足 ↓</text>
+
+            <!-- Bottom: result -->
+            <rect x="120" y="220" width="560" height="42" rx="8" fill="#141414" stroke="rgb(239,68,68)" stroke-opacity="0.2"/>
+            <text x="400" y="240" text-anchor="middle" fill="#ef4444" font-size="12" font-weight="600">MIPI 谐波落入 RX 通带 → 噪底抬升 → 灵敏度退化（De-sense）</text>
+            <text x="400" y="256" text-anchor="middle" fill="#595959" font-size="10">谐波频率 = n × 52 MHz（n = 奇次为主，实际奇偶次均出现，低次谐波能量更高）</text>
+
+            <!-- Key insight -->
+            <text x="400" y="300" text-anchor="middle" fill="#4c4c4c" font-size="10">关键：手机板端多路 MIPI bus <tspan fill="#f0a050" font-weight="600">全局异步</tspan>，RX slot 期间其他 bus 可能正在下发指令 → 无法通过时序避让根除</text>
+          </svg>
+          <p class="diagram-caption">图一：MIPI 指令写入通过 VIO 传导和谐波辐射两条路径耦合进入接收通路的机制</p>
+        </div>
+
+        <h4>二、MIPI 谐波对常用频段的干扰</h4>
+
+        <p>MIPI CLK 为近似方波信号。理想方波仅含奇次谐波，但实际手机板端因<strong>信号完整性劣化</strong>（阻抗失配、反射、串扰），奇偶次谐波往往同时出现且强度相当；<strong>低次谐波</strong>能量更高，危害更大 <span class="ref">[3][4]</span>。以 52 MHz MIPI 时钟为例，计算各常用频段受谐波干扰的情况：</p>
+
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Band</th><th>RX 频率 (MHz)</th><th>落入通带内的 MIPI 谐波次数</th><th>干扰频率 (MHz)</th><th>风险等级</th></tr></thead>
+            <tbody>
+              <tr><td><strong>B8</strong></td><td>925–960</td><td>18 次</td><td>936</td><td style="color:#ef4444;font-weight:700;">高</td></tr>
+              <tr><td><strong>B20</strong></td><td>791–821</td><td>15 次</td><td>780</td><td style="color:#f0a050;font-weight:600;">中</td></tr>
+              <tr><td><strong>B26</strong></td><td>859–894</td><td>16–17 次</td><td>832 / 884</td><td style="color:#ef4444;font-weight:700;">高</td></tr>
+              <tr><td><strong>B28</strong></td><td>758–803</td><td>14–15 次</td><td>728 / 780</td><td style="color:#f0a050;font-weight:600;">中</td></tr>
+              <tr><td><strong>B3</strong></td><td>1805–1880</td><td>35 次</td><td>1820</td><td style="color:#ef4444;font-weight:700;">高</td></tr>
+              <tr><td><strong>B66</strong></td><td>2110–2200</td><td>41–42 次</td><td>2132 / 2184</td><td style="color:#ef4444;font-weight:700;">高</td></tr>
+              <tr><td><strong>B34</strong></td><td>2010–2025</td><td>39 次</td><td>2028</td><td style="color:#f0a050;font-weight:600;">中</td></tr>
+              <tr><td><strong>B39</strong></td><td>1880–1920</td><td>36–37 次</td><td>1872 / 1924</td><td style="color:#ef4444;font-weight:700;">高</td></tr>
+              <tr><td><strong>B40</strong></td><td>2300–2400</td><td>44–46 次</td><td>2288 / 2340 / 2392</td><td style="color:#ef4444;font-weight:700;">高</td></tr>
+              <tr><td><strong>B41</strong></td><td>2496–2690</td><td>48–51 次</td><td>2496 / 2548 / 2600 / 2652</td><td style="color:#ef4444;font-weight:700;">高</td></tr>
+            </tbody>
+          </table>
+          <p class="table-caption">表1：52 MHz MIPI 时钟谐波对常用频段的干扰分析 · 风险等级：<tspan style="color:#ef4444;">高</tspan> = 谐波直接落入 RX 通带中心区域；<tspan style="color:#f0a050;">中</tspan> = 谐波落入通带边缘或邻道</p>
+        </div>
+
+        <p>上表可见，<strong>B3/B8/B26/B39/B40/B41/B66</strong> 等主力频段均被 52 MHz MIPI 的某一谐波直接命中。这是 RF FEM 必须从芯片级、模组级系统性解决的设计挑战。</p>
+
+        <h4>三、RF FEM 灵敏度优化方法</h4>
+
+        <p>以下从<strong>开关芯片</strong>、<strong>LNA 芯片</strong>、<strong>模组集成</strong>三个层面展开，汇总经过量产验证的优化策略。</p>
+
+        <h4>3.1 开关芯片（Switch）优化</h4>
+
+        <ol>
+          <li><strong>减小寄存器数量：</strong>每 Bit 门电路在 CLK/DATA 翻转时产生瞬时电流尖峰叠加到 VIO 上。精简寄存器位宽（如从 32-bit 裁剪至必要位宽），直接降低瞬态电流总量，并配合 VIO 端 π 型滤波（串联磁珠 + 并联去耦电容）抑制电源纹波。</li>
+          <li><strong>Charge Pump 频率优化：</strong>CP 为开关管提供正/反向偏置电压，其充放电周期在 VIO 上产生周期性电流尖峰。优化策略：
+            <ul>
+              <li>常规工作频率从 8 MHz 降至 <strong>1 MHz</strong>，大幅降低 di/dt</li>
+              <li>保留开启阶段 <strong>8 MHz 快启 + 稳态 1 MHz</strong> 的双速方案，兼顾开关建立时间（< 5 µs）与稳态噪声</li>
+            </ul>
+          </li>
+          <li><strong>版图隔离优化：</strong>将 CP 模块、VIO/CLK/DATA Pad 在 die 上<strong>远离</strong>受 MIPI 谐波命中频段（表1 高风险 Band）对应的射频通路端口，增大物理间距，降低基板耦合。</li>
+        </ol>
+
+        <h4>3.2 LNA 芯片优化</h4>
+
+        <ol>
+          <li><strong>版图隔离：</strong>与开关同理，MIPI 敏感频段的 LNA 输入级在 die 上远离 VIO/CLK/DATA 区域。</li>
+          <li><strong>精简寄存器：</strong>LNA die 中常驻大量 <strong>工程寄存器</strong>（仅供调试用），量产时处于 Default 状态。增加 <strong>Default 模式冻结</strong>机制——上电后工程寄存器不参与任何写入操作，对应的门电路不翻转，消除其贡献的 VIO 电流尖峰。</li>
+          <li><strong>VIO 去耦滤波：</strong>与开关相同，VIO Pad 近端布置 π 型滤波网络。</li>
+          <li><strong>射频开关电路独立供电：</strong>LNA 内部的射频开关电路（Bypass 开关、增益级切换开关等）若由 VIO 供电，其切换瞬态直接注入射频信号路径。改用<strong>洁净的 VDD</strong>（经独立 LDO 稳压）为射频开关供电，将开关瞬态与射频通路解耦 <span class="ref">[4]</span>。</li>
+        </ol>
+
+        <h4>3.3 模组级集成优化</h4>
+
+        <ol>
+          <li><strong>MIPI 与射频分区隔离：</strong>基板 Layout 上将 VIO/CLK/DATA 走线与 LNA 输入至天线端口之间的全部射频走线（含匹配网络）实施<strong>物理分区 + 接地隔离带</strong>，保证 ≥ 30 dB 的基板级隔离度。</li>
+          <li><strong>层叠优化：</strong>将 MIPI 走线布置在内层，上下以完整地平面屏蔽；射频走线优先布置在表层，减少过孔和层间耦合。</li>
+        </ol>
+
+        <!-- 优化策略总结 -->
+        <h4>四、总结</h4>
+
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>层面</th><th>优化手段</th><th>作用机制</th><th>典型效果</th></tr></thead>
+            <tbody>
+              <tr><td rowspan="3"><strong>开关芯片</strong></td><td>精简寄存器 + VIO π 滤波</td><td>降低 CLK/DATA 翻转的瞬态电流总量</td><td>VIO 纹波 ↓ 60–80%</td></tr>
+              <tr><td>CP 频率 8M→1M 或双速</td><td>降低 CP 充放电 di/dt</td><td>CP 尖峰电流 ↓ 8×</td></tr>
+              <tr><td>CP/VIO 远离敏感频段端口</td><td>增大物理隔离，弱化基板耦合</td><td>邻频隔离度 ↑ 10–15 dB</td></tr>
+              <tr><td rowspan="4"><strong>LNA 芯片</strong></td><td>敏感频段 LNA 远离 MIPI 区域</td><td>同上</td><td>同上</td></tr>
+              <tr><td>工程寄存器 Default 冻结</td><td>消除未使用门电路的翻转电流</td><td>VIO 纹波额外 ↓ 20–30%</td></tr>
+              <tr><td>VIO π 型去耦</td><td>滤除传导至 VIO 的纹波</td><td>VIO 噪声 ↓ 15–20 dB</td></tr>
+              <tr><td>射频开关改用 VDD 供电</td><td>开关瞬态与射频信号路径解耦</td><td>开关噪声耦合 ↓ 20–30 dB</td></tr>
+              <tr><td rowspan="2"><strong>模组集成</strong></td><td>MIPI 与射频分区 + 接地隔离带</td><td>阻断基板级传导/辐射耦合</td><td>隔离度 ↑ 15–20 dB</td></tr>
+              <tr><td>MIPI 走线内层布设 + 地平面屏蔽</td><td>层间屏蔽，抑制空间辐射</td><td>远场耦合 ↓ 10–15 dB</td></tr>
+            </tbody>
+          </table>
+          <p class="table-caption">表2：RF FEM 灵敏度优化策略总结——芯片级到模组级的系统方法</p>
+        </div>
+
+        <p>MIPI 引入的灵敏度退化本质上是一个<strong>系统级电磁兼容（EMC）问题</strong>——源头在多路异步 MIPI bus 的同步开关噪声（SSN），耦合路径为 VIO 传导和基板辐射，受害者为接收通路 LNA 输入端。优化的核心思路是从三个环节同时切入：<strong>源头抑制</strong>（精简寄存器、降低 CP 频率）、<strong>路径阻断</strong>（VIO 滤波、分区隔离、独立供电）、<strong>版图避让</strong>（MIPI 模块远离敏感频段端口），形成芯片到模组的完整防御体系 <span class="ref">[3]–[5]</span>。</p>
+
+        <h4>参考文献</h4>
+        <ol class="refs">
+          <li>3GPP TS 36.101, "E-UTRA; UE radio transmission and reception," V16.9.0, 2021, §7.3 (Reference sensitivity).</li>
+          <li>MIPI Alliance, "MIPI RFFE Specification v2.1," 2018. (Bus architecture, clock rates, multi-slave configuration.)</li>
+          <li>B. Razavi, <em>RF Microelectronics</em>, 2nd ed., Prentice Hall, 2012, Ch. 2 (Noise and nonlinearity), Ch. 8 (Mixers and switching noise).</li>
+          <li>G. Hueber and R. B. Staszewski, eds., <em>Multi-Mode / Multi-Band RF Transceivers for Wireless Communications</em>, Wiley, 2011, Ch. 10 (Front-end module integration and desense).</li>
+          <li>H. W. Ott, <em>Electromagnetic Compatibility Engineering</em>, Wiley, 2009, Ch. 3–4 (Crosstalk and grounding in mixed-signal PCBs).</li>
+        </ol>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card: Reference Sensitivity Degradation -->
+      <div class="article-card" onclick="this.classList.toggle('open')">
+        <div class="article-card-header">
+          <div>
+            <div class="article-card-title">射频前端中灵敏度退化与优化方法之 Reference Sensitivity Degradation</div>
+            <div class="article-card-meta">📅 2026 年 7 月 · RF 链路预算 — 收发信机 NF / 前端插损 / 实现裕量对参考灵敏度的 1dB/dB 影响</div>
+          </div>
+          <div class="article-card-arrow">▼</div>
+        </div>
+        <div class="article-card-body">
+          <div class="article-card-body-inner">
+            <div class="article-body">
+
+        <p><strong>参考灵敏度</strong>（Reference Sensitivity）定义为发射机关闭（Tx OFF）时，天线端口处仍能成功解调的最小信号功率。3GPP 要求 LTE QPSK 1/3 码率下吞吐量 ≥ 95%，对应 BER = 10⁻³ <span class="ref">[1]</span>。参考灵敏度是接收链路设计的基础——所有 De-sense 分析均以此为基准线。</p>
+
+        <h4>一、灵敏度链路预算</h4>
+
+        <p>参考灵敏度由热噪声底、收发信机噪声系数、前端插损和实现裕量四部分构成：</p>
+
+        <p style="text-align:center;font-size:15px;color:#4ade80;margin:16px 0;"><strong>RxSens = −174 + 10log₁₀(BW) + NF<sub>TRx</sub> + IL(FE) + IM − SINR + G(RxDiv)</strong></p>
+
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>参数</th><th>LTE 10 MHz 示例</th><th>说明</th></tr></thead>
+            <tbody>
+              <tr><td>热噪声底</td><td>−174 dBm/Hz + 69.5 dB = <strong>−104.5 dBm</strong></td><td>BW = 50 RB × 180 kHz = 9 MHz</td></tr>
+              <tr><td>TRx NF</td><td>+2.3 dB</td><td>收发信机噪声系数，典型 2–3 dB</td></tr>
+              <tr><td>前端插损 IL(FE)</td><td>+3.5 dB</td><td>Ant → LNA 输入路径总损耗</td></tr>
+              <tr><td>实现裕量 IM</td><td>+2.5 dB</td><td>基带数字处理、非理想解调器</td></tr>
+              <tr><td>SINR<sub>min</sub></td><td>−1 dB</td><td>QPSK 1/3 码率理论需求</td></tr>
+              <tr><td>分集增益 G(RxDiv)</td><td>−3 dB</td><td>双天线接收，理论最大 3 dB</td></tr>
+              <tr style="background:rgba(74,222,128,0.08);"><td><strong>参考灵敏度</strong></td><td><strong>−99.75 dBm / 9 MHz</strong></td><td>天线端口参考值</td></tr>
+            </tbody>
+          </table>
+          <p class="table-caption">表1：LTE 10 MHz 参考灵敏度链路预算 <span class="ref">[1][2]</span></p>
+        </div>
+
+        <h4>二、前端插损：1dB/dB 的刚性关系</h4>
+
+        <p>前端插入损耗 IL(FE) 对灵敏度的影响是 <strong>1dB/dB</strong>——每增加 1 dB 天线到 LNA 输入之间的损耗，参考灵敏度直接恶化 1 dB。这是灵敏度链路中最「刚性」的参数：</p>
+
+        <div class="diagram-container">
+          <svg viewBox="0 0 800 240" xmlns="http://www.w3.org/2000/svg">
+            <text x="400" y="22" text-anchor="middle" fill="#fff" font-size="14" font-weight="600">图一 · 前端插损的 1dB/dB 刚性影响 vs 其他机制的软性影响</text>
+
+            <!-- Top: chain -->
+            <rect x="20" y="44" width="110" height="44" rx="6" fill="#1f1f1f" stroke="#5a9fd4" stroke-width="1"/>
+            <text x="75" y="62" text-anchor="middle" fill="#5a9fd4" font-size="10" font-weight="700">天线端口</text>
+            <text x="75" y="78" text-anchor="middle" fill="#666666" font-size="8">RxSens 定义处</text>
+            <polygon points="134,66 148,66 148,78 134,78" fill="#666666"/>
+
+            <rect x="152" y="44" width="130" height="44" rx="6" fill="#1a1a1a" stroke="#ef4444" stroke-width="1.5"/>
+            <text x="217" y="62" text-anchor="middle" fill="#ef4444" font-size="10" font-weight="700">前端插损 IL(FE)</text>
+            <text x="217" y="78" text-anchor="middle" fill="#808080" font-size="8">1 dB/dB 刚性</text>
+            <polygon points="286,66 300,66 300,78 286,78" fill="#666666"/>
+
+            <rect x="304" y="44" width="130" height="44" rx="6" fill="#141414" stroke="#5a9fd4" stroke-width="1"/>
+            <text x="369" y="62" text-anchor="middle" fill="#5a9fd4" font-size="10" font-weight="700">LNA + TRx NF</text>
+            <text x="369" y="78" text-anchor="middle" fill="#808080" font-size="8">直接叠加至总 NF</text>
+            <polygon points="438,66 452,66 452,78 438,78" fill="#666666"/>
+
+            <rect x="456" y="44" width="160" height="44" rx="6" fill="#141414" stroke="#f0a050" stroke-width="1"/>
+            <text x="536" y="62" text-anchor="middle" fill="#f0a050" font-size="10" font-weight="700">IM + SINR − G(RxDiv)</text>
+            <text x="536" y="78" text-anchor="middle" fill="#808080" font-size="8">2.5 − 1 − 3 = −1.5 dB</text>
+
+            <!-- Bottom: comparison bars -->
+            <text x="40" y="120" fill="#808080" font-size="11" font-weight="600">各因素恶化 1 dB 对灵敏度的影响：</text>
+
+            <!-- IL bar -->
+            <text x="40" y="150" fill="#808080" font-size="10">前端插损</text>
+            <rect x="130" y="140" width="200" height="18" rx="3" fill="#ef4444" opacity="0.7"/>
+            <text x="340" y="154" fill="#ef4444" font-size="11" font-weight="700">灵敏度恶化 1.0 dB</text>
+
+            <!-- RxBN bar -->
+            <text x="40" y="180" fill="#808080" font-size="10">Rx Band Noise</text>
+            <rect x="130" y="170" width="20" height="18" rx="3" fill="#4ade80" opacity="0.7"/>
+            <text x="340" y="184" fill="#4ade80" font-size="11" font-weight="600">灵敏度恶化 0.1 dB</text>
+
+            <!-- Right: key insight -->
+            <rect x="440" y="120" width="340" height="100" rx="6" fill="#0d0d0d" stroke="rgb(239,68,68)" stroke-opacity="0.12"/>
+            <text x="610" y="145" text-anchor="middle" fill="#ef4444" font-size="11" font-weight="700">🔑 关键结论</text>
+            <text x="460" y="168" fill="#808080" font-size="10">· 前端插损是最刚性的灵敏度杀手</text>
+            <text x="460" y="188" fill="#808080" font-size="10">· 6 dB 灵敏度恶化 → 小区面积缩半</text>
+            <text x="460" y="208" fill="#808080" font-size="10">· De-sense &lt; 1 dB → 总干扰 &lt; 噪底 − 6 dB</text>
+          </svg>
+          <p class="diagram-caption">图一：灵敏度链路中前端插损（1 dB/dB）与 Rx Band Noise（0.1 dB/dB）的影响对比</p>
+        </div>
+
+        <h4>三、实现裕量与 LNA 增益压缩</h4>
+
+        <p><strong>实现裕量（IM）</strong>是 3GPP 为理论 SINR 与实际解调器性能之间预留的余量，QPSK 下典型 2.5 dB，64QAM 下可达 4 dB。它涵盖了数字前处理滤波器、非理想解调器和分集增益不达 3 dB 的综合影响 <span class="ref">[1][3]</span>。</p>
+
+        <p>此外，<strong>LNA 增益压缩</strong>也是参考灵敏度退化的隐性因素。当 Tx 泄漏或阻塞信号功率过大时，LNA 进入增益压缩区，其输出 SNR 和整体接收机 NF 均恶化。以典型 TRx 输入 IIP3 = −7 dBm 为例，若要求增益压缩 < 0.05 dB，LNA 输入端不可容忍任何超过 <strong>−30 dBm</strong> 的阻塞信号 <span class="ref">[2]</span>。</p>
+
+        <h4>四、小结</h4>
+
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>退化机制</th><th>对灵敏度的影响</th><th>优先级</th></tr></thead>
+            <tbody>
+              <tr><td>前端插损 IL(FE)</td><td><strong>1 dB / 1 dB</strong>（刚性）</td><td style="color:#ef4444;">🔴 最高</td></tr>
+              <tr><td>TRx 噪声系数</td><td>直接叠加至总 NF</td><td style="color:#f0a050;">🟠 高</td></tr>
+              <tr><td>实现裕量 IM</td><td>1–4 dB（取决于调制阶数）</td><td style="color:#f0a050;">🟠 高</td></tr>
+              <tr><td>LNA 增益压缩</td><td>NF 恶化，SNR 降低</td><td style="color:#facc15;">🟡 中</td></tr>
+            </tbody>
+          </table>
+          <p class="table-caption">表2：参考灵敏度退化机制汇总</p>
+        </div>
+
+        <h4>参考文献</h4>
+        <ol class="refs">
+          <li>3GPP TS 36.101, "E-UTRA; UE radio transmission and reception," V16.9.0, 2021, §7.3 (Reference sensitivity, throughput requirements).</li>
+          <li>B. Razavi, <em>RF Microelectronics</em>, 2nd ed., Prentice Hall, 2012, Ch. 2 (Noise figure and sensitivity), Ch. 4 (LNA nonlinearity and gain compression).</li>
+          <li>S. Sesia, I. Toufik, and M. Baker, <em>LTE — The UMTS Long Term Evolution: From Theory to Practice</em>, 2nd ed., Wiley, 2011, Ch. 16 (Downlink SINR requirements, implementation margin).</li>
+        </ol>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card: TX Related De-sense -->
+      <div class="article-card" onclick="this.classList.toggle('open')">
+        <div class="article-card-header">
+          <div>
+            <div class="article-card-title">射频前端中灵敏度退化与优化方法之 TX Related De-sense</div>
+            <div class="article-card-meta">📅 2026 年 7 月 · 发射链路干扰 — Rx Band Noise / IMD2 / Reciprocal Mixing / Cross-Modulation</div>
+          </div>
+          <div class="article-card-arrow">▼</div>
+        </div>
+        <div class="article-card-body">
+          <div class="article-card-body-inner">
+            <div class="article-body">
+
+        <p>当发射机开启（Tx ON），多种物理机制将发射链路能量耦合至接收链路，恶化参考灵敏度——即 <strong>Tx Related De-sense</strong>。这些机制按其物理来源可归纳为：Rx Band Noise、二阶交调（IMD2）、互易混频（Reciprocal Mixing）、交叉调制（Cross-Modulation）。它们均呈现强烈的<strong>功率依赖性</strong>——Tx 功率每增加 1 dB，De-sense 恶化幅度超过 1 dB <span class="ref">[1]</span>。</p>
+
+        <h4>一、Rx Band Noise：PA 与 Transceiver 的接收频段噪声</h4>
+
+        <p>接收频段噪声的总量由两部分组成：Transceiver 输出的 Rx Band Noise 经 PA 放大，以及 PA 自身产生的 Rx Band Noise：</p>
+
+        <p style="text-align:center;font-size:14px;color:#4ade80;margin:12px 0;"><strong>n<sub>RxBN-TOTAL</sub> = n<sub>RxBN-TRx</sub> · G<sub>PA</sub> + n<sub>RxBN-PA</sub></strong></p>
+
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>电源方案</th><th>TRx SNR</th><th>PA 增益</th><th>PA 输出噪声</th><th>总 RxBN @ PA 输出</th></tr></thead>
+            <tbody>
+              <tr><td><strong>APT</strong>（平均功率跟踪）</td><td>−157 dBc/Hz</td><td>30 dB</td><td>−135 dBm/Hz</td><td><strong>−128.8 dBm/Hz</strong></td></tr>
+              <tr><td><strong>ET</strong>（包络跟踪）</td><td>−154 dBc/Hz</td><td>28 dB</td><td>−130 dBm/Hz</td><td><strong>−126.5 dBm/Hz</strong></td></tr>
+            </tbody>
+          </table>
+          <p class="table-caption">表1：APT 与 ET 方案的 Rx Band Noise 对比 · ET 因 DC-DC / Modulator 贡献使 PA 输出噪声恶化 ~2.3 dB <span class="ref">[2]</span></p>
+        </div>
+
+        <p>该噪声经过双工器 Tx-Rx 隔离后到达 LNA 输入端。以 ET 方案为例：当 DPX 隔离为 50 dB、Tx 路径 Post-PA 损耗为 4 dB 时，到达 LNA 输入的 Rx Band Noise 约为 −172.5 dBm/Hz。若 LNA 输入端噪底为 −169.5 dBm/Hz，则已经引起可测的灵敏度退化。</p>
+
+        <h4>二、IMD2：二阶交调失真</h4>
+
+        <p>在直接变频接收机（DCR）中，泄漏至 LNA 输入端的 Tx 载波信号经过<strong>混频器的二阶非线性</strong>，被直接下变频至基带——恰好覆盖期望的 Rx 信号。这是 Tx Related De-sense 中最关键的机制之一。</p>
+
+        <p>IMD2 的功率可表示为 <span class="ref">[2][3]</span>：</p>
+
+        <p style="text-align:center;font-size:14px;color:#4ade80;margin:12px 0;"><strong>n<sub>IMD2</sub> = 2·P<sub>TxLNA</sub> − IIP2 − CF<sub>Tx</sub></strong></p>
+
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>参数</th><th>典型值</th><th>说明</th></tr></thead>
+            <tbody>
+              <tr><td>P<sub>TxLNA</sub></td><td>−28 dBm</td><td>P<sub>ANT</sub>(23) + IL<sub>Tx</sub>(4) − DPX_ISO<sub>Tx</sub>(55)</td></tr>
+              <tr><td>IIP2</td><td>+55 dBm</td><td>LNA 输入端二阶交调截点</td></tr>
+              <tr><td>CF<sub>Tx</sub> (LTE)</td><td>+11 dB</td><td>调制信号 BW 扩展 + PAR 校正因子</td></tr>
+              <tr style="background:rgba(239,68,68,0.06);"><td><strong>n<sub>IMD2</sub></strong></td><td><strong>−122 dBm</strong></td><td>单频点积分值</td></tr>
+            </tbody>
+          </table>
+          <p class="table-caption">表2：LTE Tx 载波的 IMD2 链路预算</p>
+        </div>
+
+        <p>校正因子 CF<sub>Tx</sub> 随制式变化：WCDMA Rel99 为 +9.72 dB，LTE 为 +11 dB（考虑更大的 PAR 和 BW 扩展）。基带对 Tx 载波 IMD2 的补偿可进一步降低有效 CF <span class="ref">[3]</span>。</p>
+
+        <h4>三、Reciprocal Mixing：RxLO 相位噪声与 Tx 泄漏</h4>
+
+        <p>RxLO 的<strong>有限相位噪声</strong>与泄漏至混频器输入端的 Tx 载波发生乘法混频，将 Tx 载波附近的 LO 相位噪声直接下变频至基带，叠加在期望 Rx 信号之上。该机制的严重程度取决于 RxLO 在 Tx-Rx 频率间隔处的相位噪声水平和 Tx 泄漏功率。</p>
+
+        <!-- 图一：四大 TX De-sense 机制 -->
+        <div class="diagram-container">
+          <svg viewBox="0 0 800 340" xmlns="http://www.w3.org/2000/svg">
+            <text x="400" y="22" text-anchor="middle" fill="#ffffff" font-size="14" font-weight="600">图一 · Tx Related De-sense 的四大物理机制</text>
+
+            <!-- Row 1 -->
+            <rect x="20" y="42" width="370" height="68" rx="8" fill="#991b1b" fill-opacity="0.12" stroke="#ef4444" stroke-opacity="0.3" stroke-width="1"/>
+            <text x="205" y="63" text-anchor="middle" fill="#ef4444" font-size="12" font-weight="700">① Rx Band Noise</text>
+            <text x="40" y="82" fill="#cccccc" font-size="10">TRx Noise 经 PA 放大 + PA 自身噪声 → DPX ISO → LNA</text>
+            <text x="40" y="100" fill="#ef4444" font-size="9">线性机制，功率弱依赖 ∝ P(Tx)</text>
+
+            <rect x="410" y="42" width="370" height="68" rx="8" fill="#7c2d12" fill-opacity="0.15" stroke="#f97316" stroke-opacity="0.3" stroke-width="1"/>
+            <text x="595" y="63" text-anchor="middle" fill="#f97316" font-size="12" font-weight="700">② IMD2</text>
+            <text x="430" y="82" fill="#cccccc" font-size="10">Tx 泄漏 × 混频器二阶非线性 → 包络下变频至基带</text>
+            <text x="430" y="100" fill="#f97316" font-size="9">二次依赖 ∝ P(Tx)²（强功率依赖）</text>
+
+            <!-- Row 2 -->
+            <rect x="20" y="122" width="370" height="68" rx="8" fill="#4c1d95" fill-opacity="0.12" stroke="#8b5cf6" stroke-opacity="0.3" stroke-width="1"/>
+            <text x="205" y="143" text-anchor="middle" fill="#8b5cf6" font-size="12" font-weight="700">③ Reciprocal Mixing</text>
+            <text x="40" y="162" fill="#cccccc" font-size="10">RxLO 相位噪声 × Tx 载波泄漏 → 基带噪声叠加</text>
+            <text x="40" y="180" fill="#8b5cf6" font-size="9">线性依赖 ∝ P(Tx)</text>
+
+            <rect x="410" y="122" width="370" height="68" rx="8" fill="#064e3b" fill-opacity="0.15" stroke="#10b981" stroke-opacity="0.3" stroke-width="1"/>
+            <text x="595" y="143" text-anchor="middle" fill="#10b981" font-size="12" font-weight="700">④ Cross-Modulation</text>
+            <text x="430" y="162" fill="#cccccc" font-size="10">LO 泄漏 + Tx 泄漏 × LNA 三阶非线性 → Rx 调制转移</text>
+            <text x="430" y="180" fill="#10b981" font-size="9">三次依赖 ∝ P(Tx)²·P(LO)</text>
+
+            <!-- Bottom summary -->
+            <line x1="20" y1="210" x2="780" y2="210" stroke="#ffffff" stroke-opacity="0.08"/>
+            <text x="400" y="232" text-anchor="middle" fill="#cccccc" font-size="10">关键工程洞察：Tx 功率每增加 1 dB</text>
+            <text x="400" y="252" text-anchor="middle" fill="#f97316" font-size="11" font-weight="600">RxBN 恶化 1 dB | IMD2 恶化 2 dB | Reciprocal Mixing 恶化 1 dB | Cross-Mod 恶化 2–3 dB</text>
+            <text x="400" y="274" text-anchor="middle" fill="#999999" font-size="9">因此高功率 Tx 场景（小区边缘、Max Power）是 De-sense 最严峻的工况</text>
+
+            <rect x="80" y="292" width="640" height="32" rx="6" fill="#991b1b" fill-opacity="0.08" stroke="#ef4444" stroke-opacity="0.15"/>
+            <text x="400" y="314" text-anchor="middle" fill="#ef4444" font-size="10" font-weight="600">De-sense 要求 &lt; 1 dB → 所有机制的 LNA 输入端总噪声必须低于 LNA 输入噪底 6 dB 以上</text>
+          </svg>
+          <p class="diagram-caption">图一：Tx Related De-sense 四大机制的物理本质、数学依赖与工程判据</p>
+        </div>
+
+        <h4>四、Cross-Modulation：LO 泄漏与 Tx 泄漏的三阶产物</h4>
+
+        <p>当 RxLO 信号泄漏至 LNA 输入端（典型 −60 dBm），与 Tx 载波泄漏（典型 −28 dBm）共同经历 LNA 的三阶非线性，产生交叉调制产物，将 Tx/Blocker 的包络调制<strong>转移</strong>到 LO 泄漏信号上，再被下变频至基带。这一过程对带内阻塞信号（In-Band Blocker）尤其危险——阻塞信号的谱扩展可能落入 Rx 通带，且与 Tx 调制特征高度相关。</p>
+
+        <p>Cross-Modulation 的功率可表示为 <span class="ref">[2]</span>：</p>
+        <p style="text-align:center;font-size:14px;color:#4ade80;margin:12px 0;"><strong>n<sub>CrossMod</sub> = 2·P<sub>TxLNA</sub> + P<sub>RxLO-LNA</sub> − 2·IIP3<sub>CrossMod</sub> − CF<sub>RxLO</sub></strong></p>
+
+        <p>以典型值代入：P<sub>TxLNA</sub> = −28 dBm，P<sub>RxLO-LNA</sub> = −60 dBm，IIP3 = −1 dBm，CF = −7.4 dB → n<sub>CrossMod</sub> ≈ −121.4 dBm。</p>
+
+        <h4>五、总结</h4>
+
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>机制</th><th>物理本质</th><th>功率依赖</th><th>主导场景</th></tr></thead>
+            <tbody>
+              <tr><td>Rx Band Noise</td><td>PA + TRx 接收频段噪声经 DPX 隔离到达 LNA</td><td>∝ P(Tx)</td><td>全功率范围；ET 方案额外恶化</td></tr>
+              <tr><td>IMD2</td><td>Tx 泄漏 × 混频器二阶非线性 → 基带包络</td><td>∝ P(Tx)²</td><td>高功率 Tx；DCR 接收机固有</td></tr>
+              <tr><td>Reciprocal Mixing</td><td>RxLO 相位噪声 × Tx 泄漏 → 基带噪声</td><td>∝ P(Tx)</td><td>Tx-Rx 频率间隔小（如 B3/B66）</td></tr>
+              <tr><td>Cross-Modulation</td><td>LO 泄漏 + Tx 泄漏 × LNA 三阶非线性</td><td>∝ P(Tx)²·P(LO)</td><td>Tx 高功率 + In-Band Blocker 同时存在</td></tr>
+            </tbody>
+          </table>
+          <p class="table-caption">表3：Tx Related De-sense 四大机制总结</p>
+        </div>
+
+        <h4>参考文献</h4>
+        <ol class="refs">
+          <li>3GPP TS 36.101, "E-UTRA; UE radio transmission and reception," V16.9.0, 2021, §7.3–7.7.</li>
+          <li>B. Razavi, <em>RF Microelectronics</em>, 2nd ed., Prentice Hall, 2012, Ch. 2 (Noise), Ch. 4–6 (Nonlinearity, Mixers, IMD2/IMD3).</li>
+          <li>G. Hueber and R. B. Staszewski, eds., <em>Multi-Mode / Multi-Band RF Transceivers for Wireless Communications</em>, Wiley, 2011, Ch. 5 (Direct conversion receiver impairments).</li>
+        </ol>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card: Duplexer TX/RX Isolation -->
+      <div class="article-card" onclick="this.classList.toggle('open')">
+        <div class="article-card-header">
+          <div>
+            <div class="article-card-title">射频前端中灵敏度退化与优化方法之 Duplexer TX/RX Isolation</div>
+            <div class="article-card-meta">📅 2026 年 7 月 · 双工器隔离度 — Rx 频率与 Tx 频率隔离对 De-sense 的影响及 CA 谐波案例分析</div>
+          </div>
+          <div class="article-card-arrow">▼</div>
+        </div>
+        <div class="article-card-body">
+          <div class="article-card-body-inner">
+            <div class="article-body">
+
+        <p>双工器（Duplexer）的 Tx-Rx 隔离度是连接发射链路与接收链路的<strong>唯一可控屏障</strong>。隔离度每恶化 1 dB，所有依赖 Tx 泄漏功率的 De-sense 机制（RxBN、IMD2、Reciprocal Mixing、Cross-Modulation）同步恶化。隔离度的需求由<strong>最严苛的 Tx 功率场景</strong>（Max Power + 不利相位）决定 <span class="ref">[1]</span>。</p>
+
+        <h4>一、Rx 频率隔离度：Rx Band Noise 主导</h4>
+
+        <p>在 Rx 频率处，DPX 隔离直接控制到达 LNA 输入端的 Rx Band Noise 功率。这是<strong>线性关系</strong>——隔离度每提高 1 dB，RxBN 降低 1 dB。</p>
+
+        <div class="diagram-container">
+          <svg viewBox="0 0 800 260" xmlns="http://www.w3.org/2000/svg">
+            <text x="400" y="22" text-anchor="middle" fill="#fff" font-size="14" font-weight="600">图一 · DPX Tx-Rx 隔离度对 De-sense 的影响差异</text>
+
+            <!-- Left: Rx freq side -->
+            <rect x="20" y="44" width="360" height="100" rx="8" fill="#0d0d0d" stroke="rgb(90,159,212)" stroke-opacity="0.15"/>
+            <text x="200" y="66" text-anchor="middle" fill="#5a9fd4" font-size="12" font-weight="700">Rx 频率处隔离 (f(Rx))</text>
+            <line x1="40" y1="78" x2="360" y2="78" stroke="rgb(90,159,212)" stroke-opacity="0.1"/>
+
+            <text x="40" y="98" fill="#808080" font-size="10">主导机制：Rx Band Noise（线性）</text>
+            <text x="40" y="118" fill="#666666" font-size="9">ISO ↑ 1 dB → De-sense ↓ 0.1 dB</text>
+            <text x="40" y="136" fill="#666666" font-size="9">需求：50–55 dB（4–5 dB 余量即可）</text>
+
+            <!-- Right: Tx freq side -->
+            <rect x="420" y="44" width="360" height="100" rx="8" fill="#0d0d0d" stroke="rgb(239,68,68)" stroke-opacity="0.15"/>
+            <text x="600" y="66" text-anchor="middle" fill="#ef4444" font-size="12" font-weight="700">Tx 频率处隔离 (f(Tx))</text>
+            <line x1="440" y1="78" x2="760" y2="78" stroke="rgb(239,68,68)" stroke-opacity="0.1"/>
+
+            <text x="440" y="98" fill="#808080" font-size="10">主导机制：IMD2 + Cross-Mod（² 依赖）</text>
+            <text x="440" y="118" fill="#666666" font-size="9">ISO ↑ 1 dB → De-sense ↓ 2–3 dB</text>
+            <text x="440" y="136" fill="#666666" font-size="9">需求：≥ 55 dB（功率依赖放大效应）</text>
+
+            <!-- Bottom: comparison visual -->
+            <text x="40" y="175" fill="#808080" font-size="11" font-weight="600">隔离度改善 1 dB 对 De-sense 的影响（相对值）：</text>
+
+            <text x="40" y="205" fill="#5a9fd4" font-size="10">f(Rx) 隔离</text>
+            <rect x="140" y="195" width="20" height="16" rx="3" fill="#5a9fd4" opacity="0.7"/>
+            <text x="170" y="207" fill="#5a9fd4" font-size="10" font-weight="600">0.1 dB 改善</text>
+
+            <text x="320" y="205" fill="#ef4444" font-size="10">f(Tx) 隔离</text>
+            <rect x="420" y="195" width="200" height="16" rx="3" fill="#ef4444" opacity="0.7"/>
+            <text x="630" y="207" fill="#ef4444" font-size="10" font-weight="600">2–3 dB 改善（20–30× 杠杆效应）</text>
+
+            <line x1="20" y1="232" x2="780" y2="232" stroke="rgb(255,255,255)" stroke-opacity="0.06"/>
+            <text x="400" y="252" text-anchor="middle" fill="#595959" font-size="9">工程启示：改善 Tx 频率处隔离 1 dB ≈ 改善 Rx 频率处隔离 20–30 dB（因消除的是 IMD2/CM 等二次依赖项的源头）</text>
+          </svg>
+          <p class="diagram-caption">图一：Rx 频率 vs Tx 频率隔离度对 De-sense 的杠杆效应差异</p>
+        </div>
+
+        <h4>二、载波聚合场景中的谐波隔离挑战</h4>
+
+        <p>在 Interband CA 场景中，低频段（LB）Tx 的谐波可能落入高频段（HB）的 Rx 通带，构成谐波相关 CA（Harmonically Related CA）的特殊 De-sense 场景。以 <strong>B17 UL / B4 Rx CA</strong> 为例：B17 Tx 的三次谐波（3fo ≈ 2110–2145 MHz）恰好落入 B4 Rx 频段，3GPP 为此将 B4 灵敏度从 −97 dBm 放宽至 <strong>−89.5 dBm</strong>（7.5 dB 松弛）<span class="ref">[1]</span>。</p>
+
+        <p>在该场景中，存在 <strong>7 条独立的谐波泄漏路径</strong>，每一条都需满足严格的隔离度要求：</p>
+
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>#</th><th>泄漏路径</th><th>所需隔离度</th></tr></thead>
+            <tbody>
+              <tr><td>1</td><td>LB PA → HB 2G PA（ASM 隔离）</td><td>≥ 60 dB</td></tr>
+              <tr><td>2</td><td>LB PA → HB 3G PA（DPX Tx-Rx 隔离）</td><td>≥ 25 dB PA-PA + 30 dB PostPA Sw</td></tr>
+              <tr><td>3</td><td>LB PostPA Switch → HB PostPA Switch</td><td>≥ 50 dB</td></tr>
+              <tr><td>4</td><td>LB → HB via Diplexer（PA 谐波）</td><td>Diplexer ≥ 30 dB + PostPA Notch ≥ 30 dB</td></tr>
+              <tr><td>5</td><td>LB → HB via Diplexer（ASM 产生的谐波）</td><td>Diplexer ≥ 30 dB</td></tr>
+              <tr><td>6</td><td>LB ASM → HB ASM 直接耦合（PA 谐波）</td><td>LB-HB ASM ISO ≥ 30 dB</td></tr>
+              <tr><td>7</td><td>LB ASM → HB ASM（ASM 产生的谐波）</td><td>LB-HB ASM ISO ≥ 30 dB</td></tr>
+            </tbody>
+          </table>
+          <p class="table-caption">表1：B17/B4 3fo CA 谐波的 7 条泄漏路径及隔离度需求</p>
+        </div>
+
+        <p>当上述 7 条路径均满足设计要求时，LNA 输入端的综合 3fo 噪声功率为 <strong>−166.8 dBm/Hz</strong>，对应 De-sense ≤ 2.4 dB。每条路径的噪声贡献需低于总噪声 <strong>8.45 dB 以上</strong>，才能实现均衡设计。</p>
+
+        <h4>三、总噪声预算与隔离度裕量</h4>
+
+        <p>De-sense < 1 dB 要求所有干扰机制的总和低于 LNA 输入噪底 6 dB 以上（即 LNA 输入总噪声 ≤ 噪底 − 6 dB）。在 B17/B4 场景中：</p>
+
+        <ul>
+          <li>LNA 输入噪底：<strong>−99.7 dBm / 9 MHz</strong>（= −169.2 dBm/Hz）</li>
+          <li>允许总噪声（< 0.25 dB De-sense）：<strong>−111.7 dBm / 9 MHz</strong>（= −181.5 dBm/Hz）</li>
+          <li>每条泄漏路径 LNA 输入端贡献 ≤ <strong>−173.5 dBm/Hz</strong></li>
+        </ul>
+
+        <p>这要求从 PA 输出端到 LNA 输入端的总隔离度至少达到 <strong>81.2 dB</strong>——一个苛刻的指标，必须通过芯片级屏蔽（如 SkyShield）、基板分区和包地隔离等多层防护来实现 <span class="ref">[2]</span>。</p>
+
+        <h4>参考文献</h4>
+        <ol class="refs">
+          <li>3GPP TS 36.101, "E-UTRA; UE radio transmission and reception," V16.9.0, 2021, §7.3 (Reference sensitivity), §7.7 (CA sensitivity, harmonically related bands).</li>
+          <li>3GPP TR 36.816, "Study on signalling and procedure for interference avoidance for in-device coexistence," 2011, §4–5.</li>
+        </ol>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card: Phase Dependence of TX/RX Isolation -->
+      <div class="article-card" onclick="this.classList.toggle('open')">
+        <div class="article-card-header">
+          <div>
+            <div class="article-card-title">射频前端中灵敏度退化与优化方法之 Phase Dependence of TX/RX Isolation</div>
+            <div class="article-card-meta">📅 2026 年 7 月 · 双工器匹配优化 — PA 输出阻抗的非 50Ω 特性与相位调谐对 Tx-Rx 隔离度的改善</div>
+          </div>
+          <div class="article-card-arrow">▼</div>
+        </div>
+        <div class="article-card-body">
+          <div class="article-card-body-inner">
+            <div class="article-body">
+
+        <p>双工器的 Tx-Rx 隔离度并非固定值——它强烈依赖于<strong>端口所呈现的阻抗</strong>。传统的 50Ω 假设在设计阶段是方便的起点，但在实际手机板端，PA 输出阻抗<strong>远非 50Ω</strong>，导致双工器 Tx 端口在 Rx 频率处呈现巨大的反射系数。这个反射系数的大小和相位，可以通过外部匹配网络<strong>主动调谐</strong>，从而显著改变 Tx-Rx 隔离度 <span class="ref">[1]</span>。</p>
+
+        <h4>一、物理机制：驻波与相位旋转</h4>
+
+        <p>在 Rx 频率（带外）处，双工器 Tx 输入端口表现为一个<strong>高反射终端</strong>（接近开路或短路）。PA 输出端呈现的非 50Ω 源阻抗与这个高反射终端一起构成一个<strong>驻波系统</strong>。PA 与双工器之间的传输线相位长度（以及外部匹配网络引入的相位旋转）决定了该驻波在双工器 Tx 端口处的<strong>合成阻抗</strong>。这个合成阻抗将影响双工器内部 Tx-Rx 隔离路径的耦合量，从而改变有效隔离度 <span class="ref">[2]</span>。</p>
+
+        <!-- 图一：相位依赖机制 -->
+        <div class="diagram-container">
+          <svg viewBox="0 0 800 260" xmlns="http://www.w3.org/2000/svg">
+            <text x="400" y="22" text-anchor="middle" fill="#fff" font-size="14" font-weight="600">图一 · 相位依赖的物理机制与调谐策略</text>
+
+            <!-- PA side -->
+            <rect x="20" y="44" width="130" height="60" rx="6" fill="#141414" stroke="rgb(240,160,80)" stroke-opacity="0.2"/>
+            <text x="85" y="68" text-anchor="middle" fill="#f0a050" font-size="11" font-weight="700">PA 输出</text>
+            <text x="85" y="86" text-anchor="middle" fill="#808080" font-size="9">Zout ≠ 50Ω</text>
+            <text x="85" y="100" text-anchor="middle" fill="#595959" font-size="8">Γ(PA) = f(Pout, 频段, 温度)</text>
+
+            <!-- Phase shifter / match -->
+            <rect x="180" y="44" width="120" height="60" rx="6" fill="#141414" stroke="rgb(16,185,129)" stroke-opacity="0.25"/>
+            <text x="240" y="68" text-anchor="middle" fill="#10b981" font-size="11" font-weight="700">外部匹配网络</text>
+            <text x="240" y="86" text-anchor="middle" fill="#808080" font-size="9">相位旋转 Δφ</text>
+            <text x="240" y="100" text-anchor="middle" fill="#595959" font-size="8">可调谐元件</text>
+
+            <!-- DPX -->
+            <rect x="330" y="44" width="130" height="60" rx="6" fill="#141414" stroke="rgb(90,159,212)" stroke-opacity="0.2"/>
+            <text x="395" y="68" text-anchor="middle" fill="#5a9fd4" font-size="11" font-weight="700">双工器 Tx 端口</text>
+            <text x="395" y="86" text-anchor="middle" fill="#808080" font-size="9">@ f(Rx): 高反射</text>
+            <text x="395" y="100" text-anchor="middle" fill="#595959" font-size="8">|Γ(DPX)| ≈ 1</text>
+
+            <!-- Arrows -->
+            <polygon points="154,74 168,74 168,86 154,86" fill="#4c4c4c"/>
+            <polygon points="304,74 318,74 318,86 304,86" fill="#4c4c4c"/>
+
+            <!-- Result: ISO improvement -->
+            <rect x="490" y="44" width="280" height="60" rx="6" fill="#0f0f0f" stroke="rgb(74,222,128)" stroke-opacity="0.3"/>
+            <text x="630" y="66" text-anchor="middle" fill="#4ade80" font-size="11" font-weight="700">Tx-Rx 隔离度可调范围</text>
+            <text x="630" y="84" text-anchor="middle" fill="#808080" font-size="9">通过相位调谐可改善 <tspan fill="#4ade80" font-weight="700">5–15 dB</tspan></text>
+            <text x="630" y="100" text-anchor="middle" fill="#595959" font-size="8">SkyOne 78022 B5 实测验证</text>
+
+            <!-- Smith chart concept -->
+            <rect x="40" y="130" width="340" height="110" rx="6" fill="#050505" stroke="rgb(255,255,255)" stroke-opacity="0.08"/>
+            <text x="210" y="152" text-anchor="middle" fill="#808080" font-size="11" font-weight="600">史密斯圆图示意</text>
+            <circle cx="160" cy="200" r="40" fill="none" stroke="rgb(255,255,255)" stroke-opacity="0.2" stroke-width="0.8"/>
+            <circle cx="160" cy="200" r="25" fill="none" stroke="rgb(255,255,255)" stroke-opacity="0.12" stroke-width="0.5"/>
+            <circle cx="160" cy="200" r="10" fill="none" stroke="rgb(255,255,255)" stroke-opacity="0.08" stroke-width="0.5"/>
+            <line x1="120" y1="200" x2="200" y2="200" stroke="rgb(255,255,255)" stroke-opacity="0.15" stroke-width="0.5"/>
+            <circle cx="160" cy="200" r="2" fill="#fff"/>
+            <text x="260" y="180" fill="#666666" font-size="9">50Ω 参考点</text>
+            <text x="230" y="198" fill="#595959" font-size="9">最佳隔离相位</text>
+            <circle cx="200" cy="185" r="3" fill="#4ade80"/>
+            <text x="210" y="210" fill="#595959" font-size="9">最差隔离相位</text>
+            <circle cx="140" cy="215" r="3" fill="#ef4444"/>
+            <text x="400" y="190" fill="#666666" font-size="9">Γ(PA) 轨迹</text>
+
+            <!-- Right side: key parameters -->
+            <rect x="420" y="130" width="350" height="110" rx="6" fill="#050505" stroke="rgb(255,255,255)" stroke-opacity="0.08"/>
+            <text x="595" y="150" text-anchor="middle" fill="#808080" font-size="11" font-weight="600">关键设计参数</text>
+            <text x="440" y="170" fill="#808080" font-size="10">① PA 输出阻抗 Γ(PA) —— 非 50Ω，随功率/频段/温度变化</text>
+            <text x="440" y="190" fill="#808080" font-size="10">② 传输线电长度 φ —— 控制驻波相位</text>
+            <text x="440" y="210" fill="#808080" font-size="10">③ DPX Tx @ f(Rx) 反射系数 Γ(DPX) —— 接近开路/短路</text>
+            <text x="440" y="230" fill="#808080" font-size="10">④ 外部匹配网络 —— 相位旋转 + 阻抗变换</text>
+          </svg>
+          <p class="diagram-caption">图一：PA 非 50Ω 输出 + 相位可调匹配网络 → Tx-Rx 隔离度的相位依赖性与调谐窗口</p>
+        </div>
+
+        <h4>二、实测验证：SkyOne 78022 Band 5 案例</h4>
+
+        <p>Skyworks SkyOne 78022 模块的实测数据验证了相位调谐的有效性 <span class="ref">[3]</span>：</p>
+
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>调谐对象</th><th>频段</th><th>未调谐隔离</th><th>调谐后隔离</th><th>改善幅度</th></tr></thead>
+            <tbody>
+              <tr><td>Tx-Rx 隔离 @ f(Tx)</td><td>B5</td><td>基准值</td><td>基准值 + Δ</td><td>相位优化贡献 <strong>5–10 dB</strong></td></tr>
+              <tr><td>Tx-Rx 隔离 @ f(Rx)</td><td>B5</td><td>基准值</td><td>基准值 + Δ</td><td>相位优化贡献 <strong>5–15 dB</strong></td></tr>
+              <tr><td>Ant-Rx 插损</td><td>B5</td><td>—</td><td>几乎不变</td><td>相位调谐对通带插损影响极小</td></tr>
+            </tbody>
+          </table>
+          <p class="table-caption">表1：SkyOne 78022 B5 频段外部匹配调谐对隔离度的改善</p>
+        </div>
+
+        <p>该数据的关键工程启示是：<strong>Rx 频率处的隔离度对相位调谐更为敏感</strong>（5–15 dB 改善空间），而 Tx 频率处改善较为有限（5–10 dB）。这是因 Rx 频率处双工器 Tx 端口处于深度带外反射区，合成阻抗对相位高度敏感；而 Tx 频率处双工器处于通带匹配区，反射系数较小，相位敏感性降低。</p>
+
+        <h4>三、设计方法论</h4>
+
+        <ol>
+          <li><strong>表征 Γ(PA)：</strong>在实际工作条件（Pout、频段、VSWR）下测量 PA 输出阻抗，而非依赖小信号 S 参数。</li>
+          <li><strong>扫描相位窗口：</strong>在 PA 与 DPX 之间插入相位可调匹配网络（如 π 型或 T 型），在史密斯圆图上扫描 360° 相位，找到隔离度最优的相位点。</li>
+          <li><strong>权衡插损与隔离：</strong>最优隔离的相位点可能与最优插损的相位点不同——需在二者之间取折衷。通常隔离优先，因 Rx 频率处的插损变化极小。</li>
+          <li><strong>Robust 设计：</strong>PA 的 Γ(PA) 随温度、功率和 VSWR 变化，因此需在多个工况下验证相位窗口的鲁棒性，确保批量一致性。</li>
+        </ol>
+
+        <h4>四、总结</h4>
+
+        <p>双工器 Tx-Rx 隔离度的相位依赖性为 RF 前端设计提供了<strong>一个额外的自由度</strong>——在不增加 BOM 成本、不改变双工器本体设计的前提下，仅通过优化 PA 与 DPX 之间的外部匹配网络相位，即可获得 5–15 dB 的隔离度改善。这一方法对高频段（B3/B66/B7）和载波聚合场景中谐波隔离尤为有效，是低成本 De-sense 优化的关键技术 <span class="ref">[3]</span>。</p>
+
+        <h4>参考文献</h4>
+        <ol class="refs">
+          <li>3GPP TS 36.101, "E-UTRA; UE radio transmission and reception," V16.9.0, 2021, §7.3–7.7.</li>
+          <li>G. Gonzalez, <em>Microwave Transistor Amplifiers: Analysis and Design</em>, 2nd ed., Prentice Hall, 1997, Ch. 2–3 (Impedance matching, Smith chart, constant gain/noise circles).</li>
+          <li>Skyworks Solutions, "SkyOne 78022 — Effect of External Match to Rx Port: Band 5 Tx-Rx Isolation," Internal Measurements, 2015. (PPT Slide 39–41 reference.)</li>
+        </ol>
 
             </div>
           </div>
