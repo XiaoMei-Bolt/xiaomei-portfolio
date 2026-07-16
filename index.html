@@ -3545,12 +3545,13 @@
         </div>
       </div>
 
+      
       <!-- LNA Transistor Selection Article -->
       <div class="article-card" onclick="this.classList.toggle('open')">
         <div class="article-card-header">
           <div>
             <div class="article-card-title">硅基射频 LNA 晶体管选型与设计思路</div>
-            <div class="article-card-meta">📅 2026 年 7 月 · 射频集成电路设计 — 固定功耗约束下的器件参数空间与指标置换</div>
+            <div class="article-card-meta">📅 2026 年 7 月 · 射频集成电路设计 — 固定功耗约束下的器件参数空间、仿真验证与指标置换</div>
           </div>
           <div class="article-card-arrow">▼</div>
         </div>
@@ -3558,210 +3559,245 @@
           <div class="article-card-body-inner">
             <div class="article-body">
 
-        <h4>第一部分 · 设计前提——功耗锁定下的晶体管选型困境</h4>
+        <h4>一、设计前提与理念</h4>
 
-        <p>低噪声放大器（LNA，Low-Noise Amplifier）的性能指标一般包括五个核心维度：<strong>增益（Gain）、噪声系数（NF）、线性度（IIP3/P1dB）、功耗（Power）、稳定性（Stability）</strong>。这五个指标相互牵制、互为代价——所谓极致的设计，并非在所有维度同时最优，而是在指标相互制约的前提下，<strong>用优先级低的指标置换优先级高的指标</strong>，实现电路的最平衡状态 <span class="ref">[1][2]</span>。</p>
+        <p>低噪声放大器（LNA，Low-Noise Amplifier）的性能指标一般包括五个核心维度：<strong>增益（S21/Gmax）、噪声系数（NF）、线性度（IIP3/P1dB）、功耗（IDD）、稳定性</strong>。这五个指标相互牵制。所谓极致的设计，是在指标相互制约的前提下，<strong>用优先级低的指标置换优先级高的指标</strong>，实现电路的最平衡状态。</p>
 
-        <p>在项目立项之初，LNA 的功耗预算通常已经锁定——即 VDD 与 IDD 确定。这意味着<strong>在设计初始，电路中流经的偏置电流就已经固化</strong>。本文的所有分析均建立在这一前提之上：<strong>IDD 为常数，而非变量</strong>。余下的设计过程，本质上是在其余四个指标间不断置换拉扯，最终收敛到设计者期望的最优平衡点。</p>
+        <p>在项目立项之初，LNA 的功耗预算通常已经锁定——VDD 与 IDD 确定。这意味着<strong>在设计初始，电路中流经的偏置电流就已经固化</strong>。<strong>本文的大前提：IDD 为常数，而非变量。</strong>完成 CS 管和 Cascode 管的选型（尺寸和偏置点）之后，LNA 电路的性能上限就已被锁定——剩余的匹配工作是在噪声与增益间做精细取舍。</p>
 
-        <p>从工程流程的角度看，LNA 的片上设计过程中，<strong>完成共源管（CS）和共栅管（CG）的选型——包括管尺寸和偏置点——之后，LNA 电路的性能上限就已被锁定</strong>。剩余的射频输入/输出匹配工作，本质上是在噪声与增益等指标间做最后的精细取舍。因此，理解晶体管选型如何决定性能上限，是 LNA 设计的核心命题。</p>
+        <p>不同应用场景对指标的优先级不同。WiFi 应用中线性度为关键指标；手机应用中 IDD、S21、NF 三者优先级更高。设计前期<strong>明确指标优先级，做出针对性设计</strong>，是设计启动的大前提。</p>
 
         <hr style="border:none;border-top:1px solid rgba(255,255,255,0.08);margin:32px 0;">
 
-        <h4>第二部分 · 表征晶体管放大性能的核心参数</h4>
+        <h4>二、晶体管放大性能参数体系</h4>
 
-        <p>在电路设计者手中，晶体管的可调自由度主要包括<strong>两个维度</strong>：<strong>尺寸（W/L，即沟道宽长比）</strong>和<strong>偏置点（VGS 或等效的过驱动电压 Vov = VGS − VTH）</strong>。在 SOI 工艺中，还有第三个维度——<strong>晶体管类型的选择</strong>（浮体 FB 与体接触 BT，详见第五部分）。设计者通过这三个自由度的组合，在六维性能空间内寻找满足规范的最优解。</p>
+        <p>电路设计者手中，晶体管的可调自由度主要包括<strong>尺寸（W/L）</strong>和<strong>偏置点</strong>。在 SOI 工艺中还有第三个维度——<strong>晶体管类型选择</strong>（FB 浮体与 BT 体接触）。</p>
 
-        <p>首先给出表征晶体管放大性能的全部关键参数：</p>
+        <p>首先梳理参数之间的层级关系。一级参数是 LNA 对外的性能指标（S21、NF、P1dB 等），二级参数是器件的本征特性（gm、gds、Cgs、fT、NFmin 等），三级参数是综合性的品质因数（gm/gds、gm/gds × fT 等），用于在二级参数之间做跨维度权衡。</p>
 
         <div class="table-wrap">
           <table>
-            <thead><tr><th>参数</th><th>符号</th><th>物理含义</th><th>典型公式（强反型近似）</th></tr></thead>
+            <thead><tr><th>层级</th><th>参数</th><th>符号</th><th>物理含义</th><th>关键关系（强反型近似）</th></tr></thead>
             <tbody>
-              <tr><td><strong>跨导</strong></td><td>gm</td><td>栅压→漏电流的转换效率，决定了电压增益</td><td>gm ≈ 2·ID / Vov</td></tr>
-              <tr><td><strong>输出电阻</strong></td><td>ro</td><td>沟道长度调制效应，决定单管本征增益上限</td><td>ro ≈ 1/(λ·ID)</td></tr>
-              <tr><td><strong>本征增益</strong></td><td>gm·ro</td><td>单管可提供的最大电压增益</td><td>gm·ro ≈ 2/(λ·Vov)</td></tr>
-              <tr><td><strong>特征频率</strong></td><td>fT</td><td>电流增益降至 1 时的频率，衡量器件速度</td><td>fT ≈ gm / (2π·Cgs)</td></tr>
-              <tr><td><strong>栅源电容</strong></td><td>Cgs</td><td>栅极与沟道间的本征电容，决定输入阻抗与 fT</td><td>Cgs ≈ (2/3)·W·L·Cox</td></tr>
-              <tr><td><strong>跨导效率</strong></td><td>gm/ID</td><td>单位电流产生的跨导，衡量电流利用效率</td><td>gm/ID ≈ 2/Vov</td></tr>
-              <tr><td><strong>最小噪声系数</strong></td><td>NFmin</td><td>最优源阻抗下的噪声底线</td><td>NFmin ≈ 1 + K·(f/fT)</td></tr>
-              <tr><td><strong>过驱动电压</strong></td><td>Vov</td><td>VGS − VTH，决定工作区域和 gm/ID</td><td>Vov = √(2·ID·L/(μn·Cox·W))</td></tr>
+              <tr><td rowspan="2" style="text-align:center;vertical-align:middle;"><strong>二级</strong></td><td><strong>跨导</strong></td><td>gm</td><td>栅压→漏电流的转换效率</td><td>gm ≈ 2·ID / Vov；ID固定时仅取决于W/L</td></tr>
+              <tr><td><strong>输出电导</strong></td><td>gds</td><td>沟道长度调制效应</td><td>gds ≈ λ·ID；主要受L和Vds影响</td></tr>
+              <tr><td rowspan="2" style="text-align:center;vertical-align:middle;"><strong>二级</strong></td><td><strong>特征频率</strong></td><td>fT</td><td>电流增益降至 1 时的频率</td><td>fT ≈ gm/(2π·Cgs)；高频时取H21=1</td></tr>
+              <tr><td><strong>栅源电容</strong></td><td>Cgs</td><td>栅极本征电容</td><td>Cgs ≈ (2/3)·W·L·Cox</td></tr>
+              <tr><td style="text-align:center;vertical-align:middle;"><strong>二级</strong></td><td><strong>最小噪声系数</strong></td><td>NFmin</td><td>最优源阻抗下的噪声底线</td><td>NFmin ≈ 1 + K·(f/fT)</td></tr>
+              <tr><td rowspan="2" style="text-align:center;vertical-align:middle;"><strong>三级</strong></td><td><strong>本征增益</strong></td><td>gm/gds</td><td>单管最大电压增益</td><td>gm/gds = gm / (λ·ID) ≈ 2/(λ·Vov)</td></tr>
+              <tr><td><strong>gm/gds × fT</strong></td><td>—</td><td>兼顾放大与射频的综合品质因数</td><td>∝ 1/L；与W无关（固定L下稳定）</td></tr>
             </tbody>
           </table>
-          <p class="table-caption">表1：MOSFET 放大性能关键参数 [1][3]</p>
+          <p class="table-caption">表1：MOSFET 放大性能参数层级 [1][2][3]</p>
         </div>
 
-        <p>注意到一个关键事实：<strong>在 ID 固定的前提下，Vov 由 W/L 唯一决定</strong>（Vov = √(2·ID·L/(μn·Cox·W))）。因此，设计者实质上只需要选择 W（在固定沟道长度 L 的条件下），偏置点就自动确定。这简化了设计空间的维度，但同时也意味着：<strong>W 的每一个选择，都将同时影响 gm、fT、Cgs、gm/ID、NFmin 等多个参数，且它们之间存在不可调和的物理折衷</strong>。</p>
+        <p>在 ID 固定的前提下，Vov = √(2·ID·L/(μn·Cox·W))——<strong>Vov 由 W/L 唯一决定</strong>。设计者实质上只需选择 W（在固定 L 下），偏置点自动确定。但 W 的每一个选择都同时影响 gm、fT、Cgs、NFmin 等多个参数。</p>
 
         <hr style="border:none;border-top:1px solid rgba(255,255,255,0.08);margin:32px 0;">
 
-        <h4>第三部分 · 固定电流下的核心 Tradeoff——W 的选择决定了性能方向</h4>
+        <h4>三、二级参数深入分析</h4>
 
-        <p>当 ID 固定后，晶体管的 W（沟道宽度）成为最核心的设计旋钮。表1 中的公式揭示了以下约束链：</p>
+        <h4 style="font-size:16px;color:rgba(255,255,255,0.9);margin-top:24px;">3.1 gm 与 gds</h4>
 
-        <div class="diagram-container">
-          <svg viewBox="0 0 800 440" xmlns="http://www.w3.org/2000/svg">
-            <text x="400" y="24" text-anchor="middle" fill="#fff" font-size="14" font-weight="600">图一 · 固定 ID 下 W 对 fT 和 gm 的相反作用</text>
+        <p><strong>gm</strong> 的数学表达式表明：当 IDD 确定时，gm 仅取决于 W/L。因此 W/L 是 gm 的主要影响因素。</p>
 
-            <!-- Left panel: fT vs W relationship -->
-            <text x="200" y="60" text-anchor="middle" fill="#5a9fd4" font-size="12" font-weight="600">fT 随 W 增大而下降</text>
+        <p><strong>gds</strong> 的表达式较为复杂。我们通过固定 IDD 的仿真，逐一验证各因素对 gds 的影响程度：</p>
 
-            <!-- Arrow chain: W up -->
-            <rect x="85" y="90" width="56" height="24" rx="4" fill="#1e3a5f" stroke="#3b7ab8" stroke-width="1"/>
-            <text x="113" y="107" text-anchor="middle" fill="#5a9fd4" font-size="10" font-weight="600">W ↑</text>
-            <text x="155" y="107" fill="#f0a050" font-size="14">→</text>
-            <rect x="175" y="90" width="64" height="24" rx="4" fill="#1e3a5f" stroke="#3b7ab8" stroke-width="1"/>
-            <text x="207" y="107" text-anchor="middle" fill="#5a9fd4" font-size="10">Vov ↓</text>
-            <text x="253" y="107" fill="#f0a050" font-size="14">→</text>
-            <rect x="273" y="90" width="64" height="24" rx="4" fill="#1e3a5f" stroke="#10b981" stroke-width="1"/>
-            <text x="305" y="107" text-anchor="middle" fill="#10b981" font-size="10">Cgs ↑</text>
+        <p><strong>gds 与沟道长度 L：</strong>固定 IDD = 8 mA，Vgs = 0.3 V，改变 L（器件保持饱和区）。仿真结果显示：<strong>L 从 55 nm 增大到 115 nm 时，gds 从 13.5 mS 降至 3.3 mS</strong>——gds 对 L 高度敏感。</p>
 
-            <!-- fT formula -->
-            <text x="200" y="148" text-anchor="middle" fill="#fff" font-size="12">fT = gm / (2π·Cgs) = (3·ID) / (2π·Vov·W·L·Cox)</text>
-            <text x="200" y="170" text-anchor="middle" fill="#ef4444" font-size="12" font-weight="600">→ fT ↓ （Vov↓ 和 Cgs↑ 双重恶化）</text>
+        <p><strong>gds 与漏源电压 Vds：</strong>固定 IDD = 8 mA，L = 55 nm，改变 Vds。仿真结果显示：<strong>Vds 从 0.2 V 增大到 0.8 V 时，gds 从 18.7 mS 降至 13.5 mS</strong>。变化幅度远小于 L 的效应，但 Vds &lt; 0.3 V 时 gds 显著上升。</p>
 
-            <line x1="50" y1="195" x2="350" y2="195" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
-
-            <!-- Right panel: gm/ID vs fT chart -->
-            <text x="600" y="60" text-anchor="middle" fill="#5a9fd4" font-size="12" font-weight="600">gm/ID vs fT 设计空间</text>
-
-            <!-- Chart axes -->
-            <line x1="430" y1="330" x2="770" y2="330" stroke="#fff" stroke-opacity="0.4" stroke-width="1"/>
-            <text x="600" y="350" text-anchor="middle" fill="#fff" fill-opacity="0.5" font-size="10">gm/ID (V^-1) —— 电流效率 →</text>
-            <line x1="430" y1="80" x2="430" y2="330" stroke="#fff" stroke-opacity="0.4" stroke-width="1"/>
-            <text x="415" y="205" text-anchor="middle" fill="#fff" fill-opacity="0.5" font-size="10" transform="rotate(-90,415,205)">fT (GHz)</text>
-
-            <!-- Pareto frontier -->
-            <path d="M450,310 C490,280 540,220 600,160 C660,110 720,90 750,85" fill="none" stroke="#f0a050" stroke-width="2.5"/>
-
-            <!-- Weak inversion -->
-            <circle cx="470" cy="290" r="5" fill="#ef4444"/>
-            <text x="478" y="282" fill="#ef4444" font-size="10">弱反型</text>
-            <text x="478" y="294" fill="#fff" fill-opacity="0.4" font-size="8">gm/ID≈25–35</text>
-            <text x="478" y="305" fill="#fff" fill-opacity="0.4" font-size="8">fT≈1–10 MHz</text>
-
-            <!-- Moderate -->
-            <circle cx="580" cy="190" r="5" fill="#f0a050"/>
-            <text x="588" y="182" fill="#f0a050" font-size="10">中等反型</text>
-            <text x="588" y="194" fill="#fff" fill-opacity="0.4" font-size="8">gm/ID≈10–20</text>
-            <text x="588" y="205" fill="#fff" fill-opacity="0.4" font-size="8">fT≈0.1–1 GHz</text>
-
-            <!-- Strong inversion -->
-            <circle cx="710" cy="110" r="5" fill="#10b981"/>
-            <text x="680" y="100" fill="#10b981" font-size="10">强反型</text>
-            <text x="680" y="112" fill="#fff" fill-opacity="0.4" font-size="8">gm/ID≈5–12</text>
-            <text x="680" y="123" fill="#fff" fill-opacity="0.4" font-size="8">fT≈10–100 GHz</text>
-
-            <!-- Constraints -->
-            <text x="600" y="380" text-anchor="middle" fill="#fff" fill-opacity="0.3" font-size="9">约束条件：ID 固定，L 固定，W 为自由变量</text>
-            <text x="600" y="395" text-anchor="middle" fill="#fff" fill-opacity="0.3" font-size="9">W 增大 → Vov 减小 → gm/ID 升高，fT 降低（沿曲线向左上方移动）</text>
-            <text x="600" y="410" text-anchor="middle" fill="#fff" fill-opacity="0.3" font-size="9">W 减小 → Vov 增大 → gm/ID 降低，fT 升高（沿曲线向右下方移动）</text>
-          </svg>
-          <p class="diagram-caption">图一：固定漏极电流 ID 条件下，沟道宽度 W 对 fT 和 gm/ID 的相反作用 · Vov = VGS − VTH；Cox 为单位面积栅氧电容 [1][3]</p>
+        <div style="background:rgba(240,160,80,0.06);border:1px solid rgba(240,160,80,0.15);border-radius:8px;padding:12px 16px;margin:12px 0;">
+          <strong style="color:#f0a050;">结论 1：</strong>对于 gds 参数，<strong>L 为主要矛盾，Vds 为次要矛盾</strong>。但当 Vds &lt; 0.3 V 时，gds 显著上升——这意味着 CS 管的 Vds 不宜过低，否则输出电阻急剧恶化，直接拉低增益。
         </div>
 
-        <p>这个折衷的物理本质是：</p>
+        <h4 style="font-size:16px;color:rgba(255,255,255,0.9);margin-top:24px;">3.2 本征增益与特征频率</h4>
+
+        <p>在明确二级参数的主要影响因素后，我们进一步用三级参数来衡量器件的综合放大能力。</p>
+
+        <p><strong>本征增益 gm/gds</strong> 主要衡量 gm 与沟道调制效应的关系——本质上是 Vgs 对 IDD 的控制力（信号的放大能力）。<strong>特征频率 fT</strong> 则衡量 gm 与寄生电容 Cgs 的博弈——本质上是 Cgs 对 gm 的削弱程度（射频信号在放大前的泄漏）。</p>
+
+        <p>在 IDD = 8 mA 固定、Vds = 0.3 V（规避 Vds 对 gds 的干扰）的条件下，我们选取多组 W/L 组合进行仿真：</p>
+
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>CS 管尺寸<br>(W×fingers/L)</th><th>gm/gds<br>(本征增益)</th><th>fT<br>(GHz)</th><th>Gmax<br>(dB)</th><th>匹配至 50Ω 所需<br>Deg 电感 (nH)</th></tr></thead>
+            <tbody>
+              <tr style="background:rgba(16,185,129,0.05);"><td>4u×60 / 95nm</td><td><strong>11.3</strong></td><td>52</td><td>29.29</td><td>0.8</td></tr>
+              <tr><td>2u×60 / 95nm</td><td>9.8</td><td>78</td><td>31.15</td><td>0.5</td></tr>
+              <tr><td>6u×60 / 95nm</td><td>12.1</td><td>38</td><td>27.83</td><td>1.2</td></tr>
+              <tr><td>4u×40 / 95nm</td><td>12.4</td><td>44</td><td>28.51</td><td>1.0</td></tr>
+            </tbody>
+          </table>
+          <p class="table-caption">表2：固定 IDD=8mA 下不同 CS 管尺寸的性能对比（仿真数据，Vds=0.3V）</p>
+        </div>
+
+        <p>从仿真结果可以清晰地看到：<strong>fT 更高的器件，LNA 的 Gmax 更强</strong>。原因在于，虽然本征增益 gm/gds 衡量了器件的直流放大能力，但 fT 通过引入 Cgs，更真实地反映了射频信号在输入端的行为——Cgs 直接决定了输入阻抗的实部 Re{Zin} ≈ gm·Ls/Cgs = 2π·fT·Ls。Cgs 越大，需要更大的 Deg 电感才能将实部匹配到 50 Ω，而更大的 Deg 电感会直接拉低增益。</p>
+
+        <div style="background:rgba(240,160,80,0.06);border:1px solid rgba(240,160,80,0.15);border-radius:8px;padding:12px 16px;margin:12px 0;">
+          <strong style="color:#f0a050;">结论 2：</strong>对于 CS 器件，<strong>fT 比 gm/gds 具有更高的参考价值</strong>。因为射频信号存在反射、需要顾及回波损耗，而本征增益无法反映 Cgs 带来的输入匹配代价——只有 fT 能同时捕获 gm 和 Cgs 的综合效应。
+        </div>
+
+        <h4 style="font-size:16px;color:rgba(255,255,255,0.9);margin-top:24px;">3.3 本征增益与特征频率的乘积</h4>
+
+        <p>一个自然的问题是：能否用一个统一的品质因数，同时兼顾器件的放大能力和射频性能？</p>
+
+        <p>推导 gm/gds × fT：</p>
+        <p style="text-align:center;font-size:14px;color:#5a9fd4;"><strong>gm/gds × fT ≈ (gm/(λ·ID)) × (gm/(2π·Cgs)) ∝ 1/L</strong></p>
+
+        <p>这个结果揭示了一个重要的设计指导：<strong>gm/gds × fT 仅与沟道长度 L 负相关，与 W 几乎无关</strong>。仿真也验证了这一点：固定 L 时，随着 W 变化，该乘积保持相对稳定。</p>
+
+        <p>那么是否可以用大 L + 大 W 来匹配小 L + 小 W 的乘积？推导显示 fT ∝ 1/L^(1.5) 而仅正比于 W^(0.5)，因此<strong>要用更大的 W 来补偿大 L 带来的 fT 下降，需要付出极大的 W 代价——在实际设计中不可行</strong>。</p>
+
+        <p>此外，值得关注不同工艺之间的差异：</p>
+
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>工艺</th><th>相同 fT 下的 gm/gds</th><th>gm/gds × fT</th><th>对 LNA 设计的含义</th></tr></thead>
+            <tbody>
+              <tr><td>TSMC</td><td>基准（高）</td><td>高</td><td>射频与放大性能俱佳</td></tr>
+              <tr><td>TJ</td><td>与 TSMC 接近</td><td>高</td><td>可作为替代方案</td></tr>
+              <tr style="background:rgba(239,68,68,0.05);"><td>HHG (华虹 SOI)</td><td><strong>约为 TSMC 的一半</strong></td><td>低</td><td>射频性能相当时，放大能力弱 ~2×</td></tr>
+            </tbody>
+          </table>
+          <p class="table-caption">表3：不同工艺在相同 fT 下的本征增益对比</p>
+        </div>
+
+        <div style="background:rgba(240,160,80,0.06);border:1px solid rgba(240,160,80,0.15);border-radius:8px;padding:12px 16px;margin:12px 0;">
+          <strong style="color:#f0a050;">结论 3：</strong>当器件射频性能相同时，HHG 工艺的本征增益弱了接近一倍——这意味着本征增益仍然是 LNA 设计中不可忽视的指标。<br><br>
+          <strong style="color:#f0a050;">结论 4：</strong>采用<strong>最小栅长 Lmin</strong> 作为 CS 管，是兼顾特征频率和本征增益的最优选择——因为 gm/gds × fT ∝ 1/L，最小 L 同时最大化 fT 和品质因数。
+        </div>
+
+        <hr style="border:none;border-top:1px solid rgba(255,255,255,0.08);margin:32px 0;">
+
+        <h4>四、偏置电压优化——S21 与 P1dB 的置换</h4>
+
+        <p>回顾结论 1：gds 在 Vds &lt; 0.3 V 时显著上升。那么，在管子尺寸已确定的情况下，是否可以通过调整 CS 管与 Cascode 管的偏置电压来改变 CS 管的 Vds，从而提升增益？</p>
+
+        <p>对同一 LNA 进行多种偏置组合测试（保持 IDD 不变）：</p>
+
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>组合</th><th>CS 管 Vds</th><th>Cascode Vds</th><th>S21 (dB)</th><th>P1dB (dBm)</th></tr></thead>
+            <tbody>
+              <tr><td>A</td><td>0.20 V</td><td>0.70 V</td><td>22.3</td><td>−12.5</td></tr>
+              <tr style="background:rgba(16,185,129,0.05);"><td>B</td><td><strong>0.30 V</strong></td><td>0.60 V</td><td><strong>21.8</strong></td><td><strong>−9.8</strong></td></tr>
+              <tr><td>C</td><td>0.40 V</td><td>0.50 V</td><td>20.9</td><td>−8.2</td></tr>
+              <tr><td>D</td><td>0.50 V</td><td>0.40 V</td><td>19.5</td><td>−7.1</td></tr>
+            </tbody>
+          </table>
+          <p class="table-caption">表4：相同 IDD 下不同偏置组合的 S21 与 P1dB 对比</p>
+        </div>
+
+        <p>仿真显示：提高 CS 管的 Vds 确实能通过降低 gds 来提升增益，但<strong>这个效应随着 Vds 的进一步升高而逐渐饱和</strong>。更重要的是，不同的偏置组合会影响 Cascode 管的 Vds——Cascode 管 Vds 过低会严重恶化 P1dB。</p>
+
+        <div style="background:rgba(240,160,80,0.06);border:1px solid rgba(240,160,80,0.15);border-radius:8px;padding:12px 16px;margin:12px 0;">
+          <strong style="color:#f0a050;">结论 5：</strong>提高 CS 管的 Vds 可以提升增益（通过降低 gds），但效果逐渐衰减——不能无限制地依赖高 Vds 来获取增益。<br><br>
+          <strong style="color:#f0a050;">结论 6：</strong>在偏置组合选取时，应做 <strong>S21 与 P1dB 之间的 trade-off</strong>。兼顾增益和线性度，通常使 CS 管 Vds ≈ 0.3 V 是一个合理的折衷点。
+        </div>
+
+        <hr style="border:none;border-top:1px solid rgba(255,255,255,0.08);margin:32px 0;">
+
+        <h4>五、噪声性能设计与实例</h4>
+
+        <p>器件噪声性能的优化需要同时兼顾三个目标：<strong>NFmin 尽量小</strong>、<strong>噪声匹配尽量好</strong>、<strong>输入电感（IND）的电阻热噪声尽量低</strong>。三者同等优先级。噪声相关公式如下：</p>
+
+        <p style="text-align:center;font-size:14px;color:#5a9fd4;"><strong>NFmin ≈ 1 + K·(f/fT) &nbsp;&nbsp;|&nbsp;&nbsp; Re{Zopt} ∝ 1/Cgs &nbsp;&nbsp;|&nbsp;&nbsp; Xopt ≈ −1/(ω·Cgs)</strong></p>
+
+        <p>三个公式指向同一个核心变量：<strong>Cgs</strong>。噪声的优化设计，本质上是借助调整 Cgs，在 NFmin、噪声匹配、以及输入 IND 之间进行的取舍。</p>
+
+        <h4 style="font-size:16px;color:rgba(255,255,255,0.9);margin-top:24px;">实例：外挂 Cgs vs 增大 CMOS 宽度</h4>
+
+        <p>通常情况下，裸匹配状态下纯输入器件的噪声圆呈高阻状态——噪声匹配的实部远大于 50 Ω。我们的目标很明确：将噪声匹配的实部调节到 50 Ω 附近。</p>
+
+        <p>增大 Cgs 有两条路径：<strong>① 外挂电容</strong> 或 <strong>② 增大器件宽度 W</strong>。两种方式有何区别？</p>
+
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>方案</th><th>Cgs 实现方式</th><th>噪声圆实部</th><th>Gmax</th><th>NFmin</th><th>所需输入 IND</th></tr></thead>
+            <tbody>
+              <tr style="background:rgba(16,185,129,0.05);"><td>A</td><td>外挂 Cgs = 150 fF</td><td>≈ 50 Ω</td><td><strong>28.0 dB</strong></td><td>0.44 dB</td><td>4.0 nH</td></tr>
+              <tr><td>B</td><td>仅增大 W（无外挂）</td><td>≈ 50 Ω</td><td>24.9 dB</td><td>0.41 dB</td><td>3.0 nH</td></tr>
+            </tbody>
+          </table>
+          <p class="table-caption">表5：外挂 Cgs 与增大 W 的噪声匹配对比</p>
+        </div>
+
+        <p><strong>关键发现：</strong></p>
 
         <ol>
-          <li><strong>W 增大 → Vov 下降 → 沟道载流子浓度降低 → 弱反型方向：</strong>gm/ID 增大（电流效率高），但 gm 绝对值增长缓慢（受限于固定的 ID），而 Cgs 却随 W 线性增长 → fT 急剧下降。此时器件适合<strong>低功耗、低速</strong>场景（生物医疗前端、IoT 传感）。</li>
-          <li><strong>W 减小 → Vov 上升 → 强反型方向：</strong>gm/ID 减小（电流效率低），但 Cgs 因 W 减小而降低，且 gm 因 Vov 增大而「凝练」到更窄的电压摆幅上 → fT 升高。此时器件适合<strong>高速、高频</strong>场景（RF LNA、PLL 振荡器）。</li>
+          <li><strong>方案 A（外挂 Cgs）：</strong>Gmax 更高（28.0 dB），不会恶化 NFmin（因为 NFmin 仅与器件自身的寄生电容有关），但虚部更低（约 −j150 Ω），需要更大的输入 IND（4.0 nH）来谐振。大电感的 Q 值损耗和电阻热噪声抵消了部分噪声优势，最终 NFmin = 0.44 dB。</li>
+          <li><strong>方案 B（增大 W）：</strong>噪声圆实部同样拉到 50 Ω，但 Cgs 是器件的本征电容而非外挂，虚部为 −j100 Ω——仅需 3.0 nH IND 即可匹配。虽然 W 增大会降低 fT（结论 2），使 NFmin 从原理上略高，但更小的 IND 损耗使得<strong>最终噪声性能反而更优</strong>（0.41 dB）。</li>
         </ol>
 
-        <p>换言之，<strong>在固定功耗的约束下，设计者通过 W 的选择，实质上是在「电流效率」与「速度/带宽」之间做出根本性取舍</strong>——这与 gm/ID 方法论的精神完全一致（参见 CMOS 场效应管文章），但加入了「ID 已锁定」的额外边界条件。</p>
+        <div style="background:rgba(240,160,80,0.06);border:1px solid rgba(240,160,80,0.15);border-radius:8px;padding:12px 16px;margin:12px 0;">
+          <strong style="color:#f0a050;">结论 9：</strong>NFmin 不会随着外挂电容的增加而恶化——它仅与 CMOS 自身的寄生电容有关。<br><br>
+          <strong style="color:#f0a050;">结论 10：</strong>但单独外挂电容需要更大的 IND 进行虚部匹配。在 IND Q 值的影响下，最终噪声性能并不突出。<br><br>
+          <strong style="color:#f0a050;">结论 7（实践建议）：</strong>考虑到版图 EM 及 MCM 阶段会产生大量 Cgs 寄生，这些寄生足以用来充当噪声匹配的「等效外挂电容」。因此在原理图设计阶段，<strong>在预留 Cgs 寄生余量后，推荐尽量使用增大 CMOS 宽度的办法来实现噪声匹配</strong>。
+        </div>
 
         <hr style="border:none;border-top:1px solid rgba(255,255,255,0.08);margin:32px 0;">
 
-        <h4>第四部分 · 噪声优化——以 Cgs 为支点的三方权衡</h4>
+        <h4>六、设计流程</h4>
 
-        <p>对于带源极电感退化（source inductive degeneration）的共源 LNA，<strong>Cgs 是噪声设计的核心支点</strong>，它同时出现在三个互相冲突的约束中：</p>
+        <h4 style="font-size:16px;color:rgba(255,255,255,0.9);margin-top:24px;">6.1 CS 管的尺寸选取</h4>
 
-        <p><strong>① NFmin（最小噪声系数）</strong></p>
-        <p>NFmin ≈ 1 + K·(f/fT) = 1 + K·(2π·f·Cgs/gm)。Cgs 越小 → fT 越高 → NFmin 越低。<strong>降低 Cgs 有利于噪声</strong>。</p>
+        <p>基于结论 4，器件栅长 L 已被确定为工艺允许的最小值。CS 管栅极宽度 W 的选择在<strong>增益、噪声、输入阻抗</strong>三者之间权衡：</p>
 
-        <p><strong>② 输入阻抗（功率匹配）</strong></p>
-        <p>Re{Zin} ≈ (gm·Ls)/Cgs = 2π·fT·Ls。Cgs 决定实部——<strong>Cgs 越小，Re{Zin} 越大，偏离 50 Ω 越远</strong>。</p>
+        <ul>
+          <li><strong>增益优先：</strong>使用更小宽度的 CMOS → 减小 Cgs → 增大 fT → 更高的 Gmax</li>
+          <li><strong>噪声优先：</strong>使用较大宽度的 CMOS → 增大 Cgs → 将噪声圆实部匹配到 50 Ω 附近</li>
+          <li><strong>折衷（结论 7）：</strong>基于已有外挂 Cgs（模拟版图寄生），选择可以将噪声阻抗实部拉到 50 Ω 附近、且器件本身 fT 较高的器件作为 CS 管</li>
+        </ul>
 
-        <p><strong>③ 最优噪声源阻抗（噪声匹配）</strong></p>
-        <p>Zopt ≈ Ropt + jXopt，其中 Xopt ≈ −1/(ω·Cgs)。噪声匹配要求源阻抗虚部与 Zopt 共轭，<strong>Cgs 直接决定了 Zopt 在 Smith 圆图上的位置</strong> <span class="ref">[1][4]</span>。</p>
+        <h4 style="font-size:16px;color:rgba(255,255,255,0.9);margin-top:24px;">6.2 Cascode 管的尺寸选取</h4>
+
+        <p>Cascode 管与输入端相隔较远，涉及匹配方面的问题不如 CS 管敏感。Cascode 结构由于具有更高的输出阻抗，因此对增益有贡献——而输出阻抗与 Cascode 管的 ro（即 1/gds）有关。<strong>本征增益 gm/gds 越高的 Cascode 管，对电路的增益提升越大。</strong></p>
+
+        <p>但 Cascode 管的 gds 降低并非无限制。回顾 gm/gds × fT ∝ 1/L 的关系：虽然 gm/gds 正比于 L^0.5，但 fT 反比于 L^1.5——L 增大时本征增益的提升趋近饱和，而 W·L 所引入的 Cgd 对输出匹配的恶化却持续加剧。</p>
+
+        <div style="background:rgba(240,160,80,0.06);border:1px solid rgba(240,160,80,0.15);border-radius:8px;padding:12px 16px;margin:12px 0;">
+          <strong style="color:#f0a050;">结论 8：</strong>Cascode 管 L 的选取应以<strong>本征增益的提高为指导原则</strong>，以<strong>Cgd 不影响输出匹配为前提</strong>——在增益与输出匹配之间寻找平衡点。
+        </div>
+
+        <hr style="border:none;border-top:1px solid rgba(255,255,255,0.08);margin:32px 0;">
+
+        <h4>七、结论汇总</h4>
 
         <div class="table-wrap">
           <table>
-            <thead><tr><th>设计目标</th><th>希望 Cgs</th><th>原因</th><th>冲突方</th></tr></thead>
+            <thead><tr><th>#</th><th>结论</th><th>设计影响</th></tr></thead>
             <tbody>
-              <tr><td>低 NFmin</td><td style="color:#10b981;font-weight:600;">小</td><td>Cgs↓ → fT↑ → NFmin↓</td><td>与 ②③ 冲突</td></tr>
-              <tr><td>功率匹配到 50 Ω</td><td style="color:#f0a050;font-weight:600;">适中</td><td>Re{Zin} = fT·Ls，Cgs 太小则 Re{Zin} 过大</td><td>与 ① 部分冲突</td></tr>
-              <tr><td>噪声匹配</td><td style="color:#5a9fd4;font-weight:600;">由 Zopt 决定</td><td>Zopt 与 Cgs 的关系非单调，需综合设计</td><td>与 ① 可能冲突</td></tr>
+              <tr><td><strong>1</strong></td><td>gds：L 为主要矛盾，Vds 为次要矛盾；Vds&lt;0.3V 时 gds 显著上升</td><td>CS 管 Vds 不宜过低</td></tr>
+              <tr><td><strong>2</strong></td><td>CS 器件 fT 比 gm/gds 更具参考价值（射频信号回波损耗）</td><td>CS 管以 fT 为主要选型依据</td></tr>
+              <tr><td><strong>3</strong></td><td>HHG 工艺在相同 fT 下本征增益约为 TSMC 的一半</td><td>本征增益仍为重要指标</td></tr>
+              <tr><td><strong>4</strong></td><td>最小栅长 Lmin 兼顾 fT 和 gm/gds（gm/gds×fT ∝ 1/L）</td><td>CS 管取 Lmin</td></tr>
+              <tr><td><strong>5</strong></td><td>Vds 升高→增益提升，但效果逐渐衰减</td><td>不能无限依赖高 Vds</td></tr>
+              <tr><td><strong>6</strong></td><td>偏置选取时 S21 与 P1dB 间存在 trade-off；Vds≈0.3V 为折衷点</td><td>偏置需兼顾增益与线性度</td></tr>
+              <tr><td><strong>7</strong></td><td>原理图阶段预留 Cgs 寄生余量后，推荐增大 CMOS 宽度实现噪声匹配</td><td>利用版图寄生辅助噪声匹配</td></tr>
+              <tr><td><strong>8</strong></td><td>Cascode 管 L 以 gm/gds 提高为原则，以 Cgd 不影响输出匹配为前提</td><td>Cascode 管兼顾增益与输出匹配</td></tr>
+              <tr><td><strong>9</strong></td><td>NFmin 不随外挂 Cgs 增加而恶化，仅与器件自身寄生电容有关</td><td>外挂电容不会直接恶化 NFmin</td></tr>
+              <tr><td><strong>10</strong></td><td>单独外挂 Cgs 需更大 IND 匹配 → IND Q 值影响最终噪声</td><td>综合权衡 Cgs 来源</td></tr>
+              <tr><td><strong>11</strong></td><td>IDD 为常数而非变量。</td><td>全文分析的大前提</td></tr>
             </tbody>
           </table>
-          <p class="table-caption">表2：Cgs 在 LNA 噪声设计中的三方约束 [1][4]</p>
+          <p class="table-caption">表6：11 条设计结论汇总</p>
         </div>
 
-        <p>同时满足这三个约束的解析解不存在——这就是为什么源极电感退化（Ls）如此重要：<strong>它在不显著影响噪声的情况下，为 Re{Zin} 提供了一个额外的自由度</strong>，使得「同时噪声-功率匹配」（simultaneous noise and power match）成为可能。设计者通常在 NFmin 和输入匹配之间寻找折衷点，而 Cgs 就是这个折衷点的支点。</p>
-
         <hr style="border:none;border-top:1px solid rgba(255,255,255,0.08);margin:32px 0;">
 
-        <h4>第五部分 · SOI 工艺中的晶体管类型选择——FB vs BT</h4>
+        <h4>八、结语</h4>
 
-        <p>在 SOI（Silicon-On-Insulator）工艺中，除了尺寸和偏置，设计者还需要在<strong>浮体晶体管（FB，Floating Body）</strong>和<strong>体接触晶体管（BT，Body Tied）</strong>之间做出选择。两种管子的物理结构差异导致截然不同的电学特性：</p>
-
-        <div class="table-wrap">
-          <table>
-            <thead><tr><th>特性</th><th>FB（浮体）</th><th>BT（体接触）</th></tr></thead>
-            <tbody>
-              <tr><td><strong>体区电位</strong></td><td>悬浮，电势由碰撞电离和漏电动态决定</td><td>通过体接触（Body-Tie）固定到源极</td></tr>
-              <tr><td><strong>Kink 效应</strong></td><td>存在——高 VDS 下碰撞电离积累空穴使体电位抬升，VTH 下降，ID 突增</td><td>不存在——体区空穴被接触抽走，电位稳定</td></tr>
-              <tr><td><strong>输出电导（gds）</strong></td><td>Kink 区 gds 增大，降低本征增益 gm·ro</td><td>gds 稳定，gm·ro 更高</td></tr>
-              <tr><td><strong>寄生电容</strong></td><td>无体接触 → 低寄生（Cdb 更小）</td><td>体接触引入额外结电容 → 寄生增大</td></tr>
-              <tr><td><strong>fT / fmax</strong></td><td>更高（寄生小）</td><td>略低（但差距随工艺节点缩小）</td></tr>
-              <tr><td><strong>Ron（开关应用）</strong></td><td>较低（无体接触电阻）</td><td>略高</td></tr>
-              <tr><td><strong>线性度</strong></td><td>体电位调制引入非线性，IIP3 较低</td><td>体电位稳定 → IIP3 更优</td></tr>
-              <tr><td><strong>适用场景</strong></td><td>对 fT 要求极高、线性度要求适中的高频 LNA、VCO</td><td>对线性度和稳定性要求高的开关管、功率放大器前级</td></tr>
-            </tbody>
-          </table>
-          <p class="table-caption">表3：SOI 工艺中 FB 与 BT 晶体管的特性对比 [5][6]</p>
-        </div>
-
-        <p><strong>选型决策逻辑：</strong>在 LNA 设计中，如果功耗预算充裕且噪声/增益是主要优化目标，FB 管的高 fT 优势显著——在固定 ID 下，FB 管的同尺寸 fT 通常比 BT 管高 10%–30%，这意味着更低的 NFmin 和更高的可用增益。但如果 LNA 工作在严苛的线性度规范下（例如 sub-6 GHz 频段的 CA（Carrier Aggregation）场景，IIP3 要求 > −5 dBm），BT 管的稳定体电位提供的线性度优势可能更关键 <span class="ref">[5][6]</span>。</p>
-
-        <hr style="border:none;border-top:1px solid rgba(255,255,255,0.08);margin:32px 0;">
-
-        <h4>第六部分 · 实际设计过程的步骤归纳</h4>
-
-        <p>基于以上分析，可以将固定功耗约束下的 LNA 晶体管选型归纳为以下步骤：</p>
-
-        <ol>
-          <li><strong>锁定边界条件：</strong>确认 VDD 和 IDD（总功耗）、工作频率 f0、工艺节点和可用晶体管类型（FB/BT）。</li>
-          <li><strong>选择沟道长度 L：</strong>通常取工艺允许的最小 L（保证 fT 最大化），除非需要高本征增益（gm·ro）——此时可适度增加 L（代价是 Cgs 增大、fT 下降）。</li>
-          <li><strong>扫描 W：</strong>在固定 ID 下扫描 W 得到 gm/ID、fT、NFmin、Cgs 等参数的查找表（LUT）——这是 gm/ID 方法论的标准步骤，但加入了「ID 固定」的约束。</li>
-          <li><strong>确定工作点：</strong>根据 LNA 规范（NF、增益、IIP3）在 gm/ID 轴上定位目标工作区域：
-            <ul>
-              <li>噪声优先 → 高 fT（低 gm/ID，小 W）</li>
-              <li>增益优先 → 高 gm（中高 gm/ID，中等 W）</li>
-              <li>线性度优先 → 高 Vov（低 gm/ID，更小 W，更大电压摆幅）</li>
-            </ul>
-          </li>
-          <li><strong>选择晶体管类型：</strong>在 SOI 工艺中，根据线性度和 fT 的相对优先级选择 FB 或 BT。若对二者均有严格要求，可考虑不同管型用于不同级（例如 LNA 第一级用 FB 追求低 NF，第二级用 BT 提升线性度）。</li>
-          <li><strong>匹配设计：</strong>在确定 W 和偏置后，通过源极电感退化（Ls）调整 Re{Zin} 向 50 Ω 靠拢，同时利用栅极电感（Lg）与 Cgs 谐振完成虚部抵消。此时 Ls 的取值应综合考虑噪声匹配与功率匹配的折衷。</li>
-        </ol>
-
-        <hr style="border:none;border-top:1px solid rgba(255,255,255,0.08);margin:32px 0;">
-
-        <h4>第七部分 · 总结</h4>
-
-        <p>本文的核心脉络可以用一句话概括：<strong>在功耗锁定的前提下，LNA 晶体管选型的本质，是通过 W 和偏置点的选择，在「电流效率（gm/ID）」与「速度/带宽（fT）」的连续光谱上，找到与系统噪声、增益、线性度规范最匹配的那一个点</strong>。</p>
-
-        <p>这个框架将看似繁杂的「五指标博弈」降维为两个核心自由度的选择：<strong>W（尺寸）</strong>和<strong>晶体管类型（FB/BT）</strong>。偏置点 Vov 并非独立变量——它由 W 和固定 ID 自动确定。而 Cgs 作为 W 的直接函数，同时牵动 fT、NFmin、输入阻抗和最优噪声源阻抗——使得噪声优化成为四个互相嵌套的闭环方程，而非单一变量的简单极大化问题。</p>
-
-        <p>最终，所有的匹配设计——电感退化、栅极电感谐振、输出匹配网络——都是在晶体管选型已锁定的性能上限之下，进行的精细指标置换。理解这一点，是走向系统化 LNA 设计的第一步。</p>
+        <p>无论身处学校还是公司，作为 IC Designer，我们追逐的目标始终如一：<strong>让设计达到工艺的极限</strong>。工业级商品设计流程漫长，需要考虑的内容不仅包括片上设计，还要兼顾基板寄生、可靠性、寿命等多个环节，并受限于成本指标（Costdown）。然而，带着种种锁链起舞、努力保持优雅——等到曲终谢幕，也足以感到自豪。</p>
 
         <h4>参考文献</h4>
         <ol class="refs">
           <li>B. Razavi, <em>RF Microelectronics</em>, 2nd ed., Prentice Hall, 2012, Ch. 5 (LNA Design), Ch. 2 (Noise in RF circuits).</li>
-          <li>T. H. Lee, <em>The Design of CMOS Radio-Frequency Integrated Circuits</em>, 2nd ed., Cambridge University Press, 2004, Ch. 12 (LNA Design).</li>
-          <li>Y. Tsividis and C. McAndrew, <em>Operation and Modeling of the MOS Transistor</em>, 3rd ed., Oxford University Press, 2011, Ch. 4–7.</li>
+          <li>B. Razavi, <em>Design of Analog CMOS Integrated Circuits</em>, 2nd ed., McGraw-Hill, 2017, Ch. 2–3.</li>
+          <li>T. H. Lee, <em>The Design of CMOS Radio-Frequency Integrated Circuits</em>, 2nd ed., Cambridge University Press, 2004, Ch. 12.</li>
           <li>D. K. Shaeffer and T. H. Lee, "A 1.5-V, 1.5-GHz CMOS low noise amplifier," <em>IEEE Journal of Solid-State Circuits</em>, vol. 32, no. 5, pp. 745–759, May 1997.</li>
-          <li>J.-P. Raskin, "SOI Technology: An Opportunity for RF Designers?" <em>IEEE Topical Meeting on Silicon Monolithic Integrated Circuits in RF Systems (SiRF)</em>, 2009.</li>
-          <li>A. O. Adan, T. Yoshimasu, T. Nakatani, et al., "Linearity and low-noise performance of SOI MOSFETs for RF applications," <em>IEEE Transactions on Electron Devices</em>, vol. 49, no. 5, pp. 881–888, May 2002.</li>
+          <li>T.-K. Nguyen et al., "CMOS Low-Noise Amplifier Design Optimization Techniques," <em>IEEE Transactions on Microwave Theory and Techniques</em>, vol. 52, no. 5, pp. 1433–1442, May 2004.</li>
+          <li>Y. Tsividis and C. McAndrew, <em>Operation and Modeling of the MOS Transistor</em>, 3rd ed., Oxford University Press, 2011, Ch. 4–7.</li>
         </ol>
 
             </div>
