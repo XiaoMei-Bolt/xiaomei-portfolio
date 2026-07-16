@@ -3240,21 +3240,24 @@
             <!-- Boundary line VDS = VGS - VTH (diagonal) -->
             <line x1="300" y1="320" x2="760" y2="120" stroke="rgba(255,255,255,0.15)" stroke-width="1" stroke-dasharray="6,4"/>
 
-            <!-- ID-VDS curves -->
-            <path d="M80,310 C120,280 180,220 220,260 L300,260 L320,250 L400,235 L500,225 L600,220 L700,215 L760,212" fill="none" stroke="#5a9fd4" stroke-width="1.8"/>
-            <path d="M80,290 C120,260 180,200 220,230 L300,230 L320,222 L400,210 L500,200 L600,196 L700,192 L760,190" fill="none" stroke="#3b7ab8" stroke-width="1.5"/>
-            <path d="M80,270 C120,240 180,180 220,200 L300,200 L320,194 L400,185 L500,178 L600,174 L700,170 L760,168" fill="none" stroke="#2d5a8e" stroke-width="1.2"/>
+            <!-- ID-VDS curves: smooth cubic bezier - triode rise then saturation plateau -->
+            <!-- VGS4 (highest): steep triode, highest sat current, largest Vov -->
+            <path d="M80,308 C120,278 220,228 290,214 C370,212 550,208 760,204" fill="none" stroke="#5a9fd4" stroke-width="2"/>
+            <!-- VGS3 (medium): moderate triode, medium sat current -->
+            <path d="M80,288 C130,258 210,220 270,228 C350,226 530,222 760,219" fill="none" stroke="#3b7ab8" stroke-width="1.6"/>
+            <!-- VGS2 (low): gentle triode, low sat current, smallest Vov -->
+            <path d="M80,272 C130,248 190,225 240,236 C310,234 480,231 760,229" fill="none" stroke="#2d5a8e" stroke-width="1.3"/>
 
-            <!-- VGS labels -->
-            <text x="765" y="208" fill="#5a9fd4" font-size="9">V(GS4)</text>
-            <text x="765" y="186" fill="#3b7ab8" font-size="9">V(GS3)</text>
-            <text x="765" y="164" fill="#2d5a8e" font-size="9">V(GS2)</text>
+            <!-- VGS labels (right-aligned at saturation level) -->
+            <text x="765" y="200" fill="#5a9fd4" font-size="9">V(GS4)</text>
+            <text x="765" y="215" fill="#3b7ab8" font-size="9">V(GS3)</text>
+            <text x="765" y="225" fill="#2d5a8e" font-size="9">V(GS2)</text>
 
             <!-- Region labels -->
             <text x="180" y="315" fill="#f0a050" font-size="12" font-weight="700" text-anchor="middle">线性区（Triode）</text>
             <text x="180" y="330" fill="rgba(255,255,255,0.35)" font-size="9" text-anchor="middle">V(DS) &lt; V(ov), 电阻行为</text>
-            <text x="530" y="85" fill="#10b981" font-size="12" font-weight="700" text-anchor="middle">饱和区（Saturation）</text>
-            <text x="530" y="100" fill="rgba(255,255,255,0.35)" font-size="9" text-anchor="middle">V(DS) &gt; V(ov), 恒流源行为</text>
+            <text x="530" y="75" fill="#10b981" font-size="12" font-weight="700" text-anchor="middle">饱和区（Saturation）</text>
+            <text x="530" y="90" fill="rgba(255,255,255,0.35)" font-size="9" text-anchor="middle">V(DS) &gt; V(ov), 恒流源行为</text>
 
             <!-- Cutoff annotation -->
             <text x="120" y="365" fill="rgba(255,255,255,0.3)" font-size="9" text-anchor="middle">V(GS) &lt; V(TH): 截止区（x轴下方）</text>
@@ -3339,6 +3342,36 @@
         <p><strong>亚阈值泄漏（Subthreshold Leakage）：</strong>在 V(GS) 接近但略低于 V(TH) 的亚阈值区（也称为弱反型区），沟道中仍存在少量热激发电子，形成指数衰减的亚阈值电流。该电流每 60–100 mV 降低一个数量级——60 mV/dec 是室温下的理论极限（由玻尔兹曼分布 kT/q ≈ 26 mV × ln(10) ≈ 60 mV 决定），实际器件因界面态等因素约为 70–90 mV/dec <span class="ref">[1][4]</span>。</p>
 
         <p>亚阈值泄漏是现代数字集成电路功耗管理的核心挑战之一——数十亿个晶体管即使各泄漏 1 nA，芯片总泄漏功耗也相当可观。但在<strong>超低功耗模拟电路</strong>中，弱反型区反而是宝贵的——因为此区域的 gm/Id 达到最高值（见第四部分）。</p>
+
+        <hr style="border:none;border-top:1px solid rgba(255,255,255,0.08);margin:32px 0;">
+
+        <h4>第 3.5 部分 · 沟道物理图像——强反型与弱反型的本质区别</h4>
+
+        <p>在进入饱和区和 gm/Id 方法论之前，有必要先建立清晰的物理图像：<strong>栅极电压 V(GS) 到底在沟道里做了什么？</strong></p>
+
+        <p><strong>强反型（Strong Inversion）：</strong>当 V(GS) 远大于 V(TH)，栅极电场在硅-氧化层界面处吸引来足够多的电子，使得界面处的电子浓度超过了衬底的受主掺杂浓度——即表面发生了「反型」。此时沟道导电的载流子主要是<strong>漂移（drift）</strong>运动——源漏电场驱动电子从源极漂移到漏极。沟道像一个受栅压调制的电阻，载流子浓度与 V(ov) = V(GS) − V(TH) 近似成正比，因此电流 I(D) 与 V(ov) 的平方成正比（平方律）。强反型的典型特征是<strong>载流子多、电流大、速度快</strong>——代价是功耗高 <span class="ref">[1][2]</span>。</p>
+
+        <p><strong>弱反型（Weak Inversion / Subthreshold）：</strong>当 V(GS) 略低于 V(TH)（但仍然为正），栅极电场只能吸引极少量的电子到表面，界面电子浓度远低于衬底掺杂浓度——这时沟道并未真正「反型」，而是处于<strong>「弱反型」</strong>状态。载流子的输运机制从漂移转变为<strong>扩散（diffusion）</strong>——电子从高浓度的源极扩散到低浓度的漏极，类似于 BJT 中少数载流子的扩散机制。因为载流子浓度与 V(GS) 呈<strong>指数关系</strong>（玻尔兹曼分布），所以 I(D) ∝ exp(V(GS) / (n·kT/q))，电流随栅压指数增长。弱反型的典型特征是<strong>载流子极少、电流极小、速度极慢</strong>——但单位电流下的跨导效率（gm/Id）极高，因为指数关系的斜率天然高于平方律 <span class="ref">[2][4]</span>。</p>
+
+        <p><strong>物理图像对比：</strong></p>
+
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>维度</th><th>强反型（Strong Inversion）</th><th>弱反型（Weak Inversion）</th></tr></thead>
+            <tbody>
+              <tr><td><strong>界面电子浓度 vs 衬底掺杂</strong></td><td>电子浓度 &gt;&gt; 受主浓度（真正反型）</td><td>电子浓度 &lt;&lt; 受主浓度（弱反型）</td></tr>
+              <tr><td><strong>载流子输运机制</strong></td><td>漂移（Drift）主导</td><td>扩散（Diffusion）主导</td></tr>
+              <tr><td><strong>I(D)–V(GS) 关系</strong></td><td>平方律：I(D) ∝ V(ov)²</td><td>指数律：I(D) ∝ exp(V(GS)/(n·kT/q))</td></tr>
+              <tr><td><strong>gm/Id 典型值</strong></td><td>5–12 V⁻¹</td><td>25–35 V⁻¹</td></tr>
+              <tr><td><strong>电流密度（每 μm 沟宽）</strong></td><td>高（μA–mA 级）</td><td>极低（nA 级）</td></tr>
+              <tr><td><strong>速度（fT）</strong></td><td>快（GHz 级）</td><td>慢（KHz–MHz 级）</td></tr>
+              <tr><td><strong>类比</strong></td><td>宽阔的河流——水量大、流速快</td><td>狭窄的渗透——水量小、靠浓度差推动</td></tr>
+            </tbody>
+          </table>
+          <p class="table-caption">表：强反型与弱反型的沟道物理图像对比 · 中等反型（Moderate Inversion）是两者的平滑过渡 <span class="ref">[1][2][4]</span></p>
+        </div>
+
+        <p>这个物理图像解释了一个看似矛盾的现象：<strong>为什么弱反型的 gm/Id 反而更高？</strong>因为 gm = ∂I(D)/∂V(GS)，在弱反型区 I(D) 随 V(GS) 指数增长，所以对于给定的偏置电流 I(D)，指数曲线的斜率（导数除以函数值）在任何电流水平上都大于平方律曲线——<strong>弱反型用极少量的电流就能产生可观的跨导变化</strong>，电流到跨导的「转换效率」最高。而强反型需要大量电流才能维持同样的 gm，但换来了速度（fT ∝ gm/Cgg，高电流意味着更快的栅电容充放电）<span class="ref">[5][6]</span>。</p>
 
         <hr style="border:none;border-top:1px solid rgba(255,255,255,0.08);margin:32px 0;">
 
@@ -3437,6 +3470,24 @@
           <li><strong>尺寸无关性：</strong>一旦确定了 gm/Id 工作点和沟道长度 L，W 由所需的 gm 直接解出：W = gm / [gm/Id · Id(W)]。这消除了传统方法中「先定 W/L，再看 gm 是否够用」的反复迭代。</li>
           <li><strong>系统化：</strong>每一个设计决策（功耗、速度、增益、噪声）都可以映射到 gm/Id 轴上的一个具体数值，使模拟设计从「经验调参」走向「参数化设计」。</li>
         </ol>
+
+        <h4 style="font-size:16px;color:rgba(255,255,255,0.9);margin-top:24px;">4.4 为什么不同 gm/Id 对应不同应用——背后的物理折衷</h4>
+
+        <p>表3中的映射不是人为规定的，而是由<strong>三个硬性的物理折衷</strong>决定的：</p>
+
+        <p><strong>折衷一：gm/Id vs fT —— 电流效率与速度不可兼得。</strong></p>
+
+        <p>特征频率（fT）是晶体管本征速度的度量——定义为电流增益降至 1 时的频率。它与 gm 的关系为 <strong>fT ≈ gm / (2π · Cgg)</strong>，其中 Cgg 是总栅电容。高 gm/Id 意味着偏置在弱反型——栅压只略高于阈值，沟道载流子极少，gm 绝对值很小。虽然「单位电流的跨导」高，但<strong>总 gm 小 → 对栅电容的驱动能力弱 → fT 低</strong>。反之，强反型区 I(D) 大 → gm 大 → fT 高，但 gm/Id 低——即每消耗 1 安培电流只换来较少的跨导。这个折衷是物理本质性的：<strong>载流子浓度直接决定了速度上限</strong>——弱反型像涓涓细流，强反型像滔滔江水，速度天然不同 <span class="ref">[1][5]</span>。</p>
+
+        <p><strong>折衷二：gm/Id vs gm·ro —— 增益与速度的经典权衡。</strong></p>
+
+        <p>本征增益 gm·ro 是单管能提供的最大电压增益。输出电阻 ro ≈ 1/(λ·I(D))——电流越小，ro 越大。弱反型区 I(D) 极小（nA 级），因此 ro 极大，gm·ro 可达 40–50 dB——对于生物医疗前端这种需要从 μV 级信号中提取信息的场景，高本征增益至关重要。但在 RF 前端，信号电平通常在 mV 级，反而更需要带宽和线性度——此时牺牲增益换取速度是明智的 <span class="ref">[1][2]</span>。</p>
+
+        <p><strong>折衷三：gm/Id vs 电流密度（功耗的物理本质）。</strong></p>
+
+        <p>gm/Id = 30 V⁻¹ 意味着要产生 1 mS 的跨导，只需要约 33 μA 的偏置电流；而 gm/Id = 5 V⁻¹ 则需要 200 μA——相差 6 倍。这就是弱反型超低功耗的核心来源。在植入式医疗器械、无线传感节点等对功耗极度敏感的场景中，6 倍的电流差异直接决定了电池寿命是「几个月」还是「几年」。但代价就是 fT 从 GHz 骤降至 KHz-MHz 级别——恰好这些场景的信号带宽本身也不高（心电信号 ~250 Hz，传感器采样 ~1 KHz），因此<strong>「低 gm/Id → 高 fT → 高功耗」和「高 gm/Id → 低 fT → 低功耗」的选择，本质上是将晶体管的工作点对准应用的实际带宽需求</strong> <span class="ref">[5][6]</span>。</p>
+
+        <p><strong>三个折衷的统一视角：</strong>设计者在 gm/Id 轴上的选择，实际上是在选一个「工作点」——这个点同时决定了器件的反型程度（弱→强）、电流密度（低→高）、跨导效率（高→低）、速度（慢→快）和本征增益（高→低）。如图所示（表3 + 图二），gm/Id 从 ~30 到 ~5 V⁻¹ 的连续移动，就是设计者在<strong>「功耗效率 ← → 速度/带宽」</strong>的光谱上滑动。没有「更好」的 gm/Id 值——只有与目标应用带宽和功耗约束最匹配的值 <span class="ref">[5][6]</span>。</p>
 
         <div class="table-wrap">
           <table>
