@@ -3595,21 +3595,91 @@
           <li><strong>发热（自热效应）：</strong>高迁移率意味着更大的导通电流 → 更大的 I²R 焦耳热。在 SOI 和 FinFET 中，埋氧层（BOX）的低热导率使得热量难以散发，导致<strong>自热效应（Self-Heating）</strong>——沟道温度可比环境高 20–50°C，反过来又降低迁移率（详见下文散射机制），形成正反馈 <span class="ref">[3][7]</span>。</li>
         </ul>
 
-        <h4 style="font-size:14px;color:#5a9fd4;margin-top:18px;">对噪声系数 NF 的影响</h4>
 
-        <p>MOSFET 的噪声性能与迁移率存在两个层面的关联：</p>
+        <h4 style="font-size:14px;color:#5a9fd4;margin-top:18px;">对噪声性能的影响——热噪声与 1/f 噪声</h4>
 
-        <p><strong>① 沟道热噪声：</strong>沟道热噪声的功率谱密度为：</p>
+        <p>MOSFET 的噪声主要由<strong>沟道热噪声（Thermal Noise）</strong>和<strong>闪烁噪声（1/f Noise）</strong>两大成分构成。迁移率 μn 对二者的影响机制截然不同：热噪声与 μn 线性关联，而 1/f 噪声则通过陷阱俘获-释放过程与 μn 的涨落间接耦合。</p>
+
+        <h4 style="font-size:13px;color:#f0a050;margin-top:16px;">一、沟道热噪声——迁移率的直接效应</h4>
+
+        <p>沟道热噪声源于载流子的随机热运动（布朗运动），其功率谱密度为：</p>
 
         <p style="text-align:center;font-size:14px;color:#5a9fd4;margin:8px 0;"><strong>S(id)(thermal) = 4kT · γ · g(d0) &nbsp;&nbsp;|&nbsp;&nbsp; g(d0) = μn · Cox · (W/L) · V(ov)</strong></p>
 
-        <p>其中 g(d0) 是沟道电导（零 V(DS) 时的源漏电导），与 μn 成正比。然而噪声因子 γ（长沟道器件 γ=2/3，短沟道器件 γ 可达 2–3）的变化幅度远大于 μn 的工艺差异——<strong>短沟道效应导致的热载流子噪声增强是 NF 恶化的主导因素</strong>，迁移率本身的直接影响相对次要 <span class="ref">[1][2]</span>。</p>
+        <p>其中 g(d0) 是沟道在零 V(DS) 时的源漏电导，<strong>与 μn 成正比</strong>。噪声因子 γ 由偏置条件决定：长沟道器件在饱和区 γ ≈ 2/3，而短沟道器件因热载流子效应 γ 可高达 2–3。</p>
 
-        <p><strong>② 通过 fT 间接影响 NFmin：</strong></p>
+        <p><strong>迁移率对热噪声的净效应分析：</strong></p>
+
+        <ul>
+          <li><strong>μn ↑ → g(d0) ↑ → 热噪声电流谱密度 S(id) 的本征值增大。</strong>更高的迁移率意味着更多的载流子参与导电，随机热运动的绝对涨落也更大。</li>
+          <li><strong>但</strong>同时 μn ↑ → fT ↑ → NFmin = 1 + K·(f/fT) <strong>降低</strong>。因为热噪声电流虽然增大，但器件跨导 gm 也增大——输出端信噪比 SNR = (gm²·v(in)²)/S(id) 中的 gm² 与 g(d0) 同步增长，<strong>二者在强反型区近似抵消</strong>。</li>
+          <li><strong>实际设计中</strong>，短沟道效应导致的 γ 从 2/3 增至 2–3（4.5× 恶化）远大于 μn 工艺差异（~30%）的影响——<strong>噪声因子 γ 是热噪声恶化的主导因素，迁移率的直接影响相对次要</strong> <span class="ref">[1][2]</span>。</li>
+        </ul>
+
+        <p><strong>通过 fT 的间接影响：</strong></p>
 
         <p style="text-align:center;font-size:14px;color:#5a9fd4;margin:8px 0;"><strong>fT ≈ gm / (2π·Cgs) ∝ μn · V(ov) / L² &nbsp;&nbsp;|&nbsp;&nbsp; NFmin ≈ 1 + K·(f/fT)</strong></p>
 
-        <p>迁移率越高 → fT 越高 → NFmin 越低。这个关系在 RF LNA 设计中至关重要：<strong>高迁移率工艺（如 GaAs pHEMT、GaN HEMT、SOI CMOS）天然具有更低的 NFmin</strong>。但要注意，迁移率仅影响 NFmin 的 fT 项——栅极电阻噪声（Rg）、衬底电阻噪声等因素与迁移率无关，在高频下可能成为噪声主导项 <span class="ref">[1][8]</span>。</p>
+        <p>高迁移率工艺（GaAs pHEMT、GaN HEMT、SOI CMOS）天然具有更低的 NFmin。但栅极电阻噪声（Rg ∝ 1/W）和衬底热噪声与迁移率无关，在高频下可能成为噪声主导项 <span class="ref">[1][8]</span>。</p>
+
+        <h4 style="font-size:13px;color:#f0a050;margin-top:16px;">二、1/f 噪声（闪烁噪声）——迁移率涨落模型</h4>
+
+        <p>1/f 噪声的功率谱密度在低频段以 1/f 的形式上升，是低频模拟电路（基带放大器、传感器前端、PLL 低频相位噪声）的核心限制因素。其谱密度为：</p>
+
+        <p style="text-align:center;font-size:14px;color:#5a9fd4;margin:8px 0;"><strong>S(id)(1/f) = K(F) · I(D)^(a) / (Cox · L² · f)</strong></p>
+
+        <p>其中 K(F) 是工艺相关的闪烁噪声系数，指数 a ≈ 1（弱反型）到 2（强反型）。</p>
+
+        <p><strong>1/f 噪声的两种物理解释模型：</strong></p>
+
+        <p><strong>① 载流子数涨落模型（ΔN Model / McWhorter 模型）：</strong></p>
+
+        <p>栅氧中的界面陷阱态（D(it)）随机俘获和释放沟道载流子，导致沟道载流子数 N 随时间涨落：</p>
+
+        <p style="text-align:center;font-size:14px;color:#5a9fd4;margin:8px 0;"><strong>δI(D) / I(D) = δN / N &nbsp;&nbsp;|&nbsp;&nbsp; S(N) ∝ 1/f（陷阱时间常数的宽分布）</strong></p>
+
+        <p>在这个模型中，迁移率本身<strong>不参与</strong>涨落——噪声完全由载流子数目的随机波动产生。降低 1/f 噪声的关键是<strong>降低界面态密度 D(it)</strong>，通过氢气退火、氘退火等工艺优化 Si/SiO₂ 界面质量 <span class="ref">[1][9]</span>。</p>
+
+        <p><strong>② 迁移率涨落模型（Δμ Model / Hooge 模型）：</strong></p>
+
+        <p>Hooge 提出的经验模型认为 1/f 噪声源自迁移率本身的涨落——晶格散射、杂质散射等机制的随机波动导致 μn 随时间起伏：</p>
+
+        <p style="text-align:center;font-size:14px;color:#5a9fd4;margin:8px 0;"><strong>S(id) / I(D)² = α(H) / (N(total) · f) &nbsp;&nbsp;|&nbsp;&nbsp; α(H) ≈ 2×10⁻³（Hooge 参数，体硅）</strong></p>
+
+        <p>其中 N(total) 是沟道中的总载流子数，α(H) 是 Hooge 参数——一个衡量材料「噪声品质」的工艺指标。关键含义：<strong>载流子总数越多，迁移率涨落的相对影响越小</strong>——这就是为什么大尺寸器件（W·L 大 → N(total) 大）具有更低 1/f 噪声的原因。Hooge 参数 α(H) 与晶格缺陷密度正相关——退火充分的器件 α(H) 可低至 10⁻⁵ 量级，辐照损伤严重的器件 α(H) 可达 10⁻² <span class="ref">[9][10]</span>。</p>
+
+        <p><strong>统一视角——ΔN + Δμ 的协同作用：</strong></p>
+
+        <p>现代 MOSFET 中，两种机制同时存在：</p>
+
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>特性</th><th>ΔN 模型（载流子数涨落）</th><th>Δμ 模型（迁移率涨落）</th></tr></thead>
+            <tbody>
+              <tr><td><strong>噪声来源</strong></td><td>Si/SiO₂ 界面陷阱俘获/释放载流子</td><td>散射中心（声子、杂质、缺陷）的随机涨落</td></tr>
+              <tr><td><strong>与 μn 的关系</strong></td><td>间接——通过陷阱影响有效沟道载流子数</td><td><strong>直接——μn 本身的涨落即噪声源</strong></td></tr>
+              <tr><td><strong>与面积的关系</strong></td><td>S(id)(1/f) ∝ 1/(W·L)</td><td>S(id)(1/f) ∝ 1/(W·L)</td></tr>
+              <tr><td><strong>主导范围</strong></td><td>弱反型、小尺寸器件、界面态高的工艺</td><td>强反型、大尺寸器件、体材料缺陷为主的工艺</td></tr>
+              <tr><td><strong>改善手段</strong></td><td>降低 D(it)（氢气退火、氘退火、氮化氧化层）</td><td>降低晶格缺陷密度、优化掺杂均匀性</td></tr>
+            </tbody>
+          </table>
+          <p class="table-caption">表：1/f 噪声两种模型的对比 · 真实器件中两者协同作用，ΔN 通常占主导 [1][9][10]</p>
+        </div>
+
+        <p><strong>迁移率对 1/f 噪声的工程启示：</strong></p>
+
+        <ol>
+          <li><strong>高迁移率工艺并不等于低 1/f 噪声：</strong>SOI 的 μn 高于体硅，但埋氧层（BOX）中的陷阱密度更高——SOI 器件的 1/f 噪声通常比体硅<strong>高 5–10 dB</strong>。噪声优化不能只追求高迁移率。</li>
+          <li><strong>最有效的降噪手段不是优化 μn，而是优化界面：</strong>1/f 噪声的主要来源是 Si/SiO₂ 界面的 D(it)，而非 μn 的绝对值。栅氧质量的改善（低 D(it) 工艺、Buried Channel 器件将沟道埋入体内远离界面）比提高迁移率更能有效降低 1/f 噪声 <span class="ref">[9][10]</span>。</li>
+          <li><strong>Buried Channel vs Surface Channel：</strong>将导电沟道埋入硅体内（远离 Si/SiO₂ 界面）可显著降低 ΔN 型 1/f 噪声，因为载流子不再与界面陷阱直接交互。但这种器件的栅控能力减弱（有效 Cox 降低），gm 和 fT 都会下降——<strong>低噪声与高速度之间的本质折衷</strong>。</li>
+          <li><strong>面积是硬通货：</strong>ΔN 和 Δμ 两种模型都预言 S(id)(1/f) ∝ 1/(W·L)。将器件面积增大 10×，1/f 噪声降低 10 dB——这是模拟电路中「低噪声 = 大面积」的物理根源。代价是更大的寄生电容和更低的 fT <span class="ref">[9][10]</span>。</li>
+        </ol>
+
+        <div style="background:rgba(240,160,80,0.06);border:1px solid rgba(240,160,80,0.15);border-radius:8px;padding:12px 16px;margin:12px 0;">
+          <strong style="color:#f0a050;">核心结论：</strong>迁移率对<strong>热噪声</strong>的影响是线性的（g(d0) ∝ μn）但被 γ 因子遮蔽；对<strong>1/f 噪声</strong>的影响通过 Δμ 模型间接体现（α(H) 与缺陷密度相关）但通常被 ΔN 模型（界面陷阱）主导。在 RF LNA 设计中优先关注热噪声 → 高迁移率有益；在基带/传感器前端优先关注 1/f 噪声 → 优化界面质量和增大面积远比提高迁移率更有效。
+        </div>
+
+        <hr style="border:none;border-top:1px solid rgba(255,255,255,0.08);margin:24px 0;">
 
         <h4 style="font-size:14px;color:#5a9fd4;margin-top:18px;">本征迁移率 vs 真实迁移率——是什么在偷走速度？</h4>
 
