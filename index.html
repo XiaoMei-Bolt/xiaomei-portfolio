@@ -3623,6 +3623,230 @@
           <p class="table-caption">表：强反型与弱反型的沟道物理图像对比 · 中等反型（Moderate Inversion）是两者的平滑过渡 <span class="ref">[1][2][4]</span></p>
         </div>
 
+
+
+        <!-- 图X：强反型与弱反型沟道载流子分布对比 -->
+        <div class="diagram-container">
+          <svg viewBox="0 0 960 480" xmlns="http://www.w3.org/2000/svg">
+
+            <text x="480" y="22" text-anchor="middle" fill="#fff" font-size="14" font-weight="600">图二续 · 强反型与弱反型沟道载流子分布与能带对比</text>
+
+            <!-- ============================================================ -->
+            <!-- LEFT: 弱反型 (Weak Inversion) -->
+            <!-- ============================================================ -->
+            <text x="240" y="50" text-anchor="middle" fill="#8b5cf6" font-size="13" font-weight="700">弱反型 (Weak Inversion)</text>
+            <text x="240" y="65" text-anchor="middle" fill="#fff" fill-opacity="0.35" font-size="9">V(GS) 略低于 V(TH) · 扩散输运 · 高 gm/Id</text>
+
+            <!-- Gate electrode -->
+            <rect x="80" y="78" width="320" height="14" rx="3" fill="#8b9dc3" stroke="#a0b4d0" stroke-width="0.8"/>
+            <text x="240" y="89" text-anchor="middle" fill="#fff" font-size="8" font-weight="600">Gate (Poly-Si)</text>
+            <line x1="240" y1="68" x2="240" y2="78" stroke="#8b9dc3" stroke-width="1.5"/>
+            <text x="252" y="72" fill="#fff" fill-opacity="0.4" font-size="8">V(GS) ≈ V(TH)</text>
+
+            <!-- SiO2 -->
+            <rect x="80" y="92" width="320" height="10" fill="#2a4a6b" stroke="#3b6b9a" stroke-width="0.5"/>
+            <text x="240" y="100" text-anchor="middle" fill="#fff" fill-opacity="0.25" font-size="7">SiO₂ 栅氧层</text>
+
+            <!-- N+ Source -->
+            <rect x="80" y="102" width="40" height="42" rx="2" fill="#1a3a6c" stroke="#3b6ab8" stroke-width="0.8"/>
+            <text x="100" y="126" text-anchor="middle" fill="#5a9fd4" font-size="8" font-weight="600">N⁺</text>
+            <text x="100" y="138" text-anchor="middle" fill="#fff" fill-opacity="0.3" font-size="6">Source</text>
+
+            <!-- N+ Drain -->
+            <rect x="360" y="102" width="40" height="42" rx="2" fill="#1a3a6c" stroke="#3b6ab8" stroke-width="0.8"/>
+            <text x="380" y="126" text-anchor="middle" fill="#5a9fd4" font-size="8" font-weight="600">N⁺</text>
+            <text x="380" y="138" text-anchor="middle" fill="#fff" fill-opacity="0.3" font-size="6">Drain</text>
+
+            <!-- P-substrate -->
+            <rect x="80" y="144" width="320" height="56" fill="#2d1f3a" stroke="#4a3060" stroke-width="0.5"/>
+            <text x="240" y="192" text-anchor="middle" fill="#c084fc" fill-opacity="0.35" font-size="7">P 型衬底</text>
+
+            <!-- Hole symbols (many in weak inversion - surface not inverted) -->
+            <circle cx="110" cy="162" r="1.8" fill="none" stroke="#c084fc" stroke-width="0.7"/>
+            <text x="110" y="163.5" text-anchor="middle" fill="#c084fc" fill-opacity="0.6" font-size="6">+</text>
+            <circle cx="150" cy="175" r="1.8" fill="none" stroke="#c084fc" stroke-width="0.7"/>
+            <text x="150" y="176.5" text-anchor="middle" fill="#c084fc" fill-opacity="0.6" font-size="6">+</text>
+            <circle cx="200" cy="165" r="1.8" fill="none" stroke="#c084fc" stroke-width="0.7"/>
+            <text x="200" y="166.5" text-anchor="middle" fill="#c084fc" fill-opacity="0.6" font-size="6">+</text>
+            <circle cx="250" cy="178" r="1.8" fill="none" stroke="#c084fc" stroke-width="0.7"/>
+            <text x="250" y="179.5" text-anchor="middle" fill="#c084fc" fill-opacity="0.6" font-size="6">+</text>
+            <circle cx="300" cy="168" r="1.8" fill="none" stroke="#c084fc" stroke-width="0.7"/>
+            <text x="300" y="169.5" text-anchor="middle" fill="#c084fc" fill-opacity="0.6" font-size="6">+</text>
+            <circle cx="340" cy="174" r="1.8" fill="none" stroke="#c084fc" stroke-width="0.7"/>
+            <text x="340" y="175.5" text-anchor="middle" fill="#c084fc" fill-opacity="0.6" font-size="6">+</text>
+
+            <!-- Sparse electrons near interface (weak inversion - barely any) -->
+            <circle cx="180" cy="108" r="1.5" fill="#8b5cf6" fill-opacity="0.6"/>
+            <circle cx="220" cy="110" r="1.5" fill="#8b5cf6" fill-opacity="0.6"/>
+            <circle cx="260" cy="107" r="1.5" fill="#8b5cf6" fill-opacity="0.6"/>
+            <circle cx="300" cy="109" r="1.5" fill="#8b5cf6" fill-opacity="0.6"/>
+
+            <!-- Sparse channel annotation -->
+            <text x="240" y="126" text-anchor="middle" fill="#8b5cf6" fill-opacity="0.7" font-size="7">稀疏电子 — 未形成真正反型层</text>
+
+            <!-- Depletion region (wide in weak inversion) -->
+            <rect x="120" y="102" width="240" height="28" fill="#4a3060" fill-opacity="0.35" stroke="none"/>
+            <text x="240" y="120" text-anchor="middle" fill="#fff" fill-opacity="0.18" font-size="6">宽耗尽区（表面势低）</text>
+
+            <!-- Key annotations -->
+            <text x="240" y="215" text-anchor="middle" fill="#8b5cf6" fill-opacity="0.8" font-size="9" font-weight="600">电子浓度 n(s) &lt;&lt; 空穴浓度 N(A)</text>
+            <text x="240" y="228" text-anchor="middle" fill="#fff" fill-opacity="0.3" font-size="7">表面电位 ψ(s) &lt; 2·φ(F) — 弱反型判据</text>
+            <text x="240" y="241" text-anchor="middle" fill="#fff" fill-opacity="0.3" font-size="7">输运：扩散（浓度梯度驱动）</text>
+
+            <!-- Vertical separator -->
+            <line x1="475" y1="42" x2="475" y2="248" stroke="#fff" stroke-opacity="0.06" stroke-width="1"/>
+
+            <!-- ============================================================ -->
+            <!-- RIGHT: 强反型 (Strong Inversion) -->
+            <!-- ============================================================ -->
+            <text x="720" y="50" text-anchor="middle" fill="#10b981" font-size="13" font-weight="700">强反型 (Strong Inversion)</text>
+            <text x="720" y="65" text-anchor="middle" fill="#fff" fill-opacity="0.35" font-size="9">V(GS) &gt;&gt; V(TH) · 漂移输运 · 低 gm/Id · 高 fT</text>
+
+            <!-- Gate electrode -->
+            <rect x="560" y="78" width="320" height="14" rx="3" fill="#8b9dc3" stroke="#a0b4d0" stroke-width="0.8"/>
+            <text x="720" y="89" text-anchor="middle" fill="#fff" font-size="8" font-weight="600">Gate (Poly-Si)</text>
+            <line x1="720" y1="68" x2="720" y2="78" stroke="#8b9dc3" stroke-width="1.5"/>
+            <text x="732" y="72" fill="#fff" fill-opacity="0.4" font-size="8">V(GS) &gt;&gt; V(TH)</text>
+
+            <!-- SiO2 -->
+            <rect x="560" y="92" width="320" height="10" fill="#2a4a6b" stroke="#3b6b9a" stroke-width="0.5"/>
+            <text x="720" y="100" text-anchor="middle" fill="#fff" fill-opacity="0.25" font-size="7">SiO₂ 栅氧层</text>
+
+            <!-- N+ Source -->
+            <rect x="560" y="102" width="40" height="42" rx="2" fill="#1a3a6c" stroke="#3b6ab8" stroke-width="0.8"/>
+            <text x="580" y="126" text-anchor="middle" fill="#5a9fd4" font-size="8" font-weight="600">N⁺</text>
+            <text x="580" y="138" text-anchor="middle" fill="#fff" fill-opacity="0.3" font-size="6">Source</text>
+
+            <!-- N+ Drain -->
+            <rect x="840" y="102" width="40" height="42" rx="2" fill="#1a3a6c" stroke="#3b6ab8" stroke-width="0.8"/>
+            <text x="860" y="126" text-anchor="middle" fill="#5a9fd4" font-size="8" font-weight="600">N⁺</text>
+            <text x="860" y="138" text-anchor="middle" fill="#fff" fill-opacity="0.3" font-size="6">Drain</text>
+
+            <!-- P-substrate -->
+            <rect x="560" y="144" width="320" height="56" fill="#2d1f3a" stroke="#4a3060" stroke-width="0.5"/>
+            <text x="720" y="192" text-anchor="middle" fill="#c084fc" fill-opacity="0.35" font-size="7">P 型衬底</text>
+
+            <!-- Few holes (pushed away from surface by inversion) -->
+            <circle cx="620" cy="178" r="1.8" fill="none" stroke="#c084fc" stroke-width="0.7"/>
+            <text x="620" y="179.5" text-anchor="middle" fill="#c084fc" fill-opacity="0.6" font-size="6">+</text>
+            <circle cx="700" cy="175" r="1.8" fill="none" stroke="#c084fc" stroke-width="0.7"/>
+            <text x="700" y="176.5" text-anchor="middle" fill="#c084fc" fill-opacity="0.6" font-size="6">+</text>
+            <circle cx="780" cy="180" r="1.8" fill="none" stroke="#c084fc" stroke-width="0.7"/>
+            <text x="780" y="181.5" text-anchor="middle" fill="#c084fc" fill-opacity="0.6" font-size="6">+</text>
+
+            <!-- Dense electron channel (thick inversion layer) -->
+            <rect x="600" y="104" width="240" height="18" rx="4" fill="#10b981" fill-opacity="0.2" stroke="#10b981" stroke-width="1.5" stroke-dasharray="4,2"/>
+            <text x="720" y="117" text-anchor="middle" fill="#10b981" font-size="8" font-weight="600">密集电子沟道（反型层）</text>
+
+            <!-- Dense electrons -->
+            <circle cx="620" cy="110" r="1.5" fill="#10b981" fill-opacity="0.8"/>
+            <circle cx="640" cy="113" r="1.5" fill="#10b981" fill-opacity="0.8"/>
+            <circle cx="660" cy="109" r="1.5" fill="#10b981" fill-opacity="0.8"/>
+            <circle cx="680" cy="112" r="1.5" fill="#10b981" fill-opacity="0.8"/>
+            <circle cx="700" cy="110" r="1.5" fill="#10b981" fill-opacity="0.8"/>
+            <circle cx="720" cy="114" r="1.5" fill="#10b981" fill-opacity="0.8"/>
+            <circle cx="740" cy="109" r="1.5" fill="#10b981" fill-opacity="0.8"/>
+            <circle cx="760" cy="112" r="1.5" fill="#10b981" fill-opacity="0.8"/>
+            <circle cx="780" cy="110" r="1.5" fill="#10b981" fill-opacity="0.8"/>
+            <circle cx="800" cy="113" r="1.5" fill="#10b981" fill-opacity="0.8"/>
+            <circle cx="820" cy="109" r="1.5" fill="#10b981" fill-opacity="0.8"/>
+
+            <!-- Narrow depletion region -->
+            <rect x="600" y="122" width="240" height="14" fill="#4a3060" fill-opacity="0.25" stroke="none"/>
+            <text x="720" y="132" text-anchor="middle" fill="#fff" fill-opacity="0.12" font-size="6">窄耗尽区（表面势高）</text>
+
+            <!-- Gate field arrows (strong) -->
+            <line x1="660" y1="78" x2="660" y2="94" stroke="#10b981" stroke-width="1.5" marker-end="url(#arrowGreen)"/>
+            <line x1="720" y1="78" x2="720" y2="94" stroke="#10b981" stroke-width="1.5" marker-end="url(#arrowGreen)"/>
+            <line x1="780" y1="78" x2="780" y2="94" stroke="#10b981" stroke-width="1.5" marker-end="url(#arrowGreen)"/>
+            <defs><marker id="arrowGreen" markerWidth="6" markerHeight="5" refX="6" refY="2.5" orient="auto"><path d="M0,0 L6,2.5 L0,5" fill="#10b981"/></marker></defs>
+
+            <!-- Key annotations -->
+            <text x="720" y="215" text-anchor="middle" fill="#10b981" fill-opacity="0.8" font-size="9" font-weight="600">电子浓度 n(s) &gt;&gt; 空穴浓度 N(A)</text>
+            <text x="720" y="228" text-anchor="middle" fill="#fff" fill-opacity="0.3" font-size="7">表面电位 ψ(s) &gt; 2·φ(F) — 强反型判据</text>
+            <text x="720" y="241" text-anchor="middle" fill="#fff" fill-opacity="0.3" font-size="7">输运：漂移（电场驱动）</text>
+
+            <!-- ============================================================ -->
+            <!-- Bottom: Energy band comparison -->
+            <!-- ============================================================ -->
+            <line x1="20" y1="268" x2="940" y2="268" stroke="#fff" stroke-opacity="0.06" stroke-width="1"/>
+
+            <text x="480" y="290" text-anchor="middle" fill="#fff" fill-opacity="0.5" font-size="11" font-weight="600">能带弯曲对比（Si/SiO₂ 界面附近的能带图）</text>
+
+            <!-- LEFT band: Weak Inversion -->
+            <text x="240" y="315" text-anchor="middle" fill="#8b5cf6" fill-opacity="0.7" font-size="10" font-weight="600">弱反型 — 表面势 ψ(s) 较小，弯曲浅</text>
+
+            <!-- Band diagram frame -->
+            <rect x="60" y="328" width="360" height="70" fill="#1a1a2e" stroke="#fff" stroke-opacity="0.08" stroke-width="0.8" rx="4"/>
+
+            <!-- Weak inversion: shallow band bending -->
+            <!-- Ec (conduction band) - shallow bend -->
+            <path d="M80,370 C130,370 180,362 220,365 C260,368 320,370 380,370" fill="none" stroke="#5a9fd4" stroke-width="1.5"/>
+            <text x="400" y="373" fill="#5a9fd4" fill-opacity="0.6" font-size="7">E(c)</text>
+
+            <!-- Ei (intrinsic) - shallow bend -->
+            <path d="M80,360 C130,360 180,354 220,356 C260,358 320,360 380,360" fill="none" stroke="#fff" stroke-width="1" stroke-dasharray="3,2"/>
+            <text x="400" y="363" fill="#fff" fill-opacity="0.5" font-size="7">E(i)</text>
+
+            <!-- Ef (Fermi) - flat (equilibrium) -->
+            <path d="M80,350 C130,350 180,348 220,349 C260,350 320,350 380,350" fill="none" stroke="#f0a050" stroke-width="1.5"/>
+            <text x="400" y="353" fill="#f0a050" fill-opacity="0.6" font-size="7">E(f)</text>
+
+            <!-- Ev (valence) - shallow bend -->
+            <path d="M80,340 C130,340 180,336 220,337 C260,338 320,340 380,340" fill="none" stroke="#c084fc" stroke-width="1.2"/>
+            <text x="400" y="343" fill="#c084fc" fill-opacity="0.6" font-size="7">E(v)</text>
+
+            <!-- Surface potential annotation -->
+            <text x="225" y="385" text-anchor="middle" fill="#8b5cf6" fill-opacity="0.6" font-size="7">ψ(s) &lt; 2φ(F)</text>
+            <text x="225" y="395" text-anchor="middle" fill="#fff" fill-opacity="0.25" font-size="6">E(i)−E(f) 接近但未穿过 E(f)</text>
+
+            <!-- RIGHT band: Strong Inversion -->
+            <text x="720" y="315" text-anchor="middle" fill="#10b981" fill-opacity="0.7" font-size="10" font-weight="600">强反型 — 表面势 ψ(s) 较大，弯曲深</text>
+
+            <!-- Band diagram frame -->
+            <rect x="540" y="328" width="360" height="70" fill="#1a1a2e" stroke="#fff" stroke-opacity="0.08" stroke-width="0.8" rx="4"/>
+
+            <!-- Strong inversion: deep band bending -->
+            <!-- Ec - deep bend at surface -->
+            <path d="M560,375 C610,375 660,360 700,352 C740,348 800,362 860,375" fill="none" stroke="#5a9fd4" stroke-width="1.5"/>
+            <text x="880" y="378" fill="#5a9fd4" fill-opacity="0.6" font-size="7">E(c)</text>
+
+            <!-- Ei - deep bend, crosses below Ef at surface -->
+            <path d="M560,362 C610,362 660,348 700,340 C740,336 800,350 860,362" fill="none" stroke="#fff" stroke-width="1" stroke-dasharray="3,2"/>
+            <text x="880" y="365" fill="#fff" fill-opacity="0.5" font-size="7">E(i)</text>
+
+            <!-- Ef - flat -->
+            <path d="M560,350 C610,350 660,350 700,350 C740,350 800,350 860,350" fill="none" stroke="#f0a050" stroke-width="1.5"/>
+            <text x="880" y="353" fill="#f0a050" fill-opacity="0.6" font-size="7">E(f)</text>
+
+            <!-- Ev - deep bend -->
+            <path d="M560,338 C610,338 660,330 700,326 C740,324 800,332 860,338" fill="none" stroke="#c084fc" stroke-width="1.2"/>
+            <text x="880" y="341" fill="#c084fc" fill-opacity="0.6" font-size="7">E(v)</text>
+
+            <!-- E(i) crosses E(f) at surface → strong inversion -->
+            <circle cx="700" cy="350" r="3" fill="#ef4444" fill-opacity="0.8"/>
+            <text x="700" y="388" text-anchor="middle" fill="#ef4444" fill-opacity="0.7" font-size="7">E(i) 穿过 E(f) → 反型!</text>
+
+            <text x="715" y="395" text-anchor="middle" fill="#10b981" fill-opacity="0.6" font-size="7">ψ(s) &gt; 2φ(F)</text>
+
+            <!-- ============================================================ -->
+            <!-- Bottom row: I-V equation comparison -->
+            <!-- ============================================================ -->
+            <line x1="20" y1="410" x2="940" y2="410" stroke="#fff" stroke-opacity="0.06" stroke-width="1"/>
+
+            <rect x="60" y="420" width="360" height="40" rx="6" fill="#8b5cf6" fill-opacity="0.04" stroke="#8b5cf6" stroke-opacity="0.15"/>
+            <text x="240" y="436" text-anchor="middle" fill="#8b5cf6" font-size="9" font-weight="600">I(D) ∝ exp( V(GS) / (n·kT/q) )</text>
+            <text x="240" y="452" text-anchor="middle" fill="#fff" fill-opacity="0.3" font-size="7">指数关系 · 每 60–100 mV 电流变化 10× · 类似 BJT</text>
+
+            <rect x="540" y="420" width="360" height="40" rx="6" fill="#10b981" fill-opacity="0.04" stroke="#10b981" stroke-opacity="0.15"/>
+            <text x="720" y="436" text-anchor="middle" fill="#10b981" font-size="9" font-weight="600">I(D) = ½·μn·Cox·(W/L)·V(ov)²</text>
+            <text x="720" y="452" text-anchor="middle" fill="#fff" fill-opacity="0.3" font-size="7">平方律 · gm/Id = 2/V(ov) · 漂移输运主导</text>
+
+          </svg>
+          <p class="diagram-caption">图二续：强反型与弱反型的沟道载流子浓度与能带弯曲对比 · 上半部分为横截面载流子分布，下半部分为 Si/SiO₂ 界面附近的简化能带图。弱反型判据：表面势 ψ(s) &lt; 2φ(F)；强反型判据：ψ(s) &gt; 2φ(F)（E(i) 在界面处低于 E(f)）。</p>
+        </div>
+
+
         <p>这个物理图像解释了一个看似矛盾的现象：<strong>为什么弱反型的 gm/Id 反而更高？</strong>因为 gm = ∂I(D)/∂V(GS)，在弱反型区 I(D) 随 V(GS) 指数增长，所以对于给定的偏置电流 I(D)，指数曲线的斜率（导数除以函数值）在任何电流水平上都大于平方律曲线——<strong>弱反型用极少量的电流就能产生可观的跨导变化</strong>，电流到跨导的「转换效率」最高。而强反型需要大量电流才能维持同样的 gm，但换来了速度（fT ∝ gm/Cgg，高电流意味着更快的栅电容充放电）<span class="ref">[5][6]</span>。</p>
 
         <hr style="border:none;border-top:1px solid rgba(255,255,255,0.08);margin:32px 0;">
