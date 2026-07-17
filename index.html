@@ -3561,6 +3561,91 @@
           <li><strong>过驱动电压 V(ov) = V(GS) − V(TH)：</strong>栅压越高，沟道电子越多，Ron 越低。但 V(ov) 上限受限于电源电压和栅氧可靠性。</li>
         </ol>
 
+
+        <h4 style="font-size:16px;color:rgba(255,255,255,0.9);margin-top:24px;">2.1.1 电子迁移率 μn——速度的物理本源</h4>
+
+        <p>在 Ron 公式和 I(D) 表达式中反复出现的 <strong>μn（电子迁移率）</strong>，是 CMOS 器件性能最底层的物理参数之一。理解它的物理本质，是理解「为什么不同工艺节点的器件性能差异如此之大」的关键。</p>
+
+        <h4 style="font-size:14px;color:#5a9fd4;margin-top:18px;">物理定义</h4>
+
+        <p><strong>迁移率 μ 定义为单位电场强度下载流子的平均漂移速度：</strong></p>
+
+        <p style="text-align:center;font-size:15px;color:#5a9fd4;margin:12px 0;"><strong>μ = v(drift) / E &nbsp;&nbsp;|&nbsp;&nbsp; 单位：cm²/V·s</strong></p>
+
+        <p>其中 v(drift) 是载流子在电场 E 驱动下的漂移速度。对于硅中的电子，低场迁移率 μn ≈ 1,200–1,400 cm²/V·s；空穴迁移率 μp ≈ 400–500 cm²/V·s——<strong>电子的迁移率约为空穴的 2.5–3 倍</strong>，这是 NMOS 比 PMOS 速度更快的根本原因 <span class="ref">[1][3]</span>。</p>
+
+        <h4 style="font-size:14px;color:#5a9fd4;margin-top:18px;">对开关速度的影响</h4>
+
+        <p>数字电路中，反相器的传播延迟 t(pd) 与迁移率直接相关：</p>
+
+        <p style="text-align:center;font-size:14px;color:#5a9fd4;margin:8px 0;"><strong>t(pd) ∝ C(load) · VDD / I(D,sat) &nbsp;&nbsp;|&nbsp;&nbsp; I(D,sat) ∝ μn</strong></p>
+
+        <p>因为饱和电流 I(D,sat) 与 μn 成正比，所以 <strong>迁移率越高 → 驱动电流越大 → 负载电容充放电越快 → 开关速度越快 → 数字电路工作频率越高</strong>。从 0.18 μm 到 5 nm，每一代工艺节点的性能提升，相当一部分来自应变硅（Strained Silicon）技术对迁移率的增强——通过在沟道中引入机械应力，使硅晶格发生应变，电子迁移率可提升 30%–70% <span class="ref">[1][3]</span>。</p>
+
+        <h4 style="font-size:14px;color:#5a9fd4;margin-top:18px;">对驱动能力与功耗发热的影响</h4>
+
+        <p>驱动能力直接体现为饱和电流：</p>
+
+        <p style="text-align:center;font-size:14px;color:#5a9fd4;margin:8px 0;"><strong>I(D,sat) = ½ · μn · Cox · (W/L) · V(ov)²</strong></p>
+
+        <p><strong>迁移率是 I(D,sat) 的线性倍增因子</strong>——在相同的尺寸和偏置下，迁移率翻倍意味着驱动电流翻倍。对于功耗而言，这是一个双刃剑：</p>
+
+        <ul>
+          <li><strong>动态功耗 P(dynamic) = α · C · VDD² · f：</strong>迁移率提升使得在更低 VDD 下仍能达到目标频率，而功耗与 VDD² 成正比——因此高迁移率工艺可以通过降低 VDD 实现<strong>显著的功耗节省</strong>。</li>
+          <li><strong>发热（自热效应）：</strong>高迁移率意味着更大的导通电流 → 更大的 I²R 焦耳热。在 SOI 和 FinFET 中，埋氧层（BOX）的低热导率使得热量难以散发，导致<strong>自热效应（Self-Heating）</strong>——沟道温度可比环境高 20–50°C，反过来又降低迁移率（详见下文散射机制），形成正反馈 <span class="ref">[3][7]</span>。</li>
+        </ul>
+
+        <h4 style="font-size:14px;color:#5a9fd4;margin-top:18px;">对噪声系数 NF 的影响</h4>
+
+        <p>MOSFET 的噪声性能与迁移率存在两个层面的关联：</p>
+
+        <p><strong>① 沟道热噪声：</strong>沟道热噪声的功率谱密度为：</p>
+
+        <p style="text-align:center;font-size:14px;color:#5a9fd4;margin:8px 0;"><strong>S(id)(thermal) = 4kT · γ · g(d0) &nbsp;&nbsp;|&nbsp;&nbsp; g(d0) = μn · Cox · (W/L) · V(ov)</strong></p>
+
+        <p>其中 g(d0) 是沟道电导（零 V(DS) 时的源漏电导），与 μn 成正比。然而噪声因子 γ（长沟道器件 γ=2/3，短沟道器件 γ 可达 2–3）的变化幅度远大于 μn 的工艺差异——<strong>短沟道效应导致的热载流子噪声增强是 NF 恶化的主导因素</strong>，迁移率本身的直接影响相对次要 <span class="ref">[1][2]</span>。</p>
+
+        <p><strong>② 通过 fT 间接影响 NFmin：</strong></p>
+
+        <p style="text-align:center;font-size:14px;color:#5a9fd4;margin:8px 0;"><strong>fT ≈ gm / (2π·Cgs) ∝ μn · V(ov) / L² &nbsp;&nbsp;|&nbsp;&nbsp; NFmin ≈ 1 + K·(f/fT)</strong></p>
+
+        <p>迁移率越高 → fT 越高 → NFmin 越低。这个关系在 RF LNA 设计中至关重要：<strong>高迁移率工艺（如 GaAs pHEMT、GaN HEMT、SOI CMOS）天然具有更低的 NFmin</strong>。但要注意，迁移率仅影响 NFmin 的 fT 项——栅极电阻噪声（Rg）、衬底电阻噪声等因素与迁移率无关，在高频下可能成为噪声主导项 <span class="ref">[1][8]</span>。</p>
+
+        <h4 style="font-size:14px;color:#5a9fd4;margin-top:18px;">本征迁移率 vs 真实迁移率——是什么在偷走速度？</h4>
+
+        <p>教科书上的 μn ≈ 1,350 cm²/V·s 是<strong>低掺杂体硅在室温低场下的本征迁移率</strong>。但在真实 MOSFET 沟道中，载流子面临多种散射机制，实际迁移率远低于本征值：</p>
+
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>散射机制</th><th>物理来源</th><th>对迁移率的影响</th><th>温度依赖性</th></tr></thead>
+            <tbody>
+              <tr style="background:rgba(239,68,68,0.05);"><td><strong>晶格振动散射<br>（声子散射）</strong></td><td>硅原子热振动破坏晶格周期性</td><td><strong>高温限制因素</strong>——室温下将本征 μn 从 ~10,000 降至 ~1,350 cm²/V·s</td><td>μ ∝ T^(−1.5) —— 温度升高，迁移率下降</td></tr>
+              <tr style="background:rgba(240,160,80,0.05);"><td><strong>电离杂质散射<br>（Coulomb 散射）</strong></td><td>掺杂原子电离后形成的带电中心</td><td><strong>低温/高掺杂限制因素</strong>——沟道掺杂 N(A) 越高，散射越严重</td><td>μ ∝ T^(+1.5) —— 温度升高，载流子热运动增强反而减弱了 Coulomb 散射</td></tr>
+              <tr style="background:rgba(16,185,129,0.05);"><td><strong>界面粗糙度散射<br>（Surface Roughness）</strong></td><td>Si/SiO₂ 界面的原子级不平整</td><td><strong>高场限制因素</strong>——垂直电场越强，载流子越贴近界面，散射越剧烈</td><td>弱温度依赖性</td></tr>
+              <tr style="background:rgba(139,92,246,0.05);"><td><strong>缺陷/陷阱散射</strong></td><td>栅氧中的界面态（D(it)）、固定电荷、氧化物陷阱</td><td><strong>工艺质量指标</strong>——D(it) 每降低 10×，低场迁移率可提升 15%–30%</td><td>陷阱充放电时间常数有温度依赖性</td></tr>
+              <tr><td><strong>远程库仑散射</strong></td><td>高 K 栅介质中的远程声子（Remote Phonon）</td><td>高 K/金属栅工艺的额外散射源——HfO₂ 的软声子模式对沟道电子的远程散射</td><td>中等温度依赖性</td></tr>
+              <tr><td><strong>应变效应<br>（Strain Engineering）</strong></td><td>通过 SiGe S/D 或接触刻蚀停止层（CESL）引入单轴应力</td><td><strong>正面效应</strong>——拉伸应变使导带谷简并度降低、有效质量减小 → μn ↑ 30%–70%</td><td>应变本身无温度依赖性（但工艺应力可能随温度松弛）</td></tr>
+            </tbody>
+          </table>
+          <p class="table-caption">表：影响 MOSFET 真实沟道迁移率的散射机制与工艺因素 [1][3][7]</p>
+        </div>
+
+        <p><strong>有效迁移率 μ(eff) 的工程表达式：</strong></p>
+
+        <p style="text-align:center;font-size:14px;color:#5a9fd4;margin:8px 0;"><strong>1/μ(eff) = 1/μ(phonon) + 1/μ(Coulomb) + 1/μ(surface) + 1/μ(defect)</strong></p>
+
+        <p>根据 Matthiessen 规则，总迁移率由最弱的环节决定。在先进工艺节点（&lt; 28 nm）中，<strong>界面粗糙度散射</strong>和<strong>高 K 介质远程声子散射</strong>取代声子散射成为主要限制——这解释了为什么 7 nm/5 nm 节点的峰值迁移率反而低于 28 nm 节点（尽管本征迁移率更高）。提升真实迁移率的工艺手段包括：Si/SiO₂ 界面的氢气退火（降低 D(it)）、应变硅、以及优化高 K/金属栅叠层以削弱远程声子耦合 <span class="ref">[3][7]</span>。</p>
+
+        <p><strong>迁移率退化的电场依赖性（关键工程曲线）：</strong></p>
+
+        <p>在实际器件中，μn 并非常数——它随<strong>垂直电场 E(eff)</strong>的增大而退化。通用迁移率模型（Universal Mobility Model）给出了经验关系：</p>
+
+        <p style="text-align:center;font-size:14px;color:#5a9fd4;margin:8px 0;"><strong>μ(eff) = μ(0) / [1 + (E(eff)/E(0))^ν]</strong></p>
+
+        <p>其中 ν ≈ 1.5–2.0，E(0) 为临界电场。当 V(GS) 增大 → 垂直电场增强 → 载流子被压向 Si/SiO₂ 界面 → 界面粗糙度散射加剧 → μ(eff) 下降。这就是为什么<strong>I(D)–V(GS) 曲线在高 V(GS) 下偏离理想平方律</strong>（跨导 gm 不随 V(GS) 线性增长而趋于饱和）的物理根源。在 gm/Id 设计流程中，这一效应已经自动被包含在仿真模型的查找表中 <span class="ref">[3][7]</span>。</p>
+
+        <hr style="border:none;border-top:1px solid rgba(255,255,255,0.08);margin:28px 0;">
+
         <h4 style="font-size:16px;color:rgba(255,255,255,0.9);margin-top:24px;">2.2 关断电容 Coff——开关的寄生代价</h4>
 
         <p>MOSFET 开关关断时（V(GS) = 0），理想情况下沟道完全消失，漏源之间应呈开路。但实际器件存在三种寄生电容，它们共同定义了 <strong>Coff</strong>——即器件关断时从漏极看进去的总电容 <span class="ref">[1][3]</span>：</p>
