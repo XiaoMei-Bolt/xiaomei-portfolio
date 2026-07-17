@@ -4435,6 +4435,312 @@
 
 
 
+    
+
+      <!-- Noise & LNA Design Article -->
+      <div class="article-card" onclick="this.classList.toggle('open')">
+        <div class="article-card-header">
+          <div>
+            <div class="article-card-title">理解半导体电路中的噪声与 LNA 的噪声设计</div>
+            <div class="article-card-meta">📅 2026 年 7 月 · 射频集成电路设计 — 从噪声物理本源到 LNA 噪声匹配的系统方法论</div>
+          </div>
+          <div class="article-card-arrow">▼</div>
+        </div>
+        <div class="article-card-body">
+          <div class="article-card-body-inner">
+            <div class="article-body">
+
+        <h4>第一部分 · 半导体中的噪声种类与产生机理</h4>
+
+        <p>噪声是模拟与射频电路设计中最根本的限制因素。与数字电路不同——数字信号可以通过整形和再生恢复——<strong>模拟信号一旦被噪声污染，信息就永久丢失</strong>。理解噪声的物理来源，是低噪声放大器（LNA）、混频器、振荡器等射频前端设计的根基 <span class="ref">[1][2]</span>。</p>
+
+        <h4 style="font-size:16px;color:#5a9fd4;margin-top:20px;">1.1 热噪声（Thermal / Johnson-Nyquist Noise）</h4>
+
+        <p><strong>物理本源：</strong>导体或半导体中载流子的随机布朗运动。任何温度高于绝对零度的电阻性元件都会产生热噪声——这是热力学第二定律的直接推论：载流子具有热能（½kT 每自由度），其随机热运动在电阻两端产生涨落电压 <span class="ref">[1][2]</span>。</p>
+
+        <p style="text-align:center;font-size:14px;color:#5a9fd4;margin:8px 0;"><strong>S(v)(thermal) = 4kT · R &nbsp;&nbsp;（电压谱密度，V²/Hz）</strong></p>
+        <p style="text-align:center;font-size:14px;color:#5a9fd4;margin:8px 0;"><strong>S(i)(thermal) = 4kT / R &nbsp;&nbsp;（电流谱密度，A²/Hz）</strong></p>
+
+        <p><strong>关键特性：</strong></p>
+        <ul>
+          <li><strong>白噪声——</strong>功率谱密度在极宽频率范围内（0–100 GHz 以上）恒定，与频率无关。</li>
+          <li><strong>正比于绝对温度 T——</strong>将电路冷却到 77K（液氮）可降低热噪声 4×（300K/77K ≈ 3.9）。超导电路、深空通信接收机利用此原理。</li>
+          <li><strong>仅与阻性阻抗相关——</strong>纯电抗元件（理想 L、C）不产生热噪声（但实际电感的串联电阻 R(s) 会）。</li>
+          <li><strong>噪声功率 P(avail) = kT·B——</strong>可用噪声功率与电阻值 R 无关，仅取决于温度和带宽。这一简洁优美的结果是 Nyquist 在 1928 年推导的。</li>
+        </ul>
+
+        <h4 style="font-size:16px;color:#5a9fd4;margin-top:20px;">1.2 散粒噪声（Shot Noise）</h4>
+
+        <p><strong>物理本源：</strong>电荷载流子越过势垒的离散性——电子并非连续流体，而是<strong>一个一个地</strong>跨越 PN 结或肖特基势垒。每次穿越的时间间隔服从泊松分布，导致电流的随机涨落 <span class="ref">[1][3]</span>。</p>
+
+        <p style="text-align:center;font-size:14px;color:#5a9fd4;margin:8px 0;"><strong>S(i)(shot) = 2q · I(DC) &nbsp;&nbsp;|&nbsp;&nbsp; q = 1.6×10⁻¹⁹ C（电子电荷）</strong></p>
+
+        <p><strong>关键特性：</strong></p>
+        <ul>
+          <li><strong>正比于直流电流 I(DC)——</strong>电流越大，每秒穿越的电子越多，涨落的绝对幅度越大。</li>
+          <li><strong>仅存在于有势垒的结构中——</strong>PN 结、肖特基结、真空管阴极。MOSFET 沟道没有势垒，因此<strong>MOSFET 沟道本身不产生散粒噪声</strong>。但 BJT 的基极-发射极 PN 结是散粒噪声的主要来源。</li>
+          <li><strong>白噪声——</strong>频谱与热噪声一样平坦。</li>
+          <li><strong>工程意义：</strong>在 BJT 放大器设计中，基极电流 I(B) 的散粒噪声 = 2q·I(B) 是重要的噪声源。MOSFET 因栅极绝缘（I(G) ≈ 0），散粒噪声可忽略——这是 CMOS LNA 相对于 BJT LNA 的一个固有优势 <span class="ref">[1][3]</span>。</li>
+        </ul>
+
+        <h4 style="font-size:16px;color:#5a9fd4;margin-top:20px;">1.3 闪烁噪声（Flicker / 1/f Noise）</h4>
+
+        <p><strong>物理本源：</strong>半导体材料与界面中的陷阱态（Trap States）随机俘获和释放载流子，导致电导率的缓慢涨落。陷阱的时间常数分布在极宽范围内（μs 到秒级），叠加后产生 1/f 的频谱形状 <span class="ref">[1][4]</span>。</p>
+
+        <p style="text-align:center;font-size:14px;color:#5a9fd4;margin:8px 0;"><strong>S(i)(1/f) = K(F) · I(D)ᵃ / (Cox · L² · f) &nbsp;&nbsp;|&nbsp;&nbsp; a ≈ 1–2</strong></p>
+
+        <p><strong>关键特性：</strong></p>
+        <ul>
+          <li><strong>频谱 ∝ 1/f——</strong>低频时噪声急剧增大。1 kHz 处的噪声可比 1 MHz 处高 1,000×（30 dB）。</li>
+          <li><strong>拐角频率 f(c)——</strong>1/f 噪声与白噪声交汇的频率点。体硅 CMOS 的 f(c) 典型值为 1–100 kHz（取决于偏置和工艺）；特殊低噪声工艺可降至 &lt; 1 kHz。</li>
+          <li><strong>与器件面积成反比：</strong>S(id)(1/f) ∝ 1/(W·L)——面积越大，单个陷阱的相对影响越小。这是模拟电路中「低噪声 = 大面积」的物理根源。</li>
+          <li><strong>双模型解释：</strong>ΔN 模型（载流子数涨落，McWhorter）与 Δμ 模型（迁移率涨落，Hooge）协同作用，ΔN 在 MOSFET 中通常占主导。</li>
+        </ul>
+
+        <div class="diagram-container">
+          <svg viewBox="0 0 840 240" xmlns="http://www.w3.org/2000/svg">
+            <text x="420" y="22" text-anchor="middle" fill="#fff" font-size="13" font-weight="600">图一 · 三种基本噪声的功率谱密度对比</text>
+
+            <!-- Axes (log-log scale conceptual) -->
+            <line x1="80" y1="190" x2="780" y2="190" stroke="#fff" stroke-opacity="0.3" stroke-width="1"/>
+            <line x1="80" y1="40" x2="80" y2="190" stroke="#fff" stroke-opacity="0.3" stroke-width="1"/>
+            <text x="790" y="194" fill="#fff" fill-opacity="0.4" font-size="9">f (log)</text>
+            <text x="70" y="35" fill="#fff" fill-opacity="0.4" font-size="9">S(f) (log)</text>
+
+            <!-- 1/f noise: steep slope at low f, then flattens -->
+            <path d="M90,175 C120,170 150,160 180,148 C220,135 280,130 350,128 C450,128 550,128 650,128 C720,128 760,128 780,128" fill="none" stroke="#8b5cf6" stroke-width="2"/>
+            <text x="600" y="120" fill="#8b5cf6" font-size="11" font-weight="600">闪烁噪声 (1/f)</text>
+
+            <!-- Thermal noise: flat -->
+            <line x1="80" y1="95" x2="780" y2="95" stroke="#10b981" stroke-width="2"/>
+            <text x="600" y="88" fill="#10b981" font-size="11" font-weight="600">热噪声 (4kTR) / 散粒噪声 (2qI)</text>
+
+            <!-- Corner frequency annotation -->
+            <line x1="350" y1="128" x2="350" y2="195" stroke="#f0a050" stroke-width="1" stroke-dasharray="4,3"/>
+            <text x="350" y="208" text-anchor="middle" fill="#f0a050" font-size="9">拐角频率 f(c)</text>
+
+            <!-- White noise region -->
+            <text x="500" y="110" fill="#fff" fill-opacity="0.3" font-size="8">白噪声区（平坦）</text>
+            <text x="180" y="155" fill="#fff" fill-opacity="0.3" font-size="8">低频噪声主导区</text>
+
+            <!-- Labels -->
+            <text x="110" y="213" fill="#fff" fill-opacity="0.25" font-size="8">1 Hz</text>
+            <text x="230" y="213" fill="#fff" fill-opacity="0.25" font-size="8">1 kHz</text>
+            <text x="350" y="213" fill="#fff" fill-opacity="0.25" font-size="8">1 MHz</text>
+            <text x="470" y="213" fill="#fff" fill-opacity="0.25" font-size="8">1 GHz</text>
+          </svg>
+          <p class="diagram-caption">图一：三种基本噪声的功率谱密度。热噪声和散粒噪声为白噪声（平坦）；闪烁噪声在低频段以 1/f 斜率上升，经过拐角频率 f(c) 后低于白噪声。</p>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>噪声类型</th><th>谱密度</th><th>频率特性</th><th>产生条件</th><th>主导场景</th></tr></thead>
+            <tbody>
+              <tr><td><strong>热噪声</strong></td><td>4kT·R</td><td>白噪声</td><td>任何阻性元件</td><td>宽带 LNA、50Ω 系统</td></tr>
+              <tr><td><strong>散粒噪声</strong></td><td>2q·I(DC)</td><td>白噪声</td><td>有势垒结构（PN 结）</td><td>BJT 基极、光电探测器</td></tr>
+              <tr><td><strong>闪烁噪声</strong></td><td>K(F)·Iᵃ/(Cox·L²·f)</td><td>1/f</td><td>界面陷阱</td><td>基带放大器、传感器前端</td></tr>
+            </tbody>
+          </table>
+          <p class="table-caption">表1：三种基本噪声的对比 [1][2][3][4]</p>
+        </div>
+
+        <hr style="border:none;border-top:1px solid rgba(255,255,255,0.08);margin:32px 0;">
+
+        <h4>第二部分 · MOSFET 晶体管中的噪声源</h4>
+
+        <p>将 MOSFET 用作放大器时，噪声建模需要识别器件内部的每一个噪声贡献者。对于一个典型的共源放大管，主要有三个噪声源 <span class="ref">[1][2][5]</span>：</p>
+
+        <h4 style="font-size:16px;color:#5a9fd4;margin-top:20px;">2.1 沟道热噪声（Channel Thermal Noise）</h4>
+
+        <p>这是 MOSFET 放大器的<strong>主导噪声源</strong>。沟道作为一个压控电阻，其热噪声电流经过晶体管放大后出现在输出端：</p>
+
+        <p style="text-align:center;font-size:14px;color:#5a9fd4;margin:8px 0;"><strong>i²(n,d) = 4kT · γ · g(d0) · Δf</strong></p>
+
+        <p>其中 g(d0) 是零 V(DS) 时的沟道电导，γ 是<strong>噪声因子</strong>——它体现了沟道中非均匀电场对热噪声的增强效应：</p>
+
+        <ul>
+          <li><strong>长沟道器件（V(DS) = 0）：</strong>γ = 1（沟道为均匀电阻）</li>
+          <li><strong>长沟道器件（饱和区）：</strong>γ = 2/3（沟道夹断后，噪声主要产生于源端附近）</li>
+          <li><strong>短沟道器件（&lt; 100 nm）：</strong>γ 可高达 2–3——热载流子效应使载流子温度远高于晶格温度，等效于局部噪声温度升高</li>
+        </ul>
+
+        <p><strong>工程关键：</strong>短沟道 γ 因子的增大（2/3 → 2–3，4.5× 恶化）是先进工艺节点 LNA 噪声性能退化的<strong>最大单一因素</strong> <span class="ref">[1][5]</span>。</p>
+
+        <h4 style="font-size:16px;color:#5a9fd4;margin-top:20px;">2.2 栅极感应噪声（Gate-Induced Noise）</h4>
+
+        <p>沟道中热噪声引起的随机电势涨落，通过栅氧电容 <strong>Cgs</strong> 耦合到栅极，在栅极回路中感应出噪声电流：</p>
+
+        <p style="text-align:center;font-size:14px;color:#5a9fd4;margin:8px 0;"><strong>i²(n,g) = 4kT · δ · g(g) · Δf &nbsp;&nbsp;|&nbsp;&nbsp; g(g) = ω²·Cgs² / (5·g(d0))</strong></p>
+
+        <p><strong>关键特性：</strong></p>
+        <ul>
+          <li><strong>频率依赖性：</strong>g(g) ∝ ω²——栅极感应噪声的功率<strong>随频率的平方增长</strong>。在 &lt; 1 GHz 通常可忽略，但在 10 GHz 以上成为不可忽视的贡献项。</li>
+          <li><strong>与沟道噪声的相关系数 c：</strong>栅极感应噪声与沟道噪声源于同一物理过程（沟道热运动），因此二者<strong>部分相关</strong>。相关系数 c ≈ −j·0.395（长沟道），这一相关性在噪声匹配设计中至关重要——可以通过源极电感退化来利用相关性降低总噪声 <span class="ref">[1][5]</span>。</li>
+          <li><strong>δ 因子：</strong>长沟道 δ ≈ 4/3（γ 的两倍），短沟道 δ 同样增大。</li>
+        </ul>
+
+        <h4 style="font-size:16px;color:#5a9fd4;margin-top:20px;">2.3 栅极寄生电阻热噪声（Gate Resistance Thermal Noise）</h4>
+
+        <p>MOSFET 的栅极由多晶硅（或金属）构成，本身具有不可忽略的分布电阻。该电阻的热噪声直接串联在信号通路中：</p>
+
+        <p style="text-align:center;font-size:14px;color:#5a9fd4;margin:8px 0;"><strong>v²(n,g,r) = 4kT · R(g,eff) · Δf &nbsp;&nbsp;|&nbsp;&nbsp; R(g,eff) ≈ R(sh)·W/(3·n²·L)</strong></p>
+
+        <p>其中 R(sh) 是栅极材料的方块电阻（Ω/□），n 是栅极 finger 数目。</p>
+
+        <p><strong>工程优化：</strong>栅极电阻噪声可以通过<strong>多指（Multi-Finger）布局</strong>有效降低——将栅极分成 n 个并联的 finger，等效电阻降为原来的 1/n²。例如，W=200 μm 的单指栅极 R(g) ≈ 20 Ω，若改为 n=10 的叉指结构，R(g,eff) 降至 ≈ 0.2 Ω——噪声电压降低 10× <span class="ref">[1][6]</span>。</p>
+
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>噪声源</th><th>表达式</th><th>频率依赖性</th><th>优化手段</th><th>相对重要度</th></tr></thead>
+            <tbody>
+              <tr style="background:rgba(239,68,68,0.05);"><td><strong>沟道热噪声</strong></td><td>4kT·γ·g(d0)</td><td>白噪声</td><td>增大 gm、降低 γ（长沟道偏置）</td><td>★★★★★ 主导</td></tr>
+              <tr style="background:rgba(240,160,80,0.05);"><td><strong>栅极感应噪声</strong></td><td>4kT·δ·ω²Cgs²/(5·g(d0))</td><td>∝ ω²</td><td>降低 Cgs、利用相关性</td><td>★★★ 高频时上升</td></tr>
+              <tr><td><strong>栅极电阻热噪声</strong></td><td>4kT·R(g,eff)</td><td>白噪声</td><td>多指布局（Rg ∝ 1/n²）</td><td>★★ 布局可优化</td></tr>
+            </tbody>
+          </table>
+          <p class="table-caption">表2：MOSFET 三大噪声源对比 [1][2][5][6]</p>
+        </div>
+
+        <hr style="border:none;border-top:1px solid rgba(255,255,255,0.08);margin:32px 0;">
+
+        <h4>第三部分 · LNA 噪声贡献量分析与优化</h4>
+
+        <p>以最经典的<strong>源极电感退化共源 LNA</strong>（CS with Inductive Source Degeneration）为例，分析各噪声源对总噪声系数的贡献 <span class="ref">[1][5][7]</span>。</p>
+
+        <h4 style="font-size:16px;color:#5a9fd4;margin-top:20px;">3.1 噪声贡献的分解</h4>
+
+        <p>LNA 的噪声系数 NF 定义为输入信噪比与输出信噪比之比：<strong>NF = SNR(in)/SNR(out)</strong>。各噪声源对 NF 的贡献可以独立计算后叠加（在输入端等效）：</p>
+
+        <p style="text-align:center;font-size:14px;color:#5a9fd4;margin:8px 0;"><strong>NF(total) = 1 + NF(M1,channel) + NF(M1,gate) + NF(M1,Rg) + NF(Lg,Rs) + NF(Ls,Rs) + ...</strong></p>
+
+        <p><strong>主要贡献项分析（典型 2.4 GHz CMOS LNA，IDD = 5 mA，W = 200 μm）：</strong></p>
+
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>噪声源</th><th>贡献量 (dB)</th><th>占总噪声比例</th><th>关键设计变量</th></tr></thead>
+            <tbody>
+              <tr style="background:rgba(239,68,68,0.05);"><td>M1 沟道热噪声</td><td><strong>0.85 dB</strong></td><td><strong>~55%</strong></td><td>gm、γ、偏置点</td></tr>
+              <tr style="background:rgba(240,160,80,0.05);"><td>M1 栅极电阻热噪声</td><td>0.25 dB</td><td>~16%</td><td>W、finger 数目 n</td></tr>
+              <tr><td>栅极电感 Lg 串联电阻</td><td>0.18 dB</td><td>~12%</td><td>Lg Q 值、感值</td></tr>
+              <tr><td>源极电感 Ls 串联电阻</td><td>0.10 dB</td><td>~7%</td><td>Ls Q 值</td></tr>
+              <tr><td>M1 栅极感应噪声</td><td>0.08 dB</td><td>~5%</td><td>Cgs、频率</td></tr>
+              <tr><td>其他（衬底、级间等）</td><td>0.07 dB</td><td>~5%</td><td>—</td></tr>
+              <tr style="background:rgba(16,185,129,0.05);"><td><strong>合计 NF(total)</strong></td><td><strong>≈ 1.53 dB</strong></td><td><strong>100%</strong></td><td>—</td></tr>
+            </tbody>
+          </table>
+          <p class="table-caption">表3：典型 2.4 GHz CMOS CS-LNA 噪声贡献分析（IDD=5mA, W=200μm, n=8 fingers, Lg=5nH@Q=15, Ls=0.5nH@Q=10）[1][5][7]</p>
+        </div>
+
+        <h4 style="font-size:16px;color:#5a9fd4;margin-top:20px;">3.2 噪声优化策略——按优先级排序</h4>
+
+        <p><strong>优先级 1：优化 M1 沟道热噪声（占 ~55%）</strong></p>
+        <ul>
+          <li><strong>增大 gm：</strong>在固定 IDD 下，通过降低 Vov（增大 W，趋向弱反型）来提高 gm = 2·ID/Vov。代价：Cgs ↑ → fT ↓。</li>
+          <li><strong>降低 γ 因子：</strong>选择更长的沟道长度 L（短沟道 γ 高），或用 Cascode 结构降低 M1 的 V(DS)，减少热载流子效应。</li>
+          <li><strong>工艺选择：</strong>SOI 或应变硅工艺可提供更高的 μn，使得在相同 gm 下 Cgs 更小。</li>
+        </ul>
+
+        <p><strong>优先级 2：降低栅极电阻噪声（占 ~16%）</strong></p>
+        <ul>
+          <li><strong>多指布局：</strong>R(g,eff) = R(sh)·W/(3·n²·L)。将 finger 数 n 从 4 增至 16，栅电阻噪声降低 16×（12 dB）。</li>
+          <li><strong>双侧接触（Double-Sided Contact）：</strong>栅极两端都引出金属接触，将等效电阻再降低 4×。</li>
+        </ul>
+
+        <p><strong>优先级 3：提升无源器件 Q 值（占 ~19%）</strong></p>
+        <ul>
+          <li>栅极电感 Lg 的 Q 值从 10 提升到 20，其串联电阻噪声贡献减半。</li>
+          <li>使用厚金属层（顶层金属厚度 2–3 μm）或片上螺旋电感的优化几何结构。</li>
+        </ul>
+
+        <p><strong>优先级 4：利用栅极感应噪声的相关性（占 ~5%）</strong></p>
+        <ul>
+          <li>栅极感应噪声 i(n,g) 与沟道噪声 i(n,d) 的相关系数 c ≈ −j·0.395——二者<strong>部分反相关</strong>。</li>
+          <li>通过源极电感退化 Ls 的取值，可以调节输入阻抗的实部，同时使得部分栅极感应噪声与沟道噪声在输出端<strong>相消</strong>——这是窄带 LNA 噪声匹配的物理基础 <span class="ref">[5][7]</span>。</li>
+        </ul>
+
+        <hr style="border:none;border-top:1px solid rgba(255,255,255,0.08);margin:32px 0;">
+
+        <h4>第四部分 · 跨导效率（gm/Id）与噪声匹配</h4>
+
+        <h4 style="font-size:16px;color:#5a9fd4;margin-top:20px;">4.1 gm/Id——连接功耗与噪声的桥梁</h4>
+
+        <p>gm/Id（跨导效率）与噪声性能之间的联系隐藏在多个公式的交集中：</p>
+
+        <p style="text-align:center;font-size:14px;color:#5a9fd4;margin:8px 0;"><strong>NFmin ≈ 1 + K·(f/fT) &nbsp;&nbsp;|&nbsp;&nbsp; fT ∝ gm/Cgs &nbsp;&nbsp;|&nbsp;&nbsp; gm = (gm/Id) · ID</strong></p>
+
+        <p>将这三个关系联立，可以看出：<strong>在固定功耗 IDD 下，gm/Id 决定了 gm 的大小，进而同时影响 NFmin 和输入匹配</strong>。</p>
+
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>gm/Id (V⁻¹)</th><th>工作区域</th><th>gm (ID固定)</th><th>Cgs</th><th>fT</th><th>NFmin</th><th>适用场景</th></tr></thead>
+            <tbody>
+              <tr><td><strong>25–35</strong></td><td>弱反型</td><td>最高</td><td>大</td><td>低</td><td>较差（高频时）</td><td>超低功耗传感</td></tr>
+              <tr style="background:rgba(16,185,129,0.05);"><td><strong>15–20</strong></td><td>中等反型</td><td>中高</td><td>适中</td><td>中</td><td><strong>最优折衷</strong></td><td>IoT LNA</td></tr>
+              <tr><td><strong>8–12</strong></td><td>强反型</td><td>中</td><td>小</td><td>高</td><td>较好</td><td>高速 LNA</td></tr>
+              <tr><td><strong>5–8</strong></td><td>深强反型</td><td>低</td><td>最小</td><td>最高</td><td>最好</td><td>极高频 LNA</td></tr>
+            </tbody>
+          </table>
+          <p class="table-caption">表4：gm/Id 与噪声性能的映射关系（固定 IDD）[1][2][8]</p>
+        </div>
+
+        <h4 style="font-size:16px;color:#5a9fd4;margin-top:20px;">4.2 同时噪声与功率匹配（Simultaneous Noise and Power Match）</h4>
+
+        <p>理想情况下，LNA 的输入阻抗应同时满足：</p>
+
+        <ul>
+          <li><strong>功率匹配：</strong>Γ(in) = Γ(s)* → 最大功率传输（对应 S11 最小）</li>
+          <li><strong>噪声匹配：</strong>Γ(s) = Γ(opt) → 最小噪声系数 NFmin</li>
+        </ul>
+
+        <p>但 Γ(opt)（最优噪声源反射系数）通常不等于 Γ(in)*。源极电感退化 Cs 提供了解耦这两个匹配条件的自由度：</p>
+
+        <p style="text-align:center;font-size:14px;color:#5a9fd4;margin:8px 0;"><strong>Re{Zin} ≈ gm·Ls/Cgs = 2π·fT·Ls</strong></p>
+
+        <p>通过调节 Ls，可以在<strong>不改变噪声特性的同时</strong>，将 Re{Zin} 调整到 50 Ω。而 Cgs 和 Lg 的组合谐振实现虚部抵消。这使得设计者可以在 NFmin 和输入回波损耗之间寻找工程最优折衷 <span class="ref">[5][7]</span>。</p>
+
+        <h4 style="font-size:16px;color:#5a9fd4;margin-top:20px;">4.3 噪声优化设计流程</h4>
+
+        <ol>
+          <li><strong>确定功耗预算 IDD：</strong>项目立项时锁定，不可变。</li>
+          <li><strong>选择 gm/Id 工作点：</strong>在 NFmin（低 gm/Id → 高 fT）和增益（高 gm/Id → 高 gm）之间折衷。对于 sub-6 GHz LNA，gm/Id ≈ 12–18 通常为合理起点。</li>
+          <li><strong>确定器件尺寸 W：</strong>从 gm/Id → gm = (gm/Id)·ID → W = gm·L/(μn·Cox·Vov)。多指布局优化 Rg。</li>
+          <li><strong>噪声参数提取：</strong>仿真获得 NFmin、Rn、Γ(opt) 三个双端口噪声参数。</li>
+          <li><strong>匹配网络设计：</strong>Ls 调整 Re{Zin} → 50Ω；Lg 与 Cgs 谐振消除虚部；同时将 Γ(s) 放置在 NFmin 等值圆与增益圆的交集内。</li>
+          <li><strong>验证与迭代：</strong>全电磁仿真（EM）验证版图寄生的影响，迭代优化。</li>
+        </ol>
+
+        <hr style="border:none;border-top:1px solid rgba(255,255,255,0.08);margin:32px 0;">
+
+        <h4>第五部分 · 总结</h4>
+
+        <p>半导体电路中的噪声设计，本质上是对<strong>三个独立噪声源</strong>（热噪声、散粒噪声、闪烁噪声）在<strong>晶体管三大噪声机制</strong>（沟道、栅极感应、栅极电阻）下的<strong>综合优化</strong>问题。LNA 噪声设计的核心矛盾在于：</p>
+
+        <ul>
+          <li><strong>NFmin 要求高 fT → 小 Cgs → 小 W → 低 gm → 低增益</strong></li>
+          <li><strong>增益要求高 gm → 大 gm/Id → 大 W → 大 Cgs → 低 fT → NFmin 恶化</strong></li>
+          <li><strong>输入匹配要求合适的 Re{Zin} = fT·Ls</strong></li>
+        </ul>
+
+        <p>这三者之间的折衷没有唯一定量解——<strong>噪声设计是「在 NFmin 圆、增益圆、输入匹配圆三者的交集中选取最优工作点」的艺术与科学</strong>。gm/Id 方法论将这个三维搜索问题映射到一个连续的参数轴上，使设计者可量化、可复现地进行系统化噪声优化。</p>
+
+        <h4>参考文献</h4>
+        <ol class="refs">
+          <li>B. Razavi, <em>RF Microelectronics</em>, 2nd ed., Prentice Hall, 2012, Ch. 2 (Noise), Ch. 5 (LNA Design).</li>
+          <li>T. H. Lee, <em>The Design of CMOS Radio-Frequency Integrated Circuits</em>, 2nd ed., Cambridge University Press, 2004, Ch. 10–12.</li>
+          <li>A. van der Ziel, <em>Noise in Solid State Devices and Circuits</em>, Wiley, 1986, Ch. 5–7.</li>
+          <li>F. N. Hooge, "1/f noise sources," <em>IEEE Transactions on Electron Devices</em>, vol. 41, no. 11, pp. 1926–1935, Nov. 1994.</li>
+          <li>D. K. Shaeffer and T. H. Lee, "A 1.5-V, 1.5-GHz CMOS low noise amplifier," <em>IEEE Journal of Solid-State Circuits</em>, vol. 32, no. 5, pp. 745–759, May 1997.</li>
+          <li>B. Razavi, R.-H. Yan, and K. F. Lee, "Impact of distributed gate resistance on the performance of MOS devices," <em>IEEE Transactions on Circuits and Systems I</em>, vol. 41, no. 11, pp. 750–754, Nov. 1994.</li>
+          <li>T.-K. Nguyen et al., "CMOS Low-Noise Amplifier Design Optimization Techniques," <em>IEEE Transactions on Microwave Theory and Techniques</em>, vol. 52, no. 5, pp. 1433–1442, May 2004.</li>
+          <li>F. Silveira, D. Flandre, and P. G. A. Jespers, "A gm/ID Based Methodology for the Design of CMOS Analog Circuits," <em>IEEE Journal of Solid-State Circuits</em>, vol. 31, no. 9, pp. 1314–1319, Sep. 1996.</li>
+        </ol>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+
     </div>
 <section class="section section-light" id="reading">
   <div class="section-inner">
