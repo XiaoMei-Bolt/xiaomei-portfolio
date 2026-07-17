@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>🌱 小美识字乐园 — 幼儿园汉字启蒙游戏</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'PingFang SC', 'Noto Sans SC', 'Microsoft YaHei', sans-serif;
+  background: linear-gradient(135deg, #fef9c3 0%, #fde68a 30%, #fef3c7 60%, #fef9c3 100%);
+  min-height: 100vh; display: flex; align-items: center; justify-content: center;
+  overflow: hidden; user-select: none; -webkit-tap-highlight-color: transparent;
+}
+.container { width: 100%; max-width: 500px; padding: 16px; }
+
+/* ── 标题 ── */
+.title-bar { text-align: center; margin-bottom: 12px; }
+.title-bar h1 { font-size: 28px; color: #92400e; text-shadow: 2px 2px 0 rgba(255,255,255,0.6); }
+.title-bar .stars-row { display: flex; justify-content: center; gap: 6px; margin-top: 4px; }
+.star { font-size: 28px; transition: all 0.4s; filter: grayscale(1) opacity(0.25); }
+.star.earned { filter: none; animation: popIn 0.5s ease-out; }
+@keyframes popIn { 0%{transform:scale(0)} 60%{transform:scale(1.3)} 100%{transform:scale(1)} }
+
+/* ── 卡片区 ── */
+.card {
+  background: #fff; border-radius: 24px; padding: 28px 20px 24px;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.08), 0 2px 8px rgba(0,0,0,0.04);
+  text-align: center;
+}
+.question { font-size: 18px; color: #78716c; margin-bottom: 8px; font-weight: 500; }
+.emoji-display {
+  font-size: 80px; line-height: 1.2; margin: 8px 0 4px;
+  animation: float 2.5s ease-in-out infinite;
+}
+@keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+.hint { font-size: 14px; color: #a8a29e; margin-bottom: 16px; }
+
+/* ── 选项按钮 ── */
+.options { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.option-btn {
+  background: #fefce8; border: 3px solid #fde68a; border-radius: 18px;
+  padding: 18px 8px; font-size: 36px; font-weight: 700; color: #78350f;
+  cursor: pointer; transition: all 0.2s; position: relative; overflow: hidden;
+  font-family: 'PingFang SC', 'Noto Sans SC', 'KaiTi', serif;
+}
+.option-btn:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(251,191,36,0.25); }
+.option-btn:active { transform: scale(0.95); }
+.option-btn.correct {
+  background: #dcfce7; border-color: #4ade80; color: #166534;
+  animation: correctPulse 0.6s ease-out;
+}
+.option-btn.wrong {
+  background: #fee2e2; border-color: #f87171; color: #991b1b;
+  animation: shake 0.5s ease-out;
+}
+@keyframes correctPulse { 0%{transform:scale(1)} 40%{transform:scale(1.08)} 100%{transform:scale(1)} }
+@keyframes shake {
+  0%,100%{transform:translateX(0)} 20%{transform:translateX(-8px)} 40%{transform:translateX(8px)} 60%{transform:translateX(-6px)} 80%{transform:translateX(6px)}
+}
+
+/* ── 反馈浮层 ── */
+.feedback {
+  position: fixed; top: 50%; left: 50%; transform: translate(-50%,-50%) scale(0);
+  font-size: 64px; pointer-events: none; z-index: 100; transition: none;
+}
+.feedback.show { animation: feedbackPop 1.2s ease-out forwards; }
+@keyframes feedbackPop {
+  0%{transform:translate(-50%,-50%) scale(0);opacity:0}
+  25%{transform:translate(-50%,-50%) scale(1.2);opacity:1}
+  100%{transform:translate(-50%,-50%) scale(1.5);opacity:0}
+}
+
+/* ── 进度 ── */
+.progress-wrap { margin-top: 16px; display: flex; align-items: center; gap: 10px; }
+.progress-bar-outer {
+  flex: 1; height: 12px; background: #fef3c7; border-radius: 6px; overflow: hidden;
+}
+.progress-bar-inner {
+  height: 100%; background: linear-gradient(90deg,#fbbf24,#f59e0b); border-radius: 6px;
+  transition: width 0.5s ease;
+}
+.progress-text { font-size: 14px; color: #92400e; font-weight: 600; white-space: nowrap; }
+
+/* ── 完成界面 ── */
+.complete-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 200;
+  display: flex; align-items: center; justify-content: center;
+  animation: fadeIn 0.3s;
+}
+.complete-card {
+  background: #fff; border-radius: 28px; padding: 36px 28px; text-align: center;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.15); max-width: 380px; width: 90%;
+  animation: scaleIn 0.4s ease-out;
+}
+.complete-card .trophy { font-size: 72px; margin-bottom: 8px; }
+.complete-card h2 { font-size: 26px; color: #92400e; margin-bottom: 4px; }
+.complete-card .score { font-size: 48px; font-weight: 800; color: #f59e0b; }
+.complete-card button {
+  margin-top: 20px; background: #f59e0b; color: #fff; border: none; border-radius: 14px;
+  padding: 14px 40px; font-size: 20px; font-weight: 700; cursor: pointer; transition: 0.2s;
+}
+.complete-card button:hover { background: #d97706; transform: scale(1.04); }
+@keyframes fadeIn { from{opacity:0} to{opacity:1} }
+@keyframes scaleIn { from{transform:scale(0.8);opacity:0} to{transform:scale(1);opacity:1} }
+
+/* ── confetti ── */
+.confetti-piece {
+  position: fixed; z-index: 250; pointer-events: none;
+  animation: confettiFall 2.5s ease-out forwards;
+}
+@keyframes confettiFall {
+  0%{transform:translateY(-120px) rotate(0deg);opacity:1}
+  100%{transform:translateY(105vh) rotate(720deg);opacity:0}
+}
+
+/* ── 响应式 ── */
+@media (max-width:400px) {
+  .emoji-display { font-size: 60px; }
+  .option-btn { font-size: 28px; padding: 14px 4px; }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="title-bar">
+    <h1>🌱 小美识字乐园</h1>
+    <div class="stars-row" id="starsRow"></div>
+  </div>
+
+  <div class="card">
+    <div class="question" id="questionText"></div>
+    <div class="emoji-display" id="emojiDisplay"></div>
+    <div class="hint" id="hintText"></div>
+    <div class="options" id="optionsGrid"></div>
+  </div>
+
+  <div class="progress-wrap">
+    <div class="progress-bar-outer"><div class="progress-bar-inner" id="progressBar"></div></div>
+    <div class="progress-text" id="progressText"></div>
+  </div>
+</div>
+
+<div class="feedback" id="feedback"></div>
+
+<!-- 音频引擎 -->
+<script>
+// ═══════════════════════════════════════════
+// 汉字数据库（30个字，分5级，每级6个）
+// ═══════════════════════════════════════════
+const LEVELS = [
+  { // 第1关：大自然
+    title: '第1关 · 大自然',
+    chars: [
+      { char:'日', emoji:'☀️', hint:'天上发光的大火球', keywords:['太阳','白天'] },
+      { char:'月', emoji:'🌙', hint:'晚上天上弯弯的', keywords:['月亮','夜晚'] },
+      { char:'山', emoji:'⛰️', hint:'高高大大的土石堆', keywords:['高山','登山'] },
+      { char:'水', emoji:'💧', hint:'可以喝、可以洗手的', keywords:['喝水','河水'] },
+      { char:'火', emoji:'🔥', hint:'很热、红红的、能煮饭', keywords:['火焰','生火'] },
+      { char:'木', emoji:'🌳', hint:'公园里绿色的，有树枝', keywords:['树木','木头'] },
+    ]
+  },
+  { // 第2关：身体与动物
+    title: '第2关 · 身体与动物',
+    chars: [
+      { char:'人', emoji:'🧑', hint:'我们就是___类', keywords:['人类','大人'] },
+      { char:'口', emoji:'👄', hint:'用来吃饭、说话的地方', keywords:['嘴巴','开口'] },
+      { char:'目', emoji:'👁️', hint:'用来看东西的器官', keywords:['眼睛','目光'] },
+      { char:'手', emoji:'✋', hint:'用来拿东西、写字的', keywords:['小手','拍手'] },
+      { char:'马', emoji:'🐴', hint:'可以骑的、跑得快的动物', keywords:['小马','骑马'] },
+      { char:'鸟', emoji:'🐦', hint:'在天上飞的、有羽毛的', keywords:['小鸟','飞鸟'] },
+    ]
+  },
+  { // 第3关：植物与自然
+    title: '第3关 · 植物与自然',
+    chars: [
+      { char:'花', emoji:'🌸', hint:'五颜六色、香香的', keywords:['花朵','开花'] },
+      { char:'草', emoji:'🌿', hint:'绿色的、长在地上一片片', keywords:['小草','草地'] },
+      { char:'田', emoji:'🌾', hint:'农民伯伯种庄稼的地方', keywords:['田地','稻田'] },
+      { char:'雨', emoji:'🌧️', hint:'从天上掉下来的水滴', keywords:['下雨','雨伞'] },
+      { char:'云', emoji:'☁️', hint:'天上白白的、飘来飘去', keywords:['白云','云朵'] },
+      { char:'石', emoji:'🪨', hint:'硬硬的、灰色的、路边的', keywords:['石头','石子'] },
+    ]
+  },
+  { // 第4关：日常生活
+    title: '第4关 · 日常生活',
+    chars: [
+      { char:'门', emoji:'🚪', hint:'进房间要打开的', keywords:['大门','门口'] },
+      { char:'车', emoji:'🚗', hint:'四个轮子、可以坐的', keywords:['汽车','开车'] },
+      { char:'书', emoji:'📖', hint:'有很多纸、可以看的', keywords:['书本','读书'] },
+      { char:'米', emoji:'🍚', hint:'白白的、煮成饭吃的', keywords:['大米','米饭'] },
+      { char:'鱼', emoji:'🐟', hint:'在水里游的、有鳞片的', keywords:['小鱼','金鱼'] },
+      { char:'天', emoji:'🌤️', hint:'我们头顶上蓝色的一大片', keywords:['天空','蓝天'] },
+    ]
+  },
+  { // 第5关：方位与数量
+    title: '第5关 · 方位与数量',
+    chars: [
+      { char:'上', emoji:'⬆️', hint:'和下相反的方向', keywords:['上面','向上'] },
+      { char:'下', emoji:'⬇️', hint:'和上相反的方向', keywords:['下面','向下'] },
+      { char:'大', emoji:'🐘', hint:'和小相反，大象很___', keywords:['大小','巨大'] },
+      { char:'小', emoji:'🐭', hint:'和大相反，老鼠很___', keywords:['大小','微小'] },
+      { char:'一', emoji:'1️⃣', hint:'最小的数字，第一个', keywords:['一个','第一'] },
+      { char:'三', emoji:'3️⃣', hint:'比二多一个，比四少一个', keywords:['三个','第三'] },
+    ]
+  }
+];
+
+// ═══════════════════════════════════════════
+// 游戏状态
+// ═══════════════════════════════════════════
+let currentLevel = 0;
+let currentIdx = 0;
+let totalCorrect = 0;
+let totalAnswered = 0;
+let earnedStars = []; // [levelIndex] → star count (0-3)
+let isAnswering = false;
+
+// ═══════════════════════════════════════════
+// 音频（简易 Web Audio 蜂鸣）
+// ═══════════════════════════════════════════
+let audioCtx = null;
+function initAudio() {
+  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+}
+function playTone(freq, duration, type='sine', vol=0.12) {
+  try {
+    initAudio();
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.type = type; osc.frequency.value = freq;
+    gain.gain.setValueAtTime(vol, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+    osc.connect(gain); gain.connect(audioCtx.destination);
+    osc.start(); osc.stop(audioCtx.currentTime + duration);
+  } catch(e){}
+}
+function sfxCorrect() { playTone(523,0.1); setTimeout(()=>playTone(659,0.1),100); setTimeout(()=>playTone(784,0.15),200); }
+function sfxWrong() { playTone(200,0.25,'square',0.06); }
+function sfxStar() { playTone(880,0.08); setTimeout(()=>playTone(1047,0.08),80); setTimeout(()=>playTone(1319,0.12),160); }
+function sfxComplete() {
+  [523,659,784,1047].forEach((f,i)=>setTimeout(()=>playTone(f,0.2),i*120));
+}
+
+// ═══════════════════════════════════════════
+// 渲染
+// ═══════════════════════════════════════════
+function renderStars() {
+  const row = document.getElementById('starsRow');
+  row.innerHTML = '';
+  for (let i = 0; i < LEVELS.length; i++) {
+    const s = document.createElement('span');
+    s.className = 'star';
+    s.textContent = '⭐';
+    s.title = LEVELS[i].title;
+    const earned = earnedStars[i] || 0;
+    if (earned >= 1) s.classList.add('earned');
+    if (earned === 2) s.style.transform = 'scale(0.85)';
+    if (earned === 3) s.style.transform = 'scale(1.1)';
+    if (earned === 0 && i < currentLevel) s.style.opacity = '0.15';
+    row.appendChild(s);
+  }
+}
+
+function shuffle(arr) {
+  const a = arr.slice();
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function renderQuestion() {
+  const level = LEVELS[currentLevel];
+  const item = level.chars[currentIdx];
+
+  document.getElementById('questionText').textContent = level.title;
+  document.getElementById('emojiDisplay').textContent = item.emoji;
+  document.getElementById('hintText').textContent = `💡 ${item.hint}`;
+  document.getElementById('progressBar').style.width =
+    ((currentIdx) / level.chars.length * 100) + '%';
+  document.getElementById('progressText').textContent =
+    `${currentIdx}/${level.chars.length}`;
+
+  // 生成选项：1个正确 + 3个随机错误
+  const allChars = LEVELS.flatMap(l => l.chars.map(c => c.char));
+  const wrongPool = allChars.filter(c => c !== item.char);
+  const shuffledWrong = shuffle(wrongPool).slice(0, 3);
+  const options = shuffle([item.char, ...shuffledWrong]);
+
+  const grid = document.getElementById('optionsGrid');
+  grid.innerHTML = '';
+  options.forEach(opt => {
+    const btn = document.createElement('button');
+    btn.className = 'option-btn';
+    btn.textContent = opt;
+    btn.addEventListener('click', () => handleAnswer(opt, item.char, btn));
+    grid.appendChild(btn);
+  });
+
+  // 更新进度
+  const totalDone = LEVELS.slice(0, currentLevel).reduce((s,l)=>s+l.chars.length,0) + currentIdx;
+  const totalAll = LEVELS.reduce((s,l)=>s+l.chars.length,0);
+  const progWrap = document.querySelector('.progress-bar-outer');
+  // 使用全局进度
+}
+
+function updateGlobalProgress() {
+  const totalDone = LEVELS.slice(0, currentLevel).reduce((s,l)=>s+l.chars.length,0) + currentIdx;
+  const totalAll = LEVELS.reduce((s,l)=>s+l.chars.length,0);
+  document.getElementById('progressBar').style.width = (totalDone/totalAll*100) + '%';
+  document.getElementById('progressText').textContent = `${totalDone}/${totalAll}`;
+}
+
+// ═══════════════════════════════════════════
+// 答题处理
+// ═══════════════════════════════════════════
+function handleAnswer(chosen, correct, btn) {
+  if (isAnswering) return;
+  isAnswering = true;
+
+  const allBtns = document.querySelectorAll('.option-btn');
+  allBtns.forEach(b => b.style.pointerEvents = 'none');
+
+  totalAnswered++;
+
+  if (chosen === correct) {
+    totalCorrect++;
+    btn.classList.add('correct');
+    sfxCorrect();
+    showFeedback('✅');
+
+    // 正确时高亮正确按钮
+    setTimeout(() => {
+      allBtns.forEach(b => {
+        if (b.textContent === correct) b.classList.add('correct');
+        else b.classList.add('wrong');
+      });
+    }, 600);
+
+    setTimeout(() => advanceQuestion(), 1000);
+  } else {
+    btn.classList.add('wrong');
+    sfxWrong();
+    showFeedback('❌');
+
+    // 显示正确答案
+    setTimeout(() => {
+      allBtns.forEach(b => {
+        if (b.textContent === correct) b.classList.add('correct');
+      });
+    }, 500);
+
+    setTimeout(() => advanceQuestion(), 1300);
+  }
+}
+
+function showFeedback(emoji) {
+  const el = document.getElementById('feedback');
+  el.textContent = emoji;
+  el.classList.remove('show');
+  void el.offsetWidth;
+  el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), 1200);
+}
+
+function advanceQuestion() {
+  const level = LEVELS[currentLevel];
+  currentIdx++;
+
+  if (currentIdx >= level.chars.length) {
+    // 当前关卡完成
+    const correctInLevel = totalCorrect - LEVELS.slice(0,currentLevel).reduce((s,l)=>s+l.chars.length,0);
+    const stars = correctInLevel >= 6 ? 3 : correctInLevel >= 4 ? 2 : correctInLevel >= 2 ? 1 : 0;
+    earnedStars[currentLevel] = stars;
+    if (stars >= 1) sfxStar();
+    renderStars();
+
+    if (currentLevel >= LEVELS.length - 1) {
+      // 全部完成
+      setTimeout(showComplete, 600);
+    } else {
+      // 进入下一关
+      currentLevel++;
+      currentIdx = 0;
+      setTimeout(() => { updateGlobalProgress(); renderQuestion(); isAnswering = false; }, 800);
+    }
+  } else {
+    updateGlobalProgress();
+    renderQuestion();
+    isAnswering = false;
+  }
+}
+
+// ═══════════════════════════════════════════
+// 完成界面
+// ═══════════════════════════════════════════
+function showComplete() {
+  sfxComplete();
+  spawnConfetti();
+
+  const overlay = document.createElement('div');
+  overlay.className = 'complete-overlay';
+  overlay.innerHTML = `
+    <div class="complete-card">
+      <div class="trophy">🏆</div>
+      <h2>太棒了！全部完成！</h2>
+      <p style="color:#78716c;margin:8px 0;">你认识了 ${LEVELS.reduce((s,l)=>s+l.chars.length,0)} 个汉字</p>
+      <div class="score">⭐ ${earnedStars.reduce((a,b)=>a+b,0)} / ${LEVELS.length*3}</div>
+      <p style="color:#a8a29e;font-size:14px;margin:4px 0;">
+        正确率：${Math.round(totalCorrect/totalAnswered*100)}%
+      </p>
+      <button onclick="restartGame()">🔄 再玩一次</button>
+    </div>
+  `;
+  document.body.appendChild(overlay);
+  overlay.addEventListener('click', function(e) {
+    if (e.target === overlay) { overlay.remove(); restartGame(); }
+  });
+}
+
+function spawnConfetti() {
+  const colors = ['#fbbf24','#f59e0b','#ef4444','#3b82f6','#10b981','#8b5cf6','#ec4899','#f97316'];
+  for (let i = 0; i < 60; i++) {
+    setTimeout(() => {
+      const piece = document.createElement('div');
+      piece.className = 'confetti-piece';
+      piece.style.left = Math.random()*100 + '%';
+      piece.style.top = -(Math.random()*40+10) + 'px';
+      piece.style.width = (Math.random()*10+6) + 'px';
+      piece.style.height = (Math.random()*10+6) + 'px';
+      piece.style.background = colors[Math.floor(Math.random()*colors.length)];
+      piece.style.borderRadius = Math.random()>0.5?'50%':'2px';
+      piece.style.animationDuration = (Math.random()*2+1.5) + 's';
+      document.body.appendChild(piece);
+      setTimeout(() => piece.remove(), 3000);
+    }, i*25);
+  }
+}
+
+function restartGame() {
+  document.querySelectorAll('.complete-overlay').forEach(e=>e.remove());
+  currentLevel = 0;
+  currentIdx = 0;
+  totalCorrect = 0;
+  totalAnswered = 0;
+  earnedStars = [];
+  isAnswering = false;
+  renderStars();
+  updateGlobalProgress();
+  renderQuestion();
+}
+
+// ═══════════════════════════════════════════
+// 启动
+// ═══════════════════════════════════════════
+renderStars();
+updateGlobalProgress();
+renderQuestion();
+</script>
+</body>
+</html>
