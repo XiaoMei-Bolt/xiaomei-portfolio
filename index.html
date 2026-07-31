@@ -4960,6 +4960,292 @@
         </div>
       </div>
 
+      <div class="article-card" onclick="this.classList.toggle('open')">
+        <div class="article-card-header">
+          <div>
+            <div class="article-card-title">Body Contact 与 Body Floating：SOI 器件的体区连接选择</div>
+            <div class="article-card-meta">📅 2026 年 7 月 · 半导体器件 — 浮体的性能红利与体接触的稳定性代价</div>
+          </div>
+          <div class="article-card-arrow">▼</div>
+        </div>
+        <div class="article-card-body">
+          <div class="article-card-body-inner">
+            <div class="article-body">
+
+        <p>在 SOI 工艺中，器件的体区（Body）被四周的 STI 和底部的 BOX <strong>完全用 SiO₂ 包裹起来</strong>，没有任何直流通路。这带来一个设计上的根本选择：是让它浮着追求极限性能，还是接出来换取稳定性？</p>
+
+        <div class="diagram-container">
+          <svg viewBox="0 0 720 340" xmlns="http://www.w3.org/2000/svg">
+            <text x="360" y="20" text-anchor="middle" fill="#fff" font-size="13" font-weight="600">图一 · Body Floating vs Body Contact 结构对比</text>
+
+            <!-- Left panel: Body Floating -->
+            <rect x="30" y="40" width="310" height="280" rx="8" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.1)"/>
+            <text x="185" y="65" text-anchor="middle" fill="rgba(255,255,255,0.75)" font-size="11" font-weight="600">Body Floating（体区浮空）</text>
+
+            <!-- Gate -->
+            <rect x="170" y="90" width="60" height="16" rx="2" fill="#4ade80" opacity="0.8"/>
+            <text x="200" y="102" text-anchor="middle" fill="#000" font-size="8" font-weight="600">栅极 G</text>
+
+            <!-- Source / Drain -->
+            <rect x="135" y="90" width="30" height="16" rx="2" fill="#60a5fa" opacity="0.7"/>
+            <text x="150" y="102" text-anchor="middle" fill="#000" font-size="7">源 S</text>
+            <rect x="235" y="90" width="30" height="16" rx="2" fill="#60a5fa" opacity="0.7"/>
+            <text x="250" y="102" text-anchor="middle" fill="#000" font-size="7">漏 D</text>
+
+            <!-- Body region -->
+            <rect x="135" y="112" width="130" height="40" rx="2" fill="#fbbf24" opacity="0.3" stroke="rgba(251,191,36,0.5)"/>
+            <text x="200" y="132" text-anchor="middle" fill="#fbbf24" font-size="9">Body（浮空）</text>
+            <text x="200" y="144" text-anchor="middle" fill="rgba(255,255,255,0.35)" font-size="7">电位不固定</text>
+
+            <!-- STI -->
+            <rect x="110" y="88" width="20" height="70" fill="rgba(255,255,255,0.12)" rx="2"/>
+            <rect x="270" y="88" width="20" height="70" fill="rgba(255,255,255,0.12)" rx="2"/>
+            <text x="120" y="128" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-size="6">STI</text>
+            <text x="280" y="128" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-size="6">STI</text>
+
+            <!-- BOX -->
+            <rect x="110" y="162" width="180" height="18" rx="2" fill="rgba(255,255,255,0.12)"/>
+            <text x="200" y="175" text-anchor="middle" fill="rgba(255,255,255,0.35)" font-size="7">BOX（SiO₂ 埋氧层）</text>
+
+            <!-- Substrate -->
+            <rect x="110" y="184" width="180" height="20" rx="2" fill="rgba(255,255,255,0.06)"/>
+            <text x="200" y="197" text-anchor="middle" fill="rgba(255,255,255,0.3)" font-size="8">硅衬底</text>
+
+            <!-- Hollow box around body to show "trapped" -->
+            <rect x="132" y="85" width="136" height="82" fill="none" stroke="#f87171" stroke-width="1.5" stroke-dasharray="6,3" rx="3" opacity="0.6"/>
+            <text x="200" y="82" text-anchor="middle" fill="#f87171" font-size="7" opacity="0.7">SiO₂ 完全包裹</text>
+
+            <!-- Arrow showing charge trapped -->
+            <text x="200" y="222" text-anchor="middle" fill="#fbbf24" font-size="8" opacity="0.6">↻ 空穴电荷堆积</text>
+            <text x="200" y="236" text-anchor="middle" fill="rgba(255,255,255,0.3)" font-size="7">→ Kink 效应 · 寄生 BJT · 历史效应</text>
+
+            <!-- Right panel: Body Contact -->
+            <rect x="380" y="40" width="310" height="280" rx="8" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.1)"/>
+            <text x="535" y="65" text-anchor="middle" fill="rgba(255,255,255,0.75)" font-size="11" font-weight="600">Body Contact（体接触）</text>
+
+            <!-- Gate (T-gate shape) -->
+            <rect x="515" y="90" width="70" height="16" rx="2" fill="#4ade80" opacity="0.8"/>
+            <text x="550" y="102" text-anchor="middle" fill="#000" font-size="8" font-weight="600">栅极 G</text>
+
+            <!-- Source / Drain -->
+            <rect x="490" y="90" width="20" height="16" rx="2" fill="#60a5fa" opacity="0.7"/>
+            <text x="500" y="102" text-anchor="middle" fill="#000" font-size="7">S</text>
+            <rect x="590" y="90" width="20" height="16" rx="2" fill="#60a5fa" opacity="0.7"/>
+            <text x="600" y="102" text-anchor="middle" fill="#000" font-size="7">D</text>
+
+            <!-- Body region -->
+            <rect x="490" y="112" width="120" height="40" rx="2" fill="#fbbf24" opacity="0.3" stroke="rgba(251,191,36,0.5)"/>
+            <text x="550" y="132" text-anchor="middle" fill="#fbbf24" font-size="9">Body（接 GND）</text>
+            <text x="550" y="144" text-anchor="middle" fill="rgba(255,255,255,0.35)" font-size="7">电位锁定</text>
+
+            <!-- Body Contact P+ region -->
+            <rect x="468" y="110" width="18" height="20" rx="2" fill="#c084fc" opacity="0.7"/>
+            <text x="477" y="123" text-anchor="middle" fill="#000" font-size="6">P⁺</text>
+
+            <!-- Metal connection from P+ to GND -->
+            <line x1="477" y1="110" x2="477" y2="86" stroke="rgba(255,255,255,0.5)" stroke-width="1.5"/>
+            <line x1="477" y1="86" x2="430" y2="86" stroke="rgba(255,255,255,0.5)" stroke-width="1.5"/>
+            <text x="430" y="82" text-anchor="end" fill="rgba(255,255,255,0.5)" font-size="7">GND</text>
+
+            <!-- STI -->
+            <rect x="445" y="88" width="20" height="70" fill="rgba(255,255,255,0.12)" rx="2"/>
+            <rect x="625" y="88" width="20" height="70" fill="rgba(255,255,255,0.12)" rx="2"/>
+
+            <!-- BOX -->
+            <rect x="445" y="162" width="200" height="18" rx="2" fill="rgba(255,255,255,0.12)"/>
+            <text x="545" y="175" text-anchor="middle" fill="rgba(255,255,255,0.35)" font-size="7">BOX（SiO₂ 埋氧层）</text>
+
+            <!-- Substrate -->
+            <rect x="445" y="184" width="200" height="20" rx="2" fill="rgba(255,255,255,0.06)"/>
+            <text x="545" y="197" text-anchor="middle" fill="rgba(255,255,255,0.3)" font-size="8">硅衬底</text>
+
+            <!-- Arrow showing charge drain -->
+            <line x1="468" y1="118" x2="408" y2="118" stroke="#4ade80" stroke-width="1" marker-end="url(#arrowGreen)" opacity="0.6"/>
+            <defs>
+              <marker id="arrowGreen" markerWidth="6" markerHeight="4" refX="6" refY="2" orient="auto">
+                <path d="M0,0 L6,2 L0,4 Z" fill="#4ade80"/>
+              </marker>
+            </defs>
+            <text x="438" y="114" text-anchor="middle" fill="#4ade80" font-size="7" opacity="0.6">泄放</text>
+            <text x="530" y="222" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-size="8">空穴经体接触泄放到 GND</text>
+            <text x="530" y="236" text-anchor="middle" fill="rgba(255,255,255,0.3)" font-size="7">→ 无 Kink · 寄生 BJT 抑制 · 线性度提升</text>
+
+            <!-- Legend -->
+            <line x1="90" y1="285" x2="110" y2="285" stroke="#f87171" stroke-width="1.5" stroke-dasharray="6,3" opacity="0.6"/>
+            <text x="118" y="289" fill="rgba(255,255,255,0.4)" font-size="8">：SiO₂ 包裹（浮空困锁）</text>
+            <line x1="400" y1="285" x2="420" y2="285" stroke="#c084fc" stroke-width="2" opacity="0.7"/>
+            <text x="428" y="289" fill="rgba(255,255,255,0.4)" font-size="8">：P⁺ 体接触 · 电荷泄放通路</text>
+          </svg>
+        </div>
+
+        <hr style="border:none;border-top:1px solid rgba(255,255,255,0.08);margin:32px 0;">
+
+        <h4>一 · Body Floating（体区浮空）</h4>
+
+        <p>体区与外界完全绝缘，电位由器件内部电荷平衡自行决定。漏极电压较高时，碰撞电离产生的空穴堆积在体区无法泄放，体电位抬升。</p>
+
+        <div style="overflow-x:auto;margin:24px 0;">
+        <table style="font-size:13px;min-width:600px;">
+        <thead>
+        <tr><th style="width:20%;">效应</th><th>物理机制</th><th>对电路的影响</th></tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td><strong>Kink 效应</strong></td>
+          <td>体电位 ↑ → V<sub>TH</sub> ↓ → I<sub>D</sub> 突然跳升</td>
+          <td>输出特性曲线出现折点；模拟电路增益与线性度恶化</td>
+        </tr>
+        <tr>
+          <td><strong>寄生 BJT 触发</strong></td>
+          <td>源（N⁺）-体（P）-漏（N⁺）构成 NPN 寄生管</td>
+          <td>体电位抬高后开启 → snapback / latch-up，严重时烧毁</td>
+        </tr>
+        <tr>
+          <td><strong>历史效应</strong></td>
+          <td>状态切换后体区电荷无法即时泄放</td>
+          <td>数字电路延迟依赖前一状态；RF 开关非线性增加</td>
+        </tr>
+        <tr>
+          <td><strong>低频噪声抬升</strong></td>
+          <td>浮体充放电引入额外 1/f 噪声</td>
+          <td>LNA 噪声系数恶化</td>
+        </tr>
+        </tbody>
+        </table>
+        </div>
+
+        <p><strong>优点：</strong>工艺简单、面积最小、无体接触寄生电容——高频性能在理想条件下靠前。</p>
+
+        <hr style="border:none;border-top:1px solid rgba(255,255,255,0.08);margin:32px 0;">
+
+        <h4>二 · Body Contact（体接触）</h4>
+
+        <p>在体区表面开 P⁺ 接触孔，金属连接至固定电位（通常为 GND），为空穴提供泄放通道。</p>
+
+        <p><strong>常见实现：</strong></p>
+        <ul>
+          <li><strong>T-gate / H-gate：</strong>栅极延伸成 T 形或 H 形，两侧下方做 P⁺ 体接触</li>
+          <li><strong>Body-Tied to Source：</strong>体接触与源极金属短接，节省一个 PAD</li>
+          <li><strong>Body-Tied to GND：</strong>体接触独立接地，消除更彻底，但多一条走线</li>
+        </ul>
+
+        <div style="overflow-x:auto;margin:24px 0;">
+        <table style="font-size:13px;min-width:600px;">
+        <thead>
+        <tr><th style="width:20%;">收益</th><th>物理机制</th><th>代价</th></tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td><strong>消除 Kink 效应</strong></td>
+          <td>空穴持续泄放，体电位锁定在 GND</td>
+          <td>面积 +20~40%（体接触占版图）</td>
+        </tr>
+        <tr>
+          <td><strong>抑制寄生 BJT</strong></td>
+          <td>源-体结始终反偏或零偏</td>
+          <td>P⁺/N-well 结电容附加到源漏节点</td>
+        </tr>
+        <tr>
+          <td><strong>消除历史效应</strong></td>
+          <td>每个周期体区电荷复位</td>
+          <td>体接触 RC 网络高频衰减增益</td>
+        </tr>
+        <tr>
+          <td><strong>线性度提升</strong></td>
+          <td>体电位稳定 → 跨导恒定</td>
+          <td>布线复杂度（多指大尺寸管尤甚）</td>
+        </tr>
+        </tbody>
+        </table>
+        </div>
+
+        <hr style="border:none;border-top:1px solid rgba(255,255,255,0.08);margin:32px 0;">
+
+        <h4>三 · 工程选择指南</h4>
+
+        <div style="overflow-x:auto;margin:24px 0;">
+        <table style="font-size:13px;min-width:600px;">
+        <thead>
+        <tr><th style="width:25%;">考量维度</th><th style="width:20%;" colspan="2">选 Body Floating</th><th style="width:20%;" colspan="2">选 Body Contact</th></tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td>频率 > 20 GHz</td>
+          <td colspan="2" style="color:#4ade80;">✓ 寄生最小</td>
+          <td colspan="2" style="color:#f87171;">✗ RC 退化高频</td>
+        </tr>
+        <tr>
+          <td>频率 < 5 GHz</td>
+          <td colspan="2">可用</td>
+          <td colspan="2" style="color:#4ade80;">✓ 线性度更优</td>
+        </tr>
+        <tr>
+          <td>数字逻辑</td>
+          <td colspan="2" style="color:#4ade80;">✓ 历史效应可容忍</td>
+          <td colspan="2" style="color:#f87171;">✗ 面积代价不划算</td>
+        </tr>
+        <tr>
+          <td>模拟偏置管</td>
+          <td colspan="2" style="color:#f87171;">✗ Kink 致命</td>
+          <td colspan="2" style="color:#4ade80;">✓ 必须固定体电位</td>
+        </tr>
+        <tr>
+          <td>RF 功放（PA）</td>
+          <td colspan="2" style="color:#f87171;">✗ 寄生 BJT snapback</td>
+          <td colspan="2" style="color:#4ade80;">✓ 可靠性要求接地</td>
+        </tr>
+        <tr>
+          <td>RF 开关</td>
+          <td colspan="2" style="color:#f87171;">✗ 浮体非线性谐波大</td>
+          <td colspan="2" style="color:#4ade80;">✓ 线性度要求高时必选</td>
+        </tr>
+        <tr>
+          <td>LNA（低噪放）</td>
+          <td colspan="2">低频噪声更高</td>
+          <td colspan="2" style="color:#4ade80;">✓ 低频应用推荐</td>
+        </tr>
+        <tr>
+          <td>SRAM 单元</td>
+          <td colspan="2" style="color:#4ade80;">✓ 面积决定一切</td>
+          <td colspan="2" style="color:#f87171;">✗ bit-cell 放不下</td>
+        </tr>
+        </tbody>
+        </table>
+        </div>
+
+        <hr style="border:none;border-top:1px solid rgba(255,255,255,0.08);margin:32px 0;">
+
+        <h4>四 · 实际工程中的折中策略</h4>
+
+        <p>设计实践中很少非此即彼，常见搭配方案：</p>
+        <ol>
+          <li><strong>混合使用：</strong>RF 核心路径用 Body Contact，偏置电路用 Floating，数字逻辑自然浮空</li>
+          <li><strong>选择性体接触：</strong>仅关键器件（RF 开关管、PA 输出级）接体接触，普通管子不做</li>
+          <li><strong>伪体接触（Pseudo Body Contact）：</strong>用二极管连接的 PMOS 代替直接金属接触，泄放电荷但不引入过大的 RC——也是解决浮体效应的经典方案</li>
+          <li><strong>动态体偏置：</strong>发射模式接通体接触，接收模式断开以减小寄生</li>
+        </ol>
+
+        <p style="margin-top:32px;padding:20px;background:rgba(74,222,128,0.06);border-left:3px solid #4ade80;border-radius:4px;">
+          <strong>一句话结论：</strong>Body Floating 靠绝缘追求性能，Body Contact 靠接地换取稳定。前者为高频而生，后者为可靠性和线性度而建。SOI 工艺的核心价值，恰恰在于设计师拥有了"选或不选"的自由——而这在体硅工艺中是无法实现的。
+        </p>
+
+        <hr style="border:none;border-top:1px solid rgba(255,255,255,0.08);margin:32px 0;">
+
+        <p style="font-size:13px;color:rgba(255,255,255,0.55);">参考文献</p>
+        <ol class="refs">
+          <li>J.-P. Colinge, <em>Silicon-on-Insulator Technology: Materials to VLSI</em>, 3rd ed., Springer, 2004, Ch. 6 (SOI MOSFETs), Ch. 7 (Floating-body effects).</li>
+          <li>S. Cristoloveanu and S. S. Li, <em>Electrical Characterization of Silicon-on-Insulator Materials and Devices</em>, Springer, 1995, Ch. 4 (Floating body effects), Ch. 5 (Transient phenomena).</li>
+          <li>Y. Taur and T. H. Ning, <em>Fundamentals of Modern VLSI Devices</em>, 2nd ed., Cambridge University Press, 2009, Ch. 3 (SOI CMOS).</li>
+          <li>J.-P. Raskin, "SOI Technology: An Opportunity for RF Designers?" <em>IEEE Topical Meeting on SiRF</em>, 2009.</li>
+          <li>M. Chan et al., "Comparative study of fully depleted and body-grounded non fully depleted SOI MOSFETs for high performance analog and mixed signal circuits," <em>IEEE Trans. Electron Devices</em>, vol. 42, no. 7, 1995.</li>
+          <li>A. O. Adan et al., "Linearity and low-noise performance of SOI MOSFETs for RF applications," <em>IEEE Trans. Electron Devices</em>, vol. 49, no. 5, 2002.</li>
+        </ol>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
 
     </div>
 <section class="section section-light" id="reading">
