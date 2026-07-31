@@ -4741,6 +4741,226 @@
       </div>
 
 
+    
+
+      <!-- SOI SiO2 Article -->
+      <div class="article-card" onclick="this.classList.toggle('open')">
+        <div class="article-card-header">
+          <div>
+            <div class="article-card-title">SOI 工艺中 SiO₂ 的三种形态：埋氧层、栅氧层与浅槽隔离</div>
+            <div class="article-card-meta">📅 2026 年 7 月 · 半导体工艺 — 同一材料、三种角色，SOI 晶圆的「三明治」结构解析</div>
+          </div>
+          <div class="article-card-arrow">▼</div>
+        </div>
+        <div class="article-card-body">
+          <div class="article-card-body-inner">
+            <div class="article-body">
+
+        <h4>引言——SiO₂ 不止是「绝缘体」</h4>
+
+        <p>在 SOI（Silicon-On-Insulator，绝缘体上硅）工艺中，二氧化硅（SiO₂）并非以单一形态出现，而是以<strong>三种截然不同的结构</strong>存在于芯片的不同位置，各自承担不可替代的功能。理解这三种 SiO₂ 的角色，是深入掌握 SOI 器件物理与设计优化的前提 <span class="ref">[1][2]</span>。</p>
+
+        <p>可以把 SOI 晶圆想象成一个精致的「三明治」结构，从上到下逐一拆解 SiO₂ 的三种形态：</p>
+
+        <div class="diagram-container">
+          <svg viewBox="0 0 800 520" xmlns="http://www.w3.org/2000/svg">
+            <text x="400" y="22" text-anchor="middle" fill="#fff" font-size="14" font-weight="600">图一 · SOI 晶圆横截面：三种 SiO₂ 形态的位置与功能</text>
+
+            <!-- ===== 顶层结构 ===== -->
+            <!-- Substrate -->
+            <rect x="40" y="380" width="720" height="50" rx="4" fill="#2a1f3a" stroke="#4a3060" stroke-width="0.8"/>
+            <text x="400" y="410" text-anchor="middle" fill="#c084fc" fill-opacity="0.5" font-size="11">硅衬底 (Si Substrate) — 高阻硅，机械支撑</text>
+
+            <!-- BOX (buried oxide) -->
+            <rect x="40" y="310" width="720" height="70" rx="3" fill="#1a3a5c" stroke="#3b6b9a" stroke-width="1.5"/>
+            <text x="400" y="340" text-anchor="middle" fill="#5a9fd4" font-size="12" font-weight="700">埋氧层 BOX (Buried Oxide) — SiO₂ · 几百 nm～几 μm</text>
+            <text x="400" y="358" text-anchor="middle" fill="#fff" fill-opacity="0.35" font-size="9">纵向隔离：隔绝衬底寄生电容与噪声 | 浮体效应的物理根源</text>
+            <!-- Arrow pointing to BOX -->
+            <line x1="730" y1="345" x2="770" y2="345" stroke="#5a9fd4" stroke-width="1.5" marker-end="url(#a1)"/>
+            <text x="778" y="349" fill="#5a9fd4" font-size="9" font-weight="600">BOX</text>
+
+            <!-- Device layer (Si) -->
+            <rect x="40" y="260" width="720" height="50" rx="3" fill="#1e3a2f" stroke="#2d5a3f" stroke-width="0.8"/>
+            <text x="400" y="290" text-anchor="middle" fill="#4ade80" fill-opacity="0.5" font-size="11">硅器件层 (Silicon Device Layer) — 厚度几十 nm～几百 nm</text>
+
+            <!-- ===== STI (shallow trench isolation) ===== -->
+            <!-- STI left -->
+            <rect x="100" y="195" width="40" height="65" rx="2" fill="#2a4a6b" stroke="#3b6b9a" stroke-width="1"/>
+            <text x="120" y="232" text-anchor="middle" fill="#fff" fill-opacity="0.25" font-size="6">STI</text>
+            <!-- STI center -->
+            <rect x="380" y="195" width="40" height="65" rx="2" fill="#2a4a6b" stroke="#3b6b9a" stroke-width="1"/>
+            <text x="400" y="232" text-anchor="middle" fill="#fff" fill-opacity="0.25" font-size="6">STI</text>
+            <!-- STI right -->
+            <rect x="660" y="195" width="40" height="65" rx="2" fill="#2a4a6b" stroke="#3b6b9a" stroke-width="1"/>
+            <text x="680" y="232" text-anchor="middle" fill="#fff" fill-opacity="0.25" font-size="6">STI</text>
+
+            <!-- STI annotation -->
+            <line x1="120" y1="260" x2="120" y2="275" stroke="#3b6b9a" stroke-width="1" stroke-dasharray="2,2"/>
+            <text x="90" y="270" fill="#3b6b9a" font-size="7">浅槽隔离</text>
+            <text x="90" y="280" fill="#fff" fill-opacity="0.2" font-size="6">SiO₂ 填充</text>
+
+            <!-- ===== Active devices ===== -->
+            <!-- NMOS -->
+            <rect x="150" y="195" width="220" height="65" rx="4" fill="#1e3a2f" stroke="#4ade80" stroke-width="0.8" stroke-dasharray="4,2"/>
+            <text x="260" y="210" text-anchor="middle" fill="#4ade80" font-size="9" font-weight="600">NMOS 晶体管</text>
+
+            <!-- N+ source/drain -->
+            <rect x="160" y="218" width="50" height="36" rx="2" fill="#1a3a6c" stroke="#3b6ab8" stroke-width="0.6"/>
+            <text x="185" y="240" text-anchor="middle" fill="#5a9fd4" font-size="7">N⁺ S</text>
+            <rect x="310" y="218" width="50" height="36" rx="2" fill="#1a3a6c" stroke="#3b6ab8" stroke-width="0.6"/>
+            <text x="335" y="240" text-anchor="middle" fill="#5a9fd4" font-size="7">N⁺ D</text>
+
+            <!-- Gate oxide (NMOS) -->
+            <rect x="210" y="214" width="100" height="5" fill="#f59e0b" fill-opacity="0.6" stroke="#f59e0b" stroke-width="0.8"/>
+            <!-- Gate poly -->
+            <rect x="210" y="196" width="100" height="18" rx="3" fill="#8b9dc3" stroke="#a0b4d0" stroke-width="0.6"/>
+            <text x="260" y="208" text-anchor="middle" fill="#fff" font-size="7">Gate Poly</text>
+
+            <!-- Gate oxide annotation -->
+            <line x1="260" y1="214" x2="260" y2="187" stroke="#f0a050" stroke-width="1"/>
+            <text x="268" y="184" fill="#f0a050" font-size="8" font-weight="600">栅氧化层</text>
+            <text x="268" y="194" fill="#fff" fill-opacity="0.2" font-size="6">SiO₂ 仅几 nm</text>
+
+            <!-- PMOS -->
+            <rect x="430" y="195" width="220" height="65" rx="4" fill="#1e2f3a" stroke="#f0a050" stroke-width="0.8" stroke-dasharray="4,2"/>
+            <text x="540" y="210" text-anchor="middle" fill="#f0a050" font-size="9" font-weight="600">PMOS 晶体管</text>
+
+            <!-- P+ source/drain -->
+            <rect x="440" y="218" width="50" height="36" rx="2" fill="#5a3a1a" stroke="#b86b3b" stroke-width="0.6"/>
+            <text x="465" y="240" text-anchor="middle" fill="#f0a050" font-size="7">P⁺ S</text>
+            <rect x="590" y="218" width="50" height="36" rx="2" fill="#5a3a1a" stroke="#b86b3b" stroke-width="0.6"/>
+            <text x="615" y="240" text-anchor="middle" fill="#f0a050" font-size="7">P⁺ D</text>
+
+            <!-- Gate oxide (PMOS) -->
+            <rect x="490" y="214" width="100" height="5" fill="#f59e0b" fill-opacity="0.6" stroke="#f59e0b" stroke-width="0.8"/>
+            <!-- Gate poly -->
+            <rect x="490" y="196" width="100" height="18" rx="3" fill="#8b9dc3" stroke="#a0b4d0" stroke-width="0.6"/>
+            <text x="540" y="208" text-anchor="middle" fill="#fff" font-size="7">Gate Poly</text>
+
+            <!-- Body contact annotation -->
+            <text x="545" y="264" text-anchor="middle" fill="#f0a050" fill-opacity="0.4" font-size="6">体区 (P-well) 被 BOX + STI 包裹 → 浮体</text>
+
+            <!-- Arrow defs -->
+            <defs>
+              <marker id="a1" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#5a9fd4"/></marker>
+            </defs>
+
+            <!-- ===== Legend / Bottom ===== -->
+            <line x1="40" y1="435" x2="760" y2="435" stroke="#fff" stroke-opacity="0.06" stroke-width="1"/>
+
+            <!-- Three boxes -->
+            <rect x="40" y="448" width="230" height="56" rx="6" fill="#1a3a5c" fill-opacity="0.3" stroke="#3b6b9a" stroke-width="1"/>
+            <text x="155" y="468" text-anchor="middle" fill="#5a9fd4" font-size="10" font-weight="700">埋氧层 (BOX)</text>
+            <text x="155" y="483" text-anchor="middle" fill="#fff" fill-opacity="0.3" font-size="7">位置：器件层与衬底之间</text>
+            <text x="155" y="495" text-anchor="middle" fill="#fff" fill-opacity="0.25" font-size="7">作用：纵向隔离 · 减寄生 · 隔噪声</text>
+
+            <rect x="285" y="448" width="230" height="56" rx="6" fill="#7c2d12" fill-opacity="0.15" stroke="#f0a050" stroke-width="1"/>
+            <text x="400" y="468" text-anchor="middle" fill="#f0a050" font-size="10" font-weight="700">栅氧化层 (Gate Oxide)</text>
+            <text x="400" y="483" text-anchor="middle" fill="#fff" fill-opacity="0.3" font-size="7">位置：栅极与沟道之间</text>
+            <text x="400" y="495" text-anchor="middle" fill="#fff" fill-opacity="0.25" font-size="7">作用：绝缘栅介质 · 场效应控制</text>
+
+            <rect x="530" y="448" width="230" height="56" rx="6" fill="#2a4a6b" fill-opacity="0.3" stroke="#3b6b9a" stroke-width="1"/>
+            <text x="645" y="468" text-anchor="middle" fill="#3b6b9a" font-size="10" font-weight="700">浅槽隔离 (STI)</text>
+            <text x="645" y="483" text-anchor="middle" fill="#fff" fill-opacity="0.3" font-size="7">位置：器件层表面沟槽内</text>
+            <text x="645" y="495" text-anchor="middle" fill="#fff" fill-opacity="0.25" font-size="7">作用：横向隔离 · 防穿通 · 平坦化</text>
+
+          </svg>
+          <p class="diagram-caption">图一：SOI 晶圆横截面示意图。从上到下：STI（浅槽隔离）分隔 NMOS 与 PMOS → 栅氧化层（Gate Oxide）位于栅极与沟道之间 → 硅器件层 → 埋氧层（BOX）将器件层与底部硅衬底彻底隔离。</p>
+        </div>
+
+        <hr style="border:none;border-top:1px solid rgba(255,255,255,0.08);margin:32px 0;">
+
+        <h4>第一部分 · 埋氧层（BOX）——SOI 的「灵魂」</h4>
+
+        <p><strong>位置：</strong>位于最顶层的硅器件层与底层硅衬底之间，是一层连续、致密的 SiO₂ 绝缘层，厚度通常在<strong>几百纳米到几微米</strong>。</p>
+
+        <p>埋氧层是 SOI 工艺区别于传统体硅（Bulk CMOS）工艺的<strong>根本标志</strong>。它的存在赋予 SOI 三个核心优势 <span class="ref">[1][2][3]</span>：</p>
+
+        <ol>
+          <li><strong>电学隔离——减小寄生电容：</strong>BOX 将有源器件与底部损耗较大的硅衬底彻底物理隔离。源/漏扩散区与衬底之间的结电容被替代为极小的 BOX 电容——寄生电容降低一个数量级以上。在射频开关中，这意味着<strong>更低的插入损耗和更高的隔离度</strong>。</li>
+          <li><strong>抗闩锁（Latch-up）与抗串扰：</strong>体硅 CMOS 中固有的寄生 PNPN 结构（闩锁路径）在 SOI 中被 BOX 彻底切断。同时器件之间的衬底耦合噪声被绝缘层阻断，芯片在强射频信号下更加稳定。</li>
+          <li><strong>降低功耗：</strong>寄生电容减小意味着动态功耗（P = α·C·V²·f）同步降低。同时衬底泄漏电流被 BOX 阻断，静态功耗也得到改善。</li>
+        </ol>
+
+        <p>但 BOX 也是一把双刃剑——正是因为它将体区（Body）与衬底隔开，才导致了 SOI 特有的<strong>浮体效应</strong>（详见第四部分）<span class="ref">[2][3]</span>。</p>
+
+        <hr style="border:none;border-top:1px solid rgba(255,255,255,0.08);margin:32px 0;">
+
+        <h4>第二部分 · 栅氧化层（Gate Oxide）——晶体管的核心开关</h4>
+
+        <p><strong>位置：</strong>位于多晶硅栅极与硅器件层沟道表面之间，是厚度仅<strong>几纳米</strong>的高质量 SiO₂ 层（先进节点中可能被高 K 介质替代，但 SiO₂ 界面层仍然存在）。</p>
+
+        <p>栅氧化层是 CMOS 晶体管正常工作的物理基础，承担两个关键角色 <span class="ref">[1][4]</span>：</p>
+
+        <ol>
+          <li><strong>绝缘介质——实现电压控制：</strong>栅氧化层保证了栅极与沟道之间的直流绝缘，使得栅极不会向沟道注入电流。栅极电压通过<strong>电场效应</strong>（而非电流）来调制下方沟道的电导——在 SiO₂ 两侧形成电容结构，栅压变化通过介质耦合到沟道表面，吸引或排斥载流子，从而控制晶体管的导通与关断。这一机制使得 MOSFET 具有<strong>零静态栅极电流</strong>的本质优势。</li>
+          <li><strong>介电材料——决定器件参数：</strong>作为栅电容的介质，栅氧化层的厚度 t(ox) 和介电常数 ε(ox) 直接决定了单位面积栅电容 C(ox) = ε(ox)/t(ox)。C(ox) 又进一步影响晶体管的阈值电压 V(TH)、跨导 gm、驱动电流 I(D,sat) 等核心参数。工艺节点的每一次缩小，都伴随着 t(ox) 的同步减薄——从 0.18 μm 节点的 ~4 nm 到先进节点的 ~1 nm（等效氧化层厚度 EOT）。</li>
+        </ol>
+
+        <p>栅氧化层的质量是工艺水平的直接体现：界面态密度 D(it)、击穿电场强度、经时击穿（TDDB，Time-Dependent Dielectric Breakdown）可靠性等指标，决定了晶体管的噪声性能、寿命和良率 <span class="ref">[4][5]</span>。</p>
+
+        <hr style="border:none;border-top:1px solid rgba(255,255,255,0.08);margin:32px 0;">
+
+        <h4>第三部分 · 浅槽隔离（STI）——器件间的「围墙」</h4>
+
+        <p><strong>位置：</strong>在硅器件层的表面，通过刻蚀深沟槽并填充 SiO₂，形成一个个「硅岛」，将不同的晶体管在物理上分隔开来。</p>
+
+        <p>STI 是现代 CMOS 工艺（体硅和 SOI 均使用）的<strong>通用隔离技术</strong>，替代了早期的 LOCOS（硅局部氧化）工艺。其核心作用包括 <span class="ref">[1][4]</span>：</p>
+
+        <ol>
+          <li><strong>横向隔离——防止穿通：</strong>STI 将同一层硅膜上的 NMOS 与 PMOS、不同功能模块电路在物理上分隔开。相邻 N⁺ 和 P⁺ 扩散区之间如果不加隔离，可能在足够高的电压下发生穿通（Punch-Through）——STI 的深槽结构（深度通常 > 300 nm）彻底阻断了这一路径。</li>
+          <li><strong>平坦化——为多层布线铺路：</strong>STI 填充后的 SiO₂ 表面经过化学机械抛光（CMP，Chemical-Mechanical Polishing），达到纳米级的全局平坦度。这一步骤是后续多层金属布线（通常 5-12 层）能够精确光刻和可靠互连的前提——任何表面起伏都会被逐层放大，最终导致光刻失焦或金属断裂。</li>
+          <li><strong>在 SOI 中的特殊角色——体区困锁：</strong>在 SOI 器件中，STI 与 BOX 共同构成了一个封闭的 SiO₂「盒子」——体区下方是 BOX、四周是 STI。如果不在体区表面开接触孔，这个区域就完全被 SiO₂ 包围，形成<strong>电学悬浮状态</strong>——这正是浮体效应的几何根源 <span class="ref">[2][3]</span>。</li>
+        </ol>
+
+        <hr style="border:none;border-top:1px solid rgba(255,255,255,0.08);margin:32px 0;">
+
+        <h4>第四部分 · 引申——浮体效应与 SiO₂ 的「包裹」结构</h4>
+
+        <p>SOI 器件的浮体效应（Floating Body Effect），本质上是由 BOX 和 STI 共同构成的 SiO₂ 包围结构所导致的 <span class="ref">[2][3]</span>：</p>
+
+        <ul>
+          <li>在<strong>体硅工艺</strong>中，晶体管的体区（P 阱）通过下方的硅衬底与地电位相连，碰撞电离产生的多余载流子可以随时泄放到衬底——体电位始终稳定。</li>
+          <li>在<strong>SOI 工艺</strong>中，体区的<strong>下方是绝缘的 BOX</strong>，<strong>四周被 STI 包围</strong>，只有通过表面的体接触孔（Body-Tie）才能将体区接到固定电位。如果不加体接触，体区就被 SiO₂ 完全「包裹」，处于电学悬浮状态。</li>
+        </ul>
+
+        <p>当 MOSFET 工作在高漏极电压时，沟道中的高能载流子通过碰撞电离产生电子-空穴对。NMOS 中，电子被漏极收集，而空穴流向体区——<strong>在浮体结构中，这些空穴无处可去</strong>，在体区积累，导致体电位升高 → 阈值电压 V(TH) 下降 → 漏极电流 I(D) 进一步增大 → 更多碰撞电离——形成正反馈，即所谓的<strong>Kink 效应</strong> <span class="ref">[2][3]</span>。</p>
+
+        <p>体接触（Body-Tie）——通常使用二极管连接的 PMOS 或直接的 P⁺ 接触——本质上就是在 SiO₂「围墙」上开了一个可控的「泄洪口」：让积累的空穴通过这个通道流走，维持体电位的稳定。但体接触会引入额外的寄生电容和电阻，因此 FB（浮体）与 BT（体接触）之间的选择是 SOI 设计中的一个核心折衷。</p>
+
+        <hr style="border:none;border-top:1px solid rgba(255,255,255,0.08);margin:32px 0;">
+
+        <h4>总结</h4>
+
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>SiO₂ 形态</th><th>位置</th><th>关键作用</th><th>厚度量级</th></tr></thead>
+            <tbody>
+              <tr style="background:rgba(59,107,154,0.08);"><td><strong>埋氧层 (BOX)</strong></td><td>器件层与底部衬底之间</td><td>纵向隔离，减小寄生电容，降低损耗，隔绝衬底噪声</td><td>100 nm ~ 2 μm</td></tr>
+              <tr style="background:rgba(240,160,80,0.08);"><td><strong>栅氧化层 (Gate Oxide)</strong></td><td>栅极与沟道表面之间</td><td>绝缘栅介质，实现电压控制的场效应开关</td><td>1 ~ 5 nm</td></tr>
+              <tr style="background:rgba(42,74,107,0.08);"><td><strong>浅槽隔离 (STI)</strong></td><td>器件层表面的沟槽内</td><td>横向隔离，分隔晶体管，防止穿通与串扰</td><td>300 ~ 500 nm（深度）</td></tr>
+            </tbody>
+          </table>
+          <p class="table-caption">表1：SOI 工艺中三种 SiO₂ 形态对比 [1][2][4]</p>
+        </div>
+
+        <p>简而言之：<strong>栅氧化层让单个晶体管能工作，STI 让多个晶体管不互相干扰，而埋氧层让整个芯片在射频下表现更优秀——但也正是它带来了需要额外电路（体接触）来解决的浮体副作用</strong>。三者以同一种材料（SiO₂），在三个位置，扮演了三种截然不同的角色——这是半导体工艺工程中「结构决定功能」的绝佳范例。</p>
+
+        <h4>参考文献</h4>
+        <ol class="refs">
+          <li>J.-P. Colinge, <em>Silicon-on-Insulator Technology: Materials to VLSI</em>, 3rd ed., Springer, 2004, Ch. 2–3 (SOI materials, BOX), Ch. 6 (SOI MOSFETs).</li>
+          <li>J.-P. Raskin, "SOI Technology: An Opportunity for RF Designers?" <em>IEEE Topical Meeting on Silicon Monolithic Integrated Circuits in RF Systems (SiRF)</em>, 2009.</li>
+          <li>S. Cristoloveanu and S. S. Li, <em>Electrical Characterization of Silicon-on-Insulator Materials and Devices</em>, Springer, 1995, Ch. 4 (Floating body effects), Ch. 5 (Transient phenomena).</li>
+          <li>Y. Taur and T. H. Ning, <em>Fundamentals of Modern VLSI Devices</em>, 2nd ed., Cambridge University Press, 2009, Ch. 2 (Gate oxide), Ch. 3 (STI and isolation).</li>
+          <li>R. Degraeve et al., "New insights in the relation between electron trap generation and the statistical properties of oxide breakdown," <em>IEEE Transactions on Electron Devices</em>, vol. 45, no. 4, pp. 904–911, Apr. 1998.</li>
+        </ol>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+
     </div>
 <section class="section section-light" id="reading">
   <div class="section-inner">
