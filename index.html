@@ -5574,6 +5574,253 @@
         </div>
       </div>
 
+      <div class="article-card" onclick="this.classList.toggle('open')">
+        <div class="article-card-header">
+          <div>
+            <div class="article-card-title">SRS 谐波指标：射频前端最严苛的线性度大考</div>
+            <div class="article-card-meta">📅 2026 年 7 月 · 射频系统设计 — 从测试方法到功率链路，SRS 场景下谐波抑制的工程推导</div>
+          </div>
+          <div class="article-card-arrow">▼</div>
+        </div>
+        <div class="article-card-body">
+          <div class="article-card-body-inner">
+            <div class="article-body">
+
+        <p>在 5G NR 射频前端的设计评审中，SRS（Sounding Reference Signal，探测参考信号）谐波指标是最容易被低估、却又最容易在认证测试中翻车的项目。原因很简单：<strong>传导测试通常不开 SRS，而辐射杂散（RSE）测试却会强制开启</strong>——这意味着 SRS 场景下 PA 面临的等效功率远高于常规发射场景，而谐波抑制必须在这个"最坏工况"下仍然满足 3GPP 并留出足够的设计余量。</p>
+
+        <hr style="border:none;border-top:1px solid rgba(255,255,255,0.08);margin:32px 0;">
+
+        <h4>一 · SRS 为什么在常规传导测试中"看不见"</h4>
+
+        <p>常规的传导测试（Conducted Test）关注的是 PUSCH / PUCCH 信道的发射性能——ACLR、EVM、频谱模板等。SRS 是一个独立的探测信道，用于基站侧的上行信道估计，<strong>在大多数传导测试用例中默认为关闭状态</strong>。</p>
+
+        <p>但辐射杂散发射（RSE, Radiated Spurious Emission）测试不同：</p>
+        <ul>
+          <li>RSE 测试要求 UE 以最大功率发射，且<strong>所有上行信道均需激活</strong>——包括 SRS</li>
+          <li>频谱分析仪通常设置为 <strong>Max Hold 模式</strong>，在整个测试周期内持续抓取峰值</li>
+          <li>SRS 的突发特性（burst）配合 Max Hold，意味着<strong>整个测试过程中任何一个时刻的谐波峰值都会被捕获</strong></li>
+        </ul>
+
+        <p>这就是 SRS 谐波问题的第一层：<strong>它不是"有没有"的问题，而是"测不测"的问题——认证时它一定会被测到。</strong></p>
+
+        <div style="padding:18px;background:rgba(251,191,36,0.08);border-left:3px solid #fbbf24;border-radius:4px;margin:24px 0;">
+          <strong>⚡ 关键认知：</strong>传导测试是"平均功率"的游戏，RSE 测试是"峰值功率"的游戏。SRS 的 PAR（峰均比）和天线失配导致的电压倍增，让 SRS 场景成为整个射频链路线性度设计的硬约束。
+        </div>
+
+        <hr style="border:none;border-top:1px solid rgba(255,255,255,0.08);margin:32px 0;">
+
+        <h4>二 · 功率链路推导：为什么等效到 LFEM SRS 口是 36 dBm</h4>
+
+        <p>以 N77（3.3–4.2 GHz）频段为例，从 PA 输出一路推导到 LFEM SRS 端口的等效 50Ω 功率。</p>
+
+        <div class="diagram-container">
+          <svg viewBox="0 0 720 320" xmlns="http://www.w3.org/2000/svg">
+            <text x="360" y="22" text-anchor="middle" fill="#fff" font-size="13" font-weight="600">图一 · SRS 场景下 LFEM SRS 口等效功率推导链路</text>
+
+            <!-- Block 1: LPAMIF -->
+            <rect x="30" y="50" width="130" height="50" rx="6" fill="rgba(96,165,250,0.12)" stroke="rgba(96,165,250,0.4)"/>
+            <text x="95" y="70" text-anchor="middle" fill="#60a5fa" font-size="10" font-weight="600">LPAMIF</text>
+            <text x="95" y="85" text-anchor="middle" fill="#fff" font-size="9">P<tspan baseline-shift="sub" font-size="0.7em">avg</tspan> = 29 dBm</text>
+
+            <!-- Arrow 1: trace loss -->
+            <line x1="160" y1="75" x2="210" y2="75" stroke="rgba(255,255,255,0.4)" stroke-width="1.5"/>
+            <text x="185" y="68" text-anchor="middle" fill="#f87171" font-size="7">−0.5 dB</text>
+            <text x="185" y="92" text-anchor="middle" fill="rgba(255,255,255,0.25)" font-size="6">走线损耗</text>
+
+            <!-- Block 2: SRS port -->
+            <rect x="215" y="50" width="130" height="50" rx="6" fill="rgba(192,132,252,0.12)" stroke="rgba(192,132,252,0.4)"/>
+            <text x="280" y="70" text-anchor="middle" fill="#c084fc" font-size="10" font-weight="600">SRS 口</text>
+            <text x="280" y="85" text-anchor="middle" fill="#fff" font-size="9">28.5 dBm (avg)</text>
+
+            <!-- Arrow 2: PAR -->
+            <line x1="345" y1="75" x2="395" y2="75" stroke="rgba(255,255,255,0.4)" stroke-width="1.5"/>
+            <text x="370" y="68" text-anchor="middle" fill="#4ade80" font-size="7">+3 dB</text>
+            <text x="370" y="92" text-anchor="middle" fill="rgba(255,255,255,0.25)" font-size="6">SRS PAR</text>
+
+            <!-- Block 3: Peak power -->
+            <rect x="400" y="50" width="130" height="50" rx="6" fill="rgba(251,191,36,0.12)" stroke="rgba(251,191,36,0.4)"/>
+            <text x="465" y="70" text-anchor="middle" fill="#fbbf24" font-size="10" font-weight="600">峰值功率</text>
+            <text x="465" y="85" text-anchor="middle" fill="#fff" font-size="9">31.5 dBm</text>
+
+            <!-- Arrow 3: VSWR -->
+            <line x1="530" y1="75" x2="580" y2="75" stroke="rgba(255,255,255,0.4)" stroke-width="1.5"/>
+            <text x="555" y="68" text-anchor="middle" fill="#f87171" font-size="7">+4.2 dB</text>
+            <text x="555" y="92" text-anchor="middle" fill="rgba(255,255,255,0.25)" font-size="6">VSWR=4</text>
+
+            <!-- Block 4: Equivalent 50Ω -->
+            <rect x="585" y="50" width="115" height="50" rx="6" fill="rgba(239,68,68,0.12)" stroke="rgba(239,68,68,0.5)" stroke-width="1.5"/>
+            <text x="642" y="70" text-anchor="middle" fill="#ef4444" font-size="10" font-weight="600">等效 50Ω</text>
+            <text x="642" y="85" text-anchor="middle" fill="#ef4444" font-size="11" font-weight="600">≈ 36 dBm</text>
+
+            <!-- Bottom: formula -->
+            <rect x="60" y="130" width="600" height="55" rx="6" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.08)"/>
+            <text x="360" y="150" text-anchor="middle" fill="rgba(255,255,255,0.5)" font-size="9">功率累积通式</text>
+            <text x="360" y="170" text-anchor="middle" fill="#fff" font-size="11" font-weight="600">P<tspan baseline-shift="sub" font-size="0.7em">eq</tspan> = P<tspan baseline-shift="sub" font-size="0.7em">avg</tspan>(LPAMIF) − L<tspan baseline-shift="sub" font-size="0.7em">trace</tspan> + PAR<tspan baseline-shift="sub" font-size="0.7em">SRS</tspan> + 20·log(1+|Γ|)</text>
+
+            <!-- VSWR section -->
+            <text x="360" y="205" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-size="9">VSWR = 4 : |Γ| = (4−1)/(4+1) = 0.6 : 电压倍增 = 1+|Γ| = 1.6 ≡ +4.1 dB</text>
+            <text x="360" y="222" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-size="9">VSWR = 5 : |Γ| = (5−1)/(5+1) = 0.667 : 电压倍增 = 1+|Γ| = 1.667 ≡ +4.4 dB</text>
+
+            <!-- Result -->
+            <rect x="180" y="248" width="360" height="50" rx="6" fill="rgba(239,68,68,0.08)" stroke="rgba(239,68,68,0.3)"/>
+            <text x="360" y="268" text-anchor="middle" fill="rgba(255,255,255,0.5)" font-size="9">代入计算</text>
+            <text x="360" y="288" text-anchor="middle" fill="#ef4444" font-size="12" font-weight="600">P<tspan baseline-shift="sub" font-size="0.7em">eq</tspan> ≈ 29 − 0.5 + 3 + 4.1 ≈ 35.6 dBm ≈ 36 dBm</text>
+          </svg>
+        </div>
+
+        <p><strong>功率链路拆解：</strong></p>
+
+        <div style="overflow-x:auto;margin:24px 0;">
+        <table style="font-size:13px;min-width:600px;">
+        <thead>
+        <tr><th style="width:25%;">环节</th><th style="width:15%;">数值</th><th>说明</th></tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td>LPAMIF 平均输出</td>
+          <td><strong>29 dBm</strong></td>
+          <td>N77 频段 PA 在最大功率等级（PC2）下的典型输出</td>
+        </tr>
+        <tr>
+          <td>走线损耗</td>
+          <td><strong style="color:#f87171;">−0.5 dB</strong></td>
+          <td>LPAMIF 到 LFEM SRS 口的 PCB 微带走线损耗</td>
+        </tr>
+        <tr>
+          <td>SRS PAR</td>
+          <td><strong style="color:#4ade80;">+3 dB</strong></td>
+          <td>SRS 信号峰均比可配置，典型值约 3 dB（取决于 SRS 序列和 RB 配置）</td>
+        </tr>
+        <tr>
+          <td>天线失配（VSWR=4 ∼ 5）</td>
+          <td><strong style="color:#f87171;">+4.1 ∼ 4.4 dB</strong></td>
+          <td>反射系数 |Γ| = 0.6 ∼ 0.667，电压驻波峰值 V<sub>max</sub> = V<sub>inc</sub>(1+|Γ|)，折算为 50Ω 等效功率增量 = 20·log(1+|Γ|)</td>
+        </tr>
+        <tr style="background:rgba(239,68,68,0.08);">
+          <td><strong>等效 50Ω 功率</strong></td>
+          <td><strong style="color:#ef4444;font-size:14px;">≈ 36 dBm</strong></td>
+          <td>LFEM SRS 口在失配条件下所承受的等效功率</td>
+        </tr>
+        </tbody>
+        </table>
+        </div>
+
+        <p style="font-size:12px;color:rgba(255,255,255,0.35);margin-top:-8px;">注：天线 VSWR 按 4∼5 估算，对应自由空间下手握/头模等典型用户场景。实际设计中不同厂商和项目可能采用不同 VSWR 假设。</p>
+
+        <hr style="border:none;border-top:1px solid rgba(255,255,255,0.08);margin:32px 0;">
+
+        <h4>三 · 谐波指标要求与设计余量</h4>
+
+        <p>3GPP TS 38.101-1 对 UE 发射机的杂散发射有明确限制。对于谐波频段（2f₀、3f₀），一般要求不超过 −30 dBm。但各厂商在实际设计评审中通常加 6 dB 余量。</p>
+
+        <div style="overflow-x:auto;margin:24px 0;">
+        <table style="font-size:13px;min-width:500px;">
+        <thead>
+        <tr><th style="width:22%;">参数</th><th style="width:18%;">数值</th><th>备注</th></tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td>3GPP 杂散限值</td>
+          <td><strong>−30 dBm</strong></td>
+          <td>TS 38.101-1 §6.5.2，谐波频段杂散发射上限</td>
+        </tr>
+        <tr>
+          <td>厂商设计余量</td>
+          <td><strong style="color:#f87171;">−6 dB</strong></td>
+          <td>覆盖 PVT 偏差、批次一致性、测试不确定度</td>
+        </tr>
+        <tr style="background:rgba(239,68,68,0.08);">
+          <td><strong>实际测试目标</strong></td>
+          <td><strong style="color:#ef4444;font-size:14px;">−36 dBm</strong></td>
+          <td>认证测试中 Max Hold 抓取的最差值不得超过此门限</td>
+        </tr>
+        </tbody>
+        </table>
+        </div>
+
+        <h4 style="font-size:15px;margin-top:28px;">谐波抑制需求推导</h4>
+
+        <p>以 N77 低信道 3.3 GHz 的 2 次谐波（6.6 GHz）为例：</p>
+
+        <div style="padding:18px;background:rgba(74,222,128,0.06);border-left:3px solid #4ade80;border-radius:4px;margin:20px 0;">
+          <strong>所需谐波抑制 = 等效功率 − 目标限值 = 36 dBm − (−36 dBm) = <span style="color:#4ade80;">72 dB</span></strong>
+        </div>
+
+        <p>这意味着 LFEM 在 SRS 场景下，谐波频率处需要提供 <strong>72 dB 的衰减量</strong>。这个需求由以下几个部分共同承担：</p>
+
+        <div style="overflow-x:auto;margin:24px 0;">
+        <table style="font-size:13px;min-width:500px;">
+        <thead>
+        <tr><th style="width:25%;">贡献来源</th><th style="width:18%;">典型衰减</th><th>说明</th></tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td>LPAMIF 内部滤波</td>
+          <td>15–25 dB</td>
+          <td>PA 后端的低通/带通滤波器对谐波的抑制</td>
+        </tr>
+        <tr>
+          <td>LFEM SRS 路径滤波</td>
+          <td>25–35 dB</td>
+          <td>SRS 通路中的开关 + 滤波器组合</td>
+        </tr>
+        <tr>
+          <td>天线本身频率选择性</td>
+          <td>5–15 dB</td>
+          <td>天线在谐波频段的增益滚降（不可靠、不依赖）</td>
+        </tr>
+        <tr>
+          <td>PA 自身线性度</td>
+          <td>基础谐波水平</td>
+          <td>PA 输出端原始谐波越低，后级压力越小</td>
+        </tr>
+        </tbody>
+        </table>
+        </div>
+
+        <p style="font-size:12px;color:rgba(255,255,255,0.35);margin-top:-8px;">注：天线谐波抑制不能作为可靠设计余量——自由空间和手握状态差异极大。稳健设计应<strong>仅依赖 LPAMIF + LFEM 的滤波</strong>，天线贡献视为附加保险。</p>
+
+        <hr style="border:none;border-top:1px solid rgba(255,255,255,0.08);margin:32px 0;">
+
+        <h4>四 · 设计启示</h4>
+
+        <p><strong>最容易被低估的一条：天线 VSWR 的"乘数效应"。</strong></p>
+
+        <p>很多设计者只关注 PA 在 50Ω 负载下的谐波性能，忽略了实际用户场景下天线 VSWR 可能达到 4∼5，此时电压驻波峰值将 PA 推入深度压缩区，谐波急剧恶化。SRS 场景的 PAR 又叠加了一层峰均比惩罚——这三点共振，使得 SRS 成为射频前端线性度设计中最苛刻的单一场景。</p>
+
+        <p>工程上的教训通常以这样的方式出现：传导测试 ACLR / 谐波一切正常，辐射杂散测试却突然超标。排查下来，发现辐射测试流程中开启了 SRS，而传导测试没有——<strong>不是设计错了，是测试覆盖不全。</strong></p>
+
+        <p><strong>设计检查清单：</strong></p>
+        <ol>
+          <li><strong>明确 SRS 场景的功率链路</strong>——不是 PA 标称 Pout 做谐波预算，而是按 "Pavg − trace loss + PAR + 20·log(1+|Γ|)" 计算等效功率</li>
+          <li><strong>谐波抑制需求在 LFEM 规格书中要有明确指标</strong>——不能写成"Typical −40 dBm"，必须写成"Worst-case SRS 场景 ≤ −36 dBm"</li>
+          <li><strong>天线 VSWR 扫描测试</strong>——在 Smith Chart 上对 VSWR=4 圆上的多个相位点测试谐波，确保全象限覆盖</li>
+          <li><strong>PA Load-pull 验证</strong>——在 VSWR=4 的负载牵引下确认 PA 不会进入深度压缩导致谐波激增</li>
+        </ol>
+
+        <hr style="border:none;border-top:1px solid rgba(255,255,255,0.08);margin:32px 0;">
+
+        <p style="padding:18px;background:rgba(239,68,68,0.06);border-left:3px solid #ef4444;border-radius:4px;">
+          <strong>一句话总结：</strong>SRS 谐波指标之所以严格，不是因为 PA 不够线性，而是因为测试方法决定了"最坏工况"——天线失配的电压倍增 + SRS 的峰均比 + Max Hold 的峰值捕获，让 LFEM SRS 口等效看到了 36 dBm，而你必须确保在这种条件下谐波仍 ≤ −36 dBm。72 dB 的抑制需求，是射频前端在 SRS 场景下不可谈判的硬指标。
+        </p>
+
+        <hr style="border:none;border-top:1px solid rgba(255,255,255,0.08);margin:32px 0;">
+
+        <p style="font-size:13px;color:rgba(255,255,255,0.55);">参考文献</p>
+        <ol class="refs">
+          <li>3GPP TS 38.101-1, "NR; User Equipment (UE) radio transmission and reception (Part 1: Range 1 Standalone)," v18.6.0, §6.5.2 (Spurious emissions), 2025.</li>
+          <li>3GPP TS 38.211, "NR; Physical channels and modulation," §6.4.1.4 (SRS — Sounding Reference Signal), 2025.</li>
+          <li>3GPP TS 38.521-1, "NR; UE conformance specification; Radio transmission and reception (Part 1: Range 1 Standalone)," §6.5.2 (RSE test procedure), 2025.</li>
+          <li>D. M. Pozar, <em>Microwave Engineering</em>, 4th ed., Wiley, 2012, Ch. 2 (Transmission line theory — VSWR and reflection coefficient), Ch. 12 (Active RF circuits — PA nonlinearity).</li>
+          <li>S. C. Cripps, <em>RF Power Amplifiers for Wireless Communications</em>, 2nd ed., Artech House, 2006, Ch. 8 (Load-pull characterization), Ch. 9 (Linearity and efficiency trade-offs).</li>
+          <li>J. H. Kim et al., "A dual-band CMOS PA with integrated harmonic filter for 5G NR n77/n79 applications," <em>IEEE RFIC Symposium</em>, pp. 135–138, 2023.</li>
+        </ol>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
 
     </div>
 <section class="section section-light" id="reading">
