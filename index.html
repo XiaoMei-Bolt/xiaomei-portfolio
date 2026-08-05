@@ -374,6 +374,12 @@
       .hero { padding: 60px 16px 40px; }
       .section { padding: 64px 16px; }
     }
+    @media (min-width: 1200px) {
+      .section-inner { max-width: 1100px; }
+      .section-desc { max-width: 680px; }
+      .hero-content { max-width: 780px; }
+      .nav-inner { max-width: 1100px; }
+    }
 
     /* Article cards (collapsible, dark theme) */
     .article-card {
@@ -3203,7 +3209,7 @@
         <div class="article-card-header">
           <div>
             <div class="article-card-title">CMOS 场效应管（MOSFET）工作区域与设计方法论</div>
-            <div class="article-card-meta">📅 2026 年 7 月 · 半导体器件 — 从开关到放大，同一器件的三张面孔与 gm/Id 设计哲学</div>
+            <div class="article-card-meta">📅 2026 年 7 月 · 半导体器件 — 从开关到放大，同一器件的三张面孔、三大工作区与关键指标解析</div>
           </div>
           <div class="article-card-arrow">▼</div>
         </div>
@@ -3211,961 +3217,92 @@
           <div class="article-card-body-inner">
             <div class="article-body">
 
-        <p>半导体器件家族中，双极型晶体管（BJT，Bipolar Junction Transistor）是「电流控制电流」的鼻祖——基极电流的微小变化控制集电极的大电流，奠定了整个集成电路时代的基础。而金属-氧化物-半导体场效应管（MOSFET，Metal-Oxide-Semiconductor Field-Effect Transistor）则是「电压控制电流」的范式——栅极电压通过电场效应调制沟道电导，凭借<strong>零静态栅极电流、高集成度和互补对称结构（CMOS）</strong>，成为现代数字与模拟集成电路的绝对主力。本文聚焦 NMOS 场效应管的工作区域划分、各自对应的典型应用场景，以及跨区域连续设计的核心方法论——gm/Id 设计哲学 <span class="ref">[1][2]</span>。</p>
+        <p>半导体器件家族中，<strong>CMOS 场效应管（MOSFET）</strong>是最核心的成员之一。在射频前端设计中，同样的 NMOS 器件可以扮演三种截然不同的角色：射频开关中的压控电阻、数字逻辑中的反相器、低噪声放大器（LNA）和功率放大器（PA）中的压控电流源——这不是三个不同器件，而是同一器件在 <strong>V(GS) 和 V(DS) 偏置条件不同时的三种物理面孔</strong> <span class="ref">[1][2]</span>。</p>
 
-        <hr style="border:none;border-top:1px solid rgba(255,255,255,0.08);margin:32px 0;">
-
-        <h4>第一部分 · 工作区域总览——同一个器件，三张面孔</h4>
-
-        <p>NMOS 场效应管的漏极电流 I(D) 由栅源电压 V(GS) 和漏源电压 V(DS) 共同决定。根据 V(GS) 与阈值电压 V(TH) 的关系、以及 V(DS) 与过驱动电压 V(ov) = V(GS) − V(TH) 的关系，器件工作于三个截然不同的区域：</p>
-
-        <div class="diagram-container">
-          <svg viewBox="0 0 800 420" xmlns="http://www.w3.org/2000/svg">
-            <text x="400" y="22" text-anchor="middle" fill="#fff" font-size="15" font-weight="600">图一 · NMOS 输出特性曲线（I(D)–V(DS)）与三个工作区域</text>
-
-            <!-- Axes -->
-            <line x1="80" y1="320" x2="760" y2="320" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
-            <line x1="80" y1="60" x2="80" y2="320" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
-            <text x="765" y="336" fill="rgba(255,255,255,0.4)" font-size="10" text-anchor="end">V(DS)</text>
-            <text x="70" y="58" fill="rgba(255,255,255,0.4)" font-size="10" text-anchor="end">I(D)</text>
-
-            <!-- Soft region backgrounds -->
-            <path d="M80,320 C200,280 320,220 400,180 C550,120 700,100 760,100 L760,320 Z" fill="rgba(240,160,80,0.04)"/>
-            <path d="M80,320 C200,280 320,220 400,180 C550,120 700,100 760,100 L760,60 L80,60 Z" fill="rgba(16,185,129,0.03)"/>
-
-            <!-- Boundary parabola: ID = (k/2)*VDS^2 connecting the knees -->
-            <path d="M160,260 C200,235 250,210 300,192 C380,168 500,152 650,138" fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="1" stroke-dasharray="6,4"/>
-
-            <!-- ID-VDS curves: all start near origin (VDS=0, ID≈0), rise through triode, knee at saturation, then nearly flat -->
-            <!-- VGS4 (highest): steepest rise, largest Vov, highest saturation -->
-            <path d="M80,316 C130,298 220,240 280,198 C370,194 550,191 760,188" fill="none" stroke="#5a9fd4" stroke-width="2"/>
-            <!-- VGS3 (medium) -->
-            <path d="M80,316 C130,305 190,268 235,228 C320,224 510,221 760,219" fill="none" stroke="#3b7ab8" stroke-width="1.6"/>
-            <!-- VGS2 (lowest above VTH): gentlest rise, smallest Vov -->
-            <path d="M80,316 C125,310 160,288 185,258 C260,254 460,251 760,249" fill="none" stroke="#2d5a8e" stroke-width="1.3"/>
-
-            <!-- VGS labels right-aligned at saturation level -->
-            <text x="765" y="185" fill="#5a9fd4" font-size="9">V(GS4) 最高</text>
-            <text x="765" y="216" fill="#3b7ab8" font-size="9">V(GS3)</text>
-            <text x="765" y="246" fill="#2d5a8e" font-size="9">V(GS2) 低</text>
-
-            <!-- Boundary label -->
-            <text x="640" y="132" fill="rgba(255,255,255,0.25)" font-size="8">V(DS) = V(ov) 边界</text>
-
-            <!-- Region labels -->
-            <text x="185" y="315" fill="#f0a050" font-size="12" font-weight="700" text-anchor="middle">线性区 (Triode)</text>
-            <text x="185" y="330" fill="rgba(255,255,255,0.3)" font-size="9" text-anchor="middle">V(DS) &lt; V(ov), 电阻行为</text>
-            <text x="560" y="75" fill="#10b981" font-size="12" font-weight="700" text-anchor="middle">饱和区 (Saturation)</text>
-            <text x="560" y="90" fill="rgba(255,255,255,0.3)" font-size="9" text-anchor="middle">V(DS) &gt; V(ov), 恒流源行为</text>
-
-            <!-- Cutoff -->
-            <text x="130" y="358" fill="rgba(255,255,255,0.22)" font-size="9" text-anchor="middle">V(GS) &lt; V(TH): 截止区 — I(D) ≈ 0</text>
-
-            <!-- Annotation arrows to knees -->
-            <line x1="280" y1="198" x2="280" y2="355" stroke="rgba(255,255,255,0.2)" stroke-width="0.6" stroke-dasharray="3,3"/>
-            <line x1="235" y1="228" x2="235" y2="355" stroke="rgba(255,255,255,0.2)" stroke-width="0.6" stroke-dasharray="3,3"/>
-            <line x1="185" y1="258" x2="185" y2="355" stroke="rgba(255,255,255,0.2)" stroke-width="0.6" stroke-dasharray="3,3"/>
-            <text x="280" y="368" fill="rgba(255,255,255,0.25)" font-size="8" text-anchor="middle">V(ov4)</text>
-            <text x="235" y="368" fill="rgba(255,255,255,0.25)" font-size="8" text-anchor="middle">V(ov3)</text>
-            <text x="185" y="368" fill="rgba(255,255,255,0.25)" font-size="8" text-anchor="middle">V(ov2)</text>
-
-            <!-- Key formula boxes -->
-            <rect x="80" y="385" width="300" height="28" rx="4" fill="rgba(240,160,80,0.08)" stroke="rgba(240,160,80,0.2)"/>
-            <text x="230" y="403" fill="#f0a050" font-size="10" text-anchor="middle">线性区：I(D) ≈ μn·Cox·(W/L)·[V(ov)·V(DS) − V(DS)²/2]</text>
-
-            <rect x="420" y="385" width="340" height="28" rx="4" fill="rgba(16,185,129,0.08)" stroke="rgba(16,185,129,0.2)"/>
-            <text x="590" y="403" fill="#10b981" font-size="10" text-anchor="middle">饱和区：I(D) ≈ ½·μn·Cox·(W/L)·V(ov)²·(1 + λ·V(DS))</text>
-          </svg>
-          <p class="diagram-caption">图一：NMOS 输出特性曲线。三条曲线从原点出发（V(DS)=0 时 I(D)=0），V(GS) 越高→初始斜率越陡→膝点 V(ov) 越靠右→饱和电流越高。虚线为饱和边界 V(DS)=V(ov)。</p>
-        </div>
+        <p>理解这三种面孔的物理本质和设计指标，是在射频前端设计中正确选用器件尺寸、偏置条件和工艺选项的基础。本文概述 MOSFET 的三个工作区域及其核心指标。</p>
 
         <div class="table-wrap">
+          <p class="table-caption">表：三工作区对照总览</p>
           <table>
-            <thead><tr><th>工作区域</th><th>条件</th><th>I(D)–V(DS) 关系</th><th>等效模型</th><th>典型应用</th></tr></thead>
+            <thead><tr><th>工作区域</th><th>偏置条件</th><th>等效模型</th><th>核心指标</th><th>典型应用</th></tr></thead>
             <tbody>
-              <tr style="background:rgba(239,68,68,0.05);"><td><strong>截止区（Cutoff）</strong></td><td>V(GS) &lt; V(TH)</td><td>I(D) ≈ 0</td><td>开路</td><td>数字逻辑 OFF 态</td></tr>
-              <tr style="background:rgba(240,160,80,0.05);"><td><strong>线性区（Triode/Linear）</strong></td><td>V(GS) &gt; V(TH) 且 V(DS) &lt; V(ov)</td><td>I(D) ∝ V(DS)（近似线性）</td><td>压控电阻</td><td>模拟开关、RF 开关、可变电阻</td></tr>
-              <tr style="background:rgba(16,185,129,0.05);"><td><strong>饱和区（Saturation）</strong></td><td>V(GS) &gt; V(TH) 且 V(DS) &gt; V(ov)</td><td>I(D) ≈ 恒定（沟道夹断）</td><td>压控电流源</td><td>放大器、电流源、模拟信号处理</td></tr>
+              <tr><td><strong>截止区</strong></td><td>V(GS) &lt; V(TH)</td><td>断路（开路开关）</td><td>Coff</td><td>RF 开关·关断态、数字逻辑·0</td></tr>
+              <tr><td><strong>线性区</strong></td><td>V(GS) &gt; V(TH) 且 V(DS) &lt; V(ov)</td><td>压控电阻</td><td>Ron, Ron·Coff</td><td>RF 开关·导通态</td></tr>
+              <tr><td><strong>饱和区</strong></td><td>V(GS) &gt; V(TH) 且 V(DS) &gt; V(ov)</td><td>压控电流源</td><td>gm, gm/Id, fT</td><td>LNA, PA, 电流镜</td></tr>
             </tbody>
           </table>
-          <p class="table-caption">表1：NMOS 三个工作区域的判定条件、等效模型与应用场景</p>
-        </div>
-
-        
-
-        <!-- 图二：三工作区载流子分布 -->
-        <div class="diagram-container">
-          <svg viewBox="0 0 960 500" xmlns="http://www.w3.org/2000/svg">
-
-            <text x="480" y="22" text-anchor="middle" fill="#fff" font-size="14" font-weight="600">图二 · NMOS 三工作区沟道载流子分布对比（横截面示意图）</text>
-
-            <!-- ============================================================ -->
-            <!-- LEFT: 截止区 (Cutoff) -->
-            <!-- ============================================================ -->
-            <text x="160" y="52" text-anchor="middle" fill="#ef4444" font-size="13" font-weight="700">截止区 (Cutoff)</text>
-            <text x="160" y="68" text-anchor="middle" fill="#fff" fill-opacity="0.35" font-size="9">V(GS) &lt; V(TH)</text>
-
-            <!-- Gate electrode -->
-            <rect x="70" y="80" width="180" height="14" rx="3" fill="#8b9dc3" stroke="#a0b4d0" stroke-width="0.8"/>
-            <text x="160" y="91" text-anchor="middle" fill="#fff" font-size="8" font-weight="600">Gate (Poly-Si)</text>
-            <line x1="160" y1="72" x2="160" y2="80" stroke="#8b9dc3" stroke-width="1.5"/>
-            <text x="170" y="75" fill="#fff" fill-opacity="0.4" font-size="8">V(GS) &lt; V(TH)</text>
-
-            <!-- SiO2 layer -->
-            <rect x="70" y="94" width="180" height="10" fill="#2a4a6b" stroke="#3b6b9a" stroke-width="0.5"/>
-            <text x="160" y="102" text-anchor="middle" fill="#fff" fill-opacity="0.25" font-size="7">SiO₂</text>
-
-            <!-- N+ Source -->
-            <rect x="70" y="104" width="36" height="56" rx="2" fill="#1a3a6c" stroke="#3b6ab8" stroke-width="0.8"/>
-            <text x="88" y="136" text-anchor="middle" fill="#5a9fd4" font-size="9" font-weight="600">N⁺</text>
-            <text x="88" y="150" text-anchor="middle" fill="#fff" fill-opacity="0.3" font-size="7">Source</text>
-            <text x="88" y="164" text-anchor="middle" fill="#fff" fill-opacity="0.2" font-size="7">0V</text>
-
-            <!-- N+ Drain -->
-            <rect x="214" y="104" width="36" height="56" rx="2" fill="#1a3a6c" stroke="#3b6ab8" stroke-width="0.8"/>
-            <text x="232" y="136" text-anchor="middle" fill="#5a9fd4" font-size="9" font-weight="600">N⁺</text>
-            <text x="232" y="150" text-anchor="middle" fill="#fff" fill-opacity="0.3" font-size="7">Drain</text>
-            <text x="232" y="164" text-anchor="middle" fill="#fff" fill-opacity="0.2" font-size="7">V(DS)</text>
-
-            <!-- P-substrate -->
-            <rect x="70" y="160" width="180" height="52" fill="#2d1f3a" stroke="#4a3060" stroke-width="0.5"/>
-
-            <!-- Substrate label -->
-            <text x="160" y="200" text-anchor="middle" fill="#c084fc" fill-opacity="0.4" font-size="8">P 型衬底 (P-Substrate)</text>
-
-            <!-- Hole symbols in substrate (small + circles) -->
-            <circle cx="100" cy="182" r="1.8" fill="none" stroke="#c084fc" stroke-width="0.7"/>
-            <text x="100" y="183.5" text-anchor="middle" fill="#c084fc" fill-opacity="0.6" font-size="6">+</text>
-            <circle cx="130" cy="195" r="1.8" fill="none" stroke="#c084fc" stroke-width="0.7"/>
-            <text x="130" y="196.5" text-anchor="middle" fill="#c084fc" fill-opacity="0.6" font-size="6">+</text>
-            <circle cx="160" cy="185" r="1.8" fill="none" stroke="#c084fc" stroke-width="0.7"/>
-            <text x="160" y="186.5" text-anchor="middle" fill="#c084fc" fill-opacity="0.6" font-size="6">+</text>
-            <circle cx="190" cy="192" r="1.8" fill="none" stroke="#c084fc" stroke-width="0.7"/>
-            <text x="190" y="193.5" text-anchor="middle" fill="#c084fc" fill-opacity="0.6" font-size="6">+</text>
-            <circle cx="220" cy="183" r="1.8" fill="none" stroke="#c084fc" stroke-width="0.7"/>
-            <text x="220" y="184.5" text-anchor="middle" fill="#c084fc" fill-opacity="0.6" font-size="6">+</text>
-
-            <!-- Depletion region (shaded area under gate, between source/drain but no channel) -->
-            <rect x="106" y="104" width="108" height="30" fill="#4a3060" fill-opacity="0.5" stroke="none"/>
-            <text x="160" y="122" text-anchor="middle" fill="#fff" fill-opacity="0.2" font-size="8">耗尽层</text>
-
-            <!-- Key annotation -->
-            <text x="160" y="225" text-anchor="middle" fill="#ef4444" fill-opacity="0.8" font-size="10" font-weight="600">无导电沟道 → 器件关闭</text>
-            <text x="160" y="240" text-anchor="middle" fill="#fff" fill-opacity="0.3" font-size="8">N⁺ 源/漏被 P 衬底隔离 → 两个背靠背 PN 结</text>
-
-            <!-- Vertical separator -->
-            <line x1="295" y1="50" x2="295" y2="250" stroke="#fff" stroke-opacity="0.06" stroke-width="1"/>
-
-            <!-- ============================================================ -->
-            <!-- MIDDLE: 线性区 (Triode/Linear) -->
-            <!-- ============================================================ -->
-            <text x="480" y="52" text-anchor="middle" fill="#f0a050" font-size="13" font-weight="700">线性区 (Triode)</text>
-            <text x="480" y="68" text-anchor="middle" fill="#fff" fill-opacity="0.35" font-size="9">V(GS) &gt; V(TH) 且 V(DS) &lt; V(ov)</text>
-
-            <!-- Gate electrode -->
-            <rect x="390" y="80" width="180" height="14" rx="3" fill="#8b9dc3" stroke="#a0b4d0" stroke-width="0.8"/>
-            <text x="480" y="91" text-anchor="middle" fill="#fff" font-size="8" font-weight="600">Gate (Poly-Si)</text>
-            <line x1="480" y1="72" x2="480" y2="80" stroke="#8b9dc3" stroke-width="1.5"/>
-            <text x="490" y="75" fill="#fff" fill-opacity="0.4" font-size="8">V(GS) &gt; V(TH)</text>
-
-            <!-- SiO2 layer -->
-            <rect x="390" y="94" width="180" height="10" fill="#2a4a6b" stroke="#3b6b9a" stroke-width="0.5"/>
-            <text x="480" y="102" text-anchor="middle" fill="#fff" fill-opacity="0.25" font-size="7">SiO₂</text>
-
-            <!-- N+ Source -->
-            <rect x="390" y="104" width="36" height="56" rx="2" fill="#1a3a6c" stroke="#3b6ab8" stroke-width="0.8"/>
-            <text x="408" y="136" text-anchor="middle" fill="#5a9fd4" font-size="9" font-weight="600">N⁺</text>
-            <text x="408" y="150" text-anchor="middle" fill="#fff" fill-opacity="0.3" font-size="7">Source</text>
-            <text x="408" y="164" text-anchor="middle" fill="#fff" fill-opacity="0.2" font-size="7">0V</text>
-
-            <!-- N+ Drain -->
-            <rect x="534" y="104" width="36" height="56" rx="2" fill="#1a3a6c" stroke="#3b6ab8" stroke-width="0.8"/>
-            <text x="552" y="136" text-anchor="middle" fill="#5a9fd4" font-size="9" font-weight="600">N⁺</text>
-            <text x="552" y="150" text-anchor="middle" fill="#fff" fill-opacity="0.3" font-size="7">Drain</text>
-            <text x="552" y="164" text-anchor="middle" fill="#fff" fill-opacity="0.2" font-size="7">V(DS) 小</text>
-
-            <!-- P-substrate -->
-            <rect x="390" y="160" width="180" height="52" fill="#2d1f3a" stroke="#4a3060" stroke-width="0.5"/>
-
-            <!-- Substrate label -->
-            <text x="480" y="200" text-anchor="middle" fill="#c084fc" fill-opacity="0.4" font-size="8">P 型衬底 (P-Substrate)</text>
-
-            <!-- Hole symbols in substrate -->
-            <circle cx="420" cy="182" r="1.8" fill="none" stroke="#c084fc" stroke-width="0.7"/>
-            <text x="420" y="183.5" text-anchor="middle" fill="#c084fc" fill-opacity="0.6" font-size="6">+</text>
-            <circle cx="460" cy="195" r="1.8" fill="none" stroke="#c084fc" stroke-width="0.7"/>
-            <text x="460" y="196.5" text-anchor="middle" fill="#c084fc" fill-opacity="0.6" font-size="6">+</text>
-            <circle cx="500" cy="185" r="1.8" fill="none" stroke="#c084fc" stroke-width="0.7"/>
-            <text x="500" y="186.5" text-anchor="middle" fill="#c084fc" fill-opacity="0.6" font-size="6">+</text>
-            <circle cx="540" cy="192" r="1.8" fill="none" stroke="#c084fc" stroke-width="0.7"/>
-            <text x="540" y="193.5" text-anchor="middle" fill="#c084fc" fill-opacity="0.6" font-size="6">+</text>
-
-            <!-- Electron channel: continuous from source to drain -->
-            <rect x="426" y="108" width="108" height="14" rx="4" fill="#10b981" fill-opacity="0.2" stroke="#10b981" stroke-width="1.2" stroke-dasharray="3,2"/>
-            <text x="480" y="118" text-anchor="middle" fill="#10b981" font-size="8" font-weight="600">电子沟道（连续）</text>
-
-            <!-- Electron dots in channel -->
-            <circle cx="445" cy="112" r="1.5" fill="#10b981" fill-opacity="0.7"/>
-            <circle cx="460" cy="115" r="1.5" fill="#10b981" fill-opacity="0.7"/>
-            <circle cx="475" cy="111" r="1.5" fill="#10b981" fill-opacity="0.7"/>
-            <circle cx="490" cy="114" r="1.5" fill="#10b981" fill-opacity="0.7"/>
-            <circle cx="505" cy="112" r="1.5" fill="#10b981" fill-opacity="0.7"/>
-            <circle cx="520" cy="115" r="1.5" fill="#10b981" fill-opacity="0.7"/>
-
-            <!-- Electric field arrow from gate down -->
-            <line x1="455" y1="80" x2="455" y2="100" stroke="#f0a050" stroke-width="1" marker-end="url(#arrowOrange)"/>
-            <line x1="480" y1="80" x2="480" y2="100" stroke="#f0a050" stroke-width="1" marker-end="url(#arrowOrange)"/>
-            <line x1="505" y1="80" x2="505" y2="100" stroke="#f0a050" stroke-width="1" marker-end="url(#arrowOrange)"/>
-            <defs><marker id="arrowOrange" markerWidth="6" markerHeight="5" refX="6" refY="2.5" orient="auto"><path d="M0,0 L6,2.5 L0,5" fill="#f0a050"/></marker></defs>
-
-            <!-- Key annotation -->
-            <text x="480" y="225" text-anchor="middle" fill="#10b981" fill-opacity="0.8" font-size="10" font-weight="600">完整导电沟道 → 压控电阻</text>
-            <text x="480" y="240" text-anchor="middle" fill="#fff" fill-opacity="0.3" font-size="8">栅压吸引电子形成反型层，贯穿源漏 → I(D) ∝ V(DS)</text>
-
-            <!-- Vertical separator -->
-            <line x1="615" y1="50" x2="615" y2="250" stroke="#fff" stroke-opacity="0.06" stroke-width="1"/>
-
-            <!-- ============================================================ -->
-            <!-- RIGHT: 饱和区 (Saturation) -->
-            <!-- ============================================================ -->
-            <text x="800" y="52" text-anchor="middle" fill="#10b981" font-size="13" font-weight="700">饱和区 (Saturation)</text>
-            <text x="800" y="68" text-anchor="middle" fill="#fff" fill-opacity="0.35" font-size="9">V(GS) &gt; V(TH) 且 V(DS) &gt; V(ov)</text>
-
-            <!-- Gate electrode -->
-            <rect x="710" y="80" width="180" height="14" rx="3" fill="#8b9dc3" stroke="#a0b4d0" stroke-width="0.8"/>
-            <text x="800" y="91" text-anchor="middle" fill="#fff" font-size="8" font-weight="600">Gate (Poly-Si)</text>
-            <line x1="800" y1="72" x2="800" y2="80" stroke="#8b9dc3" stroke-width="1.5"/>
-            <text x="810" y="75" fill="#fff" fill-opacity="0.4" font-size="8">V(GS) &gt; V(TH)</text>
-
-            <!-- SiO2 layer -->
-            <rect x="710" y="94" width="180" height="10" fill="#2a4a6b" stroke="#3b6b9a" stroke-width="0.5"/>
-            <text x="800" y="102" text-anchor="middle" fill="#fff" fill-opacity="0.25" font-size="7">SiO₂</text>
-
-            <!-- N+ Source -->
-            <rect x="710" y="104" width="36" height="56" rx="2" fill="#1a3a6c" stroke="#3b6ab8" stroke-width="0.8"/>
-            <text x="728" y="136" text-anchor="middle" fill="#5a9fd4" font-size="9" font-weight="600">N⁺</text>
-            <text x="728" y="150" text-anchor="middle" fill="#fff" fill-opacity="0.3" font-size="7">Source</text>
-            <text x="728" y="164" text-anchor="middle" fill="#fff" fill-opacity="0.2" font-size="7">0V</text>
-
-            <!-- N+ Drain -->
-            <rect x="854" y="104" width="36" height="56" rx="2" fill="#1a3a6c" stroke="#3b6ab8" stroke-width="0.8"/>
-            <text x="872" y="136" text-anchor="middle" fill="#5a9fd4" font-size="9" font-weight="600">N⁺</text>
-            <text x="872" y="150" text-anchor="middle" fill="#fff" fill-opacity="0.3" font-size="7">Drain</text>
-            <text x="872" y="164" text-anchor="middle" fill="#fff" fill-opacity="0.2" font-size="7">V(DS) 大</text>
-
-            <!-- P-substrate -->
-            <rect x="710" y="160" width="180" height="52" fill="#2d1f3a" stroke="#4a3060" stroke-width="0.5"/>
-
-            <!-- Substrate label -->
-            <text x="800" y="200" text-anchor="middle" fill="#c084fc" fill-opacity="0.4" font-size="8">P 型衬底 (P-Substrate)</text>
-
-            <!-- Hole symbols in substrate -->
-            <circle cx="740" cy="182" r="1.8" fill="none" stroke="#c084fc" stroke-width="0.7"/>
-            <text x="740" y="183.5" text-anchor="middle" fill="#c084fc" fill-opacity="0.6" font-size="6">+</text>
-            <circle cx="780" cy="195" r="1.8" fill="none" stroke="#c084fc" stroke-width="0.7"/>
-            <text x="780" y="196.5" text-anchor="middle" fill="#c084fc" fill-opacity="0.6" font-size="6">+</text>
-            <circle cx="830" cy="188" r="1.8" fill="none" stroke="#c084fc" stroke-width="0.7"/>
-            <text x="830" y="189.5" text-anchor="middle" fill="#c084fc" fill-opacity="0.6" font-size="6">+</text>
-
-            <!-- Electron channel: pinched off near drain -->
-            <rect x="746" y="108" width="72" height="14" rx="4" fill="#10b981" fill-opacity="0.2" stroke="#10b981" stroke-width="1.2" stroke-dasharray="3,2"/>
-            <text x="782" y="118" text-anchor="middle" fill="#10b981" font-size="7" font-weight="600">电子沟道</text>
-
-            <!-- Electron dots in channel (only from source to pinch-off) -->
-            <circle cx="760" cy="112" r="1.5" fill="#10b981" fill-opacity="0.7"/>
-            <circle cx="775" cy="115" r="1.5" fill="#10b981" fill-opacity="0.7"/>
-            <circle cx="790" cy="111" r="1.5" fill="#10b981" fill-opacity="0.7"/>
-            <circle cx="805" cy="114" r="1.5" fill="#10b981" fill-opacity="0.7"/>
-
-            <!-- Pinch-off point marker -->
-            <line x1="822" y1="104" x2="822" y2="124" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="2,2"/>
-            <text x="822" y="100" text-anchor="middle" fill="#ef4444" font-size="7" font-weight="600">夹断点</text>
-
-            <!-- Depletion region near drain (pinch-off zone) -->
-            <rect x="822" y="104" width="32" height="20" fill="#4a3060" fill-opacity="0.6" stroke="#ef4444" stroke-width="0.8" stroke-dasharray="2,1"/>
-            <text x="838" y="118" text-anchor="middle" fill="#ef4444" fill-opacity="0.7" font-size="7">耗尽区</text>
-
-            <!-- High field arrow near drain -->
-            <text x="835" y="80" fill="#ef4444" fill-opacity="0.6" font-size="6">高场区</text>
-            <line x1="845" y1="75" x2="845" y2="95" stroke="#ef4444" stroke-width="1" marker-end="url(#arrowRed)"/>
-            <defs><marker id="arrowRed" markerWidth="6" markerHeight="5" refX="6" refY="2.5" orient="auto"><path d="M0,0 L6,2.5 L0,5" fill="#ef4444"/></marker></defs>
-
-            <!-- Key annotation -->
-            <text x="800" y="225" text-anchor="middle" fill="#10b981" fill-opacity="0.8" font-size="10" font-weight="600">沟道夹断 → 压控电流源</text>
-            <text x="800" y="240" text-anchor="middle" fill="#fff" fill-opacity="0.3" font-size="8">漏端 V(DS) 过高，沟道在漏侧消失 → I(D) 饱和</text>
-
-            <!-- ============================================================ -->
-            <!-- Bottom: legend / summary row -->
-            <!-- ============================================================ -->
-            <line x1="20" y1="270" x2="940" y2="270" stroke="#fff" stroke-opacity="0.06" stroke-width="1"/>
-
-            <text x="480" y="292" text-anchor="middle" fill="#fff" fill-opacity="0.5" font-size="10" font-weight="600">图例与关键物理机制</text>
-
-            <!-- Legend items -->
-            <!-- Electron -->
-            <circle cx="100" cy="318" r="4" fill="#10b981" fill-opacity="0.7"/>
-            <text x="112" y="322" fill="#fff" fill-opacity="0.7" font-size="10">电子 (e⁻) — 沟道载流子</text>
-
-            <!-- Hole -->
-            <circle cx="340" cy="318" r="4" fill="none" stroke="#c084fc" stroke-width="1.2"/>
-            <text x="348" y="322" fill="#fff" fill-opacity="0.7" font-size="10">+ 空穴 (h⁺) — P 衬底多数载流子</text>
-
-            <!-- Depletion -->
-            <rect x="560" y="314" width="16" height="8" fill="#4a3060" fill-opacity="0.5" stroke="#ef4444" stroke-width="0.6" stroke-dasharray="2,1"/>
-            <text x="584" y="322" fill="#fff" fill-opacity="0.7" font-size="10">耗尽区 — 可动载流子被扫空</text>
-
-            <text x="800" y="322" fill="#fff" fill-opacity="0.3" font-size="9">N⁺ — 重掺杂 N 型区</text>
-
-            <!-- Mechanism boxes -->
-            <rect x="30" y="340" width="275" height="62" rx="6" fill="#ef4444" fill-opacity="0.05" stroke="#ef4444" stroke-opacity="0.15"/>
-            <text x="168" y="358" text-anchor="middle" fill="#ef4444" font-size="9" font-weight="600">截止区物理</text>
-            <text x="168" y="373" text-anchor="middle" fill="#fff" fill-opacity="0.4" font-size="8">栅压不足以在 Si/SiO₂ 界面形成反型层</text>
-            <text x="168" y="387" text-anchor="middle" fill="#fff" fill-opacity="0.4" font-size="8">源漏之间无导电通道 → I(D) ≈ 0</text>
-            <text x="168" y="398" text-anchor="middle" fill="#fff" fill-opacity="0.25" font-size="7">N⁺-P-N⁺ 结构 = 两个背靠背的 PN 结</text>
-
-            <rect x="340" y="340" width="275" height="62" rx="6" fill="#f0a050" fill-opacity="0.05" stroke="#f0a050" stroke-opacity="0.15"/>
-            <text x="478" y="358" text-anchor="middle" fill="#f0a050" font-size="9" font-weight="600">线性区物理</text>
-            <text x="478" y="373" text-anchor="middle" fill="#fff" fill-opacity="0.4" font-size="8">栅极正压排斥空穴、吸引电子 → 形成反型层</text>
-            <text x="478" y="387" text-anchor="middle" fill="#fff" fill-opacity="0.4" font-size="8">沟道从源极连续延伸到漏极 → 电子自由漂移</text>
-            <text x="478" y="398" text-anchor="middle" fill="#fff" fill-opacity="0.25" font-size="7">低 V(DS)：沟道均匀 → I(D) ∝ V(DS)（欧姆行为）</text>
-
-            <rect x="650" y="340" width="280" height="62" rx="6" fill="#10b981" fill-opacity="0.05" stroke="#10b981" stroke-opacity="0.15"/>
-            <text x="790" y="358" text-anchor="middle" fill="#10b981" font-size="9" font-weight="600">饱和区物理</text>
-            <text x="790" y="373" text-anchor="middle" fill="#fff" fill-opacity="0.4" font-size="8">高 V(DS) 使漏端栅-沟道电压降至 V(TH) 以下</text>
-            <text x="790" y="387" text-anchor="middle" fill="#fff" fill-opacity="0.4" font-size="8">沟道在漏侧被夹断 → 耗尽区出现</text>
-            <text x="790" y="398" text-anchor="middle" fill="#fff" fill-opacity="0.25" font-size="7">电子从源漂移到夹断点后被电场扫入漏极 → I(D) 饱和</text>
-
-          </svg>
-          <p class="diagram-caption">图二：NMOS 在三个工作区的沟道载流子分布横截面示意图 · 栅极 (Poly-Si) → SiO₂ 氧化层 → N⁺ 源/漏 → P 衬底。关键区别在于 Si/SiO₂ 界面处是否形成电子反型层（导电沟道），以及沟道是否连续贯穿源漏。</p>
-        </div>
-
-
-        <hr style="border:none;border-top:1px solid rgba(255,255,255,0.08);margin:32px 0;">
-
-        <h4>第二部分 · 线性区——当 MOSFET 化身为「导线」</h4>
-
-        <p>当 V(DS) 远小于过驱动电压 V(ov)（即 V(DS) ≪ V(GS) − V(TH)），漏极电流与漏源电压呈近似线性关系，器件等效为一个<strong>压控电阻</strong>。这是 MOSFET 作为开关 ON 态的核心机制——沟道从源极到漏极完全形成，像一个受栅压调制的电阻通道。</p>
-
-        <h4 style="font-size:16px;color:rgba(255,255,255,0.9);margin-top:24px;">2.1 导通电阻 Ron——开关的核心指标</h4>
-
-        <p>在深线性区（V(DS) → 0），沟道导通电阻的经典表达式为 <span class="ref">[1][2]</span>：</p>
-
-        <p style="text-align:center;font-size:15px;color:#f0a050;margin:16px 0;"><strong>Ron = 1 / [μn · Cox · (W/L) · V(ov)]</strong></p>
-
-        <p>这个公式揭示了设计者可以操控的四个「旋钮」：</p>
-
-        <ol>
-          <li><strong>迁移率 μn（Mobility）：</strong>由工艺决定——体硅电子迁移率约 1,200–1,400 cm²/V·s，SOI 和 FinFET 工艺因应力工程可更高。设计者无法直接改变，但可选择工艺节点。</li>
-          <li><strong>单位面积栅氧电容 Cox：</strong>Cox = εox / tox。tox（栅氧厚度）随工艺节点缩小而减薄——从 0.18 μm 节点的 ~4 nm 到 5 nm 节点的 ~1 nm。更薄的 tox 意味着更高的 Cox 和更低的 Ron，但也意味着更大的栅极隧穿泄漏。</li>
-          <li><strong>宽长比 W/L：</strong>设计者最直接的控制变量。增大 W 降低 Ron，但代价是更大的寄生电容和芯片面积。RF 开关中 W/L 可达数千，数字标准单元中 W/L 通常在 1–10 范围。</li>
-          <li><strong>过驱动电压 V(ov) = V(GS) − V(TH)：</strong>栅压越高，沟道电子越多，Ron 越低。但 V(ov) 上限受限于电源电压和栅氧可靠性。</li>
-        </ol>
-
-
-        <h4 style="font-size:16px;color:rgba(255,255,255,0.9);margin-top:24px;">2.1.1 电子迁移率 μn——速度的物理本源</h4>
-
-        <p>在 Ron 公式和 I(D) 表达式中反复出现的 <strong>μn（电子迁移率）</strong>，是 CMOS 器件性能最底层的物理参数之一。理解它的物理本质，是理解「为什么不同工艺节点的器件性能差异如此之大」的关键。</p>
-
-        <h4 style="font-size:14px;color:#5a9fd4;margin-top:18px;">物理定义</h4>
-
-        <p><strong>迁移率 μ 定义为单位电场强度下载流子的平均漂移速度：</strong></p>
-
-        <p style="text-align:center;font-size:15px;color:#5a9fd4;margin:12px 0;"><strong>μ = v(drift) / E &nbsp;&nbsp;|&nbsp;&nbsp; 单位：cm²/V·s</strong></p>
-
-        <p>其中 v(drift) 是载流子在电场 E 驱动下的漂移速度。对于硅中的电子，低场迁移率 μn ≈ 1,200–1,400 cm²/V·s；空穴迁移率 μp ≈ 400–500 cm²/V·s——<strong>电子的迁移率约为空穴的 2.5–3 倍</strong>，这是 NMOS 比 PMOS 速度更快的根本原因 <span class="ref">[1][3]</span>。</p>
-
-        <h4 style="font-size:14px;color:#5a9fd4;margin-top:18px;">对开关速度的影响</h4>
-
-        <p>数字电路中，反相器的传播延迟 t(pd) 与迁移率直接相关：</p>
-
-        <p style="text-align:center;font-size:14px;color:#5a9fd4;margin:8px 0;"><strong>t(pd) ∝ C(load) · VDD / I(D,sat) &nbsp;&nbsp;|&nbsp;&nbsp; I(D,sat) ∝ μn</strong></p>
-
-        <p>因为饱和电流 I(D,sat) 与 μn 成正比，所以 <strong>迁移率越高 → 驱动电流越大 → 负载电容充放电越快 → 开关速度越快 → 数字电路工作频率越高</strong>。从 0.18 μm 到 5 nm，每一代工艺节点的性能提升，相当一部分来自应变硅（Strained Silicon）技术对迁移率的增强——通过在沟道中引入机械应力，使硅晶格发生应变，电子迁移率可提升 30%–70% <span class="ref">[1][3]</span>。</p>
-
-        <h4 style="font-size:14px;color:#5a9fd4;margin-top:18px;">对驱动能力与功耗发热的影响</h4>
-
-        <p>驱动能力直接体现为饱和电流：</p>
-
-        <p style="text-align:center;font-size:14px;color:#5a9fd4;margin:8px 0;"><strong>I(D,sat) = ½ · μn · Cox · (W/L) · V(ov)²</strong></p>
-
-        <p><strong>迁移率是 I(D,sat) 的线性倍增因子</strong>——在相同的尺寸和偏置下，迁移率翻倍意味着驱动电流翻倍。对于功耗而言，这是一个双刃剑：</p>
-
-        <ul>
-          <li><strong>动态功耗 P(dynamic) = α · C · VDD² · f：</strong>迁移率提升使得在更低 VDD 下仍能达到目标频率，而功耗与 VDD² 成正比——因此高迁移率工艺可以通过降低 VDD 实现<strong>显著的功耗节省</strong>。</li>
-          <li><strong>发热（自热效应）：</strong>高迁移率意味着更大的导通电流 → 更大的 I²R 焦耳热。在 SOI 和 FinFET 中，埋氧层（BOX）的低热导率使得热量难以散发，导致<strong>自热效应（Self-Heating）</strong>——沟道温度可比环境高 20–50°C，反过来又降低迁移率（详见下文散射机制），形成正反馈 <span class="ref">[3][7]</span>。</li>
-        </ul>
-
-
-        <h4 style="font-size:14px;color:#5a9fd4;margin-top:18px;">对噪声性能的影响——热噪声与 1/f 噪声</h4>
-
-        <p>MOSFET 的噪声主要由<strong>沟道热噪声（Thermal Noise）</strong>和<strong>闪烁噪声（1/f Noise）</strong>两大成分构成。迁移率 μn 对二者的影响机制截然不同：热噪声与 μn 线性关联，而 1/f 噪声则通过陷阱俘获-释放过程与 μn 的涨落间接耦合。</p>
-
-        <h4 style="font-size:13px;color:#f0a050;margin-top:16px;">一、沟道热噪声——迁移率的直接效应</h4>
-
-        <p>沟道热噪声源于载流子的随机热运动（布朗运动），其功率谱密度为：</p>
-
-        <p style="text-align:center;font-size:14px;color:#5a9fd4;margin:8px 0;"><strong>S(id)(thermal) = 4kT · γ · g(d0) &nbsp;&nbsp;|&nbsp;&nbsp; g(d0) = μn · Cox · (W/L) · V(ov)</strong></p>
-
-        <p>其中 g(d0) 是沟道在零 V(DS) 时的源漏电导，<strong>与 μn 成正比</strong>。噪声因子 γ 由偏置条件决定：长沟道器件在饱和区 γ ≈ 2/3，而短沟道器件因热载流子效应 γ 可高达 2–3。</p>
-
-        <p><strong>迁移率对热噪声的净效应分析：</strong></p>
-
-        <ul>
-          <li><strong>μn ↑ → g(d0) ↑ → 热噪声电流谱密度 S(id) 的本征值增大。</strong>更高的迁移率意味着更多的载流子参与导电，随机热运动的绝对涨落也更大。</li>
-          <li><strong>但</strong>同时 μn ↑ → fT ↑ → NFmin = 1 + K·(f/fT) <strong>降低</strong>。因为热噪声电流虽然增大，但器件跨导 gm 也增大——输出端信噪比 SNR = (gm²·v(in)²)/S(id) 中的 gm² 与 g(d0) 同步增长，<strong>二者在强反型区近似抵消</strong>。</li>
-          <li><strong>实际设计中</strong>，短沟道效应导致的 γ 从 2/3 增至 2–3（4.5× 恶化）远大于 μn 工艺差异（~30%）的影响——<strong>噪声因子 γ 是热噪声恶化的主导因素，迁移率的直接影响相对次要</strong> <span class="ref">[1][2]</span>。</li>
-        </ul>
-
-        <p><strong>通过 fT 的间接影响：</strong></p>
-
-        <p style="text-align:center;font-size:14px;color:#5a9fd4;margin:8px 0;"><strong>fT ≈ gm / (2π·Cgs) ∝ μn · V(ov) / L² &nbsp;&nbsp;|&nbsp;&nbsp; NFmin ≈ 1 + K·(f/fT)</strong></p>
-
-        <p>高迁移率工艺（GaAs pHEMT、GaN HEMT、SOI CMOS）天然具有更低的 NFmin。但栅极电阻噪声（Rg ∝ 1/W）和衬底热噪声与迁移率无关，在高频下可能成为噪声主导项 <span class="ref">[1][8]</span>。</p>
-
-        <h4 style="font-size:13px;color:#f0a050;margin-top:16px;">二、1/f 噪声（闪烁噪声）——迁移率涨落模型</h4>
-
-        <p>1/f 噪声的功率谱密度在低频段以 1/f 的形式上升，是低频模拟电路（基带放大器、传感器前端、PLL 低频相位噪声）的核心限制因素。其谱密度为：</p>
-
-        <p style="text-align:center;font-size:14px;color:#5a9fd4;margin:8px 0;"><strong>S(id)(1/f) = K(F) · I(D)^(a) / (Cox · L² · f)</strong></p>
-
-        <p>其中 K(F) 是工艺相关的闪烁噪声系数，指数 a ≈ 1（弱反型）到 2（强反型）。</p>
-
-        <p><strong>1/f 噪声的两种物理解释模型：</strong></p>
-
-        <p><strong>① 载流子数涨落模型（ΔN Model / McWhorter 模型）：</strong></p>
-
-        <p>栅氧中的界面陷阱态（D(it)）随机俘获和释放沟道载流子，导致沟道载流子数 N 随时间涨落：</p>
-
-        <p style="text-align:center;font-size:14px;color:#5a9fd4;margin:8px 0;"><strong>δI(D) / I(D) = δN / N &nbsp;&nbsp;|&nbsp;&nbsp; S(N) ∝ 1/f（陷阱时间常数的宽分布）</strong></p>
-
-        <p>在这个模型中，迁移率本身<strong>不参与</strong>涨落——噪声完全由载流子数目的随机波动产生。降低 1/f 噪声的关键是<strong>降低界面态密度 D(it)</strong>，通过氢气退火、氘退火等工艺优化 Si/SiO₂ 界面质量 <span class="ref">[1][9]</span>。</p>
-
-        <p><strong>② 迁移率涨落模型（Δμ Model / Hooge 模型）：</strong></p>
-
-        <p>Hooge 提出的经验模型认为 1/f 噪声源自迁移率本身的涨落——晶格散射、杂质散射等机制的随机波动导致 μn 随时间起伏：</p>
-
-        <p style="text-align:center;font-size:14px;color:#5a9fd4;margin:8px 0;"><strong>S(id) / I(D)² = α(H) / (N(total) · f) &nbsp;&nbsp;|&nbsp;&nbsp; α(H) ≈ 2×10⁻³（Hooge 参数，体硅）</strong></p>
-
-        <p>其中 N(total) 是沟道中的总载流子数，α(H) 是 Hooge 参数——一个衡量材料「噪声品质」的工艺指标。关键含义：<strong>载流子总数越多，迁移率涨落的相对影响越小</strong>——这就是为什么大尺寸器件（W·L 大 → N(total) 大）具有更低 1/f 噪声的原因。Hooge 参数 α(H) 与晶格缺陷密度正相关——退火充分的器件 α(H) 可低至 10⁻⁵ 量级，辐照损伤严重的器件 α(H) 可达 10⁻² <span class="ref">[9][10]</span>。</p>
-
-        <p><strong>统一视角——ΔN + Δμ 的协同作用：</strong></p>
-
-        <p>现代 MOSFET 中，两种机制同时存在：</p>
-
-        <div class="table-wrap">
-          <table>
-            <thead><tr><th>特性</th><th>ΔN 模型（载流子数涨落）</th><th>Δμ 模型（迁移率涨落）</th></tr></thead>
-            <tbody>
-              <tr><td><strong>噪声来源</strong></td><td>Si/SiO₂ 界面陷阱俘获/释放载流子</td><td>散射中心（声子、杂质、缺陷）的随机涨落</td></tr>
-              <tr><td><strong>与 μn 的关系</strong></td><td>间接——通过陷阱影响有效沟道载流子数</td><td><strong>直接——μn 本身的涨落即噪声源</strong></td></tr>
-              <tr><td><strong>与面积的关系</strong></td><td>S(id)(1/f) ∝ 1/(W·L)</td><td>S(id)(1/f) ∝ 1/(W·L)</td></tr>
-              <tr><td><strong>主导范围</strong></td><td>弱反型、小尺寸器件、界面态高的工艺</td><td>强反型、大尺寸器件、体材料缺陷为主的工艺</td></tr>
-              <tr><td><strong>改善手段</strong></td><td>降低 D(it)（氢气退火、氘退火、氮化氧化层）</td><td>降低晶格缺陷密度、优化掺杂均匀性</td></tr>
-            </tbody>
-          </table>
-          <p class="table-caption">表：1/f 噪声两种模型的对比 · 真实器件中两者协同作用，ΔN 通常占主导 [1][9][10]</p>
-        </div>
-
-        <p><strong>迁移率对 1/f 噪声的工程启示：</strong></p>
-
-        <ol>
-          <li><strong>高迁移率工艺并不等于低 1/f 噪声：</strong>SOI 的 μn 高于体硅，但埋氧层（BOX）中的陷阱密度更高——SOI 器件的 1/f 噪声通常比体硅<strong>高 5–10 dB</strong>。噪声优化不能只追求高迁移率。</li>
-          <li><strong>最有效的降噪手段不是优化 μn，而是优化界面：</strong>1/f 噪声的主要来源是 Si/SiO₂ 界面的 D(it)，而非 μn 的绝对值。栅氧质量的改善（低 D(it) 工艺、Buried Channel 器件将沟道埋入体内远离界面）比提高迁移率更能有效降低 1/f 噪声 <span class="ref">[9][10]</span>。</li>
-          <li><strong>Buried Channel vs Surface Channel：</strong>将导电沟道埋入硅体内（远离 Si/SiO₂ 界面）可显著降低 ΔN 型 1/f 噪声，因为载流子不再与界面陷阱直接交互。但这种器件的栅控能力减弱（有效 Cox 降低），gm 和 fT 都会下降——<strong>低噪声与高速度之间的本质折衷</strong>。</li>
-          <li><strong>面积是硬通货：</strong>ΔN 和 Δμ 两种模型都预言 S(id)(1/f) ∝ 1/(W·L)。将器件面积增大 10×，1/f 噪声降低 10 dB——这是模拟电路中「低噪声 = 大面积」的物理根源。代价是更大的寄生电容和更低的 fT <span class="ref">[9][10]</span>。</li>
-        </ol>
-
-        <div style="background:rgba(240,160,80,0.06);border:1px solid rgba(240,160,80,0.15);border-radius:8px;padding:12px 16px;margin:12px 0;">
-          <strong style="color:#f0a050;">核心结论：</strong>迁移率对<strong>热噪声</strong>的影响是线性的（g(d0) ∝ μn）但被 γ 因子遮蔽；对<strong>1/f 噪声</strong>的影响通过 Δμ 模型间接体现（α(H) 与缺陷密度相关）但通常被 ΔN 模型（界面陷阱）主导。在 RF LNA 设计中优先关注热噪声 → 高迁移率有益；在基带/传感器前端优先关注 1/f 噪声 → 优化界面质量和增大面积远比提高迁移率更有效。
-        </div>
-
-        <hr style="border:none;border-top:1px solid rgba(255,255,255,0.08);margin:24px 0;">
-
-        <h4 style="font-size:14px;color:#5a9fd4;margin-top:18px;">本征迁移率 vs 真实迁移率——是什么在偷走速度？</h4>
-
-        <p>教科书上的 μn ≈ 1,350 cm²/V·s 是<strong>低掺杂体硅在室温低场下的本征迁移率</strong>。但在真实 MOSFET 沟道中，载流子面临多种散射机制，实际迁移率远低于本征值：</p>
-
-        <div class="table-wrap">
-          <table>
-            <thead><tr><th>散射机制</th><th>物理来源</th><th>对迁移率的影响</th><th>温度依赖性</th></tr></thead>
-            <tbody>
-              <tr style="background:rgba(239,68,68,0.05);"><td><strong>晶格振动散射<br>（声子散射）</strong></td><td>硅原子热振动破坏晶格周期性</td><td><strong>高温限制因素</strong>——室温下将本征 μn 从 ~10,000 降至 ~1,350 cm²/V·s</td><td>μ ∝ T^(−1.5) —— 温度升高，迁移率下降</td></tr>
-              <tr style="background:rgba(240,160,80,0.05);"><td><strong>电离杂质散射<br>（Coulomb 散射）</strong></td><td>掺杂原子电离后形成的带电中心</td><td><strong>低温/高掺杂限制因素</strong>——沟道掺杂 N(A) 越高，散射越严重</td><td>μ ∝ T^(+1.5) —— 温度升高，载流子热运动增强反而减弱了 Coulomb 散射</td></tr>
-              <tr style="background:rgba(16,185,129,0.05);"><td><strong>界面粗糙度散射<br>（Surface Roughness）</strong></td><td>Si/SiO₂ 界面的原子级不平整</td><td><strong>高场限制因素</strong>——垂直电场越强，载流子越贴近界面，散射越剧烈</td><td>弱温度依赖性</td></tr>
-              <tr style="background:rgba(139,92,246,0.05);"><td><strong>缺陷/陷阱散射</strong></td><td>栅氧中的界面态（D(it)）、固定电荷、氧化物陷阱</td><td><strong>工艺质量指标</strong>——D(it) 每降低 10×，低场迁移率可提升 15%–30%</td><td>陷阱充放电时间常数有温度依赖性</td></tr>
-              <tr><td><strong>远程库仑散射</strong></td><td>高 K 栅介质中的远程声子（Remote Phonon）</td><td>高 K/金属栅工艺的额外散射源——HfO₂ 的软声子模式对沟道电子的远程散射</td><td>中等温度依赖性</td></tr>
-              <tr><td><strong>应变效应<br>（Strain Engineering）</strong></td><td>通过 SiGe S/D 或接触刻蚀停止层（CESL）引入单轴应力</td><td><strong>正面效应</strong>——拉伸应变使导带谷简并度降低、有效质量减小 → μn ↑ 30%–70%</td><td>应变本身无温度依赖性（但工艺应力可能随温度松弛）</td></tr>
-            </tbody>
-          </table>
-          <p class="table-caption">表：影响 MOSFET 真实沟道迁移率的散射机制与工艺因素 [1][3][7]</p>
-        </div>
-
-        <p><strong>有效迁移率 μ(eff) 的工程表达式：</strong></p>
-
-        <p style="text-align:center;font-size:14px;color:#5a9fd4;margin:8px 0;"><strong>1/μ(eff) = 1/μ(phonon) + 1/μ(Coulomb) + 1/μ(surface) + 1/μ(defect)</strong></p>
-
-        <p>根据 Matthiessen 规则，总迁移率由最弱的环节决定。在先进工艺节点（&lt; 28 nm）中，<strong>界面粗糙度散射</strong>和<strong>高 K 介质远程声子散射</strong>取代声子散射成为主要限制——这解释了为什么 7 nm/5 nm 节点的峰值迁移率反而低于 28 nm 节点（尽管本征迁移率更高）。提升真实迁移率的工艺手段包括：Si/SiO₂ 界面的氢气退火（降低 D(it)）、应变硅、以及优化高 K/金属栅叠层以削弱远程声子耦合 <span class="ref">[3][7]</span>。</p>
-
-        <p><strong>迁移率退化的电场依赖性（关键工程曲线）：</strong></p>
-
-        <p>在实际器件中，μn 并非常数——它随<strong>垂直电场 E(eff)</strong>的增大而退化。通用迁移率模型（Universal Mobility Model）给出了经验关系：</p>
-
-        <p style="text-align:center;font-size:14px;color:#5a9fd4;margin:8px 0;"><strong>μ(eff) = μ(0) / [1 + (E(eff)/E(0))^ν]</strong></p>
-
-        <p>其中 ν ≈ 1.5–2.0，E(0) 为临界电场。当 V(GS) 增大 → 垂直电场增强 → 载流子被压向 Si/SiO₂ 界面 → 界面粗糙度散射加剧 → μ(eff) 下降。这就是为什么<strong>I(D)–V(GS) 曲线在高 V(GS) 下偏离理想平方律</strong>（跨导 gm 不随 V(GS) 线性增长而趋于饱和）的物理根源。在 gm/Id 设计流程中，这一效应已经自动被包含在仿真模型的查找表中 <span class="ref">[3][7]</span>。</p>
-
-        <hr style="border:none;border-top:1px solid rgba(255,255,255,0.08);margin:28px 0;">
-
-        <h4 style="font-size:16px;color:rgba(255,255,255,0.9);margin-top:24px;">2.2 关断电容 Coff——开关的寄生代价</h4>
-
-        <p>MOSFET 开关关断时（V(GS) = 0），理想情况下沟道完全消失，漏源之间应呈开路。但实际器件存在三种寄生电容，它们共同定义了 <strong>Coff</strong>——即器件关断时从漏极看进去的总电容 <span class="ref">[1][3]</span>：</p>
-
-        <div class="table-wrap">
-          <table>
-            <thead><tr><th>电容</th><th>物理来源</th><th>对开关性能的影响</th></tr></thead>
-            <tbody>
-              <tr><td><strong>Cgd（栅漏交叠电容）</strong></td><td>栅极多晶硅与漏极扩散区的物理交叠；Miller 效应放大</td><td>限制高频隔离度，RF 开关的关键限制因素</td></tr>
-              <tr><td><strong>Cds（漏源结电容）</strong></td><td>漏极-体区 PN 结耗尽层电容</td><td>关断态信号泄漏路径</td></tr>
-              <tr><td><strong>Cgs（栅源交叠电容）</strong></td><td>栅极多晶硅与源极扩散区的物理交叠</td><td>通过 Cgs → 沟道 → Cds 间接贡献 Coff</td></tr>
-            </tbody>
-          </table>
-          <p class="table-caption">表2：MOSFET 开关关断态寄生电容的来源与影响</p>
-        </div>
-
-        <h4 style="font-size:16px;color:rgba(255,255,255,0.9);margin-top:24px;">2.3 Ron·Coff——开关品质因数</h4>
-
-        <p>对于 RF 开关（天线开关、收发切换开关），Ron 和 Coff 共同定义了插入损耗和隔离度。二者之间存在<strong>本质上的折衷</strong>——增大 W 降低 Ron 的同时，Coff 同比例增大。因此，业界用 <strong>Ron·Coff</strong> 乘积作为工艺和设计的品质因数（FoM），单位为飞秒（fs） <span class="ref">[3]</span>：</p>
-
-        <p style="text-align:center;font-size:14px;color:#4ade80;margin:12px 0;"><strong>FoM = Ron · Coff（单位：Ω·F = s）</strong></p>
-
-        <p>典型值：体硅 CMOS 开关的 Ron·Coff 约 <strong>100–300 fs</strong>；SOI（Silicon-On-Insulator）工艺可将 Ron·Coff 降至 <strong>50–150 fs</strong>——这是 SOI 在 RF 前端中取代体硅的核心优势。Ron 典型值在 1–5 Ω 范围（W/L 足够大时），Coff 在 50–200 fF 范围。</p>
-
-        <hr style="border:none;border-top:1px solid rgba(255,255,255,0.08);margin:32px 0;">
-
-        <h4>第三部分 · 截止区——当 MOSFET 化身为「断开的开关」</h4>
-
-        <p>当 V(GS) &lt; V(TH)，栅下沟道理论上不存在反型层，漏极电流降至近乎为零。理想情况下，这是一个完美的开路。但实际器件的截止并不完美：</p>
-
-        <p><strong>亚阈值泄漏（Subthreshold Leakage）：</strong>在 V(GS) 接近但略低于 V(TH) 的亚阈值区（也称为弱反型区），沟道中仍存在少量热激发电子，形成指数衰减的亚阈值电流。该电流每 60–100 mV 降低一个数量级——60 mV/dec 是室温下的理论极限（由玻尔兹曼分布 kT/q ≈ 26 mV × ln(10) ≈ 60 mV 决定），实际器件因界面态等因素约为 70–90 mV/dec <span class="ref">[1][4]</span>。</p>
-
-        <p>亚阈值泄漏是现代数字集成电路功耗管理的核心挑战之一——数十亿个晶体管即使各泄漏 1 nA，芯片总泄漏功耗也相当可观。但在<strong>超低功耗模拟电路</strong>中，弱反型区反而是宝贵的——因为此区域的 gm/Id 达到最高值（见第四部分）。</p>
-
-        <hr style="border:none;border-top:1px solid rgba(255,255,255,0.08);margin:32px 0;">
-
-        <h4>第 3.5 部分 · 沟道物理图像——强反型与弱反型的本质区别</h4>
-
-        <p>在进入饱和区和 gm/Id 方法论之前，有必要先建立清晰的物理图像：<strong>栅极电压 V(GS) 到底在沟道里做了什么？</strong></p>
-
-        <p><strong>强反型（Strong Inversion）：</strong>当 V(GS) 远大于 V(TH)，栅极电场在硅-氧化层界面处吸引来足够多的电子，使得界面处的电子浓度超过了衬底的受主掺杂浓度——即表面发生了「反型」。此时沟道导电的载流子主要是<strong>漂移（drift）</strong>运动——源漏电场驱动电子从源极漂移到漏极。沟道像一个受栅压调制的电阻，载流子浓度与 V(ov) = V(GS) − V(TH) 近似成正比，因此电流 I(D) 与 V(ov) 的平方成正比（平方律）。强反型的典型特征是<strong>载流子多、电流大、速度快</strong>——代价是功耗高 <span class="ref">[1][2]</span>。</p>
-
-        <p><strong>弱反型（Weak Inversion / Subthreshold）：</strong>当 V(GS) 略低于 V(TH)（但仍然为正），栅极电场只能吸引极少量的电子到表面，界面电子浓度远低于衬底掺杂浓度——这时沟道并未真正「反型」，而是处于<strong>「弱反型」</strong>状态。载流子的输运机制从漂移转变为<strong>扩散（diffusion）</strong>——电子从高浓度的源极扩散到低浓度的漏极，类似于 BJT 中少数载流子的扩散机制。因为载流子浓度与 V(GS) 呈<strong>指数关系</strong>（玻尔兹曼分布），所以 I(D) ∝ exp(V(GS) / (n·kT/q))，电流随栅压指数增长。弱反型的典型特征是<strong>载流子极少、电流极小、速度极慢</strong>——但单位电流下的跨导效率（gm/Id）极高，因为指数关系的斜率天然高于平方律 <span class="ref">[2][4]</span>。</p>
-
-        <p><strong>物理图像对比：</strong></p>
-
-        <div class="table-wrap">
-          <table>
-            <thead><tr><th>维度</th><th>强反型（Strong Inversion）</th><th>弱反型（Weak Inversion）</th></tr></thead>
-            <tbody>
-              <tr><td><strong>界面电子浓度 vs 衬底掺杂</strong></td><td>电子浓度 &gt;&gt; 受主浓度（真正反型）</td><td>电子浓度 &lt;&lt; 受主浓度（弱反型）</td></tr>
-              <tr><td><strong>载流子输运机制</strong></td><td>漂移（Drift）主导</td><td>扩散（Diffusion）主导</td></tr>
-              <tr><td><strong>I(D)–V(GS) 关系</strong></td><td>平方律：I(D) ∝ V(ov)²</td><td>指数律：I(D) ∝ exp(V(GS)/(n·kT/q))</td></tr>
-              <tr><td><strong>gm/Id 典型值</strong></td><td>5–12 V⁻¹</td><td>25–35 V⁻¹</td></tr>
-              <tr><td><strong>电流密度（每 μm 沟宽）</strong></td><td>高（μA–mA 级）</td><td>极低（nA 级）</td></tr>
-              <tr><td><strong>速度（fT）</strong></td><td>快（GHz 级）</td><td>慢（KHz–MHz 级）</td></tr>
-              <tr><td><strong>类比</strong></td><td>宽阔的河流——水量大、流速快</td><td>狭窄的渗透——水量小、靠浓度差推动</td></tr>
-            </tbody>
-          </table>
-          <p class="table-caption">表：强反型与弱反型的沟道物理图像对比 · 中等反型（Moderate Inversion）是两者的平滑过渡 <span class="ref">[1][2][4]</span></p>
-        </div>
-
-
-
-        <!-- 图X：强反型与弱反型沟道载流子分布对比 -->
-        <div class="diagram-container">
-          <svg viewBox="0 0 960 480" xmlns="http://www.w3.org/2000/svg">
-
-            <text x="480" y="22" text-anchor="middle" fill="#fff" font-size="14" font-weight="600">图二续 · 强反型与弱反型沟道载流子分布与能带对比</text>
-
-            <!-- ============================================================ -->
-            <!-- LEFT: 弱反型 (Weak Inversion) -->
-            <!-- ============================================================ -->
-            <text x="240" y="50" text-anchor="middle" fill="#8b5cf6" font-size="13" font-weight="700">弱反型 (Weak Inversion)</text>
-            <text x="240" y="65" text-anchor="middle" fill="#fff" fill-opacity="0.35" font-size="9">V(GS) 略低于 V(TH) · 扩散输运 · 高 gm/Id</text>
-
-            <!-- Gate electrode -->
-            <rect x="80" y="78" width="320" height="14" rx="3" fill="#8b9dc3" stroke="#a0b4d0" stroke-width="0.8"/>
-            <text x="240" y="89" text-anchor="middle" fill="#fff" font-size="8" font-weight="600">Gate (Poly-Si)</text>
-            <line x1="240" y1="68" x2="240" y2="78" stroke="#8b9dc3" stroke-width="1.5"/>
-            <text x="252" y="72" fill="#fff" fill-opacity="0.4" font-size="8">V(GS) ≈ V(TH)</text>
-
-            <!-- SiO2 -->
-            <rect x="80" y="92" width="320" height="10" fill="#2a4a6b" stroke="#3b6b9a" stroke-width="0.5"/>
-            <text x="240" y="100" text-anchor="middle" fill="#fff" fill-opacity="0.25" font-size="7">SiO₂ 栅氧层</text>
-
-            <!-- N+ Source -->
-            <rect x="80" y="102" width="40" height="42" rx="2" fill="#1a3a6c" stroke="#3b6ab8" stroke-width="0.8"/>
-            <text x="100" y="126" text-anchor="middle" fill="#5a9fd4" font-size="8" font-weight="600">N⁺</text>
-            <text x="100" y="138" text-anchor="middle" fill="#fff" fill-opacity="0.3" font-size="6">Source</text>
-
-            <!-- N+ Drain -->
-            <rect x="360" y="102" width="40" height="42" rx="2" fill="#1a3a6c" stroke="#3b6ab8" stroke-width="0.8"/>
-            <text x="380" y="126" text-anchor="middle" fill="#5a9fd4" font-size="8" font-weight="600">N⁺</text>
-            <text x="380" y="138" text-anchor="middle" fill="#fff" fill-opacity="0.3" font-size="6">Drain</text>
-
-            <!-- P-substrate -->
-            <rect x="80" y="144" width="320" height="56" fill="#2d1f3a" stroke="#4a3060" stroke-width="0.5"/>
-            <text x="240" y="192" text-anchor="middle" fill="#c084fc" fill-opacity="0.35" font-size="7">P 型衬底</text>
-
-            <!-- Hole symbols (many in weak inversion - surface not inverted) -->
-            <circle cx="110" cy="162" r="1.8" fill="none" stroke="#c084fc" stroke-width="0.7"/>
-            <text x="110" y="163.5" text-anchor="middle" fill="#c084fc" fill-opacity="0.6" font-size="6">+</text>
-            <circle cx="150" cy="175" r="1.8" fill="none" stroke="#c084fc" stroke-width="0.7"/>
-            <text x="150" y="176.5" text-anchor="middle" fill="#c084fc" fill-opacity="0.6" font-size="6">+</text>
-            <circle cx="200" cy="165" r="1.8" fill="none" stroke="#c084fc" stroke-width="0.7"/>
-            <text x="200" y="166.5" text-anchor="middle" fill="#c084fc" fill-opacity="0.6" font-size="6">+</text>
-            <circle cx="250" cy="178" r="1.8" fill="none" stroke="#c084fc" stroke-width="0.7"/>
-            <text x="250" y="179.5" text-anchor="middle" fill="#c084fc" fill-opacity="0.6" font-size="6">+</text>
-            <circle cx="300" cy="168" r="1.8" fill="none" stroke="#c084fc" stroke-width="0.7"/>
-            <text x="300" y="169.5" text-anchor="middle" fill="#c084fc" fill-opacity="0.6" font-size="6">+</text>
-            <circle cx="340" cy="174" r="1.8" fill="none" stroke="#c084fc" stroke-width="0.7"/>
-            <text x="340" y="175.5" text-anchor="middle" fill="#c084fc" fill-opacity="0.6" font-size="6">+</text>
-
-            <!-- Sparse electrons near interface (weak inversion - barely any) -->
-            <circle cx="180" cy="108" r="1.5" fill="#8b5cf6" fill-opacity="0.6"/>
-            <circle cx="220" cy="110" r="1.5" fill="#8b5cf6" fill-opacity="0.6"/>
-            <circle cx="260" cy="107" r="1.5" fill="#8b5cf6" fill-opacity="0.6"/>
-            <circle cx="300" cy="109" r="1.5" fill="#8b5cf6" fill-opacity="0.6"/>
-
-            <!-- Sparse channel annotation -->
-            <text x="240" y="126" text-anchor="middle" fill="#8b5cf6" fill-opacity="0.7" font-size="7">稀疏电子 — 未形成真正反型层</text>
-
-            <!-- Depletion region (wide in weak inversion) -->
-            <rect x="120" y="102" width="240" height="28" fill="#4a3060" fill-opacity="0.35" stroke="none"/>
-            <text x="240" y="120" text-anchor="middle" fill="#fff" fill-opacity="0.18" font-size="6">宽耗尽区（表面势低）</text>
-
-            <!-- Key annotations -->
-            <text x="240" y="215" text-anchor="middle" fill="#8b5cf6" fill-opacity="0.8" font-size="9" font-weight="600">电子浓度 n(s) &lt;&lt; 空穴浓度 N(A)</text>
-            <text x="240" y="228" text-anchor="middle" fill="#fff" fill-opacity="0.3" font-size="7">表面电位 ψ(s) &lt; 2·φ(F) — 弱反型判据</text>
-            <text x="240" y="241" text-anchor="middle" fill="#fff" fill-opacity="0.3" font-size="7">输运：扩散（浓度梯度驱动）</text>
-
-            <!-- Vertical separator -->
-            <line x1="475" y1="42" x2="475" y2="248" stroke="#fff" stroke-opacity="0.06" stroke-width="1"/>
-
-            <!-- ============================================================ -->
-            <!-- RIGHT: 强反型 (Strong Inversion) -->
-            <!-- ============================================================ -->
-            <text x="720" y="50" text-anchor="middle" fill="#10b981" font-size="13" font-weight="700">强反型 (Strong Inversion)</text>
-            <text x="720" y="65" text-anchor="middle" fill="#fff" fill-opacity="0.35" font-size="9">V(GS) &gt;&gt; V(TH) · 漂移输运 · 低 gm/Id · 高 fT</text>
-
-            <!-- Gate electrode -->
-            <rect x="560" y="78" width="320" height="14" rx="3" fill="#8b9dc3" stroke="#a0b4d0" stroke-width="0.8"/>
-            <text x="720" y="89" text-anchor="middle" fill="#fff" font-size="8" font-weight="600">Gate (Poly-Si)</text>
-            <line x1="720" y1="68" x2="720" y2="78" stroke="#8b9dc3" stroke-width="1.5"/>
-            <text x="732" y="72" fill="#fff" fill-opacity="0.4" font-size="8">V(GS) &gt;&gt; V(TH)</text>
-
-            <!-- SiO2 -->
-            <rect x="560" y="92" width="320" height="10" fill="#2a4a6b" stroke="#3b6b9a" stroke-width="0.5"/>
-            <text x="720" y="100" text-anchor="middle" fill="#fff" fill-opacity="0.25" font-size="7">SiO₂ 栅氧层</text>
-
-            <!-- N+ Source -->
-            <rect x="560" y="102" width="40" height="42" rx="2" fill="#1a3a6c" stroke="#3b6ab8" stroke-width="0.8"/>
-            <text x="580" y="126" text-anchor="middle" fill="#5a9fd4" font-size="8" font-weight="600">N⁺</text>
-            <text x="580" y="138" text-anchor="middle" fill="#fff" fill-opacity="0.3" font-size="6">Source</text>
-
-            <!-- N+ Drain -->
-            <rect x="840" y="102" width="40" height="42" rx="2" fill="#1a3a6c" stroke="#3b6ab8" stroke-width="0.8"/>
-            <text x="860" y="126" text-anchor="middle" fill="#5a9fd4" font-size="8" font-weight="600">N⁺</text>
-            <text x="860" y="138" text-anchor="middle" fill="#fff" fill-opacity="0.3" font-size="6">Drain</text>
-
-            <!-- P-substrate -->
-            <rect x="560" y="144" width="320" height="56" fill="#2d1f3a" stroke="#4a3060" stroke-width="0.5"/>
-            <text x="720" y="192" text-anchor="middle" fill="#c084fc" fill-opacity="0.35" font-size="7">P 型衬底</text>
-
-            <!-- Few holes (pushed away from surface by inversion) -->
-            <circle cx="620" cy="178" r="1.8" fill="none" stroke="#c084fc" stroke-width="0.7"/>
-            <text x="620" y="179.5" text-anchor="middle" fill="#c084fc" fill-opacity="0.6" font-size="6">+</text>
-            <circle cx="700" cy="175" r="1.8" fill="none" stroke="#c084fc" stroke-width="0.7"/>
-            <text x="700" y="176.5" text-anchor="middle" fill="#c084fc" fill-opacity="0.6" font-size="6">+</text>
-            <circle cx="780" cy="180" r="1.8" fill="none" stroke="#c084fc" stroke-width="0.7"/>
-            <text x="780" y="181.5" text-anchor="middle" fill="#c084fc" fill-opacity="0.6" font-size="6">+</text>
-
-            <!-- Dense electron channel (thick inversion layer) -->
-            <rect x="600" y="104" width="240" height="18" rx="4" fill="#10b981" fill-opacity="0.2" stroke="#10b981" stroke-width="1.5" stroke-dasharray="4,2"/>
-            <text x="720" y="117" text-anchor="middle" fill="#10b981" font-size="8" font-weight="600">密集电子沟道（反型层）</text>
-
-            <!-- Dense electrons -->
-            <circle cx="620" cy="110" r="1.5" fill="#10b981" fill-opacity="0.8"/>
-            <circle cx="640" cy="113" r="1.5" fill="#10b981" fill-opacity="0.8"/>
-            <circle cx="660" cy="109" r="1.5" fill="#10b981" fill-opacity="0.8"/>
-            <circle cx="680" cy="112" r="1.5" fill="#10b981" fill-opacity="0.8"/>
-            <circle cx="700" cy="110" r="1.5" fill="#10b981" fill-opacity="0.8"/>
-            <circle cx="720" cy="114" r="1.5" fill="#10b981" fill-opacity="0.8"/>
-            <circle cx="740" cy="109" r="1.5" fill="#10b981" fill-opacity="0.8"/>
-            <circle cx="760" cy="112" r="1.5" fill="#10b981" fill-opacity="0.8"/>
-            <circle cx="780" cy="110" r="1.5" fill="#10b981" fill-opacity="0.8"/>
-            <circle cx="800" cy="113" r="1.5" fill="#10b981" fill-opacity="0.8"/>
-            <circle cx="820" cy="109" r="1.5" fill="#10b981" fill-opacity="0.8"/>
-
-            <!-- Narrow depletion region -->
-            <rect x="600" y="122" width="240" height="14" fill="#4a3060" fill-opacity="0.25" stroke="none"/>
-            <text x="720" y="132" text-anchor="middle" fill="#fff" fill-opacity="0.12" font-size="6">窄耗尽区（表面势高）</text>
-
-            <!-- Gate field arrows (strong) -->
-            <line x1="660" y1="78" x2="660" y2="94" stroke="#10b981" stroke-width="1.5" marker-end="url(#arrowGreen)"/>
-            <line x1="720" y1="78" x2="720" y2="94" stroke="#10b981" stroke-width="1.5" marker-end="url(#arrowGreen)"/>
-            <line x1="780" y1="78" x2="780" y2="94" stroke="#10b981" stroke-width="1.5" marker-end="url(#arrowGreen)"/>
-            <defs><marker id="arrowGreen" markerWidth="6" markerHeight="5" refX="6" refY="2.5" orient="auto"><path d="M0,0 L6,2.5 L0,5" fill="#10b981"/></marker></defs>
-
-            <!-- Key annotations -->
-            <text x="720" y="215" text-anchor="middle" fill="#10b981" fill-opacity="0.8" font-size="9" font-weight="600">电子浓度 n(s) &gt;&gt; 空穴浓度 N(A)</text>
-            <text x="720" y="228" text-anchor="middle" fill="#fff" fill-opacity="0.3" font-size="7">表面电位 ψ(s) &gt; 2·φ(F) — 强反型判据</text>
-            <text x="720" y="241" text-anchor="middle" fill="#fff" fill-opacity="0.3" font-size="7">输运：漂移（电场驱动）</text>
-
-            <!-- ============================================================ -->
-            <!-- Bottom: Energy band comparison -->
-            <!-- ============================================================ -->
-            <line x1="20" y1="268" x2="940" y2="268" stroke="#fff" stroke-opacity="0.06" stroke-width="1"/>
-
-            <text x="480" y="290" text-anchor="middle" fill="#fff" fill-opacity="0.5" font-size="11" font-weight="600">能带弯曲对比（Si/SiO₂ 界面附近的能带图）</text>
-
-            <!-- LEFT band: Weak Inversion -->
-            <text x="240" y="315" text-anchor="middle" fill="#8b5cf6" fill-opacity="0.7" font-size="10" font-weight="600">弱反型 — 表面势 ψ(s) 较小，弯曲浅</text>
-
-            <!-- Band diagram frame -->
-            <rect x="60" y="328" width="360" height="70" fill="#1a1a2e" stroke="#fff" stroke-opacity="0.08" stroke-width="0.8" rx="4"/>
-
-            <!-- Weak inversion: shallow band bending -->
-            <!-- Ec (conduction band) - shallow bend -->
-            <path d="M80,370 C130,370 180,362 220,365 C260,368 320,370 380,370" fill="none" stroke="#5a9fd4" stroke-width="1.5"/>
-            <text x="400" y="373" fill="#5a9fd4" fill-opacity="0.6" font-size="7">E(c)</text>
-
-            <!-- Ei (intrinsic) - shallow bend -->
-            <path d="M80,360 C130,360 180,354 220,356 C260,358 320,360 380,360" fill="none" stroke="#fff" stroke-width="1" stroke-dasharray="3,2"/>
-            <text x="400" y="363" fill="#fff" fill-opacity="0.5" font-size="7">E(i)</text>
-
-            <!-- Ef (Fermi) - flat (equilibrium) -->
-            <path d="M80,350 C130,350 180,348 220,349 C260,350 320,350 380,350" fill="none" stroke="#f0a050" stroke-width="1.5"/>
-            <text x="400" y="353" fill="#f0a050" fill-opacity="0.6" font-size="7">E(f)</text>
-
-            <!-- Ev (valence) - shallow bend -->
-            <path d="M80,340 C130,340 180,336 220,337 C260,338 320,340 380,340" fill="none" stroke="#c084fc" stroke-width="1.2"/>
-            <text x="400" y="343" fill="#c084fc" fill-opacity="0.6" font-size="7">E(v)</text>
-
-            <!-- Surface potential annotation -->
-            <text x="225" y="385" text-anchor="middle" fill="#8b5cf6" fill-opacity="0.6" font-size="7">ψ(s) &lt; 2φ(F)</text>
-            <text x="225" y="395" text-anchor="middle" fill="#fff" fill-opacity="0.25" font-size="6">E(i)−E(f) 接近但未穿过 E(f)</text>
-
-            <!-- RIGHT band: Strong Inversion -->
-            <text x="720" y="315" text-anchor="middle" fill="#10b981" fill-opacity="0.7" font-size="10" font-weight="600">强反型 — 表面势 ψ(s) 较大，弯曲深</text>
-
-            <!-- Band diagram frame -->
-            <rect x="540" y="328" width="360" height="70" fill="#1a1a2e" stroke="#fff" stroke-opacity="0.08" stroke-width="0.8" rx="4"/>
-
-            <!-- Strong inversion: deep band bending -->
-            <!-- Ec - deep bend at surface -->
-            <path d="M560,375 C610,375 660,360 700,352 C740,348 800,362 860,375" fill="none" stroke="#5a9fd4" stroke-width="1.5"/>
-            <text x="880" y="378" fill="#5a9fd4" fill-opacity="0.6" font-size="7">E(c)</text>
-
-            <!-- Ei - deep bend, crosses below Ef at surface -->
-            <path d="M560,362 C610,362 660,348 700,340 C740,336 800,350 860,362" fill="none" stroke="#fff" stroke-width="1" stroke-dasharray="3,2"/>
-            <text x="880" y="365" fill="#fff" fill-opacity="0.5" font-size="7">E(i)</text>
-
-            <!-- Ef - flat -->
-            <path d="M560,350 C610,350 660,350 700,350 C740,350 800,350 860,350" fill="none" stroke="#f0a050" stroke-width="1.5"/>
-            <text x="880" y="353" fill="#f0a050" fill-opacity="0.6" font-size="7">E(f)</text>
-
-            <!-- Ev - deep bend -->
-            <path d="M560,338 C610,338 660,330 700,326 C740,324 800,332 860,338" fill="none" stroke="#c084fc" stroke-width="1.2"/>
-            <text x="880" y="341" fill="#c084fc" fill-opacity="0.6" font-size="7">E(v)</text>
-
-            <!-- E(i) crosses E(f) at surface → strong inversion -->
-            <circle cx="700" cy="350" r="3" fill="#ef4444" fill-opacity="0.8"/>
-            <text x="700" y="388" text-anchor="middle" fill="#ef4444" fill-opacity="0.7" font-size="7">E(i) 穿过 E(f) → 反型!</text>
-
-            <text x="715" y="395" text-anchor="middle" fill="#10b981" fill-opacity="0.6" font-size="7">ψ(s) &gt; 2φ(F)</text>
-
-            <!-- ============================================================ -->
-            <!-- Bottom row: I-V equation comparison -->
-            <!-- ============================================================ -->
-            <line x1="20" y1="410" x2="940" y2="410" stroke="#fff" stroke-opacity="0.06" stroke-width="1"/>
-
-            <rect x="60" y="420" width="360" height="40" rx="6" fill="#8b5cf6" fill-opacity="0.04" stroke="#8b5cf6" stroke-opacity="0.15"/>
-            <text x="240" y="436" text-anchor="middle" fill="#8b5cf6" font-size="9" font-weight="600">I(D) ∝ exp( V(GS) / (n·kT/q) )</text>
-            <text x="240" y="452" text-anchor="middle" fill="#fff" fill-opacity="0.3" font-size="7">指数关系 · 每 60–100 mV 电流变化 10× · 类似 BJT</text>
-
-            <rect x="540" y="420" width="360" height="40" rx="6" fill="#10b981" fill-opacity="0.04" stroke="#10b981" stroke-opacity="0.15"/>
-            <text x="720" y="436" text-anchor="middle" fill="#10b981" font-size="9" font-weight="600">I(D) = ½·μn·Cox·(W/L)·V(ov)²</text>
-            <text x="720" y="452" text-anchor="middle" fill="#fff" fill-opacity="0.3" font-size="7">平方律 · gm/Id = 2/V(ov) · 漂移输运主导</text>
-
-          </svg>
-          <p class="diagram-caption">图二续：强反型与弱反型的沟道载流子浓度与能带弯曲对比 · 上半部分为横截面载流子分布，下半部分为 Si/SiO₂ 界面附近的简化能带图。弱反型判据：表面势 ψ(s) &lt; 2φ(F)；强反型判据：ψ(s) &gt; 2φ(F)（E(i) 在界面处低于 E(f)）。</p>
-        </div>
-
-
-        <p>这个物理图像解释了一个看似矛盾的现象：<strong>为什么弱反型的 gm/Id 反而更高？</strong>因为 gm = ∂I(D)/∂V(GS)，在弱反型区 I(D) 随 V(GS) 指数增长，所以对于给定的偏置电流 I(D)，指数曲线的斜率（导数除以函数值）在任何电流水平上都大于平方律曲线——<strong>弱反型用极少量的电流就能产生可观的跨导变化</strong>，电流到跨导的「转换效率」最高。而强反型需要大量电流才能维持同样的 gm，但换来了速度（fT ∝ gm/Cgg，高电流意味着更快的栅电容充放电）<span class="ref">[5][6]</span>。</p>
-
-        <hr style="border:none;border-top:1px solid rgba(255,255,255,0.08);margin:32px 0;">
-
-        <h4>第四部分 · 饱和区——当 MOSFET 化身为「放大器」</h4>
-
-        <p>当 V(DS) &gt; V(ov)，沟道在漏端夹断（pinch-off），I(D) 对 V(DS) 不再敏感——器件表现为一个<strong>压控电流源</strong>。这是所有模拟放大器、电流镜、差分对的工作基础。</p>
-
-        <h4 style="font-size:16px;color:rgba(255,255,255,0.9);margin-top:24px;">4.1 跨导 gm——「电压→电流」的转换效率</h4>
-
-        <p>跨导（Transconductance）gm 是 MOSFET 作为放大器的第一性指标，定义为单位栅压变化引起的漏极电流变化 <span class="ref">[1][2]</span>：</p>
-
-        <p style="text-align:center;font-size:15px;color:#f0a050;margin:16px 0;"><strong>gm = ∂I(D) / ∂V(GS)</strong></p>
-
-        <p>在<strong>强反型饱和区</strong>，将平方律 I(D) 公式代入，得到：</p>
-
-        <p style="text-align:center;font-size:15px;color:#10b981;margin:12px 0;"><strong>gm（强反型）= 2·I(D) / V(ov) = μn·Cox·(W/L)·V(ov)</strong></p>
-
-        <p>在<strong>弱反型饱和区</strong>（亚阈值），I(D) 与 V(GS) 呈指数关系，得到：</p>
-
-        <p style="text-align:center;font-size:15px;color:#8b5cf6;margin:12px 0;"><strong>gm（弱反型）= I(D) / (n·kT/q) ≈ I(D) / (n·26 mV)，其中 n 为亚阈值斜率因子（1.2–1.5）</strong></p>
-
-        <p>关键洞察：对于同样的偏置电流 I(D)，<strong>弱反型的 gm 远大于强反型</strong>——因为指数关系的斜率天然高于平方律。</p>
-
-        <h4 style="font-size:16px;color:rgba(255,255,255,0.9);margin-top:24px;">4.2 gm/Id——跨导效率与连续设计空间</h4>
-
-        <p><strong>gm/Id</strong> 是近年模拟 IC 设计领域最重要的方法论革新。它将 MOSFET 从强反型到弱反型的整个工作范围统一在一个连续的参数空间中 <span class="ref">[5][6]</span>。</p>
-
-        <div class="diagram-container">
-          <svg viewBox="0 0 800 300" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <linearGradient id="gradGmId" x1="0" y1="0" x2="1" y2="0">
-                <stop offset="0%" stop-color="#8b5cf6"/>
-                <stop offset="50%" stop-color="#f0a050"/>
-                <stop offset="100%" stop-color="#10b981"/>
-              </linearGradient>
-            </defs>
-            <text x="400" y="22" text-anchor="middle" fill="#fff" font-size="13" font-weight="600">图二 · gm/Id 设计方法论：从弱反型到强反型的连续设计空间</text>
-
-            <!-- Axes -->
-            <line x1="60" y1="240" x2="740" y2="240" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
-            <line x1="60" y1="40" x2="60" y2="240" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
-            <text x="740" y="258" fill="rgba(255,255,255,0.4)" font-size="10" text-anchor="end">gm/Id (V⁻¹) — 跨导效率</text>
-            <text x="55" y="42" fill="rgba(255,255,255,0.4)" font-size="10" text-anchor="end">↑ 高</text>
-
-            <!-- gm/Id horizontal axis going down means decreasing gm/Id -->
-            <text x="740" y="55" fill="#8b5cf6" font-size="9" text-anchor="end">~30 V⁻¹</text>
-            <text x="740" y="120" fill="#f0a050" font-size="9" text-anchor="end">~15 V⁻¹</text>
-            <text x="740" y="190" fill="#10b981" font-size="9" text-anchor="end">~5 V⁻¹</text>
-
-            <!-- Three zone rectangles -->
-            <rect x="70" y="50" width="220" height="50" rx="6" fill="rgba(139,92,246,0.1)" stroke="rgba(139,92,246,0.25)"/>
-            <text x="180" y="70" text-anchor="middle" fill="#8b5cf6" font-size="11" font-weight="700">弱反型（Weak Inversion）</text>
-            <text x="180" y="87" text-anchor="middle" fill="rgba(255,255,255,0.35)" font-size="9">gm/Id ≈ 25–35 V⁻¹</text>
-
-            <rect x="310" y="50" width="180" height="50" rx="6" fill="rgba(240,160,80,0.1)" stroke="rgba(240,160,80,0.25)"/>
-            <text x="400" y="70" text-anchor="middle" fill="#f0a050" font-size="11" font-weight="700">中等反型</text>
-            <text x="400" y="87" text-anchor="middle" fill="rgba(255,255,255,0.35)" font-size="9">gm/Id ≈ 10–20 V⁻¹</text>
-
-            <rect x="510" y="50" width="220" height="50" rx="6" fill="rgba(16,185,129,0.1)" stroke="rgba(16,185,129,0.25)"/>
-            <text x="620" y="70" text-anchor="middle" fill="#10b981" font-size="11" font-weight="700">强反型（Strong Inversion）</text>
-            <text x="620" y="87" text-anchor="middle" fill="rgba(255,255,255,0.35)" font-size="9">gm/Id ≈ 5–12 V⁻¹</text>
-
-            <!-- Application rows -->
-            <text x="70" y="130" fill="rgba(255,255,255,0.5)" font-size="10" font-weight="600">典型应用：</text>
-
-            <rect x="70" y="140" width="220" height="28" rx="4" fill="rgba(139,92,246,0.06)" stroke="rgba(139,92,246,0.15)"/>
-            <text x="180" y="159" text-anchor="middle" fill="#8b5cf6" font-size="9">超低功耗模拟（nW级）· 生物医疗</text>
-
-            <rect x="310" y="140" width="180" height="28" rx="4" fill="rgba(240,160,80,0.06)" stroke="#f0a050" stroke-opacity="0.15"/>
-            <text x="400" y="159" text-anchor="middle" fill="#f0a050" font-size="9">速度/功耗折衷 · IoT 传感</text>
-
-            <rect x="510" y="140" width="220" height="28" rx="4" fill="rgba(16,185,129,0.06)" stroke="#10b981" stroke-opacity="0.15"/>
-            <text x="620" y="159" text-anchor="middle" fill="#10b981" font-size="9">高速放大器 · RF 前端 · 驱动级</text>
-
-            <!-- Key relationships -->
-            <rect x="70" y="190" width="660" height="46" rx="6" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.06)"/>
-            <text x="100" y="210" fill="rgba(255,255,255,0.6)" font-size="10">核心关系：</text>
-            <text x="100" y="228" fill="#f0a050" font-size="10">gm/Id ↑ → 单位电流下跨导更大（功耗效率高），但 fT ↓（速度慢）</text>
-
-            <!-- fT annotation -->
-            <text x="660" y="255" fill="rgba(255,255,255,0.25)" font-size="8" text-anchor="end">← fT 增加（速度快）</text>
-            <text x="70" y="255" fill="rgba(255,255,255,0.25)" font-size="8">低功耗 ←</text>
-          </svg>
-          <p class="diagram-caption">图二：gm/Id 参数空间。高 gm/Id（弱反型）→ 高功耗效率但低速；低 gm/Id（强反型）→ 高速但功耗效率低。设计者在连续空间中做折衷。</p>
-        </div>
-
-        <h4 style="font-size:16px;color:rgba(255,255,255,0.9);margin-top:24px;">4.3 gm/Id 的物理意义与工程价值</h4>
-
-        <p><strong>物理意义：</strong>gm/Id 衡量的是「单位偏置电流产生了多少跨导」。对于给定的偏置电流 I(D)，gm/Id 越大，同样的栅压变化能引起更大的漏极电流变化——即<strong>电流到跨导的转换效率更高</strong>。一个直观类比：gm/Id 类似于投资回报率（ROI）——同样的投入（偏置电流），获得了多少回报（跨导/增益）<span class="ref">[5]</span>。</p>
-
-        <p><strong>工程价值：</strong>传统平方律模型（gm = 2·I(D)/V(ov)）仅适用于强反型长沟道器件，在现代深亚微米工艺中精度严重不足。gm/Id 方法学的核心优势在于 <span class="ref">[5][6]</span>：</p>
-
-        <ol>
-          <li><strong>工艺无关性：</strong>通过 DC 仿真提取 gm/Id 与 V(GS)、fT、本征增益（gm·ro）等参数的查找表（LUT），将复杂的工艺特性「封装」在数据中，设计者无需依赖过时的解析模型。</li>
-          <li><strong>连续设计空间：</strong>不再有「强反型 vs 弱反型」的二元对立——设计者在 gm/Id 轴上自由选择工作点，从超低功耗（gm/Id ≈ 30 V⁻¹）到高速（gm/Id ≈ 5 V⁻¹）平滑过渡。</li>
-          <li><strong>尺寸无关性：</strong>一旦确定了 gm/Id 工作点和沟道长度 L，W 由所需的 gm 直接解出：W = gm / [gm/Id · Id(W)]。这消除了传统方法中「先定 W/L，再看 gm 是否够用」的反复迭代。</li>
-          <li><strong>系统化：</strong>每一个设计决策（功耗、速度、增益、噪声）都可以映射到 gm/Id 轴上的一个具体数值，使模拟设计从「经验调参」走向「参数化设计」。</li>
-        </ol>
-
-        <h4 style="font-size:16px;color:rgba(255,255,255,0.9);margin-top:24px;">4.4 为什么不同 gm/Id 对应不同应用——背后的物理折衷</h4>
-
-        <p>表3中的映射不是人为规定的，而是由<strong>三个硬性的物理折衷</strong>决定的：</p>
-
-        <p><strong>折衷一：gm/Id vs fT —— 电流效率与速度不可兼得。</strong></p>
-
-        <p>特征频率（fT）是晶体管本征速度的度量——定义为电流增益降至 1 时的频率。它与 gm 的关系为 <strong>fT ≈ gm / (2π · Cgg)</strong>，其中 Cgg 是总栅电容。高 gm/Id 意味着偏置在弱反型——栅压只略高于阈值，沟道载流子极少，gm 绝对值很小。虽然「单位电流的跨导」高，但<strong>总 gm 小 → 对栅电容的驱动能力弱 → fT 低</strong>。反之，强反型区 I(D) 大 → gm 大 → fT 高，但 gm/Id 低——即每消耗 1 安培电流只换来较少的跨导。这个折衷是物理本质性的：<strong>载流子浓度直接决定了速度上限</strong>——弱反型像涓涓细流，强反型像滔滔江水，速度天然不同 <span class="ref">[1][5]</span>。</p>
-
-        <p><strong>折衷二：gm/Id vs gm·ro —— 增益与速度的经典权衡。</strong></p>
-
-        <p>本征增益 gm·ro 是单管能提供的最大电压增益。输出电阻 ro ≈ 1/(λ·I(D))——电流越小，ro 越大。弱反型区 I(D) 极小（nA 级），因此 ro 极大，gm·ro 可达 40–50 dB——对于生物医疗前端这种需要从 μV 级信号中提取信息的场景，高本征增益至关重要。但在 RF 前端，信号电平通常在 mV 级，反而更需要带宽和线性度——此时牺牲增益换取速度是明智的 <span class="ref">[1][2]</span>。</p>
-
-        <p><strong>折衷三：gm/Id vs 电流密度（功耗的物理本质）。</strong></p>
-
-        <p>gm/Id = 30 V⁻¹ 意味着要产生 1 mS 的跨导，只需要约 33 μA 的偏置电流；而 gm/Id = 5 V⁻¹ 则需要 200 μA——相差 6 倍。这就是弱反型超低功耗的核心来源。在植入式医疗器械、无线传感节点等对功耗极度敏感的场景中，6 倍的电流差异直接决定了电池寿命是「几个月」还是「几年」。但代价就是 fT 从 GHz 骤降至 KHz-MHz 级别——恰好这些场景的信号带宽本身也不高（心电信号 ~250 Hz，传感器采样 ~1 KHz），因此<strong>「低 gm/Id → 高 fT → 高功耗」和「高 gm/Id → 低 fT → 低功耗」的选择，本质上是将晶体管的工作点对准应用的实际带宽需求</strong> <span class="ref">[5][6]</span>。</p>
-
-        <p><strong>三个折衷的统一视角：</strong>设计者在 gm/Id 轴上的选择，实际上是在选一个「工作点」——这个点同时决定了器件的反型程度（弱→强）、电流密度（低→高）、跨导效率（高→低）、速度（慢→快）和本征增益（高→低）。如图所示（表3 + 图二），gm/Id 从 ~30 到 ~5 V⁻¹ 的连续移动，就是设计者在<strong>「功耗效率 ← → 速度/带宽」</strong>的光谱上滑动。没有「更好」的 gm/Id 值——只有与目标应用带宽和功耗约束最匹配的值 <span class="ref">[5][6]</span>。</p>
-
-        <div class="table-wrap">
-          <table>
-            <thead><tr><th>工作区域</th><th>gm/Id 典型值（V⁻¹）</th><th>fT 相对值</th><th>本征增益 gm·ro</th><th>适用场景</th></tr></thead>
-            <tbody>
-              <tr style="background:rgba(139,92,246,0.05);"><td><strong>弱反型（Weak Inv.）</strong></td><td>25–35</td><td>低（~1–10 MHz）</td><td>高（40–50 dB）</td><td>超低功耗模拟、生物医疗前端</td></tr>
-              <tr style="background:rgba(240,160,80,0.05);"><td><strong>中等反型（Moderate Inv.）</strong></td><td>10–20</td><td>中（~100 MHz–1 GHz）</td><td>中（30–40 dB）</td><td>低功耗 IoT、传感器接口</td></tr>
-              <tr style="background:rgba(16,185,129,0.05);"><td><strong>强反型（Strong Inv.）</strong></td><td>5–12</td><td>高（~10–100 GHz）</td><td>低（15–25 dB）</td><td>高速放大器、RF 前端、PLL</td></tr>
-            </tbody>
-          </table>
-          <p class="table-caption">表3：gm/Id 在不同反型区域的典型值及性能权衡 · fT = 特征频率（单位增益截止频率）；gm·ro = 本征增益（自增益）<span class="ref">[5][6]</span></p>
         </div>
 
         <hr style="border:none;border-top:1px solid rgba(255,255,255,0.08);margin:32px 0;">
 
-        <h4>第五部分 · 总结——同一器件的三张面孔</h4>
+        <h4>一 · 截止区（Cutoff）——器件关闭</h4>
 
-        <p>CMOS 场效应管的精妙之处在于：<strong>开关和放大并非不同的器件，而是同一器件在不同偏置条件下的两种行为模式</strong>。数字电路将 MOSFET 推入截止区（OFF）和深线性区（ON）的极端，利用近乎理想的「通/断」二元态构建逻辑门和存储器；模拟电路则让 MOSFET 工作在饱和区，利用电压-电流的平滑控制实现信号的精确放大和处理。</p>
+        <p>当 V(GS) &lt; V(TH)，栅极下方的硅表面没有形成导电沟道——N⁺ 源区和漏区之间是两个背靠背的 PN 结，任何方向的电压都至少有一个反偏结阻断电流。器件表现为<strong>断路</strong>。对于 RF 开关，截止区决定了<strong>关断电容 Coff</strong>——这是影响开关隔离度的关键寄生参数 <span class="ref">[1][3]</span>。</p>
 
-        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:24px 0;">
-          <div style="background:rgba(239,68,68,0.06);border:1px solid rgba(239,68,68,0.15);border-radius:8px;padding:18px;">
-            <div style="font-size:11px;color:rgba(255,255,255,0.5);margin-bottom:4px;">截止区 · OFF</div>
-            <div style="font-size:18px;font-weight:700;color:#ef4444;margin-bottom:6px;">数字「0」</div>
-            <div style="font-size:10px;color:rgba(255,255,255,0.35);">V(GS) &lt; V(TH)<br>I(D) ≈ 0</div>
-          </div>
-          <div style="background:rgba(240,160,80,0.06);border:1px solid rgba(240,160,80,0.15);border-radius:8px;padding:18px;">
-            <div style="font-size:11px;color:rgba(255,255,255,0.5);margin-bottom:4px;">线性区 · ON</div>
-            <div style="font-size:18px;font-weight:700;color:#f0a050;margin-bottom:6px;">数字「1」 / RF 开关</div>
-            <div style="font-size:10px;color:rgba(255,255,255,0.35);">Ron: 1–5 Ω<br>Coff: 50–200 fF<br>Ron·Coff: 50–300 fs</div>
-          </div>
-          <div style="background:rgba(16,185,129,0.06);border:1px solid rgba(16,185,129,0.15);border-radius:8px;padding:18px;">
-            <div style="font-size:11px;color:rgba(255,255,255,0.5);margin-bottom:4px;">饱和区 · 放大</div>
-            <div style="font-size:18px;font-weight:700;color:#10b981;margin-bottom:6px;">模拟信号处理</div>
-            <div style="font-size:10px;color:rgba(255,255,255,0.35);">gm/Id: 5–35 V⁻¹<br>gm·ro: 15–50 dB<br>fT: 1 MHz–100 GHz</div>
-          </div>
+        <h4>二 · 线性区（Triode）——压控电阻</h4>
+
+        <p>当 V(GS) &gt; V(TH) 且 V(DS) 很小时，栅极电场在 Si-SiO₂ 界面吸引电子形成连续的 n 型反型层沟道。器件表现为一个<strong>压控电阻</strong>，其导通电阻 R<sub>on</sub> 由栅极过驱动电压 V(ov) = V(GS) − V(TH) 控制 <span class="ref">[1]</span>：</p>
+
+        <p style="text-align:center;font-size:15px;color:#5a9fd4;margin:12px 0;"><strong>R<sub>on</sub> ≈ 1 / [μ<sub>n</sub> · C<sub>ox</sub> · (W/L) · (V(GS) − V(TH))]</strong></p>
+
+        <p>对于 RF 开关，R<sub>on</sub> 直接决定<strong>插入损耗（IL）</strong>。Ron 越小，信号衰减越少。Coff 是关断时的寄生电容。二者的乘积 <strong>Ron·Coff</strong> 是开关的品质因数（FoM）——越小越好，它决定了一个工艺在给定隔离度下可达到的最低插入损耗。电子迁移率 μ<sub>n</sub> 是 Ron 公式中最底层的物理参数，详见衍生文章 <strong>「电子迁移率 μn：CMOS 速度的物理本源」</strong>。</p>
+
+        <div class="table-wrap">
+          <p class="table-caption">表：Ron 与 Coff 的工程映射</p>
+          <table>
+            <thead><tr><th>参数</th><th>物理含义</th><th>工程影响</th><th>优化方向</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Ron</strong></td><td>沟道导通电阻</td><td>插入损耗 IL ∝ Ron</td><td>↑W, ↑V(GS), 选高 μ 工艺</td></tr>
+              <tr><td><strong>Coff</strong></td><td>关断寄生电容</td><td>隔离度 ISO ∝ 1/Coff</td><td>↓W, 选 SOI 降低衬底耦合</td></tr>
+              <tr><td><strong>Ron·Coff</strong></td><td>开关品质因数</td><td>工艺极限性能</td><td>ID 方程中 W 可约掉，以工艺主导</td></tr>
+            </tbody>
+          </table>
         </div>
 
-        <p>而 <strong>gm/Id 方法论</strong>正是将这三张面孔统一在同一个连续参数空间中的桥梁——设计师不再需要判断「我在弱反型还是强反型」，只需问：「我需要多大的 gm/Id？」这个看似简单的参数化转变，将模拟 IC 设计从一门依赖直觉和经验的手艺，推向了可量化、可复现的系统工程 <span class="ref">[5][6]</span>。</p>
+        <h4>三 · 饱和区（Saturation）——压控电流源</h4>
 
-        <h4>参考文献</h4>
+        <p>当 V(DS) 超过过驱动电压 V(ov)，沟道在漏端夹断（pinch-off），I(D) 对 V(DS) 不再敏感——器件表现为一个<strong>压控电流源</strong>。这是所有模拟放大器、电流镜、差分对的工作基础。</p>
+
+        <p>饱和区的核心指标是<strong>跨导 gm</strong>——输入电压变化转化为输出电流变化的能力：<strong>gm = ∂I(D) / ∂V(GS)</strong>。经典的平方律模型给出 gm ∝ (W/L)·(V(GS) − V(TH))，但在深亚微米工艺中，速度饱和使 gm 不再随 V(ov) 线性增长。</p>
+
+        <p><strong>gm/Id（跨导效率）</strong>将问题从 V(GS) 偏置空间映射到 I(D) 归一化空间，绕开了平方律方程的失真，将弱反型、中反型、强反型统一为一个连续的设计空间——详见衍生文章 <strong>「gm/Id 设计哲学：从跨导效率到连续设计空间」</strong>。</p>
+
+        <h4>四 · 强反型与弱反型——沟道物理图像</h4>
+
+        <p>同一个 NMOS，根据栅压高低，可以在两种截然不同的物理机制下工作：</p>
+
+        <div class="table-wrap">
+          <p class="table-caption">表：强反型与弱反型的沟道物理图像对比</p>
+          <table>
+            <thead><tr><th>物理图像</th><th>强反型 (V(GS) ≫ V(TH))</th><th>弱反型 (V(GS) ≈ V(TH))</th></tr></thead>
+            <tbody>
+              <tr><td>载流子</td><td>大量电子反型层（~10¹² cm⁻²）</td><td>极少电子（~10⁸ cm⁻²），可数级别</td></tr>
+              <tr><td>电流机制</td><td>漂移（Drift）主导</td><td>扩散（Diffusion）主导</td></tr>
+              <tr><td>I(D)-V(GS) 关系</td><td>平方律：I(D) ∝ (V(GS) − V(TH))²</td><td>指数律：I(D) ∝ exp(V(GS) / n·Vt)</td></tr>
+              <tr><td>gm/Id</td><td>低（~5–12 V⁻¹）</td><td>高（~25–35 V⁻¹）</td></tr>
+              <tr><td>fT</td><td>高（数十 GHz）</td><td>低（KHz–MHz）</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p>这个物理图像解释了一个看似矛盾的现象：为什么弱反型的 gm/Id 反而更高？因为 gm = ∂I(D)/∂V(GS)，弱反型区 I(D) 随 V(GS) 指数增长——对于给定的偏置电流，指数曲线的斜率（导数除以函数值）在任何水平上都大于平方律曲线。弱反型用极少量的电流就能产生可观的跨导变化，电流到跨导的转换效率最高。而强反型需要大量电流才能维持同样的 gm，但换来了速度（fT ∝ gm/Cgg）<span class="ref">[5][6]</span>。</p>
+
+        <hr style="border:none;border-top:1px solid rgba(255,255,255,0.08);margin:32px 0;">
+
+        <p style="padding:18px;background:rgba(239,68,68,0.06);border-left:3px solid #ef4444;border-radius:4px;">
+          <strong>一句话总结：</strong>同一个 MOSFET，三张面孔——截止区是断开的开关，线性区是压控电阻，饱和区是压控电流源。三区的划分边界由 V(GS) − V(TH) 和 V(DS) 共同决定。而 Ron（导通电阻）、Coff（关断电容）、gm（跨导）和 gm/Id（跨导效率）四个指标，分别回答了这个器件在开关、截止和放大三个角色中「做得好不好」的问题。
+        </p>
+
+        <hr style="border:none;border-top:1px solid rgba(255,255,255,0.08);margin:32px 0;">
+
+        <p style="font-size:13px;color:rgba(255,255,255,0.55);">参考文献</p>
         <ol class="refs">
-          <li>B. Razavi, <em>Design of Analog CMOS Integrated Circuits</em>, 2nd ed., McGraw-Hill, 2017, Ch. 2 (MOS devices), Ch. 3 (Single-stage amplifiers).</li>
-          <li>Y. Tsividis and C. McAndrew, <em>Operation and Modeling of the MOS Transistor</em>, 3rd ed., Oxford University Press, 2011, Ch. 4 (Strong inversion), Ch. 5 (Weak inversion).</li>
-          <li>S. M. Sze and K. K. Ng, <em>Physics of Semiconductor Devices</em>, 3rd ed., Wiley, 2007, Ch. 6 (MOSFET), Ch. 7 (MOSFET scaling, short-channel effects).</li>
-          <li>R. J. Baker, <em>CMOS: Circuit Design, Layout, and Simulation</em>, 4th ed., Wiley-IEEE Press, 2019, Ch. 9 (Subthreshold operation, low-power design).</li>
-          <li>F. Silveira, D. Flandre, and P. G. A. Jespers, "A gm/ID Based Methodology for the Design of CMOS Analog Circuits and Its Application to the Synthesis of a Silicon-on-Insulator Micropower OTA," <em>IEEE Journal of Solid-State Circuits</em>, vol. 31, no. 9, pp. 1314–1319, Sep. 1996.</li>
-          <li>P. G. A. Jespers and B. Murmann, <em>Systematic Design of Analog CMOS Circuits: Using Pre-Computed Lookup Tables</em>, Cambridge University Press, 2017, Ch. 2–4 (gm/ID methodology, LUT generation, design examples).</li>
+          <li>Y. Taur and T. H. Ning, <em>Fundamentals of Modern VLSI Devices</em>, 2nd ed., Cambridge University Press, 2009, Ch. 2–3.</li>
+          <li>S. M. Sze and K. K. Ng, <em>Physics of Semiconductor Devices</em>, 3rd ed., Wiley, 2007, Ch. 6.</li>
+          <li>B. Razavi, <em>Design of Analog CMOS Integrated Circuits</em>, 2nd ed., McGraw-Hill, 2017, Ch. 2.</li>
+          <li>W. M. C. Sansen, <em>Analog Design Essentials</em>, Springer, 2006, Ch. 1–3.</li>
+          <li>F. Silveira, D. Flandre, and P. G. A. Jespers, "A gm/ID based methodology for the design of CMOS analog circuits and its application to the synthesis of a silicon-on-insulator micropower OTA," <em>IEEE JSSC</em>, vol. 31, no. 9, pp. 1314–1319, Sep. 1996.</li>
+          <li>P. G. A. Jespers and B. Murmann, <em>Systematic Design of Analog CMOS Circuits</em>, Cambridge University Press, 2017.</li>
         </ol>
 
             </div>
@@ -4173,9 +3310,170 @@
         </div>
       </div>
 
-      
-      <!-- LNA Transistor Selection Article -->
       <div class="article-card" onclick="this.classList.toggle('open')">
+        <div class="article-card-header">
+          <div>
+            <div class="article-card-title">电子迁移率 μn：CMOS 速度的物理本源</div>
+            <div class="article-card-meta">📅 2026 年 7 月 · 半导体器件 — 从物理定义到散射退化，迁移率如何决定开关速度、驱动与噪声</div>
+          </div>
+          <div class="article-card-arrow">▼</div>
+        </div>
+        <div class="article-card-body">
+          <div class="article-card-body-inner">
+            <div class="article-body">
+
+        <p>在 MOSFET 的导通电阻 R<sub>on</sub> 公式和漏极电流 I(D) 表达式中反复出现的 <strong>μ<sub>n</sub>（电子迁移率）</strong>，是 CMOS 器件性能最底层的物理参数之一。它决定了载流子在外加电场驱动下的漂移速度，进而影响开关速度、驱动能力、功耗发热和噪声性能——几乎触及器件物理的每一个角落。理解它的物理本质和各种散射退化机制，是理解「不同工艺节点的器件性能差异」的关键 <span class="ref">[1][3]</span>。</p>
+
+        <hr style="border:none;border-top:1px solid rgba(255,255,255,0.08);margin:32px 0;">
+
+        <h4>物理定义</h4>
+
+        <p><strong>迁移率 μ 定义为单位电场强度下载流子的平均漂移速度：</strong></p>
+
+        <p style="text-align:center;font-size:15px;color:#5a9fd4;margin:12px 0;"><strong>μ = v(drift) / E &nbsp;&nbsp;|&nbsp;&nbsp; 单位：cm²/V·s</strong></p>
+
+        <p>其中 v(drift) 是载流子在电场 E 驱动下的漂移速度。对于硅中的电子，低场迁移率 μ<sub>n</sub> ≈ 1,200–1,400 cm²/V·s；空穴迁移率 μ<sub>p</sub> ≈ 400–500 cm²/V·s——<strong>电子的迁移率约为空穴的 2.5–3 倍</strong>，这是 NMOS 比 PMOS 速度更快的根本原因 <span class="ref">[1][3]</span>。</p>
+
+        <hr style="border:none;border-top:1px solid rgba(255,255,255,0.08);margin:32px 0;">
+
+        <h4>对开关速度的影响</h4>
+
+        <p>数字反相器的开关延迟 τ ∝ C<sub>load</sub> · V<sub>DD</sub> / I(D)，而 I(D) ∝ μ。这意味着迁移率直接决定了 MOS 管的驱动电流能力，进而决定反相器的开关速度。在相同尺寸和偏置下，μ<sub>n</sub> ≈ 3·μ<sub>p</sub> → NMOS 驱动电流约为 PMOS 的 3 倍。因此数字电路中 PMOS 宽度通常设为 NMOS 的 2–3 倍，以平衡上升/下降时间 <span class="ref">[1]</span>。</p>
+
+        <hr style="border:none;border-top:1px solid rgba(255,255,255,0.08);margin:32px 0;">
+
+        <h4>对驱动能力与功耗发热的影响</h4>
+
+        <p>在 RF 功率放大器和 LNA 中，μ 决定了单位栅宽可产生的最大电流密度。高迁移率工艺（如 GaAs μ<sub>n</sub> ≈ 8,500 cm²/V·s，GaN 2DEG ≈ 2,000 cm²/V·s）因此在大功率和高频领域占据统治地位。μ 降 10% → I(D) 降 10% → 要维持同样的驱动能力需增大 W → C<sub>gg</sub> 增加 → 速度下降且动态功耗上升 <span class="ref">[2][3]</span>。</p>
+
+        <hr style="border:none;border-top:1px solid rgba(255,255,255,0.08);margin:32px 0;">
+
+        <h4>对噪声性能的影响</h4>
+
+        <h4 style="font-size:14px;color:#5a9fd4;margin-top:18px;">一、沟道热噪声——迁移率的直接效应</h4>
+
+        <p>MOSFET 的沟道热噪声谱密度：<strong>S<sub>id</sub> = 4kT · γ · g<sub>d0</sub></strong>，其中 g<sub>d0</sub> ∝ μ·C<sub>ox</sub>·(W/L)·V(ov)。迁移率通过 g<sub>d0</sub> 直接影响热噪声水平。μ 越高 → g<sub>d0</sub> 越大 → 漏极热噪声越大。但 μ 越高 → gm 也越大 → 等效输入参考噪声电压反而更低：v²<sub>n,in</sub> = 4kTγ/gm ∝ 1/μ。这是因为 gm 随 μ 的增长速度超过 g<sub>d0</sub> 的增长速度——迁移率提高带来的跨导增益超过了噪声的同步增加 <span class="ref">[1][4]</span>。</p>
+
+        <h4 style="font-size:14px;color:#5a9fd4;margin-top:18px;">二、1/f 噪声（闪烁噪声）——迁移率涨落模型</h4>
+
+        <p>MOSFET 的 1/f 噪声物理来源主要有两种理论：载流子数涨落（ΔN）和迁移率涨落（Δμ）。Hooge 的迁移率涨落模型建立了 1/f 噪声与 μ 的直接关联：S<sub>Vfb</sub> ∝ α<sub>H</sub> / (f·N)，其中 α<sub>H</sub> 是 Hooge 参数（衡量晶格散射质量的无量纲量）。μ 降 → 散射增多 → 迁移率涨落增强 → 1/f 噪声增大 <span class="ref">[1][4]</span>。</p>
+
+        <hr style="border:none;border-top:1px solid rgba(255,255,255,0.08);margin:32px 0;">
+
+        <h4>本征迁移率 vs 真实迁移率——是什么在偷走速度？</h4>
+
+        <p>教科书中的 μ<sub>n</sub> = 1,350 cm²/V·s 是<strong>低掺杂单晶硅中的本征晶格散射迁移率</strong>——在 MOSFET 沟道实际工作条件下，几乎从来看不到这个值。真实迁移率需要代入<strong>有效电场退化模型</strong> <span class="ref">[1][3]</span>：</p>
+
+        <p style="text-align:center;font-size:14px;color:#5a9fd4;margin:12px 0;"><strong>μ<sub>eff</sub> = μ<sub>0</sub> / [1 + (E<sub>eff</sub> / E<sub>0</sub>)<sup>ν</sup>]</strong></p>
+
+        <p>其中 μ<sub>0</sub> 是低场迁移率，E<sub>eff</sub> 是沟道垂直有效电场，E<sub>0</sub> 和 ν 是拟合参数（对电子 ν ≈ 1.6–1.7，对空穴 ν ≈ 1.0）。沟道掺杂浓度越高、栅压越大、温度越高，μ<sub>eff</sub> 退化越严重。</p>
+
+        <p>六大散射机制按重要性排序：<strong>库仑散射（Coulomb）</strong>在低 E<sub>eff</sub> 主导 → <strong>声子散射（Phonon）</strong>在中高 E<sub>eff</sub> 主导且随温度剧烈变化 → <strong>表面粗糙度散射（SR）</strong>在高 E<sub>eff</sub> 主导 → <strong>电离杂质散射</strong>在重掺杂区重要 → <strong>界面态散射</strong>在劣质栅氧工艺中加剧 → <strong>远程声子散射</strong>主要见于高-K 栅介质 <span class="ref">[3][4]</span>。</p>
+
+        <hr style="border:none;border-top:1px solid rgba(255,255,255,0.08);margin:32px 0;">
+
+        <p style="font-size:13px;color:rgba(255,255,255,0.55);">参考文献</p>
+        <ol class="refs">
+          <li>Y. Taur and T. H. Ning, <em>Fundamentals of Modern VLSI Devices</em>, 2nd ed., Cambridge University Press, 2009, Ch. 2 (MOSFET device physics), Ch. 3 (MOSFET scaling).</li>
+          <li>S. M. Sze and K. K. Ng, <em>Physics of Semiconductor Devices</em>, 3rd ed., Wiley, 2007, Ch. 1 (Carrier transport), Ch. 6 (MOSFET).</li>
+          <li>D. K. Schroder, <em>Semiconductor Material and Device Characterization</em>, 3rd ed., Wiley, 2006, Ch. 5 (Carrier mobility).</li>
+          <li>R. S. Muller, T. I. Kamins, and M. Chan, <em>Device Electronics for Integrated Circuits</em>, 3rd ed., Wiley, 2003, Ch. 4 (Field-effect transistors).</li>
+        </ol>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="article-card" onclick="this.classList.toggle('open')">
+        <div class="article-card-header">
+          <div>
+            <div class="article-card-title">gm/Id 设计哲学：从跨导效率到连续设计空间</div>
+            <div class="article-card-meta">📅 2026 年 7 月 · 半导体器件 — 跨导效率的物理本质、工程映射与电路应用全景</div>
+          </div>
+          <div class="article-card-arrow">▼</div>
+        </div>
+        <div class="article-card-body">
+          <div class="article-card-body-inner">
+            <div class="article-body">
+
+        <p>在模拟集成电路设计中，传统方法将 MOSFET 的工作区域割裂看待。但现代深亚微米工艺下，器件的强反型到弱反型是一个连续谱，经典平方律模型在短沟道器件中已严重失真。而<strong>gm/Id 方法</strong>绕开了这些方程的局限，直接从仿真或实测数据中提取晶体管的本征性能，以跨导效率为统一标尺，将弱反型、中反型、强反型三个区域连接成一个连续的设计空间 <span class="ref">[1][2]</span>。</p>
+
+        <hr style="border:none;border-top:1px solid rgba(255,255,255,0.08);margin:32px 0;">
+
+        <h4>一 · 跨导 gm——电压到电流的转换效率</h4>
+
+        <p><strong>跨导 gm 定义为输出电流对输入电压的偏导数：gm = ∂I(D) / ∂V(GS)。</strong>它度量了栅极电压的微小变化能在漏极产生多少电流变化——将 MOSFET 的输入电压信号转化为输出电流信号的核心能力。物理上，gm 来自沟道载流子浓度的栅压调制效应：V(GS) 增大 → 反型层电子增多 → I(D) 增大。</p>
+
+        <p>在经典长沟道平方律模型下，gm = 2·I(D)/(V(GS) − V(TH)) ∝ (W/L)·(V(GS) − V(TH))。但在深亚微米工艺中，速度饱和使 gm 偏离线性关系，实际 gm 往往低于平方律预测值 <span class="ref">[1]</span>。</p>
+
+        <hr style="border:none;border-top:1px solid rgba(255,255,255,0.08);margin:32px 0;">
+
+        <h4>二 · gm/Id——跨导效率与连续设计空间</h4>
+
+        <p><strong>gm/Id = (∂I(D)/∂V(GS)) / I(D)</strong></p>
+
+        <p>gm/Id 的含义是「每消耗 1 安培偏置电流，能获得多少西门子的跨导」，单位是 V⁻¹。它本质是一个归一化量：跨导除以直流功耗。这个归一化消除了器件宽度 W 的影响（gm ∝ W，I(D) ∝ W，比值与 W 无关），使得不同尺寸器件可以在同一坐标系下比较。<strong>gm/Id 是 MOSFET 最本征的效率度量</strong> <span class="ref">[2][5]</span>。</p>
+
+        <div class="table-wrap">
+          <p class="table-caption">表：gm/Id 映射到工作区域与应用场景</p>
+          <table>
+            <thead><tr><th>工作区域</th><th>gm/Id 典型值（V⁻¹）</th><th>fT 相对值</th><th>本征增益 gm·ro</th><th>适用场景</th></tr></thead>
+            <tbody>
+              <tr><td><strong>弱反型</strong></td><td>25–35</td><td>低（KHz–MHz）</td><td>极高（40–50 dB）</td><td>超低功耗传感、生物医疗前端</td></tr>
+              <tr><td><strong>中反型</strong></td><td>15–25</td><td>中</td><td>中–高</td><td>中等功耗模拟、混合信号</td></tr>
+              <tr><td><strong>强反型</strong></td><td>5–12</td><td>高（数十 GHz）</td><td>低（~20 dB）</td><td>高速数字、射频 LNA/PA</td></tr>
+              <tr><td><strong>深度强反型</strong></td><td>&lt; 5</td><td>极高</td><td>极低</td><td>数字逻辑高速开关</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <hr style="border:none;border-top:1px solid rgba(255,255,255,0.08);margin:32px 0;">
+
+        <h4>三 · gm/Id 的物理意义与工程价值</h4>
+
+        <p>在经典平方律模型中，gm/Id = 2/(V(GS) − V(TH))。随着 V(GS) 降向阈值，过驱动电压趋近 0，gm/Id 趋向无穷——这在实际器件中不会发生，因为在 V(GS) ≈ V(TH) 附近器件进入弱反型，电流机制从漂移转为扩散，I(D)-V(GS) 关系从平方律转为指数律。在弱反型极限下，<strong>gm/Id = 1/(n·Vt) ≈ 1/(1.5×26mV) ≈ 25.6 V⁻¹</strong>（n 是亚阈值摆幅因子，Vt = kT/q 是热电压），这是 MOSFET gm/Id 的理论上限 <span class="ref">[2][5]</span>。</p>
+
+        <p><strong>gm/Id 方法的工程核心是「查表法」：</strong>不是代入解析方程计算 gm 和 I(D)，而是在设计前通过 DC 仿真扫描 V(GS)，建立三张查找表——gm/Id vs V(GS)、fT vs gm/Id、gm·ro vs gm/Id。设计时根据目标 gm 和 gm/Id 反查 W 和 V(GS)，避免了短沟道解析模型的失真 <span class="ref">[2][5][6]</span>。</p>
+
+        <hr style="border:none;border-top:1px solid rgba(255,255,255,0.08);margin:32px 0;">
+
+        <h4>四 · 为什么不同 gm/Id 对应不同应用——背后的物理折衷</h4>
+
+        <p>表中的映射不是人为规定，而是由<strong>三个硬性物理折衷</strong>决定 <span class="ref">[1][2][5][6]</span>：</p>
+
+        <p><strong>1. gm/Id vs fT——电流效率与速度不可兼得。</strong>fT ≈ gm/(2π·Cgg)。高 gm/Id 意味着偏置在弱反型，gm 绝对值小，fT 低（KHz-MHz）。反之，强反型区 I(D) 大 → gm 大 → fT 高（数十 GHz），但 gm/Id 低。</p>
+
+        <p><strong>2. gm/Id vs gm·ro——增益与速度的经典权衡。</strong>本征增益 gm·ro ≈ VA/V(ov)。弱反型区 ro 极大，gm·ro 可达 40-50 dB——生物医疗前端（μV 级信号）需要高本征增益。RF 前端（mV 级信号）更需要带宽和线性度。</p>
+
+        <p><strong>3. gm/Id vs 电流密度——功耗的物理本质。</strong>gm/Id = 30 V⁻¹ 只需 ~33 μA 产生 1 mS 跨导；gm/Id = 5 V⁻¹ 需要 ~200 μA——相差 6 倍。这就是弱反型超低功耗的核心来源。植入式器械中，6 倍电流差异直接决定电池寿命是「几个月」还是「几年」。</p>
+
+        <p><strong>三个折衷的统一视角：</strong>设计者在 gm/Id 轴上的选择，实质是选择一个工作点——同时决定了器件的反型程度、电流密度、跨导效率、速度和本征增益。从 ~30 到 ~5 V⁻¹ 的连续移动，就是设计者在<strong>「功耗效率 ← → 速度/带宽」</strong>光谱上滑动。没有「更好」的 gm/Id 值——只有与目标应用带宽和功耗约束最匹配的值。</p>
+
+        <hr style="border:none;border-top:1px solid rgba(255,255,255,0.08);margin:32px 0;">
+
+        <p style="padding:18px;background:rgba(74,222,128,0.06);border-left:3px solid #4ade80;border-radius:4px;">
+          <strong>一句话总结：</strong>gm/Id 方法将 CMOS 器件设计从「先选尺寸再验 gm」翻转为「先定 gm/Id 再反查尺寸」——用一张横跨弱反型到强反型的连续空间，取代了过时的平方律方程。gm/Id 是射频工程师手中最优雅的折衷工具：它把功耗、速度、增益这三个不可兼得的物理量，映射到了一根可以精确定位的连续轴上。
+        </p>
+
+        <hr style="border:none;border-top:1px solid rgba(255,255,255,0.08);margin:32px 0;">
+
+        <p style="font-size:13px;color:rgba(255,255,255,0.55);">参考文献</p>
+        <ol class="refs">
+          <li>Y. Taur and T. H. Ning, <em>Fundamentals of Modern VLSI Devices</em>, 2nd ed., Cambridge University Press, 2009, Ch. 2–3.</li>
+          <li>F. Silveira, D. Flandre, and P. G. A. Jespers, "A gm/ID based methodology for the design of CMOS analog circuits and its application to the synthesis of a silicon-on-insulator micropower OTA," <em>IEEE JSSC</em>, vol. 31, no. 9, pp. 1314–1319, Sep. 1996.</li>
+          <li>B. Razavi, <em>Design of Analog CMOS Integrated Circuits</em>, 2nd ed., McGraw-Hill, 2017, Ch. 2, Ch. 6.</li>
+          <li>W. M. C. Sansen, <em>Analog Design Essentials</em>, Springer, 2006, Ch. 1–3.</li>
+          <li>P. G. A. Jespers and B. Murmann, <em>Systematic Design of Analog CMOS Circuits</em>, Cambridge University Press, 2017, Ch. 1–3.</li>
+          <li>D. M. Binkley, <em>Tradeoffs and Optimization in Analog CMOS Design</em>, Wiley, 2008, Ch. 3–4.</li>
+        </ol>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+<div class="article-card" onclick="this.classList.toggle('open')">
         <div class="article-card-header">
           <div>
             <div class="article-card-title">硅基射频 LNA 晶体管选型与设计思路</div>
@@ -5738,50 +5036,6 @@
         </table>
         </div>
 
-        <h4 style="font-size:15px;margin-top:28px;">谐波抑制需求推导</h4>
-
-        <p>以 N77 低信道 3.3 GHz 的 2 次谐波（6.6 GHz）为例：</p>
-
-        <div style="padding:18px;background:rgba(74,222,128,0.06);border-left:3px solid #4ade80;border-radius:4px;margin:20px 0;">
-          <strong>所需谐波抑制 = 等效功率 − 目标限值 = 36 dBm − (−36 dBm) = <span style="color:#4ade80;">72 dB</span></strong>
-        </div>
-
-        <p>这意味着 LFEM 在 SRS 场景下，谐波频率处需要提供 <strong>72 dB 的衰减量</strong>。这个需求由以下几个部分共同承担：</p>
-
-        <div style="overflow-x:auto;margin:24px 0;">
-        <table style="font-size:13px;min-width:500px;">
-        <thead>
-        <tr><th style="width:25%;">贡献来源</th><th style="width:18%;">典型衰减</th><th>说明</th></tr>
-        </thead>
-        <tbody>
-        <tr>
-          <td>LPAMIF 内部滤波</td>
-          <td>15–25 dB</td>
-          <td>PA 后端的低通/带通滤波器对谐波的抑制</td>
-        </tr>
-        <tr>
-          <td>LFEM SRS 路径滤波</td>
-          <td>25–35 dB</td>
-          <td>SRS 通路中的开关 + 滤波器组合</td>
-        </tr>
-        <tr>
-          <td>天线本身频率选择性</td>
-          <td>5–15 dB</td>
-          <td>天线在谐波频段的增益滚降（不可靠、不依赖）</td>
-        </tr>
-        <tr>
-          <td>PA 自身线性度</td>
-          <td>基础谐波水平</td>
-          <td>PA 输出端原始谐波越低，后级压力越小</td>
-        </tr>
-        </tbody>
-        </table>
-        </div>
-
-        <p style="font-size:12px;color:rgba(255,255,255,0.35);margin-top:-8px;">注：天线谐波抑制不能作为可靠设计余量——自由空间和手握状态差异极大。稳健设计应<strong>仅依赖 LPAMIF + LFEM 的滤波</strong>，天线贡献视为附加保险。</p>
-
-        <hr style="border:none;border-top:1px solid rgba(255,255,255,0.08);margin:32px 0;">
-
         <h4>四 · 设计启示</h4>
 
         <p><strong>最容易被低估的一条：天线 VSWR 的"乘数效应"。</strong></p>
@@ -5801,7 +5055,7 @@
         <hr style="border:none;border-top:1px solid rgba(255,255,255,0.08);margin:32px 0;">
 
         <p style="padding:18px;background:rgba(239,68,68,0.06);border-left:3px solid #ef4444;border-radius:4px;">
-          <strong>一句话总结：</strong>SRS 谐波指标之所以严格，不是因为 PA 不够线性，而是因为测试方法决定了"最坏工况"——天线失配的电压倍增 + SRS 的峰均比 + Max Hold 的峰值捕获，让 LFEM SRS 口等效看到了 36 dBm，而你必须确保在这种条件下谐波仍 ≤ −36 dBm。72 dB 的抑制需求，是射频前端在 SRS 场景下不可谈判的硬指标。
+          <strong>一句话总结：</strong>SRS 谐波指标之所以严格，不是因为 PA 不够线性，而是因为测试方法决定了"最坏工况"——天线失配的电压倍增 + SRS 的峰均比 + Max Hold 的峰值捕获，让 LFEM SRS 口等效看到了 36 dBm。−36 dBm 的 H2/H3 限值是对 SRS 通路本身的谐波要求，必须在这一最坏条件下仍满足并留出余量。
         </p>
 
         <hr style="border:none;border-top:1px solid rgba(255,255,255,0.08);margin:32px 0;">
