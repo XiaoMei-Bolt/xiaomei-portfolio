@@ -642,10 +642,9 @@
 
     <!-- Sub-navigation -->
     <nav class="sub-nav">
-      <a href="#panel-analysis" class="active" onclick="switchPanel('analysis')">行业观察</a>
-      <a href="#panel-tech" onclick="switchPanel('tech')">技术探索</a>
-          
-      <a href="#panel-skills" onclick="switchPanel('skills')">Skill Map</a></nav>
+      <a href="#panel-analysis" class="active" onclick="switchPanel('analysis', event)">行业观察</a>
+      <a href="#panel-tech" onclick="switchPanel('tech', event)">技术探索</a>
+      <a href="#panel-skills" onclick="switchPanel('skills', event)">Skill Map</a></nav>
 
     <!-- 行业观察 Panel -->
     <div class="sub-panel active" id="panel-analysis">
@@ -5470,12 +5469,21 @@ id="reading">
 </div>
 
 <script>
-function switchPanel(name) {
+function switchPanel(name, event) {
   document.querySelectorAll('.sub-panel').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.sub-nav a').forEach(a => a.classList.remove('active'));
   document.getElementById('panel-' + name).classList.add('active');
   event.target.classList.add('active');
   event.preventDefault();
+}
+
+function switchTechSub(name, event) {
+  document.querySelectorAll('#panel-tech .tech-sub').forEach(p => p.classList.remove('active'));
+  var panel = document.getElementById('panel-' + name);
+  if (panel) panel.classList.add('active');
+  document.querySelectorAll('#panel-tech .sub-nav a').forEach(a => a.classList.remove('active'));
+  if (event && event.target) event.target.classList.add('active');
+  if (event) event.preventDefault();
 }
 
 // Lightbox: click any diagram SVG to expand
@@ -5488,16 +5496,7 @@ document.querySelectorAll('.diagram-container svg').forEach(svg => {
     target.setAttribute('viewBox', this.getAttribute('viewBox'));
     lb.classList.add('active');
     document.body.style.overflow = 'hidden';
-  }
-function switchTechSub(name, event) {
-  document.querySelectorAll('#panel-tech .tech-sub').forEach(p => p.classList.remove('active'));
-  var panel = document.getElementById('panel-' + name);
-  if (panel) panel.classList.add('active');
-  document.querySelectorAll('#panel-tech .sub-nav a').forEach(a => a.classList.remove('active'));
-  if (event && event.target) event.target.classList.add('active');
-  if (event) event.preventDefault();
-}
-);
+  });
 });
 
 function closeLightbox() {
