@@ -1417,7 +1417,7 @@
             <nav class="sub-nav" style="margin-bottom:32px;">
         <a href="#panel-protocol" class="active" onclick="switchTechSub('protocol', event)">通信协议 (4)</a>
         <a href="#panel-rffe" onclick="switchTechSub('rffe', event)">射频前端系统 (6)</a>
-        <a href="#panel-device" onclick="switchTechSub('device', event)">半导体器件与工艺 (8)</a>
+        <a href="#panel-device" onclick="switchTechSub('device', event)">半导体器件与工艺 (9)</a>
         <a href="#panel-rfic" onclick="switchTechSub('rfic', event)">射频集成电路设计 (2)</a>
       </nav>
 
@@ -4563,6 +4563,171 @@
           <li>J.-P. Colinge, <em>Silicon-on-Insulator Technology: Materials to VLSI</em>, 3rd ed., Springer, 2004, Ch. 7 (Floating-body effects), Ch. 8 (SOI for RF).</li>
           <li>D. Kelly, C. Brindle, C. Kemerling, and M. Stuber, "The state-of-the-art of silicon-on-sapphire CMOS RF switches," <em>IEEE Compound Semiconductor Integrated Circuit Symposium (CSICS)</em>, pp. 200–203, 2005.</li>
         </ol>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="article-card" onclick="this.classList.toggle('open')">
+        <div class="article-card-header">
+          <div>
+            <div class="article-card-title">65nm SOI 射频开关设计实战笔记</div>
+            <div class="article-card-meta">📅 2026 年 6 月 · 半导体器件与工艺 — 从器件参数、偏置方案到大功率 SP4T 的完整设计流水账</div>
+          </div>
+          <div class="article-card-arrow">▼</div>
+        </div>
+        <div class="article-card-body">
+          <div class="article-card-body-inner">
+            <div class="article-body">
+
+        <h4>前言</h4>
+
+        <p>这是一份来自一线的射频开关设计实战笔记，基于 65nm SOI 工艺平台。没有教科书式的推导，只有器件选型、偏置策略、版图规划和性能验证的「流水账型干货」——每一条参数背后都是仿真迭代与工程权衡。</p>
+
+        <hr style="border:none;border-top:1px solid rgba(255,255,255,0.08);margin:32px 0;">
+
+        <h4>第一部分 · 器件工艺平台与基本单元</h4>
+
+        <div class="table-wrap">
+        <table style="font-size:13px;">
+        <tr><td style="width:180px;"><strong>工艺节点</strong></td><td>65nm SOI</td></tr>
+        <tr><td><strong>开关管 Gate Length</strong></td><td>0.12 μm</td></tr>
+        <tr><td><strong>ACBV（单管击穿）</strong></td><td>3.2 V/stack（bias = −2.7 V）</td></tr>
+        <tr><td><strong>FOM</strong></td><td>106 fs</td></tr>
+        <tr><td><strong>Ron（单位宽度）</strong></td><td>0.6 Ω·mm</td></tr>
+        </table>
+        </div>
+
+        <p>ACBV 决定了单管在给定偏置下的电压承受能力。3.2 V/stack 是 −2.7 V 反偏下的标称值，在多管堆叠结构中它是分压均匀性的基准。</p>
+
+        <h4>第二部分 · 偏置网络设计</h4>
+
+        <p>偏置网络是 SOI 开关设计中「看不见的手」——它决定了 Ron、谐波、插入损耗三者之间的微妙平衡。</p>
+
+        <div class="table-wrap">
+        <table style="font-size:13px;">
+        <tr><td style="width:180px;"><strong>Gate Bias</strong></td><td>+3.0 V / −2.9 V</td></tr>
+        <tr><td><strong>Rgate</strong></td><td>45 kΩ</td></tr>
+        <tr><td><strong>Rds</strong></td><td>12 kΩ</td></tr>
+        <tr><td><strong>Body Bias</strong></td><td>Diode 体偏置</td></tr>
+        <tr><td><strong>Rcommon</strong></td><td>25 kΩ / 42 kΩ（两种方案）</td></tr>
+        </table>
+        </div>
+
+        <p><strong>Gate Bias 的极性设计</strong>值得注意：正向 +3 V 使开关充分导通，负向 −2.9 V 确保关断时沟道彻底耗尽。两者压差近 6 V，保证了足够的开关比。Rgate 取 45 kΩ 是在栅极泄漏与开关速度之间的折中——过大会拖慢充放电，过小则引入额外损耗。</p>
+
+        <p><strong>Diode Body Bias</strong> 是 SOI 开关的经典体偏置方案：利用二极管单向导电性，在正向导通时将体区电荷快速泄放，抑制浮体效应；关断时二极管反偏，体区高阻不引入额外损耗。</p>
+
+        <hr style="border:none;border-top:1px solid rgba(255,255,255,0.08);margin:32px 0;">
+
+        <h4>第三部分 · Sub-3GHz Rx ASM 设计</h4>
+
+        <p>接收通路天线开关模块（ASM）以低插损为首要目标。</p>
+
+        <div class="table-wrap">
+        <table style="font-size:13px;">
+        <tr><th>参数</th><th>数值</th></tr>
+        <tr><td>串联管尺寸</td><td>3 × 1.4 mm</td></tr>
+        <tr><td>并联支路</td><td>4 × 1.4 mm</td></tr>
+        <tr><td>Gmax (LB) · 原理图</td><td>0.20 ~ 0.25 dB</td></tr>
+        <tr><td>Gmax (MHB) · 原理图</td><td>0.30 ~ 0.35 dB</td></tr>
+        <tr><td>H2 / H3 @ 15 dBm</td><td>−80 ~ −100 dBm</td></tr>
+        </table>
+        </div>
+
+        <p>LB 和 MHB 的 Gmax 差异主要来自寄生参数随频率的恶化。15 dBm 下谐波在 −80 dBm 以下，说明小信号线性度非常干净——这是接收通路对灵敏度的基本保障。</p>
+
+        <hr style="border:none;border-top:1px solid rgba(255,255,255,0.08);margin:32px 0;">
+
+        <h4>第四部分 · Sub-6GHz 大功率 SP4T 设计</h4>
+
+        <p>Sub-6GHz 频段的最大挑战来自功率等级：需要承受 37 dBm SBD（Simultaneous Band Detection）场景。</p>
+
+        <div class="table-wrap">
+        <table style="font-size:13px;">
+        <tr><th>设计参数</th><th>取值</th></tr>
+        <tr><td>功率等级</td><td>37 dBm SBD</td></tr>
+        <tr><td>串联堆叠</td><td>9-stack × 3 mm</td></tr>
+        <tr><td>开关拓扑</td><td>SP4T × 2（全部大功率路径）</td></tr>
+        <tr><td>芯片面积</td><td>~0.4 mm²</td></tr>
+        </table>
+        </div>
+
+        <p>9-stack 是 37 dBm 功率下热载流子可靠性与 Ron 的平衡点。以单管 ACBV = 3.2 V 计算，9-stack 理想分压下每管承受约 3.1 V，刚好在安全范围内。3 mm 总栅宽用于进一步压低 Ron。</p>
+
+        <h4 style="font-size:16px;color:rgba(255,255,255,0.9);margin-top:28px;">4.1 TRX 通路开关的精细堆叠设计</h4>
+
+        <p>存在大功率的收发通路中，各支路的堆叠数量需要精细区分：</p>
+
+        <div class="table-wrap">
+        <table style="font-size:13px;">
+        <tr><th>通路</th><th>结构</th><th>堆叠与尺寸</th></tr>
+        <tr><td>Rx 串联</td><td>串管</td><td>10-stack × 1 mm</td></tr>
+        <tr><td>Rx 并联</td><td>shunt 管</td><td>4-stack × 1 mm</td></tr>
+        <tr><td>TRX 串联</td><td>串管</td><td>10s + 4s × 3.2 mm</td></tr>
+        <tr><td>TRX 并联</td><td>并管</td><td>10-stack × 1 mm</td></tr>
+        </table>
+        </div>
+
+        <p><strong>TRX 通路采用了「串-并-串」三明治结构</strong>——10s + 4s 的串联-并联-串联组合，目的不是功率耐受而是隔离度。中间并联支路将泄漏信号旁路到地，形成两级衰减，显著提升 TX-RX 隔离。</p>
+
+        <p>TRX 并联支路采用 10-stack，与 Rx 并联的 4-stack 形成鲜明对比——TRX 并联管需要直接承受发射信号的全幅电压摆幅，4-stack 远远不够。</p>
+
+        <hr style="border:none;border-top:1px solid rgba(255,255,255,0.08);margin:32px 0;">
+
+        <h4>第五部分 · 性能汇总</h4>
+
+        <h4 style="font-size:16px;color:rgba(255,255,255,0.9);margin-top:28px;">5.1 小信号性能</h4>
+
+        <div class="table-wrap">
+        <table style="font-size:13px;">
+        <tr><th>频段</th><th>原理图 Gmax</th><th>+ 金属布线</th><th>+ 基板</th></tr>
+        <tr><td>Sub-3GHz + n77</td><td>~0.2 dB</td><td>~0.3 dB</td><td>~0.4 dB</td></tr>
+        <tr><td>TRX 通路 (LB)</td><td>0.15 dB</td><td colspan="2" style="text-align:center;color:rgba(255,255,255,0.55);">同上级联</td></tr>
+        <tr><td>TRX 通路 (MHB)</td><td>0.25 dB</td><td colspan="2" style="text-align:center;color:rgba(255,255,255,0.55);">同上级联</td></tr>
+        </table>
+        </div>
+
+        <p>从原理图到实际版图，每加一层物理效应就增一份损耗：金属互联寄生贡献约 0.1 dB，基板耦合再吃 0.1 dB。各频段综合 worst case IL 约 <strong>1 dB</strong>，主要来自端口阻抗失配而非器件本身。</p>
+
+        <h4 style="font-size:16px;color:rgba(255,255,255,0.9);margin-top:28px;">5.2 谐波性能</h4>
+
+        <div class="table-wrap">
+        <table style="font-size:13px;">
+        <tr><th>输入功率</th><th>H2 / H3</th><th>适用场景</th></tr>
+        <tr><td>15 dBm</td><td>−80 ~ −100 dBm</td><td>接收通路（极干净）</td></tr>
+        <tr><td>26 dBm</td><td>~ −75 dBm</td><td>中等功率发射</td></tr>
+        <tr><td>38 dBm</td><td>~ −35 dBm</td><td>大功率发射（SBD 附近）</td></tr>
+        </table>
+        </div>
+
+        <p>谐波随功率呈明显的非线性爬升——从 15 dBm 到 38 dBm，输入增 23 dB，H2/H3 恶化了约 45~65 dB。这是堆叠 FET 在大摆幅下沟道电阻非线性的直接表现。</p>
+
+        <h4 style="font-size:16px;color:rgba(255,255,255,0.9);margin-top:28px;">5.3 大信号极限</h4>
+
+        <div class="table-wrap">
+        <table style="font-size:13px;">
+        <tr><th>参数</th><th>数值</th></tr>
+        <tr><td>IIP3</td><td>> 73 dBm</td></tr>
+        <tr><td>39 dBm 下 Vpeak</td><td>28 V</td></tr>
+        <tr><td>39 dBm 下 Vmax（单管）</td><td>~3.3 V</td></tr>
+        <tr><td>39 dBm 下 Vmin（单管）</td><td>~2.7 V</td></tr>
+        </table>
+        </div>
+
+        <div class="callout" style="margin-top:24px;">
+          <p><strong>⚠️ 分压不均匀是关键瓶颈：</strong>39 dBm 下总峰值电压 28 V，9-stack 理想平分应为 3.1 V/管。实际测量 Vmax = 3.3 V、Vmin = 2.7 V，分压偏差达 ±10%。根源是各管寄生电容（Cgs/Cgd 对地）的不对称——堆叠中间的管子看到的等效阻抗与两端不同。顶部管承受更高的电压摆幅，是可靠性最先触线的薄弱环节，也是大功率谐波的主要贡献者。</p>
+        </div>
+
+        <hr style="border:none;border-top:1px solid rgba(255,255,255,0.08);margin:32px 0;">
+
+        <h4>总结</h4>
+
+        <p style="padding:20px;background:rgba(192,132,252,0.06);border-left:3px solid #ec4899;border-radius:4px;">
+          <strong>这份笔记的信息密度很高，但核心逻辑链清晰：</strong>工艺平台确定单管 ACBV 和 Ron → 偏置网络设定工作点和线性度基线 → 根据功率等级决定堆叠数 → 根据隔离度需求决定串并串拓扑 → 原理图、版图、基板逐级迭代→ 最终在大信号分压均匀性上找到瓶颈。SOI 开关设计的艺术不在于某一步的极致，而在于这条链条上每一环的协同雕琢。
+        </p>
 
             </div>
           </div>
