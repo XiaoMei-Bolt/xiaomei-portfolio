@@ -4588,7 +4588,7 @@
 
         <p>这是一份来自一线的射频开关设计实战笔记，基于 65nm SOI 工艺平台。没有教科书式的推导，只有器件选型、偏置策略、版图规划和性能验证的「流水账型干货」——每一条参数背后都是仿真迭代与工程权衡。</p>
 
-        <hr style="border:none;border-top:1px solid rgba(255,255,255,0.08);margin:32px 0;">
+        <hr style="border:none;border-top:1px solid rgba(0,0,0,0.08);margin:32px 0;">
 
         <h4>第一部分 · 器件工艺平台与基本单元</h4>
 
@@ -4622,7 +4622,7 @@
 
         <p><strong>Diode Body Bias</strong> 是 SOI 开关的经典体偏置方案：利用二极管单向导电性，在正向导通时将体区电荷快速泄放，抑制浮体效应；关断时二极管反偏，体区高阻不引入额外损耗。</p>
 
-        <hr style="border:none;border-top:1px solid rgba(255,255,255,0.08);margin:32px 0;">
+        <hr style="border:none;border-top:1px solid rgba(0,0,0,0.08);margin:32px 0;">
 
         <h4>第三部分 · Sub-3GHz Rx ASM 设计</h4>
 
@@ -4641,7 +4641,7 @@
 
         <p>LB 和 MHB 的 Gmax 差异主要来自寄生参数随频率的恶化。15 dBm 下谐波在 −80 dBm 以下，说明小信号线性度非常干净——这是接收通路对灵敏度的基本保障。</p>
 
-        <hr style="border:none;border-top:1px solid rgba(255,255,255,0.08);margin:32px 0;">
+        <hr style="border:none;border-top:1px solid rgba(0,0,0,0.08);margin:32px 0;">
 
         <h4>第四部分 · Sub-6GHz 大功率 SP4T 设计</h4>
 
@@ -4659,7 +4659,7 @@
 
         <p>9-stack 是 37 dBm 功率下热载流子可靠性与 Ron 的平衡点。以单管 ACBV = 3.2 V 计算，9-stack 理想分压下每管承受约 3.1 V，刚好在安全范围内。3 mm 总栅宽用于进一步压低 Ron。</p>
 
-        <h4 style="font-size:16px;color:rgba(255,255,255,0.9);margin-top:28px;">4.1 TRX 通路开关的精细堆叠设计</h4>
+        <h4 style="font-size:16px;color:rgba(0,0,0,0.9);margin-top:28px;">4.1 TRX 通路开关的精细堆叠设计</h4>
 
         <p>存在大功率的收发通路中，各支路的堆叠数量需要精细区分：</p>
 
@@ -4677,24 +4677,24 @@
 
         <p>TRX 并联支路采用 10-stack，与 Rx 并联的 4-stack 形成鲜明对比——TRX 并联管需要直接承受发射信号的全幅电压摆幅，4-stack 远远不够。</p>
 
-        <hr style="border:none;border-top:1px solid rgba(255,255,255,0.08);margin:32px 0;">
+        <hr style="border:none;border-top:1px solid rgba(0,0,0,0.08);margin:32px 0;">
 
         <h4>第五部分 · 性能汇总</h4>
 
-        <h4 style="font-size:16px;color:rgba(255,255,255,0.9);margin-top:28px;">5.1 小信号性能</h4>
+        <h4 style="font-size:16px;color:rgba(0,0,0,0.9);margin-top:28px;">5.1 小信号性能</h4>
 
         <div class="table-wrap">
         <table style="font-size:13px;">
         <tr><th>频段</th><th>原理图 Gmax</th><th>+ 金属布线</th><th>+ 基板</th></tr>
         <tr><td>Sub-3GHz + n77</td><td>~0.2 dB</td><td>~0.3 dB</td><td>~0.4 dB</td></tr>
-        <tr><td>TRX 通路 (LB)</td><td>0.15 dB</td><td colspan="2" style="text-align:center;color:rgba(255,255,255,0.55);">同上级联</td></tr>
-        <tr><td>TRX 通路 (MHB)</td><td>0.25 dB</td><td colspan="2" style="text-align:center;color:rgba(255,255,255,0.55);">同上级联</td></tr>
+        <tr><td>TRX 通路 (LB)</td><td>0.15 dB</td><td colspan="2" style="text-align:center;color:rgba(0,0,0,0.55);">同上级联</td></tr>
+        <tr><td>TRX 通路 (MHB)</td><td>0.25 dB</td><td colspan="2" style="text-align:center;color:rgba(0,0,0,0.55);">同上级联</td></tr>
         </table>
         </div>
 
         <p>从原理图到实际版图，每加一层物理效应就增一份损耗：金属互联寄生贡献约 0.1 dB，基板耦合再吃 0.1 dB。各频段综合 worst case IL 约 <strong>1 dB</strong>，主要来自端口阻抗失配而非器件本身。</p>
 
-        <h4 style="font-size:16px;color:rgba(255,255,255,0.9);margin-top:28px;">5.2 谐波性能</h4>
+        <h4 style="font-size:16px;color:rgba(0,0,0,0.9);margin-top:28px;">5.2 谐波性能</h4>
 
         <div class="table-wrap">
         <table style="font-size:13px;">
@@ -4707,7 +4707,7 @@
 
         <p>谐波随功率呈明显的非线性爬升——从 15 dBm 到 38 dBm，输入增 23 dB，H2/H3 恶化了约 45~65 dB。这是堆叠 FET 在大摆幅下沟道电阻非线性的直接表现。</p>
 
-        <h4 style="font-size:16px;color:rgba(255,255,255,0.9);margin-top:28px;">5.3 大信号极限</h4>
+        <h4 style="font-size:16px;color:rgba(0,0,0,0.9);margin-top:28px;">5.3 大信号极限</h4>
 
         <div class="table-wrap">
         <table style="font-size:13px;">
@@ -4723,7 +4723,7 @@
           <p><strong>⚠️ 分压不均匀是关键瓶颈：</strong>39 dBm 下总峰值电压 28 V，9-stack 理想平分应为 3.1 V/管。实际测量 Vmax = 3.3 V、Vmin = 2.7 V，分压偏差达 ±10%。根源是各管寄生电容（Cgs/Cgd 对地）的不对称——堆叠中间的管子看到的等效阻抗与两端不同。顶部管承受更高的电压摆幅，是可靠性最先触线的薄弱环节，也是大功率谐波的主要贡献者。</p>
         </div>
 
-        <h4 style="font-size:16px;color:rgba(255,255,255,0.9);margin-top:32px;">5.4 参考：dBm 与 50Ω 系统电压对照</h4>
+        <h4 style="font-size:16px;color:rgba(0,0,0,0.9);margin-top:32px;">5.4 参考：dBm 与 50Ω 系统电压对照</h4>
 
         <div class="table-wrap">
         <table style="font-size:13px;">
@@ -4749,7 +4749,7 @@
 
         <p style="margin-top:16px;">失配时，反射电压与入射电压同相叠加，负载端峰值电压可远超匹配状态。29 dBm 在 7:1 VSWR 下等效于 50Ω 匹配系统中约 <strong>34 dBm</strong>——这正是 SRS 谐波指标设计时需要考虑的「最坏工况等效功率」的物理根源。</p>
 
-        <hr style="border:none;border-top:1px solid rgba(255,255,255,0.08);margin:32px 0;">
+        <hr style="border:none;border-top:1px solid rgba(0,0,0,0.08);margin:32px 0;">
 
         <h4>总结</h4>
 
