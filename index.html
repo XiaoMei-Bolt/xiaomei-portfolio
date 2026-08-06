@@ -248,6 +248,26 @@
     .sub-panel { display: none; }
     .sub-panel.active { display: block; }
 
+    /* Tech sub-panels: white background */
+    #panel-tech .tech-sub { background: var(--light-gray); }
+    #panel-tech .tech-sub .article-card { background: var(--card-bg); box-shadow: var(--card-shadow); }
+    #panel-tech .tech-sub .article-card:hover { background: #f0f0f2; }
+    #panel-tech .tech-sub .article-card-title { color: var(--near-black); }
+    #panel-tech .tech-sub .article-card-meta { color: var(--text-tertiary); }
+    #panel-tech .tech-sub .article-card-arrow { color: rgba(0,0,0,0.2); }
+    #panel-tech .tech-sub .article-card-body-inner { border-top-color: rgba(0,0,0,0.06); }
+    #panel-tech .tech-sub .article-body { color: var(--text-secondary); }
+    #panel-tech .tech-sub .article-body h4 { color: var(--near-black); }
+    #panel-tech .tech-sub .article-body strong { color: var(--near-black); }
+    #panel-tech .tech-sub .article-body p { color: var(--text-secondary); }
+    #panel-tech .tech-sub table { color: var(--near-black); border-color: rgba(0,0,0,0.1); }
+    #panel-tech .tech-sub table th { background: rgba(0,0,0,0.04); color: var(--near-black); }
+    #panel-tech .tech-sub table td { border-color: rgba(0,0,0,0.06); }
+    #panel-tech .tech-sub .refs { color: var(--text-tertiary); }
+    #panel-tech .tech-sub .refs li { color: var(--text-tertiary); }
+    #panel-tech .tech-sub hr { border-top-color: rgba(0,0,0,0.08) !important; }
+
+
     /* Article styles */
     .article-body {
       font-size: 16px; line-height: 1.8; color: rgba(255,255,255,0.85);
@@ -1372,15 +1392,15 @@
     </div>
 
     <!-- 技术文章 Panel -->
-    <div class="sub-panel"     <div class="sub-panel active" id="panel-tech">
+    <div class="sub-panel" id="panel-tech">
             <nav class="sub-nav" style="margin-bottom:32px;">
-        <a href="#panel-protocol" class="active" onclick="switchTechSub('protocol', event)">通信协议与波形 (4)</a>
-        <a href="#panel-rffe" class="active" onclick="switchTechSub('rffe', event)">射频前端系统 (6)</a>
-        <a href="#panel-device" class="active" onclick="switchTechSub('device', event)">半导体器件与工艺 (8)</a>
-        <a href="#panel-rfic" class="active" onclick="switchTechSub('rfic', event)">射频集成电路设计 (2)</a>
+        <a href="#panel-protocol" class="active" onclick="switchTechSub('protocol', event)">通信协议 (4)</a>
+        <a href="#panel-rffe" onclick="switchTechSub('rffe', event)">射频前端系统 (6)</a>
+        <a href="#panel-device" onclick="switchTechSub('device', event)">半导体器件与工艺 (8)</a>
+        <a href="#panel-rfic" onclick="switchTechSub('rfic', event)">射频集成电路设计 (2)</a>
       </nav>
 
-    <div class="sub-panel tech-sub" id="panel-protocol">
+    <div class="sub-panel tech-sub active" id="panel-protocol">
 <div class="article-card" onclick="this.classList.toggle('open')">
         <div class="article-card-header">
           <div>
@@ -2177,9 +2197,7 @@
 
 
     </div>
-<section class="section section-light"
 
-    </div>
     <div class="sub-panel tech-sub" id="panel-rffe">
 <div class="article-card" onclick="this.classList.toggle('open')">
         <div class="article-card-header">
@@ -5249,9 +5267,12 @@
       </div>
     </div>
 
-
     </div>
-id="reading">
+  </div>
+</section>
+
+<!-- 阅读与思考 -->
+<section class="section section-light" id="reading">
   <div class="section-inner">
     <p class="section-label">读书笔记</p>
     <h2 class="section-heading">阅读与思考</h2>
