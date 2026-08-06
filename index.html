@@ -267,6 +267,27 @@
     #panel-tech .tech-sub .refs li { color: var(--text-tertiary); }
     #panel-tech .tech-sub hr { border-top-color: rgba(0,0,0,0.08) !important; }
 
+    /* 行业观察 panel: white background */
+    #panel-analysis { background: var(--light-gray); padding: 32px; border-radius: 12px; }
+    #panel-analysis .article-card { background: var(--card-bg); box-shadow: var(--card-shadow); }
+    #panel-analysis .article-card:hover { background: #f0f0f2; }
+    #panel-analysis .article-card-title { color: var(--near-black); }
+    #panel-analysis .article-card-meta { color: var(--text-tertiary); }
+    #panel-analysis .article-card-arrow { color: rgba(0,0,0,0.2); }
+    #panel-analysis .article-card-body-inner { border-top-color: rgba(0,0,0,0.06); }
+    #panel-analysis .article-body { color: var(--text-secondary); }
+    #panel-analysis .article-body h4 { color: var(--near-black); }
+    #panel-analysis .article-body strong { color: var(--near-black); }
+    #panel-analysis .article-body p { color: var(--text-secondary); }
+    #panel-analysis table { color: var(--near-black); border-color: rgba(0,0,0,0.1); }
+    #panel-analysis table th { background: rgba(0,0,0,0.04); color: var(--near-black); }
+    #panel-analysis table td { border-color: rgba(0,0,0,0.06); }
+    #panel-analysis .refs { color: var(--text-tertiary); }
+    #panel-analysis .refs li { color: var(--text-tertiary); }
+    #panel-analysis hr { border-top-color: rgba(0,0,0,0.08) !important; }
+    #panel-analysis .section-desc { color: var(--text-secondary); }
+
+
 
     /* Article styles */
     .article-body {
@@ -5122,6 +5143,9 @@
       <!-- SOI SiO2 Article -->
 
     </div>
+  </div>
+
+
     <div class="sub-panel" id="panel-skills">
       <div class="section-inner" style="max-width:860px;">
         <p class="section-label">能力地图</p>
@@ -5267,7 +5291,6 @@
       </div>
     </div>
 
-    </div>
   </div>
 </section>
 
@@ -5496,6 +5519,13 @@ function switchPanel(name, event) {
   document.getElementById('panel-' + name).classList.add('active');
   event.target.classList.add('active');
   event.preventDefault();
+  // Default: when switching to tech panel, show first tech-sub
+  if (name === 'tech') {
+    var proto = document.getElementById('panel-protocol');
+    if (proto) proto.classList.add('active');
+    var protoLink = document.querySelector('#panel-tech .sub-nav a[href="#panel-protocol"]');
+    if (protoLink) protoLink.classList.add('active');
+  }
 }
 
 function switchTechSub(name, event) {
