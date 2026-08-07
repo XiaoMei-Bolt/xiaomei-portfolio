@@ -139,6 +139,11 @@
       box-shadow: 0 1px 3px rgba(180,83,9,0.12);
     }
 
+    /* Foldable career section */
+    #career-wrap.folded { display: none; }
+    #career-heading { user-select: none; }
+    #career-heading:hover { opacity: 0.8; }
+
     /* Work Experience */
     .exp-card {
       background: var(--card-bg); border-radius: 12px;
@@ -495,8 +500,10 @@
       </div>
     </div>
 
-    <!-- 工作经历 -->
-    <h3 style="font-size:21px;font-weight:600;margin-bottom:20px;letter-spacing:-0.16px;">工作经历</h3>
+    <!-- 工作教育经历及荣誉 -->
+    <h3 id="career-heading" style="font-size:21px;font-weight:600;margin-bottom:20px;letter-spacing:-0.16px;cursor:pointer;" onclick="var w=document.getElementById('career-wrap');w.classList.toggle('folded');this.querySelector('.fold-arrow').textContent=w.classList.contains('folded')?'▶':'▼';">工作教育经历及荣誉 <span class="fold-arrow" style="font-size:14px;color:rgba(0,0,0,0.4);">▶</span></h3>
+
+    <div id="career-wrap" class="folded">
 
     <!-- 锐石创芯 -->
     <div class="exp-card" id="exp-radrock" onclick="this.classList.toggle('open')">
@@ -635,6 +642,9 @@
         <li>2014 年 — IMS and RFIC Ph.D Sponsorship Initiative</li>
         <li>2012 年 — Achievement Award $12K, University of Florida</li>
       </ul>
+    </div>
+
+
     </div>
 
   </div>
