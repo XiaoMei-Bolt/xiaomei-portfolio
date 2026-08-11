@@ -442,7 +442,16 @@
     .section-light .article-body { color: var(--text-secondary); }
     .section-light .article-body h4 { color: var(--near-black); }
     .section-light .article-body strong { color: var(--near-black); }
-  </style>
+  
+    /* === Widescreen optimization === */
+    @media (min-width: 1200px) {
+      .section-inner { max-width: 1100px; }
+      .section-desc { max-width: 800px; }
+      .hero-content { max-width: 900px; }
+      .nav-inner { max-width: 1100px; }
+    }
+
+</style>
 </head>
 <body>
 
