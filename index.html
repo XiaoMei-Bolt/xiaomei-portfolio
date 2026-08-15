@@ -5863,7 +5863,7 @@
 
         <h4>一、Cascode LNA 与稳定性的基本问题</h4>
 
-        <p>Cascode 结构（共源级 + 共栅级）是射频 LNA 设计中最常用的拓扑之一。它凭借高反向隔离、高增益和良好的噪声性能成为窄带 LNA 的「标配」。然而，cascode 的稳定性不是一个「已解决」的问题——当在共源管源极引入退化电感 L<sub>g</sub>（用于输入匹配或噪声优化）时，<strong>正是这个电感在不经意间破坏了 cascode 的单向性</strong>，将放大器推向潜在不稳定的边缘。</p>
+        <p>Cascode 结构（共源级 + 共栅级）是射频 LNA 设计中最常用的拓扑之一。它凭借高反向隔离、高增益和良好的噪声性能成为窄带 LNA 的「标配」。然而，cascode 的稳定性不是一个「已解决」的问题——当在共源管源极引入退化电感 L<sub>s</sub>（用于输入匹配或噪声优化）时，<strong>正是这个电感在不经意间破坏了 cascode 的单向性</strong>，将放大器推向潜在不稳定的边缘。</p>
 
         <p>理解这一现象，有三条等价的分析路径。它们从不同数学框架出发，最终指向同一个物理结论。</p>
 
@@ -5877,9 +5877,9 @@
         <tr><th style="width:16%;">分析角度</th><th>核心机制</th><th style="width:30%;">对稳定性的影响</th></tr>
         </thead>
         <tbody>
-        <tr style="background:rgba(0,113,227,0.05);"><td><strong>Y 参数分析</strong></td><td>L<sub>g</sub> 增大反馈项 y<sub>12</sub>，破坏电路单向性</td><td>K 值下降，从绝对稳定(K>1)变为潜在不稳定(K<1)</td></tr>
-        <tr><td><strong>环路增益</strong></td><td>L<sub>g</sub> 与寄生电容构成反馈环路，特定频率产生正反馈</td><td>环路增益≥1且相位为360°整数倍时，电路振荡</td></tr>
-        <tr style="background:rgba(0,113,227,0.05);"><td><strong>负阻产生</strong></td><td>L<sub>g</sub> 在输入端口引入频率相关的负电阻</td><td>负阻抵消电路损耗，若|R<sub>neg</sub>|>R<sub>loss</sub>，维持振荡</td></tr>
+        <tr style="background:rgba(0,113,227,0.05);"><td><strong>Y 参数分析</strong></td><td>L<sub>s</sub> 高频增强反向耦合，降低 K</td><td>K 值下降，从绝对稳定(K>1)变为潜在不稳定(K<1)</td></tr>
+        <tr><td><strong>环路增益</strong></td><td>L<sub>s</sub> 与寄生电容构成反馈环路，特定频率产生正反馈</td><td>环路增益≥1且相位为360°整数倍时，电路振荡</td></tr>
+        <tr style="background:rgba(0,113,227,0.05);"><td><strong>负阻产生</strong></td><td>L<sub>s</sub> 在输入端口引入频率相关的负电阻</td><td>负阻抵消电路损耗，若|R<sub>neg</sub>|>R<sub>loss</sub>，维持振荡</td></tr>
         </tbody>
         </table>
         </div>
@@ -5892,11 +5892,9 @@
 
         <p>对于二端口网络，Rollett 稳定因子 K 是判断绝对稳定性的标准工具：K>1 且 |Δ|<1 时，放大器对任意源和负载阻抗绝对稳定。</p>
 
-        <p>关键通道是 Y 参数中的反向传输项 y<sub>12</sub>。理想 cascode 的 y<sub>12</sub> 极小——共栅级隔离了输出到输入的反馈。但 L<sub>g</sub> 引入了一个<strong>通过源极退化回馈到输入端的信号路径</strong>：</p>
+        <p>关键通道是 Y 参数中的反向传输项 y<sub>12</sub>。理想 cascode 的 y<sub>12</sub> 极小——共栅级隔离了输出到输入的反馈。源极退化电感 L<sub>s</sub> 通过负反馈降低共源级增益 g<sub>m,eff</sub> = g<sub>m</sub>/(1 + g<sub>m</sub>·jωL<sub>s</sub>)，一阶上削弱 C<sub>gd</sub> 的 Miller 效应，<strong>改善</strong>反向隔离。但在高频（接近输入谐振频率 1/√(L<sub>s</sub>C<sub>gs</sub>)），L<sub>s</sub> 与 C<sub>gd</sub> 的相互作用会增强反向耦合，使 |S<sub>12</sub>| 增大。</p>
 
-        <p style="text-align:center;font-size:14px;margin:14px 0;background:rgba(0,113,227,0.08);padding:12px 20px;border-radius:8px;">y<sub>12,eff</sub> ≈ jωC<sub>gd,eff</sub> · (1 + g<sub>m</sub>L<sub>g</sub> / C<sub>gs</sub>)</p>
-
-        <p>L<sub>g</sub> 增大等效反馈导纳 → |S<sub>12</sub>| 增大 → K 表达式的分母增大 → <strong>K 下降</strong>。当 K 跌破 1，电路不再绝对稳定——存在某些源/负载阻抗组合会诱发振荡。</p>
+        <p>反向耦合增强 → K 表达式的分母（含 |S<sub>12</sub>| 项）增大 → <strong>K 下降</strong>。当 K 跌破 1，电路不再绝对稳定——存在某些源/负载阻抗组合会诱发振荡。</p>
 
         <p>K>1 保证的是<strong>无条件的</strong>稳定。K<1 并不意味电路一定振荡——它只是说「存在不稳定的可能」。在特定频段和特定源/负载阻抗下，K<1 的区域就变成了潜在振荡的温床。</p>
 
@@ -5904,13 +5902,13 @@
 
         <h4>四、视角二：环路增益——Barkhausen 判据</h4>
 
-        <p>L<sub>g</sub> 并非孤立的匹配元件——它与 C<sub>gs</sub> 以及 cascode 的内部寄生通路共同构成一个<strong>隐含的反馈环路</strong>：输入端 → C<sub>gs</sub> → 共源管 g<sub>m</sub> → L<sub>g</sub>(源极退化) → 反馈回输入端。这个环路在低频时反馈量很小，但在高频段，寄生电容（特别是 C<sub>gd</sub> 和级间寄生）提供了额外的信号耦合路径。</p>
+        <p>反馈环路的<strong>正向通路</strong>是：栅极输入 → v<sub>gs</sub> → 共源管 g<sub>m</sub> → 漏极输出；<strong>反向通路</strong>是：漏极 → C<sub>gd</sub> → 栅极（Miller 电容反馈）。源极退化电感 L<sub>s</sub> 使源极电位随漏极电流变化，为整个环路引入<strong>频率相关的相移</strong>。这个环路在低频时反馈量很小，但在高频段，C<sub>gd</sub> 的反馈随频率增强。</p>
 
         <p style="text-align:center;font-size:15px;margin:14px 0;background:rgba(248,113,113,0.08);padding:14px 20px;border-radius:8px;border-left:3px solid #f87171;">
         <strong>Barkhausen 振荡条件</strong><br>
         幅度：|Loop Gain| ≥ 1（0 dB）&emsp; 相位：∠Loop Gain = 360° × n</p>
 
-        <p>L<sub>g</sub> 在两个维度上助推条件的达成：<strong>幅度</strong>——源极退化在特定频率提供增益增强（通过输入 Q 值提升）；<strong>相位</strong>——L<sub>g</sub> 和寄生电容形成的 LC 谐振网络在谐振频率附近产生急剧相位翻转。</p>
+        <p>L<sub>s</sub> 在两个维度上助推 Barkhausen 条件的达成：<strong>相位</strong>——L<sub>s</sub> 与 C<sub>gs</sub> 的串联谐振网络在谐振频率附近产生急剧相位翻转；<strong>幅度</strong>——谐振时输入 Q 值提升，环路增益增强。</p>
 
         <hr style="border:none;border-top:1px solid rgba(255,255,255,0.08);margin:32px 0;">
 
@@ -5919,11 +5917,16 @@
         <p>从输入端看进去，带源极退化的共源级等效输入阻抗为：</p>
 
         <p style="text-align:center;font-size:14px;margin:14px 0;background:rgba(0,113,227,0.08);padding:12px 20px;border-radius:8px;">
-        Z<sub>in</sub> ≈ 1/(jωC<sub>gs</sub>) + jωL<sub>g</sub> + <strong style="color:#4ade80;">g<sub>m</sub>L<sub>g</sub>/C<sub>gs</sub></strong></p>
+        Z<sub>in</sub> ≈ 1/(jωC<sub>gs</sub>) + jωL<sub>s</sub> + <strong style="color:#4ade80;">ω<sub>T</sub>L<sub>s</sub></strong></p>
 
-        <p>最后一项 g<sub>m</sub>L<sub>g</sub>/C<sub>gs</sub> 是一个<strong>正实数</strong>，但考虑到输入端参考方向，它表现为<strong>负电阻</strong>——它向电路注入能量而非消耗能量。在 RLC 谐振电路中，当 <strong>|R<sub>neg</sub>| > R<sub>loss</sub></strong>，等效总电阻为负，任何扰动都会不断被放大——电路以谐振频率维持持续振荡。</p>
+        <p>其中最后一项 ω<sub>T</sub>L<sub>s</sub> = g<sub>m</sub>L<sub>s</sub>/C<sub>gs</sub> 是一个<strong>正电阻</strong>——这正是源极退化电感实现 50Ω 输入匹配的根本机制（选取 L<sub>s</sub> 使 ω<sub>T</sub>L<sub>s</sub> ≈ 50Ω）。真正的负阻来自<strong>二阶效应</strong>：栅漏电容 C<sub>gd</sub> 将漏极（输出）信号反馈回栅极（输入），而源极退化电感 L<sub>s</sub> 为这条 Miller 反馈路径引入了频率相关的相移。在高频，这条反馈路径的相位使反馈呈现<strong>正反馈</strong>，等效在输入端口产生一个随频率升高的<strong>负阻项</strong>：</p>
 
-        <p>负阻项在一阶近似下不直接依赖频率，但负阻「生效」需配合谐振条件——即输入端 LC 网络恰好谐振。因此振荡总是发生在特定频段，而非全频带。</p>
+        <p style="text-align:center;font-size:14px;margin:14px 0;background:rgba(248,113,113,0.08);padding:12px 20px;border-radius:8px;border-left:3px solid #f87171;">
+        Re(Z<sub>in</sub>) ≈ ω<sub>T</sub>L<sub>s</sub> − R<sub>neg</sub>(ω)</p>
+
+        <p>其中 R<sub>neg</sub>(ω) 随频率升高而增大（正比于 C<sub>gd</sub>、L<sub>s</sub> 与负载），当 <strong>R<sub>neg</sub>(ω) > ω<sub>T</sub>L<sub>s</sub></strong> 时，输入电阻实部变负。在输入谐振频率附近，负阻抵消电路损耗，任何扰动都会被不断放大——电路以谐振频率维持持续振荡。</p>
+
+        <p>需要强调的是，负阻并非全频带存在——它仅在输入 LC 网络谐振（Z<sub>in</sub> 虚部为零）时「生效」。因此振荡总是发生在特定频段（谐振频率附近），而非全频带。</p>
 
         <hr style="border:none;border-top:1px solid rgba(255,255,255,0.08);margin:32px 0;">
 
@@ -5952,7 +5955,7 @@
 
         <p><strong>稳定性不是「是/否」的二元问题。</strong>K>1 是安全区，但过分追求高 K 往往以牺牲增益和噪声为代价。实际设计中，K 只需在关心频段内保持 >1，带外的 K<1 可通过额外稳定网络修复。</p>
 
-        <p><strong>L<sub>g</sub> 是一把双刃剑。</strong>好的一面提供输入匹配自由度；坏的一面引入反馈打破 cascode 单向性。折衷存在于 L<sub>g</sub> 的取值——足够大的 L<sub>g</sub> 提升 Q 和增益，但也更激进地降低 K 并增强负阻。</p>
+        <p><strong>L<sub>s</sub> 是一把双刃剑。</strong>好的一面提供输入匹配自由度（实部 ω<sub>T</sub>L<sub>s</sub>）并改善线性度；坏的一面通过 C<sub>gd</sub> 反馈在高频引入负阻、降低稳定裕度。折衷存在于 L<sub>s</sub> 的取值——较大的 L<sub>s</sub> 提供更灵活的匹配，但也更激进地降低 K 并增强负阻。</p>
 
         <p><strong>多角度交叉验证。</strong>设计 cascode LNA 时建议三个工具同时使用：S 参数仿真（K 和 μ 因子快速扫描）、环路增益仿真（stb/probe 定位振荡频率）、输入阻抗实部检查（确认无负阻）。三者相互印证，全面把握稳定性全貌。</p>
 
@@ -5960,7 +5963,7 @@
 
         <h4>八、总结</h4>
 
-        <p>Cascode LNA 中 L<sub>g</sub> 引起的稳定性问题，表面上是三种不同的分析手法，实质上是对同一个物理事实的三重观测。理解三者的等价性，是深度掌握射频放大器稳定性设计的必修课。</p>
+        <p>Cascode LNA 中 L<sub>s</sub> 引起的稳定性问题，表面上是三种不同的分析手法，实质上是对同一个物理事实的三重观测。理解三者的等价性，是深度掌握射频放大器稳定性设计的必修课。</p>
 
         <p style="font-size:12px;color:rgba(255,255,255,0.3);margin-top:24px;">📌 参考：G. Gonzalez, <em>Microwave Transistor Amplifiers: Analysis and Design</em>, 2nd ed., Prentice Hall, 1997, Ch. 3; T. H. Lee, <em>The Design of CMOS Radio-Frequency Integrated Circuits</em>, 2nd ed., Cambridge, 2004, Ch. 12; B. Razavi, <em>RF Microelectronics</em>, 2nd ed., Prentice Hall, 2012, Ch. 10.</p>
 
