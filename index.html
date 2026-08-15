@@ -5852,8 +5852,8 @@
       <div class="article-card" onclick="this.classList.toggle('open')">
         <div class="article-card-header">
           <div>
-            <div class="article-card-title">Cascode LNA 稳定性分析：源极退化电感的三重作用</div>
-            <div class="article-card-meta">📅 2026 年 8 月 · 射频 IC 设计 — 负反馈 · 正阻 · 匹配的统一理解</div>
+            <div class="article-card-title">Cascode LNA 稳定性分析：K 因子、Y 参数、环路增益与负阻的正确关系</div>
+            <div class="article-card-meta">📅 2026 年 8 月 · 射频 IC 设计 — 稳定性判据的层次与互通性</div>
           </div>
           <div class="article-card-arrow">▼</div>
         </div>
@@ -5863,102 +5863,120 @@
 
         <h4>一、Cascode LNA 与稳定性的基本问题</h4>
 
-        <p>Cascode 结构（共源级 + 共栅级）是射频 LNA 设计中最常用的拓扑之一。它凭借高反向隔离、高增益和良好的噪声性能成为窄带 LNA 的「标配」。在窄带 LNA 设计中，常需在共源管源极引入退化电感 L<sub>s</sub>，用于输入匹配（提供正阻 ω<sub>T</sub>L<sub>s</sub> ≈ 50Ω）。</p>
+        <p>Cascode 结构（共源级 + 共栅级）是射频 LNA 设计中最常用的拓扑，凭借共栅级的高反向隔离获得良好的稳定性。在窄带 LNA 中，常在共源管源极引入退化电感 L<sub>s</sub>，用于输入匹配（提供正阻 ω<sub>T</sub>L<sub>s</sub> ≈ 50Ω）。</p>
 
-        <p>这个源极退化电感 L<sub>s</sub> 不仅是匹配元件，它同时通过<strong>负反馈改善了放大器的稳定性</strong>——这是源极退化电感的核心价值之一。理解这一作用，有三条等价的分析路径，它们从不同数学框架出发，最终指向同一个物理结论。</p>
+        <p>稳定性分析有多个视角——K 因子、Y 参数、环路增益、输入负阻。但<strong>这些视角并非完全等价</strong>：前三个是等价的「判据」，而「输入负阻」是条件不稳定的「表现」。厘清它们的正确关系，是准确分析 cascode LNA 稳定性的前提。</p>
 
         <hr style="border:none;border-top:1px solid rgba(255,255,255,0.08);margin:32px 0;">
 
-        <h4>二、三条分析路径总览</h4>
+        <h4>二、稳定性判据的三个层次</h4>
 
         <div style="overflow-x:auto;margin:20px 0;">
         <table style="font-size:13px;min-width:620px;">
         <thead>
-        <tr><th style="width:16%;">分析角度</th><th>核心机制</th><th style="width:30%;">对稳定性的影响</th></tr>
+        <tr><th style="width:20%;">层次</th><th style="width:32%;">视角</th><th>性质</th></tr>
         </thead>
         <tbody>
-        <tr style="background:rgba(0,113,227,0.05);"><td><strong>Y 参数分析</strong></td><td>L<sub>s</sub> 负反馈降低增益，改善反向隔离</td><td>K 值上升，稳定裕度增大</td></tr>
-        <tr><td><strong>环路增益</strong></td><td>L<sub>s</sub> 负反馈降低环路增益幅度</td><td>更难满足 Barkhausen 振荡条件</td></tr>
-        <tr style="background:rgba(0,113,227,0.05);"><td><strong>正阻提供</strong></td><td>L<sub>s</sub> 提供正阻 ω<sub>T</sub>L<sub>s</sub> 阻尼振荡</td><td>正阻抵消潜在负阻，抑制起振</td></tr>
+        <tr style="background:rgba(0,113,227,0.05);"><td><strong>根本判据</strong></td><td>K 因子（Rollett 稳定因子）</td><td>网络固有属性，不依赖负载</td></tr>
+        <tr><td><strong>等价表述</strong></td><td>Y 参数、环路增益（Barkhausen）</td><td>与 K 因子数学等价</td></tr>
+        <tr style="background:rgba(0,113,227,0.05);"><td><strong>表现</strong></td><td>输入负阻（|Γ<sub>in</sub>| > 1）</td><td>条件不稳定的表现，<strong>依赖负载</strong></td></tr>
         </tbody>
         </table>
         </div>
 
-        <p>三条路径在数学上等价，区别仅在于「用什么工具观测同一个现象」。</p>
+        <p>关键结论：<strong>输入负阻不是与 K 因子等价的独立判据</strong>——它是「条件不稳定」在特定负载下的表现。</p>
 
         <hr style="border:none;border-top:1px solid rgba(255,255,255,0.08);margin:32px 0;">
 
-        <h4>三、视角一：Y 参数分析——K 因子的提升</h4>
+        <h4>三、K 因子——最根本的判据</h4>
 
-        <p>对于二端口网络，Rollett 稳定因子 K 是判断绝对稳定性的标准工具：K>1 且 |Δ|<1 时，放大器对任意源和负载阻抗绝对稳定。</p>
+        <p>Rollett 稳定因子是判断绝对稳定性的标准工具：</p>
 
-        <p>源极退化电感 L<sub>s</sub> 通过负反馈降低共源级增益：</p>
+        <p style="text-align:center;font-size:14px;margin:14px 0;background:rgba(0,113,227,0.08);padding:12px 20px;border-radius:8px;">K = (1 − |S<sub>11</sub>|² − |S<sub>22</sub>|² + |Δ|²) / (2|S<sub>12</sub>||S<sub>21</sub>|)</p>
 
-        <p style="text-align:center;font-size:14px;margin:14px 0;background:rgba(0,113,227,0.08);padding:12px 20px;border-radius:8px;">g<sub>m,eff</sub> = g<sub>m</sub> / (1 + g<sub>m</sub>·jωL<sub>s</sub>)</p>
+        <p>其中 Δ = S<sub>11</sub>S<sub>22</sub> − S<sub>12</sub>S<sub>21</sub>。<strong>K > 1 且 |Δ| < 1</strong> 时，放大器对任意源和负载阻抗绝对稳定。</p>
 
-        <p>增益降低带来两个有利于稳定性的效果：① 栅漏电容 C<sub>gd</sub> 的 Miller 效应削弱（等效 Miller 电容 C<sub>gd</sub>·(1+|A<sub>v</sub>|) 减小）；② 反向传输项 y<sub>12</sub> 减小 → |S<sub>12</sub>| 减小 → K 表达式的分母减小 → <strong>K 上升</strong>。</p>
-
-        <p>K 越大，放大器离「潜在不稳定」的区域越远，稳定裕度越大。</p>
+        <p>K 因子由二端口 S 参数完全决定，是网络的<strong>固有属性</strong>——它不随外接的源/负载阻抗改变。这是它作为「根本判据」的原因。</p>
 
         <hr style="border:none;border-top:1px solid rgba(255,255,255,0.08);margin:32px 0;">
 
-        <h4>四、视角二：环路增益——Barkhausen 判据的远离</h4>
+        <h4>四、Y 参数——与 K 因子等价</h4>
+
+        <p>Y 参数与 S 参数之间是<strong>双线性变换</strong>关系，两者携带完全相同的信息。因此用 Y 参数分析稳定性与用 K 因子分析，<strong>数学上完全等价</strong>——只是换了坐标。</p>
+
+        <p>反向传输导纳 y<sub>12</sub> 越小，对应的 S<sub>12</sub> 越小，K 越大（越稳定）。Cascode 结构的 y<sub>12</sub> 极小——共栅级隔离了输出到输入的反馈，这正是 cascode 天然稳定的根源。</p>
+
+        <hr style="border:none;border-top:1px solid rgba(255,255,255,0.08);margin:32px 0;">
+
+        <h4>五、环路增益（Barkhausen）——与 K 因子等价</h4>
 
         <p style="text-align:center;font-size:15px;margin:14px 0;background:rgba(248,113,113,0.08);padding:14px 20px;border-radius:8px;border-left:3px solid #f87171;">
         <strong>Barkhausen 振荡条件</strong><br>
         幅度：|Loop Gain| ≥ 1（0 dB）&emsp; 相位：∠Loop Gain = 360° × n</p>
 
-        <p>负反馈降低增益，本质上是降低了环路增益的幅度。源极退化电感 L<sub>s</sub> 提供的负反馈使环路增益的幅度更难达到 0 dB 以上，从而<strong>远离 Barkhausen 判据</strong>。这是「负反馈稳定放大器」这一经典结论在 LNA 中的具体体现。</p>
+        <p>环路增益判据与 K 因子判据<strong>等价</strong>：绝对稳定（K>1 且 |Δ|<1）意味着对任意无源终端，环路增益都小于 1（不满足 Barkhausen）；反之，K<1 意味着存在某些终端使环路增益满足 Barkhausen 条件。二者是同一个振荡条件的两种表述。</p>
 
         <hr style="border:none;border-top:1px solid rgba(255,255,255,0.08);margin:32px 0;">
 
-        <h4>五、视角三：正阻——端口上的「阻尼器」</h4>
+        <h4>六、输入负阻——条件不稳定的「表现」，而非「判据」</h4>
 
-        <p>从输入端看进去，带源极退化的共源级等效输入阻抗（一阶，忽略 C<sub>gd</sub>）为：</p>
+        <p>从输入端口看进去，若反射系数 |Γ<sub>in</sub>| > 1（即阻抗实部为负），称输入端口出现负阻。但<strong>负阻依赖负载</strong>：</p>
+
+        <p style="text-align:center;font-size:14px;margin:14px 0;background:rgba(0,113,227,0.08);padding:12px 20px;border-radius:8px;">Γ<sub>in</sub> = S<sub>11</sub> + S<sub>12</sub>S<sub>21</sub>Γ<sub>L</sub> / (1 − S<sub>22</sub>Γ<sub>L</sub>)</p>
+
+        <p>|Γ<sub>in</sub>| 是负载反射系数 Γ<sub>L</sub> 的函数。对绝对稳定网络（K>1），任何 |Γ<sub>L</sub>| ≤ 1 都有 |Γ<sub>in</sub>| < 1（无负阻）；但对条件不稳定网络（K<1），<strong>只在特定 Γ<sub>L</sub> 区域</strong>才出现 |Γ<sub>in</sub>| > 1。因此正确的关系是单向蕴含：</p>
+
+        <p style="text-align:center;font-size:14px;margin:16px 0;color:#4ade80;"><strong>K < 1 ⟹ 存在某负载使端口出现负阻</strong>（而非 K < 1 ⟺ 输入负阻）</p>
+
+        <p>此外，K<1 的不稳定还可能表现在<strong>输出端口</strong>（|Γ<sub>out</sub>| > 1）而非输入端口。所以「输入负阻」既不是充分条件也不是必要条件的完整判据，它只是条件不稳定的一种<strong>表现</strong>。</p>
+
+        <hr style="border:none;border-top:1px solid rgba(255,255,255,0.08);margin:32px 0;">
+
+        <h4>七、源极退化电感 L<sub>s</sub> 的作用</h4>
+
+        <p>从输入端看进去，带源极退化电感的共源级等效输入阻抗（一阶，忽略 C<sub>gd</sub>）为：</p>
 
         <p style="text-align:center;font-size:14px;margin:14px 0;background:rgba(0,113,227,0.08);padding:12px 20px;border-radius:8px;">
         Z<sub>in</sub> ≈ 1/(jωC<sub>gs</sub>) + jωL<sub>s</sub> + <strong style="color:#4ade80;">ω<sub>T</sub>L<sub>s</sub></strong></p>
 
-        <p>其中最后一项 ω<sub>T</sub>L<sub>s</sub> = g<sub>m</sub>L<sub>s</sub>/C<sub>gs</sub> 是一个<strong>正电阻</strong>——它消耗功率，为输入端提供阻尼。在 RLC 谐振电路中，正阻阻尼振荡；只有当负阻超过正阻（<strong>|R<sub>neg</sub>| > R<sub>loss</sub></strong>）时，电路才可能维持振荡。源极退化电感提供的正阻 ω<sub>T</sub>L<sub>s</sub> 正是抵消潜在负阻的「阻尼器」。</p>
+        <p>其中实部 ω<sub>T</sub>L<sub>s</sub> = g<sub>m</sub>L<sub>s</sub>/C<sub>gs</sub> 是一个<strong>正电阻</strong>（典型取值约 50Ω，正是输入匹配所需的实部）。这个正阻消耗功率、阻尼振荡，同时承担 50Ω 匹配的角色。</p>
 
-        <p>值得注意的是，这个正阻项同时承担着 50Ω 输入匹配的角色——<strong>匹配与稳定在源极退化电感上达成了统一</strong>。</p>
+        <p>同时，源极退化电感通过负反馈降低增益 g<sub>m,eff</sub> = g<sub>m</sub>/(1 + g<sub>m</sub>·jωL<sub>s</sub>)，增益降低进一步改善稳定性。因此<strong>源极退化电感 L<sub>s</sub> 通过「正阻阻尼 + 负反馈降增益」双重机制改善稳定性</strong>，而非引入负阻。</p>
+
+        <p>真正的稳定性隐患来自<strong>栅漏电容 C<sub>gd</sub> 的 Miller 反馈</strong>（高频时增强反向耦合）；若使用栅极电感 L<sub>g</sub> 做匹配，其高 Q 谐振会在谐振点放大栅极电压、增强 Miller 反馈，并使输入阻抗在谐振时失去阻尼（实部趋近于零）——这才是需要警惕的对象。</p>
 
         <hr style="border:none;border-top:1px solid rgba(255,255,255,0.08);margin:32px 0;">
 
-        <h4>六、三条路径的等价性</h4>
-
-        <p>三个视角并非互斥，而是同一个物理现象的三种数学表述：</p>
+        <h4>八、互通性总结</h4>
 
         <div style="overflow-x:auto;margin:20px 0;">
         <table style="font-size:13px;min-width:560px;">
-        <thead><tr><th></th><th>Y 参数</th><th>环路增益</th><th>正阻</th></tr></thead>
+        <thead><tr><th>视角</th><th>与 K 因子的关系</th><th>互通性</th></tr></thead>
         <tbody>
-        <tr style="background:rgba(0,113,227,0.05);"><td><strong>判据</strong></td><td>K > 1</td><td>|LG| < 1</td><td>R<sub>pos</sub> > |R<sub>neg</sub>|</td></tr>
-        <tr><td><strong>回答</strong></td><td>稳定裕度多大</td><td>离振荡多远</td><td>阻尼是否足够</td></tr>
-        <tr style="background:rgba(0,113,227,0.05);"><td><strong>框架</strong></td><td>频域/网络参数</td><td>频域/反馈理论</td><td>时域/能量视角</td></tr>
+        <tr style="background:rgba(0,113,227,0.05);"><td><strong>Y 参数</strong></td><td>S-Y 双线性变换</td><td>✅ 完全等价</td></tr>
+        <tr><td><strong>环路增益</strong></td><td>振荡的充分必要条件</td><td>✅ 完全等价</td></tr>
+        <tr style="background:rgba(0,113,227,0.05);"><td><strong>输入负阻</strong></td><td>条件不稳定的表现（依赖负载）</td><td>❌ 不完全等价</td></tr>
         </tbody>
         </table>
         </div>
 
-        <p style="text-align:center;font-size:14px;margin:16px 0;color:#4ade80;"><strong>K > 1 ⇔ ∀ω: |LG| < 1 ⇔ 端口正阻主导</strong></p>
-
-        <p>三者的内在联系：源极退化电感通过<strong>负反馈降增益</strong>（Y 参数视角）、<strong>降低环路增益</strong>（环路视角）、<strong>提供正阻</strong>（阻抗视角），三管齐下改善稳定性。三条路径指向同一个物理事实。</p>
+        <p>一句话概括：<strong>K 因子、Y 参数、环路增益三者是等价的稳定性判据；输入负阻是条件不稳定在特定负载下的表现，不是独立判据。</strong></p>
 
         <hr style="border:none;border-top:1px solid rgba(255,255,255,0.08);margin:32px 0;">
 
-        <h4>七、设计启示</h4>
+        <h4>九、设计启示</h4>
 
-        <p><strong>源极退化电感 L<sub>s</sub> 是「匹配」与「稳定」的统一。</strong>同一个元件，既提供 50Ω 输入匹配（正阻 ω<sub>T</sub>L<sub>s</sub>），又通过负反馈改善稳定性。</p>
+        <p><strong>用 K 因子做第一判据。</strong>K>1 且 |Δ|<1 是绝对稳定的充要条件，仿真中优先看 K 因子和 μ 因子，它们不依赖负载、结果唯一。</p>
 
-        <p><strong>但 L<sub>s</sub> 并非越大越好。</strong>过大的 L<sub>s</sub> 会过度降低增益、恶化噪声性能，且在高频与 C<sub>gd</sub> 的相互作用可能引入额外的相位问题。设计时需在匹配、增益、噪声、稳定性之间折衷。</p>
+        <p><strong>源极退化电感 L<sub>s</sub> 是「匹配」与「稳定」的统一。</strong>它提供的正阻 ω<sub>T</sub>L<sub>s</sub> 既实现 50Ω 匹配，又阻尼振荡；其负反馈进一步降低增益、改善稳定性。</p>
 
-        <p><strong>多角度交叉验证。</strong>设计 cascode LNA 时建议三个工具同时使用：S 参数仿真（K 和 μ 因子快速扫描）、环路增益仿真（stb/probe 确认环路裕度）、输入阻抗实部检查（确认正阻 ω<sub>T</sub>L<sub>s</sub>）。三者相互印证，全面把握稳定性全貌。</p>
+        <p><strong>警惕 C<sub>gd</sub> 的 Miller 反馈与栅极电感 L<sub>g</sub> 的高 Q 谐振。</strong>这才是高频不稳定的真正来源，设计时需在匹配、增益、噪声与稳定裕度之间折衷。</p>
 
         <hr style="border:none;border-top:1px solid rgba(255,255,255,0.08);margin:32px 0;">
 
-        <h4>八、总结</h4>
+        <h4>十、总结</h4>
 
-        <p>Cascode LNA 中源极退化电感 L<sub>s</sub> 的稳定性作用，表面上是三种不同的分析手法（Y 参数、环路增益、正阻），实质上是对同一个物理事实的三重观测——<strong>负反馈降增益 + 正阻阻尼</strong>。理解三者的等价性，是深度掌握射频放大器稳定性设计的必修课。</p>
+        <p>Cascode LNA 稳定性分析的四个视角中，K 因子是根本判据，Y 参数与环路增益是它的等价表述，输入负阻是条件不稳定的表现。源极退化电感 L<sub>s</sub> 通过正阻阻尼与负反馈降增益改善稳定性，而真正的隐患在于 C<sub>gd</sub> 的 Miller 反馈。厘清判据与表现的区别，是深度掌握射频放大器稳定性设计的必修课。</p>
 
         <p style="font-size:12px;color:rgba(255,255,255,0.3);margin-top:24px;">📌 参考：G. Gonzalez, <em>Microwave Transistor Amplifiers: Analysis and Design</em>, 2nd ed., Prentice Hall, 1997, Ch. 3; T. H. Lee, <em>The Design of CMOS Radio-Frequency Integrated Circuits</em>, 2nd ed., Cambridge, 2004, Ch. 12; B. Razavi, <em>RF Microelectronics</em>, 2nd ed., Prentice Hall, 2012, Ch. 10.</p>
 
