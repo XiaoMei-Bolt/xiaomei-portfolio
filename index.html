@@ -6147,8 +6147,8 @@
       <div class="article-card" onclick="this.classList.toggle('open')">
         <div class="article-card-header">
           <div>
-            <div class="article-card-title">Sub-6GHz IPD 滤波器架构：LC 梯形低通滤波器</div>
-            <div class="article-card-meta">📅 2026 年 8 月 · 滤波器 — 集成无源器件 · LC 梯形 · 谐波抑制</div>
+            <div class="article-card-title">Sub-6GHz IPD 滤波器架构：LC 谐振器式带通滤波器</div>
+            <div class="article-card-meta">📅 2026 年 8 月 · 滤波器 — 集成无源器件 · LC 串并联谐振 tank · 带通</div>
           </div>
           <div class="article-card-arrow">▼</div>
         </div>
@@ -6156,124 +6156,110 @@
           <div class="article-card-body-inner">
             <div class="article-body">
 
-        <p>IPD（Integrated Passive Device，集成无源器件）滤波器是 Sub-6GHz 射频前端中不可或缺的一类器件，承担<strong>频段选择</strong>与<strong>谐波抑制</strong>两大任务。它把薄膜电感、MIM 电容等高 Q 无源元件集成在玻璃或高阻硅基板上，在毫米级尺寸内实现高性能滤波器。本文以最经典的 <strong>LC 梯形低通滤波器</strong> 架构为例，解析其电路结构、设计要点与 Sub-6GHz 应用。</p>
+        <p>IPD（Integrated Passive Device，集成无源器件）滤波器是 Sub-6GHz 射频前端中承担<strong>频段选择</strong>的核心器件。本文解析其中最常见的一类架构——<strong>LC 谐振器式带通滤波器</strong>：由多个串联 LC 与并联 LC 谐振回路（tank）组合而成，利用各 tank 在同一谐振频率附近的阻抗特性，构造出中心频率明确的带通响应。</p>
 
-        <h4>一、IPD 工艺基础</h4>
+        <h4>一、LC 谐振 tank 的基础</h4>
 
-        <p>IPD 与分立元件（绕线电感 + 贴片电容）的核心区别在于<strong>集成度与寄生控制</strong>。IPD 在高阻基板（玻璃、高阻硅、GaAs）上用薄膜工艺制造：</p>
+        <p>带通滤波器的基础元件是<strong>LC 谐振回路（tank）</strong>，谐振频率统一为 f<sub>0</sub> = 1/(2π√(LC))。根据电感与电容的连接方式，tank 分为两种，其谐振时的阻抗行为<strong>恰好相反</strong>：</p>
 
         <div style="overflow-x:auto;margin:20px 0;">
-        <table style="font-size:13px;min-width:560px;">
-        <thead><tr><th>元件</th><th>结构</th><th>典型 Q 值</th></tr></thead>
+        <table style="font-size:13px;min-width:620px;">
+        <thead><tr><th>tank 类型</th><th>连接方式</th><th>谐振时阻抗</th><th>作用</th></tr></thead>
         <tbody>
-        <tr><td><strong>电感</strong></td><td>平面螺旋电感（1~3 层金属）</td><td>Q = 30~80 @ 2~6 GHz</td></tr>
-        <tr style="background:rgba(0,113,227,0.05);"><td><strong>电容</strong></td><td>MIM（金属-绝缘层-金属）</td><td>Q &gt; 200</td></tr>
-        <tr><td><strong>电阻</strong></td><td>薄膜电阻（TaN/NiCr）</td><td>精度 ±5%</td></tr>
+        <tr><td><strong>串联 LC（series）</strong></td><td>电感 + 电容串联</td><td>阻抗最小（≈0，短路）</td><td>谐振频率「通过」</td></tr>
+        <tr style="background:rgba(0,113,227,0.05);"><td><strong>并联 LC（parallel）</strong></td><td>电感 + 电容并联</td><td>阻抗最大（≈∞，开路）</td><td>谐振频率「不旁路」</td></tr>
         </tbody>
         </table>
         </div>
 
-        <p>相比 LTCC（低温共烧陶瓷），IPD 的金属线宽更细（微米级），电感的<strong>自谐振频率（SRF）更高</strong>、寄生更小，特别适合 3~6 GHz 的 Sub-6GHz 频段；相比 SAW/BAW（声学滤波器），IPD 是无源 LC 网络，<strong>带宽更宽、功率承受能力更强</strong>，但带外抑制陡度不如声学滤波器。</p>
+        <p>正是这两种 tank 阻抗特性的「互补」，让它们组合后能选择性放行 f<sub>0</sub> 附近、抑制远离 f<sub>0</sub> 的信号——这是带通滤波器的物理本质。</p>
 
-        <h4>二、LC 梯形低通滤波器架构</h4>
+        <h4>二、带通滤波器架构：多个 tank 的组合</h4>
 
-        <p>LC 梯形低通滤波器是最基本、也最常用的 IPD 滤波器架构。其结构是<strong>串联电感（信号路径上）+ 并联电容（一端接地）</strong>的交替梯形网络：</p>
+        <p>把<strong>串联 LC tank 放在信号路径上</strong>、<strong>并联 LC tank 接到地</strong>，并让所有 tank 谐振在同一个 f<sub>0</sub>，就得到带通滤波器：</p>
 
-        <!-- SVG：LC 梯形低通示意 -->
+        <!-- SVG：带通滤波器结构 -->
         <div class="diagram-container">
-          <svg viewBox="0 0 800 300" xmlns="http://www.w3.org/2000/svg">
-            <text x="400" y="24" text-anchor="middle" fill="#fff" font-size="14" font-weight="600">图 · LC 梯形低通滤波器结构（串联电感 + 并联电容到地）</text>
+          <svg viewBox="0 0 800 340" xmlns="http://www.w3.org/2000/svg">
+            <text x="400" y="24" text-anchor="middle" fill="#fff" font-size="14" font-weight="600">图 · LC 谐振器式带通滤波器（串联 LC 在信号路径 + 并联 LC 到地）</text>
 
-            <!-- 输入端口 -->
-            <text x="60" y="120" text-anchor="middle" fill="#4ade80" font-size="12" font-weight="600">高频输入</text>
-            <circle cx="60" cy="150" r="4" fill="#4ade80"></circle>
+            <!-- 输入 -->
+            <text x="50" y="120" text-anchor="middle" fill="#4ade80" font-size="12" font-weight="600">输入</text>
+            <circle cx="50" cy="150" r="4" fill="#4ade80"></circle>
 
-            <!-- 信号路径（顶部横线） -->
-            <line x1="60" y1="150" x2="740" y2="150" stroke="#808080" stroke-width="1.5"></line>
+            <!-- 信号路径 -->
+            <line x1="50" y1="150" x2="750" y2="150" stroke="#808080" stroke-width="1.5"></line>
 
-            <!-- 串联电感 L1 -->
-            <rect x="120" y="140" width="60" height="20" rx="3" fill="none" stroke="#4ade80" stroke-width="1.5"></rect>
-            <text x="150" y="132" text-anchor="middle" fill="#4ade80" font-size="11">L1</text>
+            <!-- 串联 LC tank 1（电感+电容串联在路径上） -->
+            <rect x="100" y="140" width="46" height="20" rx="3" fill="none" stroke="#4ade80" stroke-width="1.5"></rect>
+            <text x="123" y="132" text-anchor="middle" fill="#4ade80" font-size="10">L1</text>
+            <line x1="156" y1="150" x2="156" y2="150" stroke="#808080" stroke-width="1.5"></line>
+            <line x1="160" y1="138" x2="160" y2="162" stroke="#8b5cf6" stroke-width="2"></line>
+            <line x1="166" y1="138" x2="166" y2="162" stroke="#8b5cf6" stroke-width="2"></line>
+            <text x="163" y="132" text-anchor="middle" fill="#8b5cf6" font-size="10">C1</text>
 
-            <!-- 串联电感 L2 -->
-            <rect x="340" y="140" width="60" height="20" rx="3" fill="none" stroke="#4ade80" stroke-width="1.5"></rect>
-            <text x="370" y="132" text-anchor="middle" fill="#4ade80" font-size="11">L2</text>
+            <!-- 并联 LC tank（到地）：电感+电容并联 -->
+            <line x1="360" y1="150" x2="360" y2="180" stroke="#808080" stroke-width="1.5"></line>
+            <line x1="360" y1="180" x2="330" y2="180" stroke="#4ade80" stroke-width="1.5"></line>
+            <rect x="300" y="185" width="30" height="26" rx="3" fill="none" stroke="#4ade80" stroke-width="1.5"></rect>
+            <text x="315" y="200" text-anchor="middle" fill="#4ade80" font-size="10">L2</text>
+            <line x1="360" y1="180" x2="390" y2="180" stroke="#8b5cf6" stroke-width="1.5"></line>
+            <line x1="385" y1="168" x2="385" y2="192" stroke="#8b5cf6" stroke-width="2"></line>
+            <line x1="391" y1="168" x2="391" y2="192" stroke="#8b5cf6" stroke-width="2"></line>
+            <text x="388" y="160" text-anchor="middle" fill="#8b5cf6" font-size="10">C2</text>
+            <line x1="330" y1="211" x2="330" y2="230" stroke="#4ade80" stroke-width="1.5"></line>
+            <line x1="385" y1="192" x2="385" y2="230" stroke="#8b5cf6" stroke-width="1.5"></line>
+            <line x1="320" y1="230" x2="395" y2="230" stroke="#8b5cf6" stroke-width="1.5"></line>
+            <line x1="310" y1="240" x2="405" y2="240" stroke="#8b5cf6" stroke-width="1.5"></line>
+            <text x="360" y="258" text-anchor="middle" fill="#595959" font-size="9">接地</text>
 
-            <!-- 串联电感 L3 -->
-            <rect x="560" y="140" width="60" height="20" rx="3" fill="none" stroke="#4ade80" stroke-width="1.5"></rect>
-            <text x="590" y="132" text-anchor="middle" fill="#4ade80" font-size="11">L3</text>
+            <!-- 串联 LC tank 2（电感+电容串联在路径上） -->
+            <rect x="540" y="140" width="46" height="20" rx="3" fill="none" stroke="#4ade80" stroke-width="1.5"></rect>
+            <text x="563" y="132" text-anchor="middle" fill="#4ade80" font-size="10">L3</text>
+            <line x1="596" y1="150" x2="596" y2="150" stroke="#808080" stroke-width="1.5"></line>
+            <line x1="600" y1="138" x2="600" y2="162" stroke="#8b5cf6" stroke-width="2"></line>
+            <line x1="606" y1="138" x2="606" y2="162" stroke="#8b5cf6" stroke-width="2"></line>
+            <text x="603" y="132" text-anchor="middle" fill="#8b5cf6" font-size="10">C3</text>
 
-            <!-- 并联电容 C1 -->
-            <line x1="250" y1="150" x2="250" y2="200" stroke="#8b5cf6" stroke-width="1.5"></line>
-            <line x1="240" y1="200" x2="260" y2="200" stroke="#8b5cf6" stroke-width="1.5"></line>
-            <line x1="240" y1="210" x2="260" y2="210" stroke="#8b5cf6" stroke-width="1.5"></line>
-            <text x="262" y="185" fill="#8b5cf6" font-size="11">C1</text>
-
-            <!-- 并联电容 C2 -->
-            <line x1="470" y1="150" x2="470" y2="200" stroke="#8b5cf6" stroke-width="1.5"></line>
-            <line x1="460" y1="200" x2="480" y2="200" stroke="#8b5cf6" stroke-width="1.5"></line>
-            <line x1="460" y1="210" x2="480" y2="210" stroke="#8b5cf6" stroke-width="1.5"></line>
-            <text x="482" y="185" fill="#8b5cf6" font-size="11">C2</text>
-
-            <!-- 并联电容 C3 -->
-            <line x1="690" y1="150" x2="690" y2="200" stroke="#8b5cf6" stroke-width="1.5"></line>
-            <line x1="680" y1="200" x2="700" y2="200" stroke="#8b5cf6" stroke-width="1.5"></line>
-            <line x1="680" y1="210" x2="700" y2="210" stroke="#8b5cf6" stroke-width="1.5"></line>
-            <text x="702" y="185" fill="#8b5cf6" font-size="11">C3</text>
-
-            <!-- 接地符号 -->
-            <line x1="250" y1="215" x2="250" y2="240" stroke="#8b5cf6" stroke-width="1.5"></line>
-            <line x1="230" y1="240" x2="270" y2="240" stroke="#8b5cf6" stroke-width="1.5"></line>
-            <line x1="470" y1="215" x2="470" y2="240" stroke="#8b5cf6" stroke-width="1.5"></line>
-            <line x1="450" y1="240" x2="490" y2="240" stroke="#8b5cf6" stroke-width="1.5"></line>
-            <line x1="690" y1="215" x2="690" y2="240" stroke="#8b5cf6" stroke-width="1.5"></line>
-            <line x1="670" y1="240" x2="710" y2="240" stroke="#8b5cf6" stroke-width="1.5"></line>
-            <text x="400" y="265" text-anchor="middle" fill="#595959" font-size="10">接地</text>
-
-            <!-- 输出端口 -->
-            <text x="740" y="120" text-anchor="middle" fill="#f0a050" font-size="12" font-weight="600">低频输出</text>
-            <circle cx="740" cy="150" r="4" fill="#f0a050"></circle>
+            <!-- 输出 -->
+            <text x="750" y="120" text-anchor="middle" fill="#f0a050" font-size="12" font-weight="600">输出</text>
+            <circle cx="750" cy="150" r="4" fill="#f0a050"></circle>
 
             <!-- 说明 -->
-            <text x="400" y="290" text-anchor="middle" fill="#4c4c4c" font-size="10">电感串联在主信号路径上阻高频，电容并联到地旁路高频——低频通过、高频衰减</text>
+            <text x="400" y="290" text-anchor="middle" fill="#4c4c4c" font-size="10">串联 LC tank（路径上）：f₀ 处短路「通过」；并联 LC tank（到地）：f₀ 处开路「不旁路」</text>
+            <text x="400" y="310" text-anchor="middle" fill="#4c4c4c" font-size="10">两者谐振频率对齐 f₀ → 带通响应，远离 f₀ 的信号被阻断或旁路</text>
           </svg>
-          <p class="diagram-caption">图：LC 梯形低通滤波器——串联电感 + 并联到地电容，实现「高频输入 → 低频输出」的低通特性</p>
+          <p class="diagram-caption">图：LC 谐振器式带通滤波器——串联 LC tank 在信号路径、并联 LC tank 到地，谐振频率对齐形成带通</p>
         </div>
 
-        <p>其低通原理直观：<strong>电感对高频呈现高阻抗</strong>（X<sub>L</sub> = ωL，随频率升高而增大，阻碍高频通过）；<strong>电容对高频呈现低阻抗</strong>（X<sub>C</sub> = 1/ωC，随频率升高而减小，把高频旁路到地）。两者配合，低频信号顺利通过，高频信号被衰减。</p>
-
-        <p>滤波器阶数由电抗元件总数决定：n 阶低通有 n 个电抗元件（电感或电容），滚降率为 <strong>−20n dB/十倍频程</strong>（−6n dB/倍频程）。图中的三电感 + 三电容结构，理论上对应 6 阶低通，提供约 −120 dB/十倍频程的陡峭滚降；实际设计中阶数由<strong>带外抑制指标</strong>和<strong>插损预算</strong>共同决定。</p>
+        <p>滤波器阶数由 tank 数量决定：每增加一个 tank，带外抑制的滚降更陡峭（约 −20 dB/十倍频程/阶）。多个 tank 级联还可通过<strong>调节各 tank 的谐振频率与耦合强度</strong>，实现巴特沃斯、切比雪夫乃至椭圆函数（带传输零点）等不同的带通响应，在插损、带宽与带外抑制之间折衷。</p>
 
         <h4>三、关键设计考量</h4>
 
         <ol>
-          <li><strong>电感 Q 值与自谐振频率（SRF）：</strong>IPD 平面螺旋电感存在匝间电容与衬底寄生，超过 SRF 后电感呈容性、Q 值骤降。设计低通滤波器时必须保证 SRF 远高于最高工作频率，否则高频抑制性能劣化。</li>
-          <li><strong>电容容值与精度：</strong>MIM 电容容值由面积决定，单位容值（fF/µm²）越高、尺寸越小。截止频率对容值敏感，需选用高精度、低温漂的 MIM 工艺。</li>
-          <li><strong>截止频率设计：</strong>每节 LC 的谐振频率决定滚降起始点，通常取 f<sub>c</sub> ≈ 1/(2π√(LC)) 略高于信号频段上沿，兼顾通带插损与带外抑制。</li>
-          <li><strong>阻抗匹配：</strong>梯形网络的端口阻抗（源/负载阻抗）决定归一化元件值，50Ω 系统下需按阻抗匹配设计首末节元件，避免通带内反射劣化。</li>
+          <li><strong>谐振频率对齐：</strong>所有串联/并联 tank 的 f<sub>0</sub> = 1/(2π√(LC)) 必须对齐到通带中心，否则通带畸变、插损增大。IPD 的 MIM 电容与平面电感容值/感值精度直接决定频率对齐精度。</li>
+          <li><strong>Q 值与带宽：</strong>tank 的有载 Q 值决定带宽与插损——Q 越高、带宽越窄、边缘越陡，但插损也受 Q 限制。IPD 平面电感的 Q（30~80 @ 3~6 GHz）是带宽与插损的核心制约。</li>
+          <li><strong>电感自谐振频率（SRF）：</strong>平面螺旋电感的匝间寄生使其超过 SRF 后呈容性，tank 特性失效。必须保证 SRF 远高于 f<sub>0</sub>。</li>
+          <li><strong>耦合方式：</strong>tank 之间可通过电容耦合或电感耦合，耦合强度决定带宽与响应类型（临界/过耦合）。</li>
         </ol>
 
         <h4>四、Sub-6GHz 应用场景</h4>
 
-        <p>IPD LC 低通滤波器在 Sub-6GHz 射频前端主要用于<strong>谐波抑制</strong>：</p>
-
         <ul>
-          <li><strong>PA 输出谐波抑制：</strong>功率放大器输出的 2 次、3 次谐波（如 n78 的 3.3~3.8 GHz 基波对应 6.6~7.6 GHz 二次谐波）会干扰其他频段，低通滤波器在 PA 与天线之间滤除谐波。</li>
-          <li><strong>开关/倍频器杂散抑制：</strong>抑制 RF 开关、分频器等产生的带外杂散。</li>
-          <li><strong>宽带宽优势：</strong>相比 SAW/BAW 的窄带特性，IPD LC 低通可覆盖整个 Sub-6GHz（最高到 6 GHz），适合作为宽带谐波滤波器。</li>
+          <li><strong>n77（3.3~4.2 GHz）/ n78（3.3~3.8 GHz）/ n79（4.4~5.0 GHz）频段选择：</strong>LC 谐振器式带通在 IPD 上实现这些频段的窄带选择，中心频率由 tank 的 LC 值精确设定。</li>
+          <li><strong>与 SAW/BAW 的定位差异：</strong>IPD 带通的 Q 值低于声学滤波器（SAW/BAW 的 Q 可达数百至上千），因此<strong>带宽更宽、带外抑制陡度不如声学滤波器</strong>，但<strong>功率承受能力强、无温度漂移限制、成本低</strong>，适合作为宽带预选或低功率场景的频段滤波。</li>
+          <li><strong>可重构/多频段：</strong>通过开关切换不同 tank 组合，可实现多频段复用同一 IPD 滤波网络。</li>
         </ul>
-
-        <p>在 n77（3.3~4.2 GHz）、n78（3.3~3.8 GHz）、n79（4.4~5.0 GHz）等频段，IPD 低通滤波器常与 SAW/BAW 带通滤波器<strong>级联使用</strong>——SAW/BAW 负责窄带频段选择，IPD 低通负责宽带谐波抑制，两者互补。</p>
 
         <h4>五、总结</h4>
 
-        <p>LC 梯形低通滤波器是 Sub-6GHz IPD 滤波器最经典的架构：串联电感 + 并联到地电容，利用电感的「高频高阻」与电容的「高频低阻」实现低频通过、高频衰减。它凭借 IPD 工艺的高 Q、高 SRF、小尺寸优势，在射频前端承担宽带谐波抑制任务，与声学滤波器互补。理解其梯形结构与滚降特性，是设计 Sub-6GHz 前端滤波链路的基石。</p>
+        <p>LC 谐振器式带通滤波器是 Sub-6GHz IPD 滤波器的核心架构：以<strong>串联 LC tank（信号路径，谐振时短路通过）</strong>和<strong>并联 LC tank（到地，谐振时开路不旁路）</strong>为基础，通过多个 tank 谐振频率对齐构造带通响应。其性能由 IPD 电感/电容的 Q 值与精度决定，在带宽、功率、成本上相对声学滤波器各有取舍。理解 tank 的阻抗互补原理，是设计 Sub-6GHz 前端频段选择链路的关键。</p>
 
         <h4>参考文献</h4>
         <ol class="refs">
-          <li>J. S. Hong and M. J. Lancaster, <em>Microstrip Filters for RF/Microwave Applications</em>, Wiley, 2001, Ch. 3 (Ladder and prototype filters).</li>
-          <li>K. Zoschke et al., "Thin-film integrated passive devices," in <em>Handbook of 3D Integration</em>, Wiley, 2014 (IPD fabrication and inductor Q).</li>
-          <li>B. Razavi, <em>RF Microelectronics</em>, 2nd ed., Prentice Hall, 2012, Ch. 2 (Passive networks and filtering).</li>
+          <li>J. S. Hong and M. J. Lancaster, <em>Microstrip Filters for RF/Microwave Applications</em>, Wiley, 2001, Ch. 3 (Resonator and coupled-resonator filters).</li>
+          <li>A. I. Zverev, <em>Handbook of Filter Synthesis</em>, Wiley, 1967 (LC ladder and bandpass prototypes).</li>
+          <li>K. Zoschke et al., "Thin-film integrated passive devices," in <em>Handbook of 3D Integration</em>, Wiley, 2014 (IPD inductor/capacitor Q).</li>
         </ol>
 
             </div>
