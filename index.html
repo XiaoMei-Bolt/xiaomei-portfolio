@@ -6347,93 +6347,119 @@
           <div class="article-card-body-inner">
             <div class="article-body">
 
-        <p>微波工程的入口，不是史密斯圆图，也不是 S 参数，而是四个方程。Pozar 把它们放在第 10 页是有深意的——后面所有的传输线、波导、天线、耦合器，本质上都是这四个式子在某种边界条件下的「展开」。这一篇不推公式，只建立一个射频工程师脑子里该有的物理图像。</p>
+        <p>微波工程的起点，不是史密斯圆图，也不是 S 参数，而是四个方程。Pozar 把它们放在第 10 页，是因为后面所有的传输线、波导、天线、耦合器，都不过是这四行式子在特定边界条件下的「展开」。这一篇不谈数学技巧，只建立一套射频工程师脑子里该有的物理图像 <span class="ref">[1]</span>。</p>
 
-        <h3>一、四个方程，两句话记住</h3>
+        <h3>一、麦克斯韦方程组及其总物理意义</h3>
 
-        <p>在时谐场假设下（场按 e<sup>jωt</sup> 变化），时间求导 ∂/∂t 退化成代数因子 jω，四个方程变得异常清爽：</p>
+        <p>在时谐场假设下（所有量按 e<sup>jωt</sup> 变化），时间偏导 ∂/∂t 退化为代数因子 jω。Pozar 书中的四个方程（式 1.14a–d）可以浓缩成一张表：</p>
 
         <table>
-        <thead><tr><th style="width:10%;">编号</th><th style="width:26%;">方程</th><th style="width:20%;">名称</th><th>它在说什么</th></tr></thead>
+        <thead><tr><th style="width:10%;">编号</th><th style="width:26%;">方程（时谐场）</th><th style="width:24%;">中文名称</th><th>一句话物理总纲</th></tr></thead>
         <tbody>
-        <tr><td>(1.14a)</td><td>∇ × <strong>E</strong> = −jωμ<strong>H</strong></td><td>法拉第定律</td><td>磁场随时间一变，电场就地「旋」起来。</td></tr>
-        <tr><td>(1.14b)</td><td>∇ × <strong>H</strong> = jωε<strong>E</strong> + <strong>J</strong></td><td>安培-麦克斯韦定律</td><td>电场（或电流）随时间一变，磁场就地「旋」起来。</td></tr>
-        <tr><td>(1.14c)</td><td>∇ · <strong>D</strong> = ρ</td><td>高斯电场定律</td><td>电荷是电场的「源」，场从正电荷出发、终于负电荷。</td></tr>
-        <tr><td>(1.14d)</td><td>∇ · <strong>B</strong> = 0</td><td>高斯磁场定律</td><td>磁场没有「源」——不存在磁单极，磁力线永远闭合。</td></tr>
+        <tr><td>(1.14a)</td><td>∇ × <strong>E</strong> = −jωμ<strong>H</strong></td><td>法拉第感应定律</td><td>磁变生电：时变的磁场，是电场产生「旋转趋势」的源。</td></tr>
+        <tr><td>(1.14b)</td><td>∇ × <strong>H</strong> = jωε<strong>E</strong> + <strong>J</strong></td><td>安培-麦克斯韦定律</td><td>电变（或电流）生磁：时变的电场（位移电流）或传导电流，是磁场产生「旋转趋势」的源。</td></tr>
+        <tr><td>(1.14c)</td><td>∇ · <strong>D</strong> = ρ</td><td>高斯电场定律</td><td>电荷是电场的源：电通量密度从正电荷出发，终止于负电荷。</td></tr>
+        <tr><td>(1.14d)</td><td>∇ · <strong>B</strong> = 0</td><td>高斯磁场定律</td><td>磁荷不存在：磁力线无头无尾，永远闭合。</td></tr>
         </tbody>
         </table>
 
-        <p>抓住一个结构：上面两个<strong>旋度方程</strong>是「动力学」，讲场和场怎么互相生出来；下面两个<strong>散度方程</strong>是「约束」，讲场从哪里发源。这个两分法，是后面理解电磁波的关键。</p>
+        <p>四个方程两两成对：两个<strong>旋度方程</strong>（1.14a、1.14b）是「动力学」，描述场与场之间的互生；两个<strong>散度方程</strong>（1.14c、1.14d）是「约束」，描述场与「源」的关系。前者讲变化，后者讲来源。</p>
 
-        <h3>二、先备两件数学工具</h3>
+        <h3>二、理解方程组的数学工具与物理参数</h3>
 
-        <p><strong>散度（∇·）</strong> 问的是「这一点往外冒多少东西」。散度不为零，说明这点埋着一个「源」或「汇」——对电场来说，源就是电荷。</p>
-
-        <p><strong>旋度（∇×）</strong> 问的是「这一点有多强的旋转趋势」。这里有个最容易踩的坑：<strong>旋度不为零，绝不等于场线真的在绕圈</strong>。它说的是场在这个方向上有「剪切梯度」——想象一条河，中间流得快、岸边流得慢，你往水里插一个小桨轮，它会转起来，尽管水是笔直往前流的。旋度刻画的就是这种让桨轮转起来的「扭矩」。</p>
-
-        <h4>2.1 六个量，谁是因、谁是果</h4>
+        <h4>2.1 散度（∇·）与旋度（∇×）</h4>
 
         <table>
-        <thead><tr><th style="width:10%;">符号</th><th style="width:22%;">名称</th><th style="width:16%;">单位</th><th>物理角色</th></tr></thead>
+        <thead><tr><th style="width:12%;">算符</th><th style="width:30%;">数学计算（直角坐标）</th><th style="width:22%;">形象比喻（仅辅助直觉）</th><th>⚠️ 严格学术物理意义（杜绝偏差）</th></tr></thead>
         <tbody>
-        <tr><td><strong>E</strong></td><td>电场强度</td><td>V/m</td><td>「因」——单位电荷受的力，由所有电荷（自由+束缚）共同产生，跟介质无关。</td></tr>
-        <tr><td><strong>D</strong></td><td>电通量密度</td><td>C/m²</td><td>「果」——把外场和介质极化后的束缚电荷打包在一起的总效果。</td></tr>
-        <tr><td><strong>H</strong></td><td>磁场强度</td><td>A/m</td><td>「因」——电流源的励磁能力，跟介质磁化无关。</td></tr>
-        <tr><td><strong>B</strong></td><td>磁通量密度</td><td>T</td><td>「果」——把外加励磁和介质磁化打包在一起的总磁通。</td></tr>
+        <tr><td>散度<br>∇ · <strong>F</strong></td><td>∂F<sub>x</sub>/∂x + ∂F<sub>y</sub>/∂y + ∂F<sub>z</sub>/∂z</td><td>喷泉：衡量单位体积内「流出」的净通量。</td><td>「源」的强度。它严格等于该点单位体积内产生的净通量。散度不为零，意味着该点存在「源」或「汇」（如电荷）。</td></tr>
+        <tr><td>旋度<br>∇ × <strong>F</strong></td><td>三阶行列式展开（x̂、ŷ、ẑ 单位矢量）</td><td>漩涡：衡量无限小测试环感受到的「旋转扭矩」。</td><td>「旋转趋势」的强度。它严格等于该点单位面积上的最大环量。旋度不为零，绝不等于场线在转圈，而是指该点的场在垂直方向上有「剪切梯度」（如层流中心快、边缘慢）。</td></tr>
         </tbody>
         </table>
 
-        <p>中间的联系靠两个本构关系：<strong>D</strong> = ε<strong>E</strong>，<strong>B</strong> = μ<strong>H</strong>。ε（介电常数）和 μ（磁导率）是介质的两颗「增益系数」，分别决定介质有多容易被极化、被磁化。</p>
+        <h4>2.2 各参数的名称、符号、单位及关系（工程物理核心）</h4>
+
+        <table>
+        <thead><tr><th style="width:9%;">参数</th><th style="width:17%;">名称</th><th style="width:14%;">单位（SI）</th><th style="width:34%;">物理分工（谁是「因」，谁是「果」）</th><th>介质中的本构关系</th></tr></thead>
+        <tbody>
+        <tr><td><strong>E</strong></td><td>电场强度</td><td>V/m（伏特/米）</td><td>「因」场 / 施力场：代表单位电荷所受的机械力，由所有电荷（自由+束缚）共同产生，与介质无关。</td><td>—</td></tr>
+        <tr><td><strong>D</strong></td><td>电通量密度（电位移矢量）</td><td>C/m²（库仑/米²）</td><td>「果」场 / 总响应场：将「外加电场」与「介质极化产生的束缚电荷」打包后的总效果，其散度仅由自由电荷决定。</td><td><strong>D</strong> = ε<strong>E</strong>（线性各向同性）</td></tr>
+        <tr><td>ε</td><td>介电常数</td><td>F/m（法拉/米）</td><td>电场的「增益系数」：反映介质在电场作用下极化的难易程度。</td><td>ε = ε<sub>0</sub>ε<sub>r</sub></td></tr>
+        <tr><td><strong>H</strong></td><td>磁场强度</td><td>A/m（安培/米）</td><td>「因」场 / 励磁场：代表外部电流源（传导或位移）的励磁能力，其旋度仅由电流决定，与介质磁化无关。</td><td>—</td></tr>
+        <tr><td><strong>B</strong></td><td>磁通量密度（磁感应强度）</td><td>T（特斯拉）或 Wb/m²</td><td>「果」场 / 总汇聚场：将「外加励磁」与「介质磁化产生的磁偶极子」打包后的总磁通密度，其散度恒为零。</td><td><strong>B</strong> = μ<strong>H</strong>（线性各向同性）</td></tr>
+        <tr><td>μ</td><td>磁导率</td><td>H/m（亨利/米）</td><td>磁场的「增益系数」：反映介质在磁场中被磁化的难易程度。</td><td>μ = μ<sub>0</sub>μ<sub>r</sub></td></tr>
+        </tbody>
+        </table>
 
         <p style="text-align:center;font-size:15px;margin:16px 0;background:rgba(0,113,227,0.12);padding:14px 20px;border-radius:8px;color:rgba(255,255,255,0.95);">
-        ⚡ <strong>一条微波铁律：</strong>时变场里，ε 和 μ 都是复数（ε = ε′ − jε″，μ = μ′ − jμ″），<strong>虚部就是损耗</strong>。微波基板（FR4）发热、磁芯发热，根子全在这里。
+        ⚡ <strong>微波工程铁律：</strong>ε 和 μ 在时变场中通常是复数（ε = ε′ − jε″，μ = μ′ − jμ″）。虚部代表<strong>损耗</strong>——这正是微波介质基板（如 FR4）发热、磁芯发热的根本原因。
         </p>
 
-        <h3>三、逐条拆开，看工程含义</h3>
+        <h3>三、逐条深度工程物理解释（上硬菜）</h3>
 
-        <h4>3.1 法拉第：磁变生电</h4>
+        <h4>3.1 公式 (1.14a)：∇ × E = −jωμH —— 磁变生电</h4>
 
-        <p>时变磁场天然带一个 −jω 的「放大因子」——频率越高，同样的磁场能激发出越强的电场。这是变压器、定向耦合器的底层逻辑：微带主线里的时变磁场，跑到副线上感应出电场，完成能量的「窃取」与耦合。正因如此，频率越高，耦合器可以做得越小。</p>
+        <p><strong>时变背景引入：</strong>在时谐场中，时间偏导 ∂/∂t 变为 jω。因此，时变磁场 <strong>H</strong> 天然带有一个「放大器」−jω。</p>
 
-        <h4>3.2 安培-麦克斯韦：位移电流是「补丁」，也是主角</h4>
+        <p><strong>物理意义：</strong>只要空间某点存在时变的磁感应强度 <strong>B</strong>（即 μ<strong>H</strong>），该点就一定会被激发出一个具有旋转趋势（非零旋度）的电场 <strong>E</strong>。</p>
 
-        <p>这一条的核心，是把两类电流彻底分开：<strong>传导电流 J</strong>（电子真在定向漂移）和<strong>位移电流 ∂D/∂t</strong>（只是场在变，没有电荷移动）。</p>
+        <p><strong>工程投射：</strong>这是所有<strong>变压器、定向耦合器</strong>的底层原理。在微带线中，主线的时变磁场在副线中感应出电场，实现了能量的「窃取」与耦合。频率越高（ω 越大），同样的磁场能感应出更强的电场，所以高频耦合器尺寸可以做得很小。</p>
+
+        <h4>3.2 公式 (1.14b)：∇ × H = jωεE + J —— 电变（或电流）生磁（含位移电流深度辨析）</h4>
+
+        <p><strong>时变背景引入：</strong>同理，时变电场 <strong>E</strong> 带有的 jω 因子，使得 jωε<strong>E</strong> 成为磁场旋度的源。</p>
+
+        <p><strong>传导电流 J vs 位移电流 jωεE：</strong></p>
 
         <table>
-        <thead><tr><th style="width:16%;">对比</th><th style="width:42%;">传导电流 J</th><th>位移电流 ∂D/∂t</th></tr></thead>
+        <thead><tr><th style="width:16%;">对比维度</th><th style="width:42%;">传导电流 J</th><th>位移电流 ∂D/∂t</th></tr></thead>
         <tbody>
-        <tr><td>本质</td><td>自由电子漂移</td><td>场的变化，无电荷移动</td></tr>
-        <tr><td>在哪存在</td><td>只在导体里</td><td>导体、介质、真空都可以</td></tr>
-        <tr><td>跟 E 的相位</td><td>同相（发热，有功）</td><td>超前 90°（储能，无功）</td></tr>
-        <tr><td>谁说了算</td><td>低频（DC）</td><td>微波高频（ωε ≫ σ）</td></tr>
+        <tr><td>物理实体</td><td>真实自由电子的定向漂移</td><td>时变电通量密度（场的变化），无电荷移动</td></tr>
+        <tr><td>存在空间</td><td>导体内部</td><td>导体、介质、真空中均可存在</td></tr>
+        <tr><td>与 E 的相位</td><td>同相（产生有功功率 → 焦耳热）</td><td>超前 90°（产生无功功率 → 电场储能）</td></tr>
+        <tr><td>频域主导权</td><td>低频（DC）绝对主导</td><td>微波高频（ωε ≫ σ）绝对主导</td></tr>
         </tbody>
         </table>
 
-        <p>位移电流有个著名的「补丁」故事：老安培定律 ∇ × <strong>H</strong> = <strong>J</strong> 两边取散度，得出 ∇ · <strong>J</strong> = 0——电流必须永远闭合。可电荷守恒明明说 ∇ · <strong>J</strong> = −∂ρ/∂t，电荷是可以堆积的。矛盾在电容极板间爆发：电子飞不过去，传导电流断了，安培定律当场失效。</p>
+        <p><strong>安培定律的「补丁」故事（经典电容器场景）：</strong></p>
 
-        <p>麦克斯韦补上了 ∂<strong>D</strong>/∂t 这一项，散度一算，恰好恢复 ∇ · <strong>J</strong> = −∂ρ/∂t。所以位移电流不是「又一种粒子流」，而是<strong>让数学自洽、让能量守恒的场的变化项</strong>——低频时它可有可无，微波频段它反客为主，成为主角。</p>
+        <ul>
+        <li><strong>数学矛盾：</strong>对原安培定律（∇ × <strong>H</strong> = <strong>J</strong>）取散度，得 ∇ · <strong>J</strong> = 0——电流必须永远闭合。</li>
+        <li><strong>物理现实：</strong>电荷守恒定律要求 ∇ · <strong>J</strong> = −∂ρ/∂t——电荷是可以堆积的。</li>
+        <li><strong>冲突爆发点：</strong>交流电容极板间，传导电流 <strong>J</strong> 突变为 0（电子飞不过去），安培定律失效。</li>
+        <li><strong>麦克斯韦的补丁：</strong>加入位移电流项 ∂<strong>D</strong>/∂t。对其取散度，利用高斯定律 ∇ · <strong>D</strong> = ρ，精确推出 ∇ · <strong>J</strong> = −∂ρ/∂t。</li>
+        </ul>
 
-        <h4>3.3 高斯电场：电荷是源</h4>
+        <p><strong>结论：</strong>位移电流在极板间「接替」了传导电流，使总电流（传导+位移）在空间上处处连续。它不是一个物理粒子流，而是一个保证数学自洽与能量守恒的<strong>场的变化项</strong>。</p>
 
-        <p>微带线的导体内 ρ = 0，所以 ∇ · <strong>D</strong> = 0，场线连续穿过介质；所有 <strong>D</strong> 线都从导体表面的面电荷出发。这一条直接解释了<strong>趋肤效应</strong>——高频时电流（电荷）被挤到导体表面，导体内部没有场。</p>
+        <h4>3.3 公式 (1.14c)：∇ · D = ρ —— 电荷是电场的源</h4>
 
-        <h4>3.4 高斯磁场：没有磁单极</h4>
+        <p><strong>物理意义：</strong>电通量密度 <strong>D</strong> 的散度，精确等于该点的自由电荷密度 ρ。</p>
 
-        <p>∇ · <strong>B</strong> = 0 意味着 <strong>B</strong> 总能写成某个矢量位的旋度（<strong>B</strong> = ∇ × <strong>A</strong>）。这个性质直接决定了波导里存在无限多种模式（TE/TM 模）——每种模式，都是磁力线在横截面上画出的一种闭合拓扑。工程师的活，就是靠激励设计只放行主模（如 TE10），掐掉高阶模。</p>
+        <p><strong>工程投射：</strong>在微波传输线（如微带线）的导体内部，ρ = 0，所以 ∇ · <strong>D</strong> = 0，电场线连续穿过介质。所有的 <strong>D</strong> 线都从导体表面（存在面电荷）发出，进入介质。这直接解释了<strong>趋肤效应</strong>——高频电流（电荷）被挤在导体表面，内部无场。</p>
 
-        <h3>四、世界观：从「电流」到「波」</h3>
+        <h4>3.4 公式 (1.14d)：∇ · B = 0 —— 磁荷不存在</h4>
+
+        <p><strong>物理意义：</strong>磁感应强度 <strong>B</strong> 的散度恒为零。磁力线没有起点和终点，永远闭合。</p>
+
+        <p><strong>工程投射：</strong>因为 <strong>B</strong> 无散度，它可以表示为某个矢量位 <strong>A</strong> 的旋度（<strong>B</strong> = ∇ × <strong>A</strong>）。这一性质直接决定了波导（矩形波导、圆波导）中存在无限多种模式（TE/TM 模）。每一种模式，都是磁场线在波导横截面上画出的不同闭合拓扑结构。工程师要做的，就是通过设计激励方式，只让主模（如 TE10）存在，管住高阶模。</p>
+
+        <h3>四、从 DC（稳恒电流）到 RF/微波（时变场）—— 工程世界观的重塑</h3>
 
         <table>
-        <thead><tr><th style="width:50%;">低频（DC ~ 低频交流）</th><th>微波/RF 频段（GHz）</th></tr></thead>
+        <thead><tr><th style="width:50%;">低频（DC ~ 低频交流）</th><th>微波/RF 频段（如 GHz）</th></tr></thead>
         <tbody>
-        <tr><td>ωε ≪ σ，位移电流被忽略；磁场只由传导电流产生；能量锁在导线和 R/L/C 里。</td><td>ωε 反超 σ（尤其低损介质）；能量以位移电流的形式在介质里流动，铜皮退化成「导轨」，只负责约束场的边界。</td></tr>
-        <tr><td>基尔霍夫定律（KVL/KCL）统治一切，导线只是「短路线」。</td><td>导线变成传输线，线长成了波长的一部分，信号是「波」不是「流」；阻抗匹配取代电阻匹配，史密斯圆图登场。</td></tr>
+        <tr><td>位移电流项 ωε ≪ σ（电导率），位移电流被忽略；磁场仅由传导电流 J 产生；电磁能量被束缚在导线和集总元件（R/L/C）中。</td><td>频率 ω 急剧升高，位移电流项 ωε 开始碾压传导电流 σ（尤其在低损介质中）；电磁能量以位移电流的形式在介质（PCB 基板、空气）中流动，铜皮退化为「导轨」，只负责约束场的边界。</td></tr>
+        <tr><td>工程师视角：基尔霍夫定律（KVL/KCL）统治世界，导线只是「短路线」。</td><td>工程师视角：导线变成传输线，线长成了波长的一部分，信号是「波」而非「流」；阻抗匹配取代了电阻匹配，史密斯圆图成为标配工具。</td></tr>
         </tbody>
         </table>
 
-        <h3>五、波动方程的种子</h3>
+        <h3>五、波动方程的预热 —— 场的「奔跑」是如何被催生出来的</h3>
 
-        <p>把两个旋度方程咬合起来看：时变的 <strong>H</strong> 生出 <strong>E</strong> 的旋度（法拉第），时变的 <strong>E</strong> 又生出 <strong>H</strong> 的旋度（安培）。</p>
+        <p>现在把前面所有的积木搭在一起，看波动方程如何从这四块基石中「生长」出来（只感受物理图像，不做完整推导）。</p>
+
+        <p><strong>第一步（旋度生变）：</strong>公式 (1.14a) 说，时变的 <strong>H</strong> 会产生 <strong>E</strong> 的旋度（即空间上的旋转趋势）。<br>
+        <strong>第二步（变生旋度）：</strong>公式 (1.14b) 说，时变的 <strong>E</strong>（位移电流）又会产生 <strong>H</strong> 的旋度（即空间上的旋转趋势）。</p>
 
         <div class="diagram-container">
           <svg viewBox="0 0 800 360" xmlns="http://www.w3.org/2000/svg">
@@ -6456,26 +6482,26 @@
             <line x1="400" y1="180" x2="400" y2="240" stroke="#34a853" stroke-width="1.5" stroke-dasharray="5,4"/>
             <polygon points="400,240 394,226 406,226" fill="#34a853"/>
           </svg>
-          <p class="diagram-caption">图一：时变磁场生电场的旋度，时变电场生磁场的旋度——两者互锁，催生出以 1/√(με) 奔跑的电磁波。</p>
+          <p class="diagram-caption">图一：时变磁场生电场的旋度（法拉第），时变电场生磁场的旋度（安培-麦克斯韦）——两者互锁，催生出以 1/√(με) 奔跑的电磁波。</p>
         </div>
 
-        <p>把 (1.14a) 两边取旋度，代进 (1.14b)，消去 <strong>H</strong>，得到一个只关于 <strong>E</strong> 的二阶方程：</p>
+        <p><strong>物理图像的精髓：</strong>将 (1.14a) 两边取旋度，再把 (1.14b) 代进去——<strong>E</strong> 的旋度（空间变化）又等于 <strong>H</strong> 的时间变化，而 <strong>H</strong> 的时间变化又回到了 <strong>E</strong> 的空间变化。这一来一回，消去中间变量 <strong>H</strong>，就得到一个只关于 <strong>E</strong> 的二阶偏微分方程：</p>
 
         <p style="text-align:center;font-size:15px;margin:16px 0;background:rgba(0,113,227,0.12);padding:14px 20px;border-radius:8px;color:rgba(255,255,255,0.95);">
         ∇²<strong>E</strong> = με ∂²<strong>E</strong>/∂t²
         </p>
 
-        <p>翻译成工程语言：「电场在空间里弯多少，正比于它在时间里加速多快。」这个方程的解只有一个——<strong>波</strong> e<sup>jωt ± jβz</sup>。它宣告：只要某处有一个扰动（时变场），它就以波的形式、以速度 v<sub>p</sub> = 1/√(με) 往外跑。这就是电磁波不需要介质、能在真空中传播的根本原因。</p>
+        <p><strong>工程物理翻译：</strong>「电场 <strong>E</strong> 在空间中（∇²）的弯曲程度，与它在时间上（∂²/∂t²）的加速度成正比。」唯一的解是什么？是<strong>波</strong>！这个方程的解就是 e<sup>jωt ± jβz</sup>。它宣告：只要空间中某处有一个「扰动」（时变场），这个扰动就会以「波动」的形式、以速度 v<sub>p</sub> = 1/√(με) 向外「跑」出去。</p>
 
-        <h3>终极检验清单</h3>
+        <h3>终极检验清单（请自查）</h3>
 
-        <p>进下一章（传输线理论）之前，确认这几条链条已经在脑子里闭环：</p>
+        <p>在进入下一章（传输线理论）之前，请确保以下物理链条在脑中已经形成闭环：</p>
 
         <ul>
-        <li>电荷（ρ）生<strong>散度场</strong>，电流（J 或时变 D）生<strong>旋度场</strong>。</li>
-        <li>∂/∂t → jω，是低频电路跨向高频微波的那台「放大器」。</li>
-        <li>位移电流不是粒子流，是修补安培定律与电荷守恒冲突的「弥合项」。</li>
-        <li>电场的旋度靠磁场变化驱动，磁场的旋度靠电场变化驱动——这个「你旋我变」的互锁，就是电磁波能跑起来的根。</li>
+        <li><strong>「源」与「场」：</strong>电荷（ρ）产生散度场（D），电流（J 或时变 D）产生旋度场（H）。</li>
+        <li><strong>「时变」的意义：</strong>∂/∂t → jω，它是低频电路向高频微波跨越的「放大器」。</li>
+        <li><strong>「补丁」的逻辑：</strong>位移电流不是粒子流，是为了保证安培定律与电荷守恒不自洽而诞生的「数学-物理」弥合项。</li>
+        <li><strong>「波」的动机：</strong>电场的旋度由磁场变化驱动，磁场的旋度由电场变化驱动——这种「你旋我变，我变你旋」的互锁机制，就是电磁波不需要介质也能在真空中奔跑的根本原因。</li>
         </ul>
 
         <h4>参考文献</h4>
