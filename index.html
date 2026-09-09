@@ -6356,13 +6356,13 @@
         <p>在时谐场假设下（所有量按 e<sup>jωt</sup> 变化），时间偏导 ∂/∂t 退化为代数因子 jω。Pozar 书中的四个方程（式 1.14a–d）可以浓缩成一张表：</p>
 
         <div style="overflow-x:auto;margin:24px 0;">
-        <table style="font-size:13px;min-width:720px;">
-        <thead><tr><th style="width:10%;">编号</th><th style="width:26%;">方程（时谐场）</th><th style="width:24%;">中文名称</th><th>一句话物理总纲</th></tr></thead>
+        <table style="font-size:13px;min-width:1000px;">
+        <thead><tr><th style="width:7%;">编号</th><th style="width:19%;">方程（时谐场）</th><th style="width:15%;">中文名称</th><th style="width:27%;">一句话物理总纲</th><th>一句话工程硬核总结</th></tr></thead>
         <tbody>
-        <tr style="background:rgba(0,113,227,0.06);"><td><strong>(1.14a)</strong></td><td>∇ × <strong>E</strong> = −jωμ<strong>H</strong></td><td>法拉第感应定律</td><td>磁变生电：时变的磁场，是电场产生「旋转趋势」的源。</td></tr>
-        <tr><td><strong>(1.14b)</strong></td><td>∇ × <strong>H</strong> = jωε<strong>E</strong> + <strong>J</strong></td><td>安培-麦克斯韦定律</td><td>电变（或电流）生磁：时变的电场（位移电流）或传导电流，是磁场产生「旋转趋势」的源。</td></tr>
-        <tr style="background:rgba(0,113,227,0.06);"><td><strong>(1.14c)</strong></td><td>∇ · <strong>D</strong> = ρ</td><td>高斯电场定律</td><td>电荷是电场的源：电通量密度从正电荷出发，终止于负电荷。</td></tr>
-        <tr><td><strong>(1.14d)</strong></td><td>∇ · <strong>B</strong> = 0</td><td>高斯磁场定律</td><td>磁荷不存在：磁力线无头无尾，永远闭合。</td></tr>
+        <tr style="background:rgba(0,113,227,0.06);"><td><strong>(1.14a)</strong></td><td>∇ × <strong>E</strong> = −jωμ<strong>H</strong></td><td>法拉第感应定律</td><td>磁变生电：时变的磁场，是电场产生「旋转趋势」的源。</td><td>变化的磁场产生电场，幅度随频率 ω 线性增大。</td></tr>
+        <tr><td><strong>(1.14b)</strong></td><td>∇ × <strong>H</strong> = jωε<strong>E</strong> + <strong>J</strong></td><td>安培-麦克斯韦定律</td><td>电变（或电流）生磁：时变的电场（位移电流）或传导电流，是磁场产生「旋转趋势」的源。</td><td>变化的电场（位移电流）产生磁场；微波段位移电流碾压传导电流，能量不在铜里「流」而在介质里「飘」。</td></tr>
+        <tr style="background:rgba(0,113,227,0.06);"><td><strong>(1.14c)</strong></td><td>∇ · <strong>D</strong> = ρ</td><td>高斯电场定律</td><td>电荷是电场的源：电通量密度从正电荷出发，终止于负电荷。</td><td>电场的散度由净电荷决定；导体内部净电荷为 0，电场全「压」在表面（趋肤效应），内部为 0。</td></tr>
+        <tr><td><strong>(1.14d)</strong></td><td>∇ · <strong>B</strong> = 0</td><td>高斯磁场定律</td><td>磁荷不存在：磁力线无头无尾，永远闭合。</td><td>磁力线必须闭合，无源无终。</td></tr>
         </tbody>
         </table>
         </div>
@@ -6380,7 +6380,7 @@
         <thead><tr><th style="width:12%;">算符</th><th style="width:30%;">数学计算（直角坐标）</th><th style="width:22%;">形象比喻（仅辅助直觉）</th><th>⚠️ 严格学术物理意义（杜绝偏差）</th></tr></thead>
         <tbody>
         <tr style="background:rgba(0,113,227,0.06);"><td><strong>散度</strong><br>∇ · <strong>F</strong></td><td>∂F<sub>x</sub>/∂x + ∂F<sub>y</sub>/∂y + ∂F<sub>z</sub>/∂z</td><td>喷泉：衡量单位体积内「流出」的净通量。</td><td>「源」的强度。它严格等于该点单位体积内产生的净通量。散度不为零，意味着该点存在「源」或「汇」（如电荷）。</td></tr>
-        <tr><td><strong>旋度</strong><br>∇ × <strong>F</strong></td><td>三阶行列式展开（x̂、ŷ、ẑ 单位矢量）</td><td>漩涡：衡量无限小测试环感受到的「旋转扭矩」。</td><td>「旋转趋势」的强度。它严格等于该点单位面积上的最大环量。旋度不为零，绝不等于场线在转圈，而是指该点的场在垂直方向上有「剪切梯度」（如层流中心快、边缘慢）。</td></tr>
+        <tr><td><strong>旋度</strong><br>∇ × <strong>F</strong></td><td>| x̂  ŷ  ẑ |<br>| ∂/∂x ∂/∂y ∂/∂z |<br>| F<sub>x</sub> F<sub>y</sub> F<sub>z</sub> |</td><td>漩涡：衡量无限小测试环感受到的「旋转扭矩」。</td><td>「旋转趋势」的强度。它严格等于该点单位面积上的最大环量。旋度不为零，绝不等于场线在转圈，而是指该点的场在垂直方向上有「剪切梯度」（如层流中心快、边缘慢）。</td></tr>
         </tbody>
         </table>
         </div>
@@ -6404,6 +6404,16 @@
         <p style="text-align:center;font-size:15px;margin:16px 0;background:rgba(0,113,227,0.12);padding:14px 20px;border-radius:8px;color:rgba(255,255,255,0.95);">
         ⚡ <strong>微波工程铁律：</strong>ε 和 μ 在时变场中通常是复数（ε = ε′ − jε″，μ = μ′ − jμ″）。虚部代表<strong>损耗</strong>——这正是微波介质基板（如 FR4）发热、磁芯发热的根本原因。
         </p>
+
+        <h4>2.3 工程核心物理图像：D 与 E</h4>
+
+        <p>当电磁波在真空/空气中传播时，<strong>D</strong> = ε<sub>0</sub><strong>E</strong>，两者几乎成正比，可以视作同一个东西。但当电磁波进入 PCB 的介质基板（如 FR4，ε<sub>r</sub> ≈ 4.3）时，情况剧变——外加电场 <strong>E</strong> 进入介质后，介质的分子被极化，产生密密麻麻的微小电偶极子，这些偶极子会产生额外的电场叠加进来，使得总的效果 <strong>D</strong> 变成了 ε<sub>r</sub> 倍。</p>
+
+        <p><strong>工程现实：</strong>这就是为什么微带线的等效介电常数 ε<sub>eff</sub> 大于 1——因为大部分场在介质里，<strong>D</strong> 比空气大，导致波在介质里走得慢（相速度降低）、波长变短。设计滤波器时，介质常数选高了，整个电路尺寸就得相应缩小。</p>
+
+        <h4>2.4 工程核心物理图像：B 与 H</h4>
+
+        <p>在微波工程中，绝大多数介质（FR4、氧化铝、空气）都是非磁性材料，μ<sub>r</sub> ≈ 1。因此，在微波无源电路中，我们几乎可以认为 <strong>B</strong> 和 <strong>H</strong> 是同一个东西。唯一的例外是铁氧体（Ferrite）（Pozar 第 9 章）——当你给铁氧体加一个偏置磁场时，μ<sub>r</sub> 会变成一个张量（矩阵），不再是标量，这时 <strong>B</strong> 和 <strong>H</strong> 的方向不再相同（各向异性），这就是隔离器和环形器能实现「单向传输」的物理根本。</p>
 
         <p>工具和参数都备齐了，下面把四个方程逐个拆开，看它们各自在射频工程里意味着什么。</p>
 
