@@ -6355,15 +6355,17 @@
 
         <p>在时谐场假设下（所有量按 e<sup>jωt</sup> 变化），时间偏导 ∂/∂t 退化为代数因子 jω。Pozar 书中的四个方程（式 1.14a–d）可以浓缩成一张表：</p>
 
-        <table>
+        <div style="overflow-x:auto;margin:24px 0;">
+        <table style="font-size:13px;min-width:720px;">
         <thead><tr><th style="width:10%;">编号</th><th style="width:26%;">方程（时谐场）</th><th style="width:24%;">中文名称</th><th>一句话物理总纲</th></tr></thead>
         <tbody>
-        <tr><td>(1.14a)</td><td>∇ × <strong>E</strong> = −jωμ<strong>H</strong></td><td>法拉第感应定律</td><td>磁变生电：时变的磁场，是电场产生「旋转趋势」的源。</td></tr>
-        <tr><td>(1.14b)</td><td>∇ × <strong>H</strong> = jωε<strong>E</strong> + <strong>J</strong></td><td>安培-麦克斯韦定律</td><td>电变（或电流）生磁：时变的电场（位移电流）或传导电流，是磁场产生「旋转趋势」的源。</td></tr>
-        <tr><td>(1.14c)</td><td>∇ · <strong>D</strong> = ρ</td><td>高斯电场定律</td><td>电荷是电场的源：电通量密度从正电荷出发，终止于负电荷。</td></tr>
-        <tr><td>(1.14d)</td><td>∇ · <strong>B</strong> = 0</td><td>高斯磁场定律</td><td>磁荷不存在：磁力线无头无尾，永远闭合。</td></tr>
+        <tr style="background:rgba(0,113,227,0.06);"><td><strong>(1.14a)</strong></td><td>∇ × <strong>E</strong> = −jωμ<strong>H</strong></td><td>法拉第感应定律</td><td>磁变生电：时变的磁场，是电场产生「旋转趋势」的源。</td></tr>
+        <tr><td><strong>(1.14b)</strong></td><td>∇ × <strong>H</strong> = jωε<strong>E</strong> + <strong>J</strong></td><td>安培-麦克斯韦定律</td><td>电变（或电流）生磁：时变的电场（位移电流）或传导电流，是磁场产生「旋转趋势」的源。</td></tr>
+        <tr style="background:rgba(0,113,227,0.06);"><td><strong>(1.14c)</strong></td><td>∇ · <strong>D</strong> = ρ</td><td>高斯电场定律</td><td>电荷是电场的源：电通量密度从正电荷出发，终止于负电荷。</td></tr>
+        <tr><td><strong>(1.14d)</strong></td><td>∇ · <strong>B</strong> = 0</td><td>高斯磁场定律</td><td>磁荷不存在：磁力线无头无尾，永远闭合。</td></tr>
         </tbody>
         </table>
+        </div>
 
         <p>四个方程两两成对：两个<strong>旋度方程</strong>（1.14a、1.14b）是「动力学」，描述场与场之间的互生；两个<strong>散度方程</strong>（1.14c、1.14d）是「约束」，描述场与「源」的关系。前者讲变化，后者讲来源。</p>
 
@@ -6373,27 +6375,31 @@
 
         <h4>2.1 散度（∇·）与旋度（∇×）</h4>
 
-        <table>
+        <div style="overflow-x:auto;margin:24px 0;">
+        <table style="font-size:13px;min-width:720px;">
         <thead><tr><th style="width:12%;">算符</th><th style="width:30%;">数学计算（直角坐标）</th><th style="width:22%;">形象比喻（仅辅助直觉）</th><th>⚠️ 严格学术物理意义（杜绝偏差）</th></tr></thead>
         <tbody>
-        <tr><td>散度<br>∇ · <strong>F</strong></td><td>∂F<sub>x</sub>/∂x + ∂F<sub>y</sub>/∂y + ∂F<sub>z</sub>/∂z</td><td>喷泉：衡量单位体积内「流出」的净通量。</td><td>「源」的强度。它严格等于该点单位体积内产生的净通量。散度不为零，意味着该点存在「源」或「汇」（如电荷）。</td></tr>
-        <tr><td>旋度<br>∇ × <strong>F</strong></td><td>三阶行列式展开（x̂、ŷ、ẑ 单位矢量）</td><td>漩涡：衡量无限小测试环感受到的「旋转扭矩」。</td><td>「旋转趋势」的强度。它严格等于该点单位面积上的最大环量。旋度不为零，绝不等于场线在转圈，而是指该点的场在垂直方向上有「剪切梯度」（如层流中心快、边缘慢）。</td></tr>
+        <tr style="background:rgba(0,113,227,0.06);"><td><strong>散度</strong><br>∇ · <strong>F</strong></td><td>∂F<sub>x</sub>/∂x + ∂F<sub>y</sub>/∂y + ∂F<sub>z</sub>/∂z</td><td>喷泉：衡量单位体积内「流出」的净通量。</td><td>「源」的强度。它严格等于该点单位体积内产生的净通量。散度不为零，意味着该点存在「源」或「汇」（如电荷）。</td></tr>
+        <tr><td><strong>旋度</strong><br>∇ × <strong>F</strong></td><td>三阶行列式展开（x̂、ŷ、ẑ 单位矢量）</td><td>漩涡：衡量无限小测试环感受到的「旋转扭矩」。</td><td>「旋转趋势」的强度。它严格等于该点单位面积上的最大环量。旋度不为零，绝不等于场线在转圈，而是指该点的场在垂直方向上有「剪切梯度」（如层流中心快、边缘慢）。</td></tr>
         </tbody>
         </table>
+        </div>
 
         <h4>2.2 各参数的名称、符号、单位及关系（工程物理核心）</h4>
 
-        <table>
+        <div style="overflow-x:auto;margin:24px 0;">
+        <table style="font-size:13px;min-width:800px;">
         <thead><tr><th style="width:9%;">参数</th><th style="width:17%;">名称</th><th style="width:14%;">单位（SI）</th><th style="width:34%;">物理分工（谁是「因」，谁是「果」）</th><th>介质中的本构关系</th></tr></thead>
         <tbody>
-        <tr><td><strong>E</strong></td><td>电场强度</td><td>V/m（伏特/米）</td><td>「因」场 / 施力场：代表单位电荷所受的机械力，由所有电荷（自由+束缚）共同产生，与介质无关。</td><td>—</td></tr>
+        <tr style="background:rgba(0,113,227,0.06);"><td><strong>E</strong></td><td>电场强度</td><td>V/m（伏特/米）</td><td>「因」场 / 施力场：代表单位电荷所受的机械力，由所有电荷（自由+束缚）共同产生，与介质无关。</td><td>—</td></tr>
         <tr><td><strong>D</strong></td><td>电通量密度（电位移矢量）</td><td>C/m²（库仑/米²）</td><td>「果」场 / 总响应场：将「外加电场」与「介质极化产生的束缚电荷」打包后的总效果，其散度仅由自由电荷决定。</td><td><strong>D</strong> = ε<strong>E</strong>（线性各向同性）</td></tr>
-        <tr><td>ε</td><td>介电常数</td><td>F/m（法拉/米）</td><td>电场的「增益系数」：反映介质在电场作用下极化的难易程度。</td><td>ε = ε<sub>0</sub>ε<sub>r</sub></td></tr>
+        <tr style="background:rgba(0,113,227,0.06);"><td>ε</td><td>介电常数</td><td>F/m（法拉/米）</td><td>电场的「增益系数」：反映介质在电场作用下极化的难易程度。</td><td>ε = ε<sub>0</sub>ε<sub>r</sub></td></tr>
         <tr><td><strong>H</strong></td><td>磁场强度</td><td>A/m（安培/米）</td><td>「因」场 / 励磁场：代表外部电流源（传导或位移）的励磁能力，其旋度仅由电流决定，与介质磁化无关。</td><td>—</td></tr>
-        <tr><td><strong>B</strong></td><td>磁通量密度（磁感应强度）</td><td>T（特斯拉）或 Wb/m²</td><td>「果」场 / 总汇聚场：将「外加励磁」与「介质磁化产生的磁偶极子」打包后的总磁通密度，其散度恒为零。</td><td><strong>B</strong> = μ<strong>H</strong>（线性各向同性）</td></tr>
+        <tr style="background:rgba(0,113,227,0.06);"><td><strong>B</strong></td><td>磁通量密度（磁感应强度）</td><td>T（特斯拉）或 Wb/m²</td><td>「果」场 / 总汇聚场：将「外加励磁」与「介质磁化产生的磁偶极子」打包后的总磁通密度，其散度恒为零。</td><td><strong>B</strong> = μ<strong>H</strong>（线性各向同性）</td></tr>
         <tr><td>μ</td><td>磁导率</td><td>H/m（亨利/米）</td><td>磁场的「增益系数」：反映介质在磁场中被磁化的难易程度。</td><td>μ = μ<sub>0</sub>μ<sub>r</sub></td></tr>
         </tbody>
         </table>
+        </div>
 
         <p style="text-align:center;font-size:15px;margin:16px 0;background:rgba(0,113,227,0.12);padding:14px 20px;border-radius:8px;color:rgba(255,255,255,0.95);">
         ⚡ <strong>微波工程铁律：</strong>ε 和 μ 在时变场中通常是复数（ε = ε′ − jε″，μ = μ′ − jμ″）。虚部代表<strong>损耗</strong>——这正是微波介质基板（如 FR4）发热、磁芯发热的根本原因。
@@ -6417,15 +6423,17 @@
 
         <p><strong>传导电流 J vs 位移电流 jωεE：</strong></p>
 
-        <table>
+        <div style="overflow-x:auto;margin:24px 0;">
+        <table style="font-size:13px;min-width:640px;">
         <thead><tr><th style="width:16%;">对比维度</th><th style="width:42%;">传导电流 J</th><th>位移电流 ∂D/∂t</th></tr></thead>
         <tbody>
-        <tr><td>物理实体</td><td>真实自由电子的定向漂移</td><td>时变电通量密度（场的变化），无电荷移动</td></tr>
-        <tr><td>存在空间</td><td>导体内部</td><td>导体、介质、真空中均可存在</td></tr>
-        <tr><td>与 E 的相位</td><td>同相（产生有功功率 → 焦耳热）</td><td>超前 90°（产生无功功率 → 电场储能）</td></tr>
-        <tr><td>频域主导权</td><td>低频（DC）绝对主导</td><td>微波高频（ωε ≫ σ）绝对主导</td></tr>
+        <tr style="background:rgba(0,113,227,0.06);"><td><strong>物理实体</strong></td><td>真实自由电子的定向漂移</td><td>时变电通量密度（场的变化），无电荷移动</td></tr>
+        <tr><td><strong>存在空间</strong></td><td>导体内部</td><td>导体、介质、真空中均可存在</td></tr>
+        <tr style="background:rgba(0,113,227,0.06);"><td><strong>与 E 的相位</strong></td><td>同相（产生有功功率 → 焦耳热）</td><td>超前 90°（产生无功功率 → 电场储能）</td></tr>
+        <tr><td><strong>频域主导权</strong></td><td>低频（DC）绝对主导</td><td>微波高频（ωε ≫ σ）绝对主导</td></tr>
         </tbody>
         </table>
+        </div>
 
         <p><strong>安培定律的「补丁」故事（经典电容器场景）：</strong></p>
 
@@ -6454,13 +6462,15 @@
 
         <h3>四、从 DC（稳恒电流）到 RF/微波（时变场）—— 工程世界观的重塑</h3>
 
-        <table>
+        <div style="overflow-x:auto;margin:24px 0;">
+        <table style="font-size:13px;min-width:640px;">
         <thead><tr><th style="width:50%;">低频（DC ~ 低频交流）</th><th>微波/RF 频段（如 GHz）</th></tr></thead>
         <tbody>
-        <tr><td>位移电流项 ωε ≪ σ（电导率），位移电流被忽略；磁场仅由传导电流 J 产生；电磁能量被束缚在导线和集总元件（R/L/C）中。</td><td>频率 ω 急剧升高，位移电流项 ωε 开始碾压传导电流 σ（尤其在低损介质中）；电磁能量以位移电流的形式在介质（PCB 基板、空气）中流动，铜皮退化为「导轨」，只负责约束场的边界。</td></tr>
+        <tr style="background:rgba(0,113,227,0.06);"><td>位移电流项 ωε ≪ σ（电导率），位移电流被忽略；磁场仅由传导电流 J 产生；电磁能量被束缚在导线和集总元件（R/L/C）中。</td><td>频率 ω 急剧升高，位移电流项 ωε 开始碾压传导电流 σ（尤其在低损介质中）；电磁能量以位移电流的形式在介质（PCB 基板、空气）中流动，铜皮退化为「导轨」，只负责约束场的边界。</td></tr>
         <tr><td>工程师视角：基尔霍夫定律（KVL/KCL）统治世界，导线只是「短路线」。</td><td>工程师视角：导线变成传输线，线长成了波长的一部分，信号是「波」而非「流」；阻抗匹配取代了电阻匹配，史密斯圆图成为标配工具。</td></tr>
         </tbody>
         </table>
+        </div>
 
         <p>世界观变了，最自然的追问是：这些方程叠加起来，究竟催生出了什么？答案就是——波。</p>
 
