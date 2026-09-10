@@ -1468,7 +1468,7 @@
         <a href="#panel-device" onclick="switchTechSub('device', event)">半导体器件与工艺 (8)</a>
         <a href="#panel-rfic" onclick="switchTechSub('rfic', event)">射频集成电路设计 (6)</a>
         <a href="#panel-filter" onclick="switchTechSub('filter', event)">滤波器 (2)</a>
-        <a href="#panel-pozar" onclick="switchTechSub('pozar', event)">我脑中的Pozar微波工程 (2)</a>
+        <a href="#panel-pozar" onclick="switchTechSub('pozar', event)">我脑中的Pozar微波工程 (3)</a>
       </nav>
 
     <div class="sub-panel tech-sub active" id="panel-protocol">
@@ -6742,6 +6742,211 @@
           <li>D. M. Pozar, <em>Microwave Engineering</em>, 4th ed., Wiley, 2012, Ch. 1, Eq. (1.14b).</li>
           <li>J. D. Jackson, <em>Classical Electrodynamics</em>, 3rd ed., Wiley, 1999, Ch. 6 (Maxwell Equations).</li>
           <li>D. J. Griffiths, <em>Introduction to Electrodynamics</em>, 4th ed., Pearson, 2013, Ch. 7 (Electrodynamics).</li>
+        </ol>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="article-card" onclick="this.classList.toggle('open')">
+        <div class="article-card-header">
+          <div>
+            <div class="article-card-title">从麦克斯韦方程组到波动方程</div>
+            <div class="article-card-meta">📅 2026 年 · 我脑中的 Pozar 微波工程 — 第 3 篇</div>
+          </div>
+          <div class="article-card-arrow">▼</div>
+        </div>
+        <div class="article-card-body">
+          <div class="article-card-body-inner">
+            <div class="article-body">
+
+        <p>前两篇分别建立了四个方程的整体图像，又拆解了安培定律的「补丁」故事。这一篇，我们把积木真正搭起来——<strong>从麦克斯韦方程组出发，一步步推出波动方程</strong>。这是整个微波工程的数学原点：波，究竟是怎么从这四个方程里「生长」出来的 <span class="ref">[1]</span>。</p>
+
+        <h3>第一幕 · 时谐形式的麦克斯韦方程组</h3>
+
+        <p>先回顾 Pozar 书中的四个方程（式 1.14a–d，时谐场 e<sup>jωt</sup>）：</p>
+
+        <div style="overflow-x:auto;margin:24px 0;">
+        <table style="font-size:13px;min-width:560px;">
+        <thead><tr><th style="width:18%;">编号</th><th>方程（时谐形式）</th></tr></thead>
+        <tbody>
+        <tr style="background:rgba(0,113,227,0.06);"><td><strong>(1.14a)</strong></td><td>∇ × <strong>E</strong> = −jωμ<strong>H</strong></td></tr>
+        <tr><td><strong>(1.14b)</strong></td><td>∇ × <strong>H</strong> = <strong>J</strong> + jωε<strong>E</strong></td></tr>
+        <tr style="background:rgba(0,113,227,0.06);"><td><strong>(1.14c)</strong></td><td>∇ · <strong>D</strong> = ρ</td></tr>
+        <tr><td><strong>(1.14d)</strong></td><td>∇ · <strong>B</strong> = 0</td></tr>
+        </tbody>
+        </table>
+        </div>
+
+        <p>其中各参数：</p>
+
+        <div style="overflow-x:auto;margin:24px 0;">
+        <table style="font-size:13px;min-width:560px;">
+        <thead><tr><th style="width:22%;">符号</th><th style="width:34%;">名称</th><th>单位（SI）</th></tr></thead>
+        <tbody>
+        <tr style="background:rgba(0,113,227,0.06);"><td><strong>E</strong></td><td>电场强度</td><td>V/m</td></tr>
+        <tr><td><strong>H</strong></td><td>磁场强度</td><td>A/m</td></tr>
+        <tr style="background:rgba(0,113,227,0.06);"><td><strong>D</strong> = ε<strong>E</strong></td><td>电通量密度</td><td>C/m²</td></tr>
+        <tr><td><strong>B</strong> = μ<strong>H</strong></td><td>磁通量密度</td><td>T</td></tr>
+        <tr style="background:rgba(0,113,227,0.06);"><td><strong>J</strong></td><td>传导电流密度</td><td>A/m²</td></tr>
+        <tr><td>ρ</td><td>自由电荷体密度</td><td>C/m³</td></tr>
+        <tr style="background:rgba(0,113,227,0.06);"><td>ε</td><td>介电常数</td><td>F/m</td></tr>
+        <tr><td>μ</td><td>磁导率</td><td>H/m</td></tr>
+        </tbody>
+        </table>
+        </div>
+
+        <h3>第二幕 · 无源区域的简化</h3>
+
+        <p>接下来讨论<strong>无源区域</strong>——如真空、介质基板内部，不含电流源和电荷源，即 <strong>J</strong> = 0、ρ = 0。此时四个方程退化为：</p>
+
+        <p style="text-align:center;font-size:15px;margin:16px 0;background:rgba(0,113,227,0.12);padding:14px 20px;border-radius:8px;color:rgba(255,255,255,0.95);line-height:2.1;">
+        (A)　∇ × <strong>E</strong> = −jωμ<strong>H</strong><br>
+        (B)　∇ × <strong>H</strong> = jωε<strong>E</strong><br>
+        (C)　∇ · <strong>E</strong> = 0　（因为 ∇ · <strong>D</strong> = ε ∇ · <strong>E</strong> = 0）<br>
+        (D)　∇ · <strong>H</strong> = 0　（因为 ∇ · <strong>B</strong> = μ ∇ · <strong>H</strong> = 0）
+        </p>
+
+        <p><strong>工程物理意义：</strong>在无源区域，电场和磁场都没有「散度源」（无电荷），它们只以「旋度」的形式相互激励。这正是波能够自由传播的物理前提。</p>
+
+        <h3>第三幕 · 推导电场 E 的波动方程</h3>
+
+        <p>有了简化后的 (A)–(D)，推导就水到渠成。</p>
+
+        <p><strong>步骤 1：对 (A) 式两边取旋度</strong></p>
+
+        <p style="text-align:center;font-size:15px;margin:16px 0;background:rgba(0,113,227,0.12);padding:14px 20px;border-radius:8px;color:rgba(255,255,255,0.95);">
+        ∇ × (∇ × <strong>E</strong>) = ∇ × (−jωμ<strong>H</strong>) = −jωμ (∇ × <strong>H</strong>)
+        </p>
+
+        <p><strong>步骤 2：左边使用矢量恒等式</strong> ∇ × (∇ × <strong>E</strong>) = ∇(∇ · <strong>E</strong>) − ∇²<strong>E</strong>。由 (C) 式 ∇ · <strong>E</strong> = 0，得 ∇ × (∇ × <strong>E</strong>) = −∇²<strong>E</strong>。</p>
+
+        <p><strong>步骤 3：右边代入 (B) 式</strong></p>
+
+        <p style="text-align:center;font-size:15px;margin:16px 0;background:rgba(0,113,227,0.12);padding:14px 20px;border-radius:8px;color:rgba(255,255,255,0.95);">
+        −jωμ (∇ × <strong>H</strong>) = −jωμ (jωε<strong>E</strong>) = −j²ω²με<strong>E</strong> = +ω²με<strong>E</strong>
+        </p>
+
+        <p><strong>步骤 4：联立左右两边</strong>，得 −∇²<strong>E</strong> = ω²με<strong>E</strong>，移项：</p>
+
+        <p style="text-align:center;font-size:15px;margin:16px 0;background:rgba(0,113,227,0.12);padding:14px 20px;border-radius:8px;color:rgba(255,255,255,0.95);">
+        ∇²<strong>E</strong> + ω²με<strong>E</strong> = 0
+        </p>
+
+        <p>定义<strong>波数</strong> k² = ω²με，则得到<strong>亥姆霍兹方程</strong>（电场的波动方程）：</p>
+
+        <p style="text-align:center;font-size:15px;margin:16px 0;background:rgba(0,113,227,0.12);padding:14px 20px;border-radius:8px;color:rgba(255,255,255,0.95);">
+        ∇²<strong>E</strong> + k²<strong>E</strong> = 0
+        </p>
+
+        <h3>第四幕 · 推导磁场 H 的波动方程</h3>
+
+        <p>对磁场做完全对称的推导——对 (B) 式两边取旋度：</p>
+
+        <p style="text-align:center;font-size:15px;margin:16px 0;background:rgba(0,113,227,0.12);padding:14px 20px;border-radius:8px;color:rgba(255,255,255,0.95);">
+        ∇ × (∇ × <strong>H</strong>) = ∇ × (jωε<strong>E</strong>) = jωε (∇ × <strong>E</strong>)
+        </p>
+
+        <p>左边用恒等式并代入 (D) 式 ∇ · <strong>H</strong> = 0，得 ∇ × (∇ × <strong>H</strong>) = −∇²<strong>H</strong>；右边代入 (A) 式：jωε (−jωμ<strong>H</strong>) = −j²ω²με<strong>H</strong> = +ω²με<strong>H</strong>。联立：</p>
+
+        <p style="text-align:center;font-size:15px;margin:16px 0;background:rgba(0,113,227,0.12);padding:14px 20px;border-radius:8px;color:rgba(255,255,255,0.95);">
+        ∇²<strong>H</strong> + k²<strong>H</strong> = 0
+        </p>
+
+        <h3>第五幕 · 时域形式的波动方程（更直观的「波」）</h3>
+
+        <p>亥姆霍兹方程是频域的，若直接用时域麦克斯韦方程出发，能看得更直观。时域两式：∇ × <strong>E</strong> = −μ ∂<strong>H</strong>/∂t，∇ × <strong>H</strong> = ε ∂<strong>E</strong>/∂t。对第一式取旋度、代入第二式：</p>
+
+        <p style="text-align:center;font-size:15px;margin:16px 0;background:rgba(0,113,227,0.12);padding:14px 20px;border-radius:8px;color:rgba(255,255,255,0.95);">
+        ∇ × (∇ × <strong>E</strong>) = −μ ∂/∂t (∇ × <strong>H</strong>) = −με ∂²<strong>E</strong>/∂t²
+        </p>
+
+        <p>无源时 ∇ · <strong>E</strong> = 0，得 −∇²<strong>E</strong> = −με ∂²<strong>E</strong>/∂t²，即经典的波动方程：</p>
+
+        <p style="text-align:center;font-size:15px;margin:16px 0;background:rgba(0,113,227,0.12);padding:14px 20px;border-radius:8px;color:rgba(255,255,255,0.95);">
+        ∇²<strong>E</strong> = με ∂²<strong>E</strong>/∂t²
+        </p>
+
+        <p>物理含义极其鲜明：<strong>电场在空间中的弯曲程度（∇²E），正比于它在时间上的加速度（∂²E/∂t²）。</strong>满足这个方程的函数，必然是以速度 v<sub>p</sub> = 1/√(με) 传播的波。真空中 μ = μ<sub>0</sub>、ε = ε<sub>0</sub>，v<sub>p</sub> = c ≈ 3 × 10⁸ m/s。</p>
+
+        <h3>第六幕 · 波动方程的解与核心参数</h3>
+
+        <h4>1. 一维平面波解</h4>
+
+        <p>考虑波沿 +z 方向传播，电场只有 x 分量：<strong>E</strong> = x̂ E<sub>x</sub>(z)。亥姆霍兹方程变为 d²E<sub>x</sub>/dz² + k²E<sub>x</sub> = 0，通解为：</p>
+
+        <p style="text-align:center;font-size:15px;margin:16px 0;background:rgba(0,113,227,0.12);padding:14px 20px;border-radius:8px;color:rgba(255,255,255,0.95);">
+        E<sub>x</sub>(z) = E<sub>0</sub><sup>+</sup>e<sup>−jkz</sup> + E<sub>0</sub><sup>−</sup>e<sup>+jkz</sup>
+        </p>
+
+        <p>其中 e<sup>−jkz</sup> 是沿 +z 传播的<strong>入射波</strong>，e<sup>+jkz</sup> 是沿 −z 传播的<strong>反射波</strong>。</p>
+
+        <h4>2. 相速与波长</h4>
+
+        <p style="text-align:center;font-size:15px;margin:16px 0;background:rgba(0,113,227,0.12);padding:14px 20px;border-radius:8px;color:rgba(255,255,255,0.95);line-height:2.1;">
+        k = ω√(με) = 2π/λ<br>
+        v<sub>p</sub> = ω/k = 1/√(με)<br>
+        λ = 2π/k = v<sub>p</sub>/f
+        </p>
+
+        <h4>3. 本征波阻抗 η</h4>
+
+        <p>由法拉第定律 ∇ × <strong>E</strong> = −jωμ<strong>H</strong>，对平面波可推出 η = E<sub>x</sub>/H<sub>y</sub> = ωμ/k = √(μ/ε)。真空中：</p>
+
+        <p style="text-align:center;font-size:15px;margin:16px 0;background:rgba(0,113,227,0.12);padding:14px 20px;border-radius:8px;color:rgba(255,255,255,0.95);">
+        η<sub>0</sub> = √(μ<sub>0</sub>/ε<sub>0</sub>) ≈ 377 Ω
+        </p>
+
+        <p><strong>工程意义：</strong>η 是平面波在介质中的「固有阻抗」，直接决定波传播时电场与磁场的幅度比。在传输线理论中，特性阻抗 Z<sub>0</sub> 正是 η 在具体导波结构中的推广。</p>
+
+        <h3>第七幕 · 物理意义的终极解读</h3>
+
+        <div style="overflow-x:auto;margin:24px 0;">
+        <table style="font-size:13px;min-width:720px;">
+        <thead><tr><th style="width:24%;">数学推导结果</th><th style="width:34%;">物理意义</th><th>工程现实</th></tr></thead>
+        <tbody>
+        <tr style="background:rgba(0,113,227,0.06);"><td>∇²<strong>E</strong> + k²<strong>E</strong> = 0</td><td>电场空间分布满足波动方程，解为行波</td><td>微带线、波导中的场分布都由此方程描述</td></tr>
+        <tr><td>k = ω√(με)</td><td>波数，单位长度上的相位变化</td><td>频率越高 k 越大、波长越短，电路尺寸越小</td></tr>
+        <tr style="background:rgba(0,113,227,0.06);"><td>v<sub>p</sub> = 1/√(με)</td><td>相速，波在介质中的传播速度</td><td>FR4 中 ε<sub>r</sub> ≈ 4.3，v<sub>p</sub> ≈ c/2.07，波长缩短约一半，微波电路得以小型化</td></tr>
+        <tr><td>η = √(μ/ε)</td><td>波阻抗，电场与磁场的幅度比</td><td>决定传输线特性阻抗 Z<sub>0</sub>，50 Ω 标准就是 η 在特定几何结构下的体现</td></tr>
+        <tr style="background:rgba(0,113,227,0.06);"><td>e<sup>−jkz</sup> 与 e<sup>+jkz</sup></td><td>入射波与反射波</td><td>史密斯圆图上的顺时针/逆时针旋转，就是这两个解的几何化</td></tr>
+        </tbody>
+        </table>
+        </div>
+
+        <h3>第八幕 · 从波动方程到传输线理论的桥梁</h3>
+
+        <p>波动方程告诉我们：在无源介质中，电磁场以波的形式传播，速度由 με 决定，阻抗由 μ/ε 决定。但真实工程中，波不是在空中自由传播，而是被导体边界引导着走——这就是传输线。传输线理论的核心，就是把三维波动方程在横截面上分离变量，化为沿纵向的一维传输线方程：</p>
+
+        <p style="text-align:center;font-size:15px;margin:16px 0;background:rgba(0,113,227,0.12);padding:14px 20px;border-radius:8px;color:rgba(255,255,255,0.95);line-height:2.1;">
+        dV(z)/dz = −(R + jωL) I(z)<br>
+        dI(z)/dz = −(G + jωC) V(z)
+        </p>
+
+        <p>其中分布参数 L、C、R、G，正是由横截面上的电场和磁场分布（即波动方程的横向解）积分得到的。特性阻抗 Z<sub>0</sub> = √[(R + jωL)/(G + jωC)]，在无耗时退化为 √(L/C)，它本质上就是波阻抗 η 在具体导波结构中的化身。</p>
+
+        <h3>总结 · 一条完整的逻辑链</h3>
+
+        <p style="text-align:center;font-size:14px;margin:16px 0;background:rgba(0,113,227,0.12);padding:16px 20px;border-radius:8px;color:rgba(255,255,255,0.95);line-height:2.1;">
+        麦克斯韦方程组<br>
+        ↓ 无源区域（J = 0, ρ = 0），电场与磁场相互激励<br>
+        ↓ 取旋度并代入<br>
+        ∇²<strong>E</strong> + k²<strong>E</strong> = 0（亥姆霍兹方程）<br>
+        ↓ 一维平面波解<br>
+        E<sub>x</sub>(z) = E<sub>0</sub><sup>+</sup>e<sup>−jkz</sup> + E<sub>0</sub><sup>−</sup>e<sup>+jkz</sup><br>
+        ↓ 提取参数<br>
+        k = ω√(με)，v<sub>p</sub> = 1/√(με)，η = √(μ/ε)
+        </p>
+
+        <p style="text-align:center;font-size:15px;margin:16px 0;background:rgba(0,113,227,0.12);padding:14px 20px;border-radius:8px;color:rgba(255,255,255,0.95);">
+        <strong>一句话工程心法：</strong>麦克斯韦方程说「电变生磁，磁变生电」；波动方程说「这种互锁机制以波的形式向外奔跑」；而 k、v<sub>p</sub>、η 就是这场奔跑的速度、节奏和力度。传输线理论，不过是这场奔跑在导体边界内的「赛道版」。
+        </p>
+
+        <h4>参考文献</h4>
+        <ol class="refs">
+          <li>D. M. Pozar, <em>Microwave Engineering</em>, 4th ed., Wiley, 2012, Ch. 1, Eq. (1.14), (1.31).</li>
+          <li>D. J. Griffiths, <em>Introduction to Electrodynamics</em>, 4th ed., Pearson, 2013, Ch. 9 (Electromagnetic Waves).</li>
         </ol>
 
             </div>
