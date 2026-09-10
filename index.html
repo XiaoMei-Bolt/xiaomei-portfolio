@@ -1468,7 +1468,7 @@
         <a href="#panel-device" onclick="switchTechSub('device', event)">半导体器件与工艺 (8)</a>
         <a href="#panel-rfic" onclick="switchTechSub('rfic', event)">射频集成电路设计 (6)</a>
         <a href="#panel-filter" onclick="switchTechSub('filter', event)">滤波器 (2)</a>
-        <a href="#panel-pozar" onclick="switchTechSub('pozar', event)">我脑中的Pozar微波工程 (1)</a>
+        <a href="#panel-pozar" onclick="switchTechSub('pozar', event)">我脑中的Pozar微波工程 (2)</a>
       </nav>
 
     <div class="sub-panel tech-sub active" id="panel-protocol">
@@ -6540,6 +6540,208 @@
         <ol class="refs">
           <li>D. M. Pozar, <em>Microwave Engineering</em>, 4th ed., Wiley, 2012, Ch. 1 (Electromagnetic Theory), Eq. (1.14).</li>
           <li>J. D. Jackson, <em>Classical Electrodynamics</em>, 3rd ed., Wiley, 1999, Ch. 6 (Maxwell Equations, Macroscopic Electromagnetism).</li>
+        </ol>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="article-card" onclick="this.classList.toggle('open')">
+        <div class="article-card-header">
+          <div>
+            <div class="article-card-title">安培定律的补丁故事：数学与物理的完美融合</div>
+            <div class="article-card-meta">📅 2026 年 · 我脑中的 Pozar 微波工程 — 第 2 篇</div>
+          </div>
+          <div class="article-card-arrow">▼</div>
+        </div>
+        <div class="article-card-body">
+          <div class="article-card-body-inner">
+            <div class="article-body">
+
+        <p>上一篇建立了四个方程的整体图像，这一篇把镜头对准其中最有戏剧性的一环——<strong>安培定律</strong>。它如何从一个在稳恒电流下「完美成立」的方程，在时变场中暴露出致命的数学矛盾，又如何被麦克斯韦一个「补丁」救回来，最终催生出电磁波。整个过程环环相扣，是数学与物理完美融合的经典范本 <span class="ref">[1]</span>。</p>
+
+        <h3>第一幕 · 原始安培定律及其数学结构</h3>
+
+        <p>原始安培定律（不含位移电流）：</p>
+
+        <p style="text-align:center;font-size:15px;margin:16px 0;background:rgba(0,113,227,0.12);padding:14px 20px;border-radius:8px;color:rgba(255,255,255,0.95);">
+        ∇ × <strong>H</strong> = <strong>J</strong>
+        </p>
+
+        <p>其中：<strong>H</strong> 为磁场强度（A/m），<strong>J</strong> 为传导电流密度（A/m²）。</p>
+
+        <p><strong>物理含义：</strong>传导电流 <strong>J</strong> 是唯一激发磁场旋度的源。在稳恒电流（DC）条件下，这个方程完美成立——电流恒定，电荷分布不随时间变化。</p>
+
+        <h3>第二幕 · 数学矛盾的暴露</h3>
+
+        <p>故事从一次看似无害的「取散度」开始。</p>
+
+        <p><strong>第一步：对安培定律两边取散度</strong></p>
+
+        <p style="text-align:center;font-size:15px;margin:16px 0;background:rgba(0,113,227,0.12);padding:14px 20px;border-radius:8px;color:rgba(255,255,255,0.95);">
+        ∇ · (∇ × <strong>H</strong>) = ∇ · <strong>J</strong>
+        </p>
+
+        <p><strong>第二步：引入矢量恒等式（数学定理）</strong></p>
+
+        <p>矢量分析中有一条严格恒等式：</p>
+
+        <p style="text-align:center;font-size:15px;margin:16px 0;background:rgba(0,113,227,0.12);padding:14px 20px;border-radius:8px;color:rgba(255,255,255,0.95);">
+        ∇ · (∇ × <strong>A</strong>) ≡ 0
+        </p>
+
+        <p>其物理含义是：任何矢量场的旋度场，其散度恒为零——旋度场没有「源」和「汇」，场线永远闭合。</p>
+
+        <p><strong>第三步：得出结论</strong></p>
+
+        <p>由上述恒等式，左边必然为零：</p>
+
+        <p style="text-align:center;font-size:15px;margin:16px 0;background:rgba(0,113,227,0.12);padding:14px 20px;border-radius:8px;color:rgba(255,255,255,0.95);">
+        0 = ∇ · <strong>J</strong>　⇒　∇ · <strong>J</strong> = 0
+        </p>
+
+        <p>这是原始安培定律的<strong>数学强迫结论</strong>：电流必须永远闭合。</p>
+
+        <h3>第三幕 · 物理现实的冲突</h3>
+
+        <p>然而，物理学里还有一条不可违背的铁律——<strong>电荷守恒</strong>。它的数学表达是连续性方程：</p>
+
+        <p style="text-align:center;font-size:15px;margin:16px 0;background:rgba(0,113,227,0.12);padding:14px 20px;border-radius:8px;color:rgba(255,255,255,0.95);">
+        ∇ · <strong>J</strong> = −∂ρ/∂t
+        </p>
+
+        <p>其中 ρ 为自由电荷体密度（C/m³），∂ρ/∂t 为电荷密度随时间的变化率。它说的是：电荷增加（∂ρ/∂t &gt; 0）的点，必须有净电流流入（∇ · <strong>J</strong> &lt; 0）；电荷减少（∂ρ/∂t &lt; 0）的点，必须有净电流流出（∇ · <strong>J</strong> &gt; 0）。</p>
+
+        <div style="overflow-x:auto;margin:24px 0;">
+        <table style="font-size:13px;min-width:640px;">
+        <thead><tr><th style="width:22%;">来源</th><th style="width:28%;">结论</th><th>适用条件</th></tr></thead>
+        <tbody>
+        <tr style="background:rgba(0,113,227,0.06);"><td><strong>原始安培定律</strong>（取散度）</td><td>∇ · <strong>J</strong> = 0</td><td>要求电流永远闭合，电荷不堆积</td></tr>
+        <tr><td><strong>电荷守恒定律</strong></td><td>∇ · <strong>J</strong> = −∂ρ/∂t</td><td>允许电荷随时间堆积或消散</td></tr>
+        <tr style="background:rgba(0,113,227,0.06);"><td><strong>冲突</strong></td><td colspan="2">两者仅在 ∂ρ/∂t = 0 时一致；时变场中直接矛盾</td></tr>
+        </tbody>
+        </table>
+        </div>
+
+        <p><strong>结论：</strong>原始安培定律在时变场（∂ρ/∂t ≠ 0）中数学上不自洽。</p>
+
+        <h3>第四幕 · 电容器场景——矛盾的物理实景</h3>
+
+        <p>这个数学矛盾，在电容器里被演绎成一场看得见的「撞车」。</p>
+
+        <p><strong>场景设定：</strong>一个平行板电容器，通过导线连接到交流源 V(t) = V<sub>0</sub> sin(ωt)。取一个包围正极板的闭合曲面 S = S<sub>1</sub> ∪ S<sub>2</sub>：S<sub>1</sub> 是穿过导线的截面，S<sub>2</sub> 是穿过极板间介质/真空的截面。</p>
+
+        <p><strong>计算穿过 S 的总传导电流：</strong></p>
+
+        <ul>
+        <li>通过 S<sub>1</sub>：I<sub>S1</sub> = ∬<sub>S1</sub> <strong>J</strong> · d<strong>S</strong> = I(t) ≠ 0（导线中有传导电流 <strong>J</strong> ≠ 0）</li>
+        <li>通过 S<sub>2</sub>：I<sub>S2</sub> = ∬<sub>S2</sub> <strong>J</strong> · d<strong>S</strong> = 0（极板间是真空/介质，<strong>J</strong> = 0，电子飞不过去）</li>
+        </ul>
+
+        <p><strong>矛盾爆发：</strong>对同一个闭合曲面 S，用安培环路定律 ∮<sub>C</sub> <strong>H</strong> · d<strong>l</strong> = I<sub>enclosed</sub>——选 S<sub>1</sub> 得到 I<sub>enclosed</sub> = I(t)，选 S<sub>2</sub> 得到 I<sub>enclosed</sub> = 0。<strong>同一个环路 C，同一个磁场 H，却算出两个不同的结果。</strong>这就是安培定律的不连续性——传导电流在极板间物理截断，导致定律失效。</p>
+
+        <h3>第五幕 · 麦克斯韦的补丁——位移电流</h3>
+
+        <p>矛盾的根源很清晰：极板间没有传导电流 <strong>J</strong>，但极板上的电荷在随时间变化，导致极板间的电场 <strong>E</strong> 也在随时间变化。麦克斯韦的洞察，就是把这个「变化的场」也当成一种「电流」。</p>
+
+        <p>由高斯定律 ∇ · <strong>D</strong> = ρ，在极板间区域对两边取时间偏导（交换空间与时间偏导顺序）：</p>
+
+        <p style="text-align:center;font-size:15px;margin:16px 0;background:rgba(0,113,227,0.12);padding:14px 20px;border-radius:8px;color:rgba(255,255,255,0.95);">
+        ∇ · (∂<strong>D</strong>/∂t) = ∂ρ/∂t
+        </p>
+
+        <p><strong>关键定义：位移电流密度</strong></p>
+
+        <p style="text-align:center;font-size:15px;margin:16px 0;background:rgba(0,113,227,0.12);padding:14px 20px;border-radius:8px;color:rgba(255,255,255,0.95);">
+        <strong>J</strong><sub>d</sub> ≡ ∂<strong>D</strong>/∂t　（时谐场：<strong>J</strong><sub>d</sub> = jω<strong>D</strong> = jωε<strong>E</strong>）
+        </p>
+
+        <p><strong>补丁后的安培-麦克斯韦定律：</strong></p>
+
+        <p style="text-align:center;font-size:15px;margin:16px 0;background:rgba(0,113,227,0.12);padding:14px 20px;border-radius:8px;color:rgba(255,255,255,0.95);">
+        ∇ × <strong>H</strong> = <strong>J</strong> + ∂<strong>D</strong>/∂t　（时谐：∇ × <strong>H</strong> = <strong>J</strong> + jωε<strong>E</strong>）
+        </p>
+
+        <p>这正是 Pozar 书中的公式 (1.14b)。</p>
+
+        <h3>第六幕 · 数学自洽性的严格验证</h3>
+
+        <p>补丁好不好，数学上说了算。对补丁后的方程两边取散度，逐步验证：</p>
+
+        <ul>
+        <li><strong>第一步：</strong>∇ · (∇ × <strong>H</strong>) = ∇ · <strong>J</strong> + ∇ · (∂<strong>D</strong>/∂t)</li>
+        <li><strong>第二步：</strong>左边恒为零，0 = ∇ · <strong>J</strong> + ∇ · (∂<strong>D</strong>/∂t)</li>
+        <li><strong>第三步：</strong>交换右边第二项偏导，0 = ∇ · <strong>J</strong> + ∂/∂t (∇ · <strong>D</strong>)</li>
+        <li><strong>第四步：</strong>代入高斯定律 ∇ · <strong>D</strong> = ρ，0 = ∇ · <strong>J</strong> + ∂ρ/∂t</li>
+        <li><strong>第五步：</strong>移项，∇ · <strong>J</strong> = −∂ρ/∂t</li>
+        </ul>
+
+        <p><strong>结论：</strong>补丁后的方程通过纯粹的数学运算，自动推导出了电荷守恒定律！原始安培定律与电荷守恒矛盾，而补丁后的安培-麦克斯韦定律与之完全自洽。</p>
+
+        <h3>第七幕 · 回到电容器——补丁如何弥合物理不连续</h3>
+
+        <p>现在看补丁如何在电容器里把断掉的电流接上。</p>
+
+        <p>极板间（<strong>J</strong> = 0）的位移电流：<strong>J</strong><sub>d</sub> = ∂<strong>D</strong>/∂t = ε ∂<strong>E</strong>/∂t。极板间电场 E(t) = Q(t)/(εA)，于是：</p>
+
+        <p style="text-align:center;font-size:15px;margin:16px 0;background:rgba(0,113,227,0.12);padding:14px 20px;border-radius:8px;color:rgba(255,255,255,0.95);">
+        <strong>J</strong><sub>d</sub> = ε · ∂/∂t [Q(t)/(εA)] = (1/A) · dQ/dt = I(t)/A
+        </p>
+
+        <p>位移电流的总量：I<sub>d</sub> = ∬<sub>S2</sub> <strong>J</strong><sub>d</sub> · d<strong>S</strong> = <strong>J</strong><sub>d</sub> · A = I(t)。</p>
+
+        <div style="overflow-x:auto;margin:24px 0;">
+        <table style="font-size:13px;min-width:560px;">
+        <thead><tr><th style="width:20%;">区域</th><th style="width:26%;">传导电流</th><th style="width:26%;">位移电流</th><th>总电流</th></tr></thead>
+        <tbody>
+        <tr style="background:rgba(0,113,227,0.06);"><td><strong>导线（S<sub>1</sub>）</strong></td><td>I(t)</td><td>≈ 0</td><td><strong>I(t)</strong></td></tr>
+        <tr><td><strong>极板间（S<sub>2</sub>）</strong></td><td>0</td><td>I(t)</td><td><strong>I(t)</strong></td></tr>
+        </tbody>
+        </table>
+        </div>
+
+        <p>总电流（传导 + 位移）在空间中<strong>处处连续，从未中断</strong>。</p>
+
+        <h3>第八幕 · 全链条逻辑总结</h3>
+
+        <p>把整个故事收拢成一条链：</p>
+
+        <p style="text-align:center;font-size:14px;margin:16px 0;background:rgba(0,113,227,0.12);padding:16px 20px;border-radius:8px;color:rgba(255,255,255,0.95);line-height:2;">
+        原始安培定律 ∇ × <strong>H</strong> = <strong>J</strong><br>
+        ↓ 取散度<br>
+        ∇ · <strong>J</strong> = 0（数学强迫）<br>
+        ↓ 与电荷守恒冲突<br>
+        ∇ · <strong>J</strong> = −∂ρ/∂t（物理现实）<br>
+        ↓ 麦克斯韦补丁<br>
+        ∇ × <strong>H</strong> = <strong>J</strong> + ∂<strong>D</strong>/∂t<br>
+        ↓ 验证自洽<br>
+        ∇ · <strong>J</strong> = −∂ρ/∂t（完美吻合）
+        </p>
+
+        <h3>终极工程心法</h3>
+
+        <div style="overflow-x:auto;margin:24px 0;">
+        <table style="font-size:13px;min-width:720px;">
+        <thead><tr><th style="width:18%;">概念</th><th style="width:34%;">学术定义</th><th>工程意义</th></tr></thead>
+        <tbody>
+        <tr style="background:rgba(0,113,227,0.06);"><td><strong>传导电流 J</strong></td><td>自由电荷定向漂移，<strong>J</strong> = σ<strong>E</strong></td><td>在导体中流动，产生焦耳热</td></tr>
+        <tr><td><strong>位移电流 J<sub>d</sub></strong></td><td>电通量密度的时间变化率，<strong>J</strong><sub>d</sub> = ∂<strong>D</strong>/∂t</td><td>在介质/真空中「接替」传导电流，保证电流连续性</td></tr>
+        <tr style="background:rgba(0,113,227,0.06);"><td><strong>补丁的数学本质</strong></td><td>在右边加入 ∂<strong>D</strong>/∂t，使散度不再为零</td><td>使安培定律与电荷守恒自洽，从而导出波动方程</td></tr>
+        <tr><td><strong>补丁的物理本质</strong></td><td>时变电场本身就能像电流一样激发磁场</td><td>电磁波能在真空中传播的根本原因</td></tr>
+        </tbody>
+        </table>
+        </div>
+
+        <p style="text-align:center;font-size:15px;margin:16px 0;background:rgba(0,113,227,0.12);padding:14px 20px;border-radius:8px;color:rgba(255,255,255,0.95);">
+        <strong>一句话总结：</strong>位移电流不是「电荷在流动」，而是「电场在变化」。麦克斯韦把它加进安培定律，不是为了描述某个物理实体，而是为了让整个方程组在数学上自洽——而这个数学自洽的直接产物，就是电磁波的存在。
+        </p>
+
+        <h4>参考文献</h4>
+        <ol class="refs">
+          <li>D. M. Pozar, <em>Microwave Engineering</em>, 4th ed., Wiley, 2012, Ch. 1, Eq. (1.14b).</li>
+          <li>J. D. Jackson, <em>Classical Electrodynamics</em>, 3rd ed., Wiley, 1999, Ch. 6 (Maxwell Equations).</li>
+          <li>D. J. Griffiths, <em>Introduction to Electrodynamics</em>, 4th ed., Pearson, 2013, Ch. 7 (Electrodynamics).</li>
         </ol>
 
             </div>
