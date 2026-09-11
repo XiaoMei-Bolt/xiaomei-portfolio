@@ -1464,7 +1464,7 @@
     <div class="sub-panel" id="panel-tech">
             <nav class="sub-nav" style="margin-bottom:32px;">
         <a href="#panel-protocol" class="active" onclick="switchTechSub('protocol', event)">通信协议 (4)</a>
-        <a href="#panel-rffe" onclick="switchTechSub('rffe', event)">射频前端系统 (6)</a>
+        <a href="#panel-rffe" onclick="switchTechSub('rffe', event)">射频前端系统 (7)</a>
         <a href="#panel-device" onclick="switchTechSub('device', event)">半导体器件与工艺 (8)</a>
         <a href="#panel-rfic" onclick="switchTechSub('rfic', event)">射频集成电路设计 (6)</a>
         <a href="#panel-filter" onclick="switchTechSub('filter', event)">滤波器 (2)</a>
@@ -3137,6 +3137,168 @@
           <li>3GPP TS 36.101, "E-UTRA; UE radio transmission and reception," V16.9.0, 2021, §7.3–7.7.</li>
           <li>G. Gonzalez, <em>Microwave Transistor Amplifiers: Analysis and Design</em>, 2nd ed., Prentice Hall, 1997, Ch. 2–3 (Impedance matching, Smith chart, constant gain/noise circles).</li>
           <li>Skyworks Solutions, "SkyOne 78022 — Effect of External Match to Rx Port: Band 5 Tx-Rx Isolation," Internal Measurements, 2015. (PPT Slide 39–41 reference.)</li>
+        </ol>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="article-card" onclick="this.classList.toggle('open')">
+        <div class="article-card-header">
+          <div>
+            <div class="article-card-title">NF、Sensitivity、ENR、SNS 冷态：所有噪声量交汇在 T0</div>
+            <div class="article-card-meta">📅 2026 年 · 射频前端系统 — 噪声系数、灵敏度与噪声源校准的统一基准</div>
+          </div>
+          <div class="article-card-arrow">▼</div>
+        </div>
+        <div class="article-card-body">
+          <div class="article-card-body-inner">
+            <div class="article-body">
+
+        <p>在射频接收机噪声分析里，有一串看起来各管一摊的概念：−174 dBm/Hz、噪声系数 NF、等效输入噪声温度 T<sub>e</sub>、超噪比 ENR、噪声头的冷态与热态、灵敏度公式。它们其实都围绕同一个物理常数、同一个参考温度展开：<strong>T<sub>0</sub> = 290 K ≈ 17 °C</strong>。这个 T<sub>0</sub> 不是某个器件的实际温度，而是整个标准噪声体系的「锚点」。本文就沿着这条逻辑，把这些量串起来 <span class="ref">[1]</span>。</p>
+
+        <h3>一、从 −174 dBm/Hz 开始：它就是 kT0</h3>
+
+        <p>热噪声功率谱密度由玻尔兹曼常数和温度决定：N<sub>0</sub> = kT，其中 k = 1.380649 × 10<sup>−23</sup> J/K。当 T = T<sub>0</sub> = 290 K 时：</p>
+
+        <p style="text-align:center;font-size:15px;margin:16px 0;background:rgba(0,113,227,0.12);padding:14px 20px;border-radius:8px;color:rgba(255,255,255,0.95);line-height:2;">
+        kT<sub>0</sub> = 1.380649 × 10<sup>−23</sup> × 290 ≈ 4.00 × 10<sup>−21</sup> W/Hz<br>
+        = 4.00 × 10<sup>−18</sup> mW/Hz<br>
+        10 log<sub>10</sub>(4.00 × 10<sup>−18</sup>) ≈ −173.98 dBm/Hz
+        </p>
+
+        <p style="text-align:center;font-size:18px;margin:24px 0;background:rgba(245,158,11,0.13);border:1.5px solid rgba(245,158,11,0.55);padding:16px 20px;border-radius:10px;color:#fff;font-weight:600;">
+        −174 dBm/Hz = kT<sub>0</sub>　（T<sub>0</sub> = 290 K）
+        </p>
+
+        <p><strong>物理意义：</strong>−174 dBm/Hz 是在标准参考温度 T<sub>0</sub> = 290 K 下，一个匹配电阻每 1 Hz 带宽产生的热噪声功率。它是整个噪声体系的「零刻度」——后面所有的量，要么是这个基准的倍数，要么相对它来定义。</p>
+
+        <h3>二、NF：信噪比恶化，但必须在 T0 下定义</h3>
+
+        <p>噪声系数直接回答一个朴素的问题：<strong>信号穿过这个器件后，信噪比变差了多少？</strong>它的原始定义是信噪比恶化倍数：</p>
+
+        <p style="text-align:center;font-size:15px;margin:16px 0;background:rgba(0,113,227,0.12);padding:14px 20px;border-radius:8px;color:rgba(255,255,255,0.95);">
+        F = SNR<sub>in</sub> / SNR<sub>out</sub>
+        </p>
+
+        <p>器件完全无噪声时 F = 1（NF = 0 dB）；器件使信噪比变差时 F &gt; 1（NF &gt; 0 dB）。</p>
+
+        <p><strong>但这里有一个关键的限定：输入信噪比必须在源噪声温度为 T<sub>0</sub> 的条件下定义。</strong>为什么？设输入信号功率 S<sub>i</sub>，源噪声来自 T<sub>0</sub> 的热噪声 N<sub>i</sub> = kT<sub>0</sub>B，器件增益 G，器件自身噪声折算到输入端为等效噪声温度 T<sub>e</sub>。输出噪声 = GkB(T<sub>0</sub> + T<sub>e</sub>)，输出信号 = GS<sub>i</sub>。于是：</p>
+
+        <p style="text-align:center;font-size:15px;margin:16px 0;background:rgba(0,113,227,0.12);padding:14px 20px;border-radius:8px;color:rgba(255,255,255,0.95);line-height:2;">
+        F = [S<sub>i</sub>/(kT<sub>0</sub>B)] / [S<sub>i</sub>/(kB(T<sub>0</sub>+T<sub>e</sub>))] = (T<sub>0</sub> + T<sub>e</sub>)/T<sub>0</sub>
+        </p>
+
+        <p style="text-align:center;font-size:18px;margin:24px 0;background:rgba(245,158,11,0.13);border:1.5px solid rgba(245,158,11,0.55);padding:16px 20px;border-radius:10px;color:#fff;font-weight:600;">
+        F = 1 + T<sub>e</sub>/T<sub>0</sub>　　NF = 10 log<sub>10</sub>(1 + T<sub>e</sub>/T<sub>0</sub>)
+        </p>
+
+        <p><strong>物理意义再强调：</strong>T<sub>e</sub> 是器件自身噪声折算到输入端的等效噪声温度；T<sub>e</sub>/T<sub>0</sub> 是器件自身噪声相对标准室温热噪声的比例；NF 就是这个比例导致信噪比恶化的 dB 数。所以 <strong>NF 不是「器件有多少噪声功率」，而是「器件自身噪声相对 T<sub>0</sub> 热噪声的比例」</strong>——而这一切的前提，是源噪声温度被锁定在 T<sub>0</sub> = 290 K。这，正是后面 ENR 和灵敏度公式都要回到 T<sub>0</sub> 的根本原因。</p>
+
+        <h3>三、ENR：噪声头的「热」相对于 T0 的超噪比</h3>
+
+        <p>要测出 NF，噪声头得提供两个已知的源噪声温度——冷态（关断）与热态（开启）。超噪比 ENR 就是用来描述这个「热」的：</p>
+
+        <p style="text-align:center;font-size:16px;margin:20px 0;background:rgba(52,168,83,0.12);border:1.5px solid rgba(52,168,83,0.5);padding:15px 20px;border-radius:10px;color:#fff;font-weight:600;">
+        ENR = 10 log<sub>10</sub>((T<sub>h</sub> − T<sub>c</sub>)/T<sub>0</sub>)
+        </p>
+
+        <p>标准噪声源的校准规定冷态参考为 T<sub>c</sub> = T<sub>0</sub> = 290 K，于是 ENR = 10 log<sub>10</sub>((T<sub>h</sub> − T<sub>0</sub>)/T<sub>0</sub>)。写成线性值 E = 10<sup>ENR/10</sup> = (T<sub>h</sub> − T<sub>0</sub>)/T<sub>0</sub>，则热态噪声温度 T<sub>h</sub> = T<sub>0</sub>(1 + E)：</p>
+
+        <div style="overflow-x:auto;margin:24px 0;">
+        <table style="font-size:13px;min-width:480px;">
+        <thead><tr><th style="width:20%;">ENR</th><th style="width:24%;">线性 E</th><th>热态噪声温度 T<sub>h</sub></th></tr></thead>
+        <tbody>
+        <tr style="background:rgba(0,113,227,0.06);"><td><strong>6 dB</strong></td><td>3.98</td><td>290 × 4.98 ≈ 1445 K</td></tr>
+        <tr><td><strong>15 dB</strong></td><td>31.62</td><td>290 × 32.62 ≈ 9460 K</td></tr>
+        <tr style="background:rgba(0,113,227,0.06);"><td><strong>21 dB</strong></td><td>125.89</td><td>290 × 126.89 ≈ 36800 K</td></tr>
+        </tbody>
+        </table>
+        </div>
+
+        <p><strong>物理意义：</strong>ENR 的作用就是告诉噪声系数分析仪——噪声头「开」的时候，源噪声温度 T<sub>h</sub> 到底是多少。没有准确的 ENR，仪器就无法用 Y 因子法解出被测件的 T<sub>e</sub>，也就得不到正确的 NF。</p>
+
+        <h3>四、SNS 冷态：为什么它对应 T0</h3>
+
+        <p>智能噪声源（如 Keysight SNS 系列）内部通常有存储全频段 ENR 数据的 EEPROM、温度传感器和温度补偿能力。标准 ENR 定义中，冷态参考温度 T<sub>c</sub> = T<sub>0</sub> = 290 K，所以冷态对应的噪声功率谱密度就是 kT<sub>0</sub> = −174 dBm/Hz——<strong>SNS 冷态在标准参考意义上就是 T<sub>0</sub> = 290 K</strong>。</p>
+
+        <p>实际噪声头关断时，物理温度可能略高于或低于 290 K，智能噪声头会测量实际温度并做补偿，使仪器看到的等效冷态和 ENR 仍按标准 T<sub>0</sub> 参考处理。测量流程就是 Y 因子法：</p>
+
+        <ul>
+        <li>接冷态，测输出噪声功率 N<sub>c</sub>；接热态，测 N<sub>h</sub></li>
+        <li>算 Y 因子：Y = N<sub>h</sub>/N<sub>c</sub></li>
+        <li>解出 DUT 等效输入噪声温度：T<sub>e</sub> = (T<sub>h</sub> − Y·T<sub>c</sub>)/(Y − 1)</li>
+        </ul>
+
+        <p>当 T<sub>c</sub> = T<sub>0</sub> 时，代入 F = 1 + T<sub>e</sub>/T<sub>0</sub> 可化简出常用公式：</p>
+
+        <p style="text-align:center;font-size:18px;margin:24px 0;background:rgba(245,158,11,0.13);border:1.5px solid rgba(245,158,11,0.55);padding:16px 20px;border-radius:10px;color:#fff;font-weight:600;">
+        NF = ENR − 10 log<sub>10</sub>(Y − 1)
+        </p>
+
+        <p><strong>物理意义：</strong>这个公式成立的前提正是 T<sub>c</sub> = T<sub>0</sub> = 290 K。如果冷态温度偏离 T<sub>0</sub> 而仪器仍用此简化公式，就会引入误差——智能温度补偿的意义，就是修正这种偏差，让最终报告的 NF 仍然按标准 T<sub>0</sub> 定义。</p>
+
+        <h3>五、灵敏度公式：kT0 + NF 的物理意义</h3>
+
+        <p>把前面串起来，就得到了接收机灵敏度公式：</p>
+
+        <p style="text-align:center;font-size:15px;margin:16px 0;background:rgba(0,113,227,0.12);padding:14px 20px;border-radius:8px;color:rgba(255,255,255,0.95);">
+        S<sub>min</sub> = −174 + 10 log<sub>10</sub>(B) + NF + SNR<sub>req</sub> + 余量
+        </p>
+
+        <p>其中 −174 来自 kT<sub>0</sub>，B 是接收带宽，NF 是参考 T<sub>0</sub> 的标准噪声系数，SNR<sub>req</sub> 是解调所需最小信噪比。它隐含的假设是：<strong>接收机输入端看到的源噪声温度 T<sub>a</sub> = T<sub>0</sub> = 290 K</strong>。推导：输入源噪声 N<sub>i</sub> = kT<sub>0</sub>B，系统输入参考总噪声 = k(T<sub>0</sub>+T<sub>e</sub>)B = kT<sub>0</sub>B·F，换成 dBm 即 −174 + 10log<sub>10</sub>(B) + NF；要检出信号，信号须高出噪声底 SNR<sub>req</sub>，故得上式。</p>
+
+        <p style="text-align:center;font-size:18px;margin:24px 0;background:rgba(245,158,11,0.13);border:1.5px solid rgba(245,158,11,0.55);padding:16px 20px;border-radius:10px;color:#fff;font-weight:600;">
+        S<sub>min</sub> = −174 + 10 log<sub>10</sub>(B) + NF + SNR<sub>req</sub>
+        </p>
+
+        <p><strong>物理意义：</strong>标准灵敏度公式计算的是「源噪声温度为 T<sub>0</sub> = 290 K、系统噪声用参考 T<sub>0</sub> 的 NF 描述时，系统所需的最小输入信号功率」。如果实际天线噪声温度 T<sub>a</sub> ≠ 290 K，严格应改为 S<sub>min</sub> = −174 + 10log<sub>10</sub>(B) + 10log<sub>10</sub>(T<sub>a</sub>/T<sub>0</sub> + F − 1) + SNR<sub>req</sub>；当 T<sub>a</sub> = T<sub>0</sub> 时退化为标准式。</p>
+
+        <h3>六、系统物理温度 vs T0：85 °C 例子</h3>
+
+        <p>一个容易混淆的问题：<strong>如果手机板整体在 85 °C，LNA 的 NF 测得 2 dB，灵敏度怎么算？</strong></p>
+
+        <p>先厘清：LNA 在 85 °C 下自身噪声确实变差，等效输入噪声温度 T<sub>e</sub> 变大，因此标准 NF 变大——比如从 25 °C 的 1 dB 变成 85 °C 的 2 dB。但这个 2 dB 仍然是按标准定义、参考 T<sub>0</sub> = 290 K 的 NF。所以预算仍用：</p>
+
+        <p style="text-align:center;font-size:15px;margin:16px 0;background:rgba(0,113,227,0.12);padding:14px 20px;border-radius:8px;color:rgba(255,255,255,0.95);">
+        S<sub>min</sub> = −174 + 10 log<sub>10</sub>(B) + NF<sub>85°C</sub> + SNR<sub>req</sub> + 余量　（NF<sub>85°C</sub> = 2 dB）
+        </p>
+
+        <p>而不是把 −174 改成 −173.06。因为 −174 dBm/Hz 来自 kT<sub>0</sub>，T<sub>0</sub> = 290 K 是<strong>定义常数</strong>；85 °C 的影响体现在 NF 项变大，而不是改变 kT<sub>0</sub> 中的 T<sub>0</sub>。若误以为「板子 85 °C，源噪声温度也是 85 °C」，就会用 −173.06 + NF——这相当于假设天线看到的噪声源也处于 85 °C 热平衡，但手机天线看到的是外部空间电磁环境，其噪声温度由环境决定，不等于手机板温度。</p>
+
+        <p style="text-align:center;font-size:18px;margin:24px 0;background:rgba(245,158,11,0.13);border:1.5px solid rgba(245,158,11,0.55);padding:16px 20px;border-radius:10px;color:#fff;font-weight:600;">
+        系统物理温度改变 T<sub>e</sub> 和 NF，不改变 kT<sub>0</sub> 中的 T<sub>0</sub>
+        </p>
+
+        <p><strong>物理意义：</strong>智能噪声头的作用，是保证在不同温度下测出的 NF 仍按标准 T<sub>0</sub> 定义报告；但它不能阻止 LNA 自身 NF 随温度变差。两条线要分清：一条是<strong>定义的基准线</strong>（T<sub>0</sub> 恒定），一条是<strong>器件的物理线</strong>（T<sub>e</sub> 随温度漂移）。</p>
+
+        <h3>七、总结：所有线交汇在 T0</h3>
+
+        <div style="overflow-x:auto;margin:24px 0;">
+        <table style="font-size:13px;min-width:720px;">
+        <thead><tr><th style="width:16%;">概念</th><th style="width:30%;">公式</th><th style="width:18%;">参考温度</th><th>物理意义</th></tr></thead>
+        <tbody>
+        <tr style="background:rgba(0,113,227,0.06);"><td><strong>热噪声密度</strong></td><td>kT<sub>0</sub></td><td>T<sub>0</sub> = 290 K</td><td>标准室温热噪声基准</td></tr>
+        <tr><td><strong>噪声系数</strong></td><td>NF = 10log<sub>10</sub>(1 + T<sub>e</sub>/T<sub>0</sub>)</td><td>T<sub>0</sub> = 290 K</td><td>器件使信噪比恶化的 dB 数</td></tr>
+        <tr style="background:rgba(0,113,227,0.06);"><td><strong>超噪比</strong></td><td>ENR = 10log<sub>10</sub>((T<sub>h</sub>−T<sub>c</sub>)/T<sub>0</sub>)</td><td>T<sub>0</sub> = 290 K</td><td>噪声头热态相对 T<sub>0</sub> 的超噪比</td></tr>
+        <tr><td><strong>SNS 冷态</strong></td><td>T<sub>c</sub> = T<sub>0</sub></td><td>T<sub>0</sub> = 290 K</td><td>标准冷态源噪声温度</td></tr>
+        <tr style="background:rgba(0,113,227,0.06);"><td><strong>灵敏度公式</strong></td><td>−174 + 10log<sub>10</sub>(B) + NF + SNR</td><td>源温度隐含为 T<sub>0</sub></td><td>标准源温度下的最小可检测信号</td></tr>
+        </tbody>
+        </table>
+        </div>
+
+        <p>所有标准量都交汇在 T<sub>0</sub> = 290 K ≈ 17 °C：kT<sub>0</sub> = −174 dBm/Hz、NF 参考 T<sub>0</sub>、ENR 参考 T<sub>0</sub>、SNS 冷态标准参考 T<sub>0</sub>、灵敏度公式隐含源温度 T<sub>0</sub>。而系统自身的物理温度（如 85 °C）是另一条线：物理温度 → T<sub>e</sub> 变化 → NF 变化 → 灵敏度公式中 NF 项变化，它不会改变 kT<sub>0</sub> 中的 T<sub>0</sub>。</p>
+
+        <p style="text-align:center;font-size:18px;margin:24px 0;background:rgba(245,158,11,0.13);border:1.5px solid rgba(245,158,11,0.55);padding:16px 20px;border-radius:10px;color:#fff;font-weight:600;">
+        一句话：T<sub>0</sub> = 290 K 是整个噪声体系的标准参考温度。kT<sub>0</sub>、NF、ENR、SNS 冷态、灵敏度公式全部锚定在它上面。系统物理温度只改变 T<sub>e</sub>（从而改变 NF），但不会改变公式里的 kT<sub>0</sub>。
+        </p>
+
+        <h4>参考文献</h4>
+        <ol class="refs">
+          <li>D. M. Pozar, <em>Microwave Engineering</em>, 4th ed., Wiley, 2012, Ch. 10 (Noise and Active RF Components).</li>
+          <li>Keysight Technologies, "Noise Figure Measurement Accuracy — The Y-Factor Method," Application Note 57-2.</li>
+          <li>3GPP TS 36.101, "E-UTRA; UE radio transmission and reception," §7.3 (Reference sensitivity).</li>
         </ol>
 
             </div>
