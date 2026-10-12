@@ -6640,6 +6640,65 @@
 
         <p>当电磁波在真空/空气中传播时，<strong>D</strong> = ε<sub>0</sub><strong>E</strong>，两者几乎成正比，可以视作同一个东西。但当电磁波进入 PCB 的介质基板（如 FR4，ε<sub>r</sub> ≈ 4.3）时，情况剧变——外加电场 <strong>E</strong> 进入介质后，介质的分子被极化，产生密密麻麻的微小电偶极子，这些偶极子会产生额外的电场叠加进来，使得总的效果 <strong>D</strong> 变成了 ε<sub>r</sub> 倍。</p>
 
+        <div class="diagram-container">
+          <svg viewBox="0 0 800 320" xmlns="http://www.w3.org/2000/svg">
+            <text x="400" y="28" text-anchor="middle" fill="#fff" font-size="15" font-weight="600">图 · 介质极化：D = εE（ε = εr ε0）</text>
+            <rect x="250" y="70" width="300" height="12" fill="#5a9fd4"/>
+            <text x="410" y="62" text-anchor="middle" fill="#a8c8ea" font-size="12">上极板（+Q）</text>
+            <rect x="250" y="238" width="300" height="12" fill="#5a9fd4"/>
+            <text x="410" y="268" text-anchor="middle" fill="#a8c8ea" font-size="12">下极板（−Q）</text>
+            <line x1="410" y1="90" x2="410" y2="230" stroke="#f59e0b" stroke-width="1.5" stroke-dasharray="4,3"/>
+            <polygon points="410,230 404,222 416,222" fill="#f59e0b"/>
+            <text x="428" y="160" fill="#f5d49a" font-size="12">E</text>
+            <ellipse cx="290" cy="130" rx="16" ry="11" fill="none" stroke="#4ade80" stroke-width="1.2"/>
+<text x="290" y="127" text-anchor="middle" fill="#4ade80" font-size="8">+</text>
+<text x="290" y="138" text-anchor="middle" fill="#f87171" font-size="8">−</text>
+<ellipse cx="345" cy="130" rx="16" ry="11" fill="none" stroke="#4ade80" stroke-width="1.2"/>
+<text x="345" y="127" text-anchor="middle" fill="#4ade80" font-size="8">+</text>
+<text x="345" y="138" text-anchor="middle" fill="#f87171" font-size="8">−</text>
+<ellipse cx="400" cy="130" rx="16" ry="11" fill="none" stroke="#4ade80" stroke-width="1.2"/>
+<text x="400" y="127" text-anchor="middle" fill="#4ade80" font-size="8">+</text>
+<text x="400" y="138" text-anchor="middle" fill="#f87171" font-size="8">−</text>
+<ellipse cx="455" cy="130" rx="16" ry="11" fill="none" stroke="#4ade80" stroke-width="1.2"/>
+<text x="455" y="127" text-anchor="middle" fill="#4ade80" font-size="8">+</text>
+<text x="455" y="138" text-anchor="middle" fill="#f87171" font-size="8">−</text>
+<ellipse cx="510" cy="130" rx="16" ry="11" fill="none" stroke="#4ade80" stroke-width="1.2"/>
+<text x="510" y="127" text-anchor="middle" fill="#4ade80" font-size="8">+</text>
+<text x="510" y="138" text-anchor="middle" fill="#f87171" font-size="8">−</text>
+<ellipse cx="290" cy="175" rx="16" ry="11" fill="none" stroke="#4ade80" stroke-width="1.2"/>
+<text x="290" y="172" text-anchor="middle" fill="#4ade80" font-size="8">+</text>
+<text x="290" y="183" text-anchor="middle" fill="#f87171" font-size="8">−</text>
+<ellipse cx="345" cy="175" rx="16" ry="11" fill="none" stroke="#4ade80" stroke-width="1.2"/>
+<text x="345" y="172" text-anchor="middle" fill="#4ade80" font-size="8">+</text>
+<text x="345" y="183" text-anchor="middle" fill="#f87171" font-size="8">−</text>
+<ellipse cx="400" cy="175" rx="16" ry="11" fill="none" stroke="#4ade80" stroke-width="1.2"/>
+<text x="400" y="172" text-anchor="middle" fill="#4ade80" font-size="8">+</text>
+<text x="400" y="183" text-anchor="middle" fill="#f87171" font-size="8">−</text>
+<ellipse cx="455" cy="175" rx="16" ry="11" fill="none" stroke="#4ade80" stroke-width="1.2"/>
+<text x="455" y="172" text-anchor="middle" fill="#4ade80" font-size="8">+</text>
+<text x="455" y="183" text-anchor="middle" fill="#f87171" font-size="8">−</text>
+<ellipse cx="510" cy="175" rx="16" ry="11" fill="none" stroke="#4ade80" stroke-width="1.2"/>
+<text x="510" y="172" text-anchor="middle" fill="#4ade80" font-size="8">+</text>
+<text x="510" y="183" text-anchor="middle" fill="#f87171" font-size="8">−</text>
+<ellipse cx="290" cy="220" rx="16" ry="11" fill="none" stroke="#4ade80" stroke-width="1.2"/>
+<text x="290" y="217" text-anchor="middle" fill="#4ade80" font-size="8">+</text>
+<text x="290" y="228" text-anchor="middle" fill="#f87171" font-size="8">−</text>
+<ellipse cx="345" cy="220" rx="16" ry="11" fill="none" stroke="#4ade80" stroke-width="1.2"/>
+<text x="345" y="217" text-anchor="middle" fill="#4ade80" font-size="8">+</text>
+<text x="345" y="228" text-anchor="middle" fill="#f87171" font-size="8">−</text>
+<ellipse cx="400" cy="220" rx="16" ry="11" fill="none" stroke="#4ade80" stroke-width="1.2"/>
+<text x="400" y="217" text-anchor="middle" fill="#4ade80" font-size="8">+</text>
+<text x="400" y="228" text-anchor="middle" fill="#f87171" font-size="8">−</text>
+<ellipse cx="455" cy="220" rx="16" ry="11" fill="none" stroke="#4ade80" stroke-width="1.2"/>
+<text x="455" y="217" text-anchor="middle" fill="#4ade80" font-size="8">+</text>
+<text x="455" y="228" text-anchor="middle" fill="#f87171" font-size="8">−</text>
+<ellipse cx="510" cy="220" rx="16" ry="11" fill="none" stroke="#4ade80" stroke-width="1.2"/>
+<text x="510" y="217" text-anchor="middle" fill="#4ade80" font-size="8">+</text>
+<text x="510" y="228" text-anchor="middle" fill="#f87171" font-size="8">−</text>
+            <text x="400" y="300" text-anchor="middle" fill="#a7d7b0" font-size="13">介质分子被极化成电偶极子（上 + 下 −），产生束缚电荷，D = εr ε0 E</text>
+          </svg>
+          <p class="diagram-caption">图七：外加电场使介质分子极化，束缚电荷削弱原场——这就是 D 与 E 相差 εr 倍的物理来源。</p>
+        </div>
         <p><strong>工程现实：</strong>这就是为什么微带线的等效介电常数 ε<sub>eff</sub> 大于 1——因为大部分场在介质里，<strong>D</strong> 比空气大，导致波在介质里走得慢（相速度降低）、波长变短。设计滤波器时，介质常数选高了，整个电路尺寸就得相应缩小。</p>
 
         <h4>2.4 工程核心物理图像：B 与 H</h4>
@@ -6706,12 +6765,55 @@
 
         <p><strong>物理意义：</strong>电通量密度 <strong>D</strong> 的散度，精确等于该点的自由电荷密度 ρ。</p>
 
+        <div class="diagram-container">
+          <svg viewBox="0 0 800 320" xmlns="http://www.w3.org/2000/svg">
+            <text x="400" y="28" text-anchor="middle" fill="#fff" font-size="15" font-weight="600">图 · 高斯电场定律 ∇·D = ρ（电荷是电场的源）</text>
+            <circle cx="400" cy="160" r="100" fill="none" stroke="#f59e0b" stroke-width="1.5" stroke-dasharray="6,4"/>
+            <text x="505" y="145" fill="#f59e0b" font-size="12">高斯面 S</text>
+            <circle cx="400" cy="160" r="20" fill="#ef4444"/>
+            <text x="400" y="166" text-anchor="middle" fill="#fff" font-size="15" font-weight="700">+q</text>
+            <line x1="426" y1="160" x2="500" y2="160" stroke="#f59e0b" stroke-width="1.5"/>
+<polygon points="500,160 490,165 490,155" fill="#f59e0b"/>
+<line x1="418" y1="178" x2="471" y2="231" stroke="#f59e0b" stroke-width="1.5"/>
+<polygon points="471,231 460,227 467,220" fill="#f59e0b"/>
+<line x1="400" y1="186" x2="400" y2="260" stroke="#f59e0b" stroke-width="1.5"/>
+<polygon points="400,260 395,250 405,250" fill="#f59e0b"/>
+<line x1="382" y1="178" x2="329" y2="231" stroke="#f59e0b" stroke-width="1.5"/>
+<polygon points="329,231 333,220 340,227" fill="#f59e0b"/>
+<line x1="374" y1="160" x2="300" y2="160" stroke="#f59e0b" stroke-width="1.5"/>
+<polygon points="300,160 310,155 310,165" fill="#f59e0b"/>
+<line x1="382" y1="142" x2="329" y2="89" stroke="#f59e0b" stroke-width="1.5"/>
+<polygon points="329,89 340,93 333,100" fill="#f59e0b"/>
+<line x1="400" y1="134" x2="400" y2="60" stroke="#f59e0b" stroke-width="1.5"/>
+<polygon points="400,60 405,70 395,70" fill="#f59e0b"/>
+<line x1="418" y1="142" x2="471" y2="89" stroke="#f59e0b" stroke-width="1.5"/>
+<polygon points="471,89 467,100 460,93" fill="#f59e0b"/>
+            <text x="400" y="300" text-anchor="middle" fill="#f5d49a" font-size="13">D 线从正电荷出发，穿过高斯面的通量 = 包围的电荷（∇·D = ρ）</text>
+          </svg>
+          <p class="diagram-caption">图五：电荷是电场的源——D 线从正电荷发出、终于负电荷，穿过任一闭合面的通量等于面内净电荷。</p>
+        </div>
         <p><strong>工程投射：</strong>在微波传输线（如微带线）的导体内部，ρ = 0，所以 ∇ · <strong>D</strong> = 0，电场线连续穿过介质。所有的 <strong>D</strong> 线都从导体表面（存在面电荷）发出，进入介质。这直接解释了<strong>趋肤效应</strong>——高频电流（电荷）被挤在导体表面，导体内部几乎没有场（场在趋肤深度内指数衰减）。</p>
 
         <h4>3.4 公式 (1.14d)：∇ · B = 0 —— 磁荷不存在</h4>
 
         <p><strong>物理意义：</strong>磁感应强度 <strong>B</strong> 的散度恒为零。磁力线没有起点和终点，永远闭合。</p>
 
+        <div class="diagram-container">
+          <svg viewBox="0 0 800 320" xmlns="http://www.w3.org/2000/svg">
+            <text x="400" y="28" text-anchor="middle" fill="#fff" font-size="15" font-weight="600">图 · 高斯磁场定律 ∇·B = 0（磁力线无头无尾，永远闭合）</text>
+            <rect x="340" y="140" width="120" height="40" rx="4" fill="#5a9fd4"/>
+            <text x="355" y="166" fill="#fff" font-size="18" font-weight="700">N</text>
+            <text x="438" y="166" fill="#fff" font-size="18" font-weight="700">S</text>
+            <path d="M 345 140 C 250 50 500 50 455 140" fill="none" stroke="#f59e0b" stroke-width="2"/>
+            <polygon points="455,140 445,136 447,148" fill="#f59e0b"/>
+            <path d="M 345 180 C 250 270 500 270 455 180" fill="none" stroke="#f59e0b" stroke-width="2"/>
+            <polygon points="345,180 355,176 353,188" fill="#f59e0b"/>
+            <path d="M 340 148 C 230 90 570 90 460 148" fill="none" stroke="#f59e0b" stroke-width="1.5"/>
+            <polygon points="460,148 450,144 452,156" fill="#f59e0b"/>
+            <text x="400" y="300" text-anchor="middle" fill="#f5d49a" font-size="13">磁力线从 N 极出发、绕回 S 极，内部再回到 N——永远闭合，无「磁单极」</text>
+          </svg>
+          <p class="diagram-caption">图六：磁场没有「源」——磁力线是无头无尾的闭合曲线，这正是 ∇·B = 0 的几何含义。</p>
+        </div>
         <p><strong>工程投射：</strong>因为 <strong>B</strong> 无散度，它可以表示为某个矢量位 <strong>A</strong> 的旋度（<strong>B</strong> = ∇ × <strong>A</strong>）。这一性质直接决定了波导（矩形波导、圆波导）中存在无限多种模式（TE/TM 模）。每一种模式，都是磁场线在波导横截面上画出的不同闭合拓扑结构。工程师要做的，就是通过设计激励方式，只让主模（如 TE10）存在，管住高阶模。</p>
 
         <p>把四个方程单独看完，再把它们放回一起，就能看到一条更宏观的分界线——从低频到微波，工程师的世界观被彻底重塑。</p>
@@ -7206,6 +7308,18 @@
         v<sub>p</sub> = ω/k = 1/√(με)<br>
         λ = 2π/k = v<sub>p</sub>/f
         </p>
+
+        <div class="diagram-container">
+          <svg viewBox="0 0 800 300" xmlns="http://www.w3.org/2000/svg">
+            <text x="400" y="26" text-anchor="middle" fill="#fff" font-size="15" font-weight="600">图 · 波数 k 与波长 λ：频率越高，波长越短</text>
+            <path d="M 60,90.0 L 65,84.5 L 70,79.0 L 75,73.6 L 80,68.3 L 85,63.3 L 90,58.4 L 95,53.8 L 100,49.6 L 105,45.7 L 110,42.1 L 115,39.0 L 120,36.3 L 125,34.1 L 130,32.3 L 135,31.0 L 140,30.3 L 145,30.0 L 150,30.3 L 155,31.0 L 160,32.3 L 165,34.1 L 170,36.3 L 175,39.0 L 180,42.1 L 185,45.7 L 190,49.6 L 195,53.8 L 200,58.4 L 205,63.3 L 210,68.3 L 215,73.6 L 220,79.0 L 225,84.5 L 230,90.0 L 235,95.5 L 240,101.0 L 245,106.4 L 250,111.7 L 255,116.7 L 260,121.6 L 265,126.2 L 270,130.4 L 275,134.3 L 280,137.9 L 285,141.0 L 290,143.7 L 295,145.9 L 300,147.7 L 305,149.0 L 310,149.7 L 315,150.0 L 320,149.7 L 325,149.0 L 330,147.7 L 335,145.9 L 340,143.7 L 345,141.0 L 350,137.9 L 355,134.3 L 360,130.4 L 365,126.2 L 370,121.6 L 375,116.7 L 380,111.7 L 385,106.4 L 390,101.0 L 395,95.5 L 400,90.0 L 405,84.5 L 410,79.0 L 415,73.6 L 420,68.3 L 425,63.3 L 430,58.4 L 435,53.8 L 440,49.6 L 445,45.7 L 450,42.1 L 455,39.0 L 460,36.3 L 465,34.1 L 470,32.3 L 475,31.0 L 480,30.3 L 485,30.0 L 490,30.3 L 495,31.0 L 500,32.3 L 505,34.1 L 510,36.3 L 515,39.0 L 520,42.1 L 525,45.7 L 530,49.6 L 535,53.8 L 540,58.4 L 545,63.3 L 550,68.3 L 555,73.6 L 560,79.0 L 565,84.5 L 570,90.0 L 575,95.5 L 580,101.0 L 585,106.4 L 590,111.7 L 595,116.7 L 600,121.6 L 605,126.2 L 610,130.4 L 615,134.3 L 620,137.9 L 625,141.0 L 630,143.7 L 635,145.9 L 640,147.7 L 645,149.0 L 650,149.7 L 655,150.0 L 660,149.7 L 665,149.0 L 670,147.7 L 675,145.9 L 680,143.7 L 685,141.0 L 690,137.9 L 695,134.3 L 700,130.4 L 705,126.2 L 710,121.6 L 715,116.7 L 720,111.7 L 725,106.4 L 730,101.0 L 735,95.5 L 740,90.0" fill="none" stroke="#5a9fd4" stroke-width="2"/>
+            <text x="60" y="60" fill="#5a9fd4" font-size="12" font-weight="600">低频 ω1 → 长波长 λ1</text>
+            <path d="M 60,220.0 L 65,206.3 L 70,193.3 L 75,181.7 L 80,172.1 L 85,165.1 L 90,161.0 L 95,160.1 L 100,162.3 L 105,167.6 L 110,175.7 L 115,186.1 L 120,198.3 L 125,211.7 L 130,225.5 L 135,239.1 L 140,251.6 L 145,262.4 L 150,271.0 L 155,276.9 L 160,279.7 L 165,279.4 L 170,275.9 L 175,269.5 L 180,260.4 L 185,249.2 L 190,236.4 L 195,222.8 L 200,209.0 L 205,195.8 L 210,183.8 L 215,173.8 L 220,166.3 L 225,161.6 L 230,160.0 L 235,161.6 L 240,166.3 L 245,173.8 L 250,183.8 L 255,195.8 L 260,209.0 L 265,222.8 L 270,236.4 L 275,249.2 L 280,260.4 L 285,269.5 L 290,275.9 L 295,279.4 L 300,279.7 L 305,276.9 L 310,271.0 L 315,262.4 L 320,251.6 L 325,239.1 L 330,225.5 L 335,211.7 L 340,198.3 L 345,186.1 L 350,175.7 L 355,167.6 L 360,162.3 L 365,160.1 L 370,161.0 L 375,165.1 L 380,172.1 L 385,181.7 L 390,193.3 L 395,206.3 L 400,220.0 L 405,233.7 L 410,246.7 L 415,258.3 L 420,267.9 L 425,274.9 L 430,279.0 L 435,279.9 L 440,277.7 L 445,272.4 L 450,264.3 L 455,253.9 L 460,241.7 L 465,228.3 L 470,214.5 L 475,200.9 L 480,188.4 L 485,177.6 L 490,169.0 L 495,163.1 L 500,160.3 L 505,160.6 L 510,164.1 L 515,170.5 L 520,179.6 L 525,190.8 L 530,203.6 L 535,217.2 L 540,231.0 L 545,244.2 L 550,256.2 L 555,266.2 L 560,273.7 L 565,278.4 L 570,280.0 L 575,278.4 L 580,273.7 L 585,266.2 L 590,256.2 L 595,244.2 L 600,231.0 L 605,217.2 L 610,203.6 L 615,190.8 L 620,179.6 L 625,170.5 L 630,164.1 L 635,160.6 L 640,160.3 L 645,163.1 L 650,169.0 L 655,177.6 L 660,188.4 L 665,200.9 L 670,214.5 L 675,228.3 L 680,241.7 L 685,253.9 L 690,264.3 L 695,272.4 L 700,277.7 L 705,279.9 L 710,279.0 L 715,274.9 L 720,267.9 L 725,258.3 L 730,246.7 L 735,233.7 L 740,220.0" fill="none" stroke="#4ade80" stroke-width="2"/>
+            <text x="60" y="192" fill="#4ade80" font-size="12" font-weight="600">高频 ω2 → 短波长 λ2</text>
+            <text x="400" y="285" text-anchor="middle" fill="#f5d49a" font-size="13">k = 2π/λ：频率 ↑ → k ↑ → λ ↓ → 电路尺寸可以更小</text>
+          </svg>
+          <p class="diagram-caption">图八：同一传播距离内，频率越高周期越多、波长越短——这是微波电路能随频率升高而小型化的直观原因。</p>
+        </div>
 
         <h4>3. 本征波阻抗 η</h4>
 
