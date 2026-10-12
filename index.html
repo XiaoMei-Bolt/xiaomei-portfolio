@@ -6587,6 +6587,21 @@
 
         <p><strong>物理意义：</strong>只要空间某点存在时变的磁感应强度 <strong>B</strong>（即 μ<strong>H</strong>），该点就一定会被激发出一个具有旋转趋势（非零旋度）的电场 <strong>E</strong>。</p>
 
+        <div class="diagram-container">
+          <svg viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg">
+            <text x="400" y="30" text-anchor="middle" fill="#fff" font-size="15" font-weight="600">图 · 变化的磁场产生电场（法拉第定律 ∇×E = −∂B/∂t）</text>
+            <circle cx="400" cy="215" r="150" fill="none" stroke="#4ade80" stroke-width="1.5" stroke-dasharray="7,5"/>
+            <polygon points="550,229 558,215 542,215" fill="#4ade80"/>
+            <polygon points="250,201 242,215 258,215" fill="#4ade80"/>
+            <circle cx="400" cy="215" r="72" fill="#16233a" stroke="#f59e0b" stroke-width="2"/>
+            <text x="400" y="210" text-anchor="middle" fill="#f59e0b" font-size="16" font-weight="700">B(t)</text>
+            <text x="400" y="230" text-anchor="middle" fill="#f5d49a" font-size="11">⊙ 增大中</text>
+            <text x="558" y="150" fill="#a7d7b0" font-size="12">感应电场 E</text>
+            <text x="400" y="380" text-anchor="middle" fill="#a8c8ea" font-size="12">时变磁场 B(t) → 激发出有旋的电场 E（非保守场）</text>
+          </svg>
+          <p class="diagram-caption">图一：变化的磁场（⊙ 增大）在周围激发出涡旋电场——这是法拉第定律的核心图像，也是变压器、耦合器工作的物理基础。</p>
+        </div>
+
         <p><strong>工程投射：</strong>这是所有<strong>变压器、定向耦合器</strong>的底层原理。在微带线中，主线的时变磁场在副线中感应出电场，实现了能量的「窃取」与耦合。频率越高（ω 越大），同样的磁场能感应出更强的电场，所以高频耦合器尺寸可以做得很小。</p>
 
         <h4>3.2 公式 (1.14b)：∇ × H = jωεE + J —— 电变（或电流）生磁（含位移电流深度辨析）</h4>
@@ -6733,6 +6748,26 @@
 
         <p>其中：<strong>H</strong> 为磁场强度（A/m），<strong>J</strong> 为传导电流密度（A/m²）。</p>
 
+        <div class="diagram-container">
+          <svg viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg">
+            <text x="400" y="30" text-anchor="middle" fill="#fff" font-size="15" font-weight="600">图 · 电流产生磁场（安培定律 ∇×H = J · 右手定则）</text>
+            <circle cx="400" cy="215" r="55" fill="none" stroke="#5a9fd4" stroke-width="1.5"/>
+            <circle cx="400" cy="215" r="100" fill="none" stroke="#5a9fd4" stroke-width="1.5"/>
+            <circle cx="400" cy="215" r="145" fill="none" stroke="#5a9fd4" stroke-width="1.5"/>
+            <polygon points="455,201 447,215 463,215" fill="#5a9fd4"/>
+            <polygon points="345,229 337,215 353,215" fill="#5a9fd4"/>
+            <polygon points="500,175 490,188 508,190" fill="#5a9fd4"/>
+            <polygon points="300,175 292,188 310,190" fill="#5a9fd4"/>
+            <circle cx="400" cy="215" r="16" fill="#f59e0b"/>
+            <text x="400" y="211" text-anchor="middle" fill="#fff" font-size="12" font-weight="700">I</text>
+            <text x="400" y="224" text-anchor="middle" fill="#fff" font-size="10">⊙</text>
+            <text x="560" y="120" fill="#a8c8ea" font-size="12">磁力线 H（逆时针环绕）</text>
+            <text x="400" y="380" text-anchor="middle" fill="#a8c8ea" font-size="12">电流 I 垂直纸面向外（⊙）→ 磁场 H 逆时针环绕（右手定则）</text>
+          </svg>
+          <p class="diagram-caption">图二：传导电流激发环绕的磁场——安培定律的核心图像，右手定则给出磁场环绕方向。</p>
+        </div>
+
+
         <p><strong>物理含义：</strong>传导电流 <strong>J</strong> 是唯一激发磁场旋度的源。在稳恒电流（DC）条件下，这个方程完美成立——电流恒定，电荷分布不随时间变化。</p>
 
         <h3>第二幕 · 数学矛盾的暴露</h3>
@@ -6793,6 +6828,28 @@
         <p>这个数学矛盾，在电容器里被演绎成一场看得见的「撞车」。</p>
 
         <p><strong>场景设定：</strong>一个平行板电容器，通过导线连接到交流源 V(t) = V<sub>0</sub> sin(ωt)。取一个包围正极板的闭合曲面 S = S<sub>1</sub> ∪ S<sub>2</sub>：S<sub>1</sub> 是穿过导线的截面，S<sub>2</sub> 是穿过极板间介质/真空的截面。</p>
+
+        <div class="diagram-container">
+          <svg viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg">
+            <text x="400" y="30" text-anchor="middle" fill="#fff" font-size="15" font-weight="600">图 · 电容器的位移电流：传导电流 J 与位移电流 ∂D/∂t 的接续</text>
+            <rect x="270" y="130" width="260" height="14" fill="#5a9fd4"/>
+            <rect x="270" y="256" width="260" height="14" fill="#5a9fd4"/>
+            <line x1="110" y1="137" x2="270" y2="137" stroke="#f59e0b" stroke-width="6"/>
+            <line x1="110" y1="263" x2="270" y2="263" stroke="#f59e0b" stroke-width="6"/>
+            <polygon points="180,137 168,130 168,144" fill="#f59e0b"/>
+            <line x1="530" y1="137" x2="690" y2="137" stroke="#f59e0b" stroke-width="6"/>
+            <line x1="530" y1="263" x2="690" y2="263" stroke="#f59e0b" stroke-width="6"/>
+            <polygon points="620,137 632,130 632,144" fill="#f59e0b"/>
+            <line x1="400" y1="240" x2="400" y2="160" stroke="#4ade80" stroke-width="2.5"/>
+            <polygon points="400,160 393,170 407,170" fill="#4ade80"/>
+            <text x="415" y="205" fill="#a7d7b0" font-size="13" font-weight="600">E(t)</text>
+            <text x="150" y="110" fill="#f5d49a" font-size="12">传导电流 J</text>
+            <text x="400" y="300" text-anchor="middle" fill="#a7d7b0" font-size="12">位移电流 ∂D/∂t（场在变化）</text>
+            <text x="400" y="380" text-anchor="middle" fill="#a8c8ea" font-size="12">导线中传导电流 J → 极板间位移电流 ∂D/∂t → 总电流处处连续</text>
+          </svg>
+          <p class="diagram-caption">图三：电容器极板间没有传导电流，但时变电场充当了位移电流，使总电流在空间中处处连续。</p>
+        </div>
+
 
         <p><strong>计算穿过 S 的总传导电流：</strong></p>
 
