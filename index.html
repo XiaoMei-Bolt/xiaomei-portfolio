@@ -1465,7 +1465,7 @@
             <nav class="sub-nav" style="margin-bottom:32px;">
         <a href="#panel-protocol" class="active" onclick="switchTechSub('protocol', event)">通信协议 (4)</a>
         <a href="#panel-rffe" onclick="switchTechSub('rffe', event)">射频前端系统 (7)</a>
-        <a href="#panel-device" onclick="switchTechSub('device', event)">半导体器件与工艺 (8)</a>
+        <a href="#panel-device" onclick="switchTechSub('device', event)">半导体器件与工艺 (9)</a>
         <a href="#panel-rfic" onclick="switchTechSub('rfic', event)">射频集成电路设计 (6)</a>
         <a href="#panel-filter" onclick="switchTechSub('filter', event)">滤波器 (2)</a>
         <a href="#panel-pozar" onclick="switchTechSub('pozar', event)">我脑中的Pozar微波工程 (4)</a>
@@ -4777,6 +4777,115 @@
           <li>M. Ahn, H.-W. Kim, C.-H. Lee, and J. Laskar, "A 1.8-GHz SPDT CMOS T/R switch with high power handling capability using body-floating technique in 0.18-μm SOI CMOS," <em>IEEE Microwave and Wireless Components Letters</em>, vol. 17, no. 8, pp. 607–609, Aug. 2007.</li>
           <li>J.-P. Colinge, <em>Silicon-on-Insulator Technology: Materials to VLSI</em>, 3rd ed., Springer, 2004, Ch. 7 (Floating-body effects), Ch. 8 (SOI for RF).</li>
           <li>D. Kelly, C. Brindle, C. Kemerling, and M. Stuber, "The state-of-the-art of silicon-on-sapphire CMOS RF switches," <em>IEEE Compound Semiconductor Integrated Circuit Symposium (CSICS)</em>, pp. 200–203, 2005.</li>
+        </ol>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="article-card" onclick="this.classList.toggle('open')">
+        <div class="article-card-header">
+          <div>
+            <div class="article-card-title">SOI 可靠性设计：HCI、氧化层、NBTI 与 ESD</div>
+            <div class="article-card-meta">📅 2026 年 · 半导体器件与工艺 — 四大失效机制的机理与设计约束</div>
+          </div>
+          <div class="article-card-arrow">▼</div>
+        </div>
+        <div class="article-card-body">
+          <div class="article-card-body-inner">
+            <div class="article-body">
+
+        <p>可靠性设计的核心，是回答一个问题：<strong>在给定工作电压、温度与电路拓扑下，器件能否在目标寿命内不出现退化失效。</strong>本文从四个维度展开——HCI（热载流子注入）、氧化层可靠性（TDDB 与 GOI）、NBTI（负偏置温度不稳定性）、ESD（静电放电）——梳理各自的失效机理、退化表征、寿命模型与设计约束 <span class="ref">[1]</span>。</p>
+
+        <p>SOI 工艺凭借天然的电学隔离、低寄生电容与优异的闩锁免疫，成为射频前端、功率管理与高性能 SoC 的重要平台。但埋氧层（BOX）也引入了两个可靠性新变量：<strong>浮体效应</strong>（体区被完全隔离、无体接触）与<strong>自热效应</strong>（SiO₂ 热导率远低于硅），深刻改变了器件在上述四大机制下的行为。</p>
+
+        <h4>一、HCI 热载流子注入</h4>
+
+        <p><strong>失效机理</strong>：热载流子效应指<strong>沟道电场产生的热载流子所导致的器件性能退化</strong>。热载流子即带有过剩动能的载流子（电子与空穴）。MOSFET 饱和区漏端夹断处形成 10⁵~10⁶ V/cm 的横向峰值电场，沟道电子被加速成热电子；当能量超过 Si–SiO₂ 势垒（电子约 3.1 eV，空穴约 4.8 eV），即翻越界面注入栅氧，形成栅电流——<strong>热载流子注入</strong>。</p>
+
+        <p>两条退化路径：① 注入电子被氧化层俘获，形成<strong>氧化层陷阱电荷</strong>；② 漏端碰撞电离（阈值约 1.3 eV）产生的空穴打断 Si–H 键，生成悬挂键<strong>界面态</strong>——这是最主要的退化来源。</p>
+
+        <p><strong>退化表征与失效判据</strong>：通常用<strong>饱和漏电流 Idsat</strong>与<strong>饱和阈值电压 Vtsat</strong>表征器件性能。退化表现为 Idsat 下降、Vt 漂移、跨导 Gm 显著下降。工业界以 <strong>Idsat（或 Gm）退化 10%</strong> 判定失效，对应应力时间即器件寿命。</p>
+
+        <p><strong>寿命模型</strong>：HCI 退化可看成是 <strong>Vds、温度 T 与沟道长度 L</strong> 的函数，实测拟合出寿命计算模型（calculator）。经典 Lucky Electron（Hu）模型：</p>
+
+        <p style="text-align:center;font-size:16px;margin:20px 0;background:rgba(52,168,83,0.12);border:1.5px solid rgba(52,168,83,0.5);padding:15px 20px;border-radius:10px;color:#fff;font-weight:600;">
+        τ · I<sub>d</sub>/W = C · (I<sub>sub</sub>/I<sub>d</sub>)<sup>−m</sup>　　　m ≈ 3
+        </p>
+
+        <p>其中 I<sub>sub</sub>/I<sub>d</sub> 是碰撞电离强度的度量，比值越大损伤越剧烈、寿命越短。双对数坐标下 τ·I<sub>d</sub>/W 对 I<sub>sub</sub>/I<sub>d</sub> 呈斜率 −m 的直线，据此外推工作电压下的寿命 <span class="ref">[2]</span>。</p>
+
+        <p><strong>SOI 特殊性</strong>：① <strong>浮体效应</strong>（PD-SOI）——碰撞电离空穴在体区积累，抬升体电势，可能开启寄生 BJT、动态降阈值，使 HCI 退化速率大于同尺寸 bulk 器件；② <strong>自热效应</strong>——BOX 热导率约 1.4 W/m·K（硅约 148 W/m·K），温升数十~上百 K，HCI 有负温度系数，自热反而部分抑制退化，但寿命外推须修正结温。</p>
+
+        <p><strong>设计约束</strong>：<strong>Vds 过压或温度过高时必须考虑 HCI</strong>。需通过寿命模型核算目标工况下的 HCI 寿命，必要时降 Vds、优化沟道、增加体接触或采用 FD-SOI 抑制浮体。</p>
+
+        <h4>二、氧化层可靠性</h4>
+
+        <p><strong>失效判据</strong>：氧化层存在缺陷、绝缘性不良、漏电流过高即失效。氧化层寿命含两大类——经时击穿（TDDB）与瞬时击穿（GOI）。</p>
+
+        <p><strong>TDDB 经时击穿</strong>：指<strong>施加电场低于栅氧本征击穿场强、未立即击穿，但经历一定时间后仍发生击穿</strong>。其本质是电应力下氧化层产生并积聚陷阱缺陷，达到临界密度形成贯穿性渗流路径（percolation path），局部电流骤增而击穿。</p>
+
+        <p>测试方法：加固定电压，记录电流与击穿时间，用数学统计方式预估寿命。由于击穿由「最薄弱点」决定，寿命服从 <strong>Weibull 极值分布</strong>：</p>
+
+        <p style="text-align:center;font-size:16px;margin:20px 0;background:rgba(0,113,227,0.12);border:1.5px solid rgba(0,113,227,0.5);padding:15px 20px;border-radius:10px;color:#fff;font-weight:600;">
+        F(t) = 1 − exp[−(t/η)<sup>β</sup>]　　　β ≈ 1~3
+        </p>
+
+        <p>TDDB 寿命是 <strong>Vg、温度 T、面积 Area</strong> 的函数。面积缩放：面积越大含缺陷概率越高、寿命越短，特征寿命满足 <strong>η ∝ A<sup>−1/β</sup></strong>，可将小面积测试结构外推到大产品面积 <span class="ref">[4]</span>。</p>
+
+        <p style="text-align:center;font-size:15px;margin:16px 0;background:rgba(245,158,11,0.13);border:1.5px solid rgba(245,158,11,0.55);padding:16px 20px;border-radius:10px;color:#fff;font-weight:600;line-height:2.1;">
+        E-model：ln τ ∝ −γ·E<sub>ox</sub>（γ ≈ 2~3 cm/MV）<br>
+        1/E-model：ln τ ∝ G/E<sub>ox</sub>（G ≈ 320~400 MV/cm）　　Arrhenius：τ ∝ exp(E<sub>a</sub>/kT)
+        </p>
+
+        <p><strong>设计需求：gate 端发生 AC 超压时必须考虑 TDDB。</strong></p>
+
+        <p><strong>GOI 瞬时击穿</strong>：当电场达到或超过介质临界场强、电流很大而立即击穿，称为<strong>本征击穿</strong>，SiO₂ 本征击穿场强约 <strong>10~13 MV/cm</strong>。实际栅氧中局部薄点、针孔/盲孔、裂缝、杂质、纤维丝等缺陷引起的击穿，称为<strong>非本征击穿</strong>。</p>
+
+        <p>测试（GOI qual / Vbd）：<strong>Vramp</strong>（电压斜坡，电流突变处对应击穿电场 E<sub>bd</sub>=V<sub>bd</sub>/t<sub>ox</sub>）与 <strong>Jramp</strong>（电流斜坡，记录电荷至击穿 Q<sub>bd</sub>）。一般要求 <strong>Vramp 电压 &gt; 2.3 Vcc</strong>。</p>
+
+        <p><strong>设计需求：工作电压不能超过本征击穿电压。</strong></p>
+
+        <h4>三、NBTI 负偏置温度不稳定性</h4>
+
+        <p>指<strong>高温下对 PMOSFET 施加负栅压所引起的一系列电学参数退化</strong>。机理：负栅压下沟道空穴打断 Si–H 键，生成界面态与固定正电荷，导致阈值偏移。</p>
+
+        <p>退化表现：高电场 + 高温下 <strong>Idsat 与跨导 Gm 不断减小、阈值电压绝对值不断增大</strong>，影响电路性能。寿命可看成 <strong>Vgs 与温度</strong> 的函数。</p>
+
+        <p><strong>设计需求：PMOS 超压或温度过高时必须考虑 NBTI。</strong>（NBTI 具部分可恢复性，是区别于 HCI/TDDB 的特征 <span class="ref">[5]</span>。）</p>
+
+        <h4>四、ESD 静电放电</h4>
+
+        <p>ESD 是<strong>设计中必须满足的指标</strong>。衡量 device level ESD 能力通常采用 <strong>TLP 曲线</strong>（关键参数 Vt1、Vh、It2，It2 表征最大电流承受能力）。工艺开发中设 testkey 验证不同尺寸下 core/IO device、GGMOS、diode、passive 的 TLP 能力。</p>
+
+        <p>（ESD 机理、防护器件设计、SOI 特殊挑战将另文专题展开。）</p>
+
+        <h4>五、总结</h4>
+
+        <div style="overflow-x:auto;margin:20px 0;">
+        <table style="font-size:13px;min-width:640px;">
+        <thead><tr><th style="width:12%;">机制</th><th style="width:26%;">失效机理</th><th style="width:22%;">退化表征</th><th style="width:18%;">函数</th><th>设计触发条件</th></tr></thead>
+        <tbody>
+        <tr style="background:rgba(0,113,227,0.06);"><td><strong>HCI</strong></td><td>沟道高电场 → 热载流子注入</td><td>Idsat/Vtsat（10% 判据）</td><td>Vds、T、L</td><td>Vds 过压 / 高温</td></tr>
+        <tr><td><strong>TDDB</strong></td><td>陷阱累积 → 渗流击穿</td><td>击穿时间（Weibull）</td><td>Vg、T、Area</td><td>gate AC 超压</td></tr>
+        <tr style="background:rgba(0,113,227,0.06);"><td><strong>GOI</strong></td><td>本征 / 非本征瞬时击穿</td><td>Vbd / Ebd</td><td>栅氧质量</td><td>超本征击穿电压</td></tr>
+        <tr><td><strong>NBTI</strong></td><td>PMOS 负栅压 + 高温</td><td>Idsat↓ Gm↓ Vt↑</td><td>Vgs、T</td><td>PMOS 超压 / 高温</td></tr>
+        <tr style="background:rgba(0,113,227,0.06);"><td><strong>ESD</strong></td><td>静电放电过应力</td><td>TLP It2/Vt1/Vh</td><td>TLP 能力</td><td>满足 ESD 指标</td></tr>
+        </tbody>
+        </table>
+        </div>
+
+        <p><strong>设计检查清单</strong>：Vds 过压 → HCI ｜ gate AC 超压 → TDDB ｜ 超本征击穿电压（Vramp &gt; 2.3 Vcc）→ GOI ｜ PMOS 超压/高温 → NBTI ｜ ESD 指标 → TLP 验证。</p>
+
+        <p style="font-size:13px;color:rgba(255,255,255,0.55);">参考文献</p>
+        <ol class="refs">
+          <li>J.-P. Colinge, <em>Silicon-on-Insulator Technology: Materials to VLSI</em>, 3rd ed., Springer, 2004, Ch. 7–8.</li>
+          <li>C. Hu et al., "Hot-electron-induced MOSFET degradation—Model, monitor, and improvement," <em>IEEE Transactions on Electron Devices</em>, vol. 32, no. 2, pp. 375–385, 1985.</li>
+          <li>JEDEC JESD28-A, "Procedure for measuring N-channel MOSFET hot-carrier-induced degradation under DC stress," 2001.</li>
+          <li>J. W. McPherson and H. C. Mogul, "Underlying physics of the thermochemical E model in describing low-field time-dependent dielectric breakdown in SiO₂ thin films," <em>J. Appl. Phys.</em>, vol. 84, no. 3, pp. 1513–1523, 1998.</li>
+          <li>K. O. Jeppson and C. M. Svensson, "Negative bias stress of MOS devices at high electric fields and degradation of MNOS devices," <em>J. Appl. Phys.</em>, vol. 48, no. 5, pp. 2004–2014, 1977.</li>
         </ol>
 
             </div>
